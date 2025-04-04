@@ -1,4 +1,6 @@
 package server.services;
 
-public class TutorServiceImpl {
+import java.rmi.Remote;
+
+public class TutorServiceImpl implements Remote {
 }

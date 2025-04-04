@@ -1,4 +1,6 @@
 package server.services;
 
-public class AuthServiceImpl {
+import java.rmi.Remote;
+
+public class AuthServiceImpl implements Remote {
 }

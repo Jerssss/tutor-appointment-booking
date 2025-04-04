@@ -1,4 +1,6 @@
 package server.services;
 
-public class StudentServiceImpl {
+import java.rmi.Remote;
+
+public class StudentServiceImpl implements Remote {
 }
