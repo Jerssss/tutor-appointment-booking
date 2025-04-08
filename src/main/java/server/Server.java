@@ -4,7 +4,6 @@ import server.services.AdminServiceImpl;
 import server.services.AuthServiceImpl;
 import server.services.StudentServiceImpl;
 import server.services.TutorServiceImpl;
-import shared.classes.Tutor;
 import shared.interfaces.AdminService;
 import shared.interfaces.AuthService;
 import shared.interfaces.StudentService;
