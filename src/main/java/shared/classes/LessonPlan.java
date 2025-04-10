@@ -1,13 +1,16 @@
 package shared.classes;
 
-public class LessonPlan {
-    private int lessonPlanID;
-    private int subjectID;
+import java.io.Serializable;
+
+public class LessonPlan implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String lessonPlanID;
+    private String subjectID;
     private String objectives;
     private String topicsCovered;
 
     // Constructor
-    public LessonPlan(int lessonPlanID, int subjectID, String objectives, String topicsCovered) {
+    public LessonPlan() {
         this.lessonPlanID = lessonPlanID;
         this.subjectID = subjectID;
         this.objectives = objectives;
@@ -15,37 +18,17 @@ public class LessonPlan {
     }
 
     // Getters and Setters
-    public int getLessonPlanID() {
-        return lessonPlanID;
-    }
+    public String getLessonPlanID() { return lessonPlanID; }
+    public void setLessonPlanID(String lessonPlanID) { this.lessonPlanID = lessonPlanID; }
 
-    public void setLessonPlanID(int lessonPlanID) {
-        this.lessonPlanID = lessonPlanID;
-    }
+    public String getSubjectID() { return subjectID; }
+    public void setSubjectID(String subjectID) { this.subjectID = subjectID; }
 
-    public int getSubjectID() {
-        return subjectID;
-    }
+    public String getObjectives() { return objectives; }
+    public void setObjectives(String objectives) { this.objectives = objectives; }
 
-    public void setSubjectID(int subjectID) {
-        this.subjectID = subjectID;
-    }
-
-    public String getObjectives() {
-        return objectives;
-    }
-
-    public void setObjectives(String objectives) {
-        this.objectives = objectives;
-    }
-
-    public String getTopicsCovered() {
-        return topicsCovered;
-    }
-
-    public void setTopicsCovered(String topicsCovered) {
-        this.topicsCovered = topicsCovered;
-    }
+    public String getTopicsCovered() { return topicsCovered; }
+    public void setTopicsCovered(String topicsCovered) { this.topicsCovered = topicsCovered; }
 
     // Override toString for easy object representation
     @Override

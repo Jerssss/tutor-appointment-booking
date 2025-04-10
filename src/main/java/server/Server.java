@@ -1,5 +1,6 @@
 package server;
 
+import server.database.DatabaseConnection;
 import server.services.AdminServiceImpl;
 import server.services.AuthServiceImpl;
 import server.services.StudentServiceImpl;
@@ -15,6 +16,7 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -83,6 +85,8 @@ public class Server {
         // Use a new thread to start the server so that the main thread remains responsive.
         new Thread(() -> {
             try {
+
+                DatabaseConnection.setCon();
                 registry = LocateRegistry.createRegistry(PORT);
 
                 authService = new AuthServiceImpl();
@@ -109,6 +113,8 @@ public class Server {
 
             } catch (RemoteException | AlreadyBoundException e) {
                 System.err.println("[Server ERROR] " + e.getMessage());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }).start();
     }
