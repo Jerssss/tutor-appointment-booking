@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.login.LoginView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.login.adminLoginview">
    <right>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="251.0" spacing="7.0" style="-fx-background-color: #6F2E2E;" BorderPane.alignment="CENTER">
          <children>
@@ -51,8 +51,7 @@
             <ComboBox fx:id="userTypeBox" prefHeight="25.0" prefWidth="249.0" promptText="User Type" style="-fx-background-color: #BDD1E8;" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css">
                <items>
                   <FXCollections fx:factory="observableArrayList">
-                     <String fx:value="Student" />
-                     <String fx:value="Tutor" />
+                     <String fx:value="Admin" />
                   </FXCollections>
                </items>
                <styleClass>
