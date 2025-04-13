@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import shared.interfaces.TutorService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.registry.LocateRegistry;
@@ -33,11 +34,11 @@ public class StudentTutorClient extends Application {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             TutorService tutorService = (TutorService) registry.lookup("tutor_services");
 
-            TutorCreateLessonPlanModel model = new TutorCreateLessonPlanModel(tutorService);
-            TutorCreateLessonPlanController controller = new TutorCreateLessonPlanController(model);
-            TutorCreateLessonPlanPopUp popUpView = new TutorCreateLessonPlanPopUp(); // Renamed
+//            TutorCreateLessonPlanModel model = new TutorCreateLessonPlanModel(tutorService);
+//            TutorCreateLessonPlanController controller = new TutorCreateLessonPlanController(model);
+//            TutorCreateLessonPlanPopUp popUpView = new TutorCreateLessonPlanPopUp(); // Renamed
 
-            controller.start(); // Test console flow
+            //controller.start(); // Test console flow
             loadLandingPageUI();
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,7 +47,8 @@ public class StudentTutorClient extends Application {
 
     private void loadLandingPageUI() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/common/landing_page.fxml"));
+            File fxmlFile = new File("src/main/resource/fxml/common/landing_page.fxml");
+            FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
             Parent root = loader.load();
 
             // Get the controller
