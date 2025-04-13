@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="1037.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminMainMenuView">
+<BorderPane fx:id="rootPane" prefHeight="648.0" prefWidth="1037.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminMainMenuView">
    <top>
-      <VBox prefHeight="75.0" prefWidth="716.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="75.0">
          <children>
-            <HBox prefHeight="74.0" prefWidth="716.0" style="-fx-background-color: #6F2E2E;">
+            <HBox prefHeight="74.0" style="-fx-background-color: #6F2E2E;">
                <children>
                   <HBox prefHeight="58.0" prefWidth="86.0">
                      <children>
@@ -33,7 +33,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="725.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="42.0" prefWidth="130.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Student" textFill="WHITE">
+                        <Label alignment="CENTER" prefHeight="42.0" prefWidth="130.0" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" text="Student" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="28.0" />
                            </font>
@@ -42,13 +42,13 @@
                   </HBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="192.0">
                      <children>
-                        <Label id="headerNameLabel" fx:id="headerNameLabel" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Name" textFill="WHITE">
+                        <Label fx:id="headerNameLabel" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" text="Name" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label id="headerDateLabel" fx:id="headerDateLabel" text="Date" textFill="WHITE" />
-                        <Label id="headerTimeLabel" fx:id="headerTimeLabel" text="Time" textFill="WHITE" />
+                        <Label fx:id="headerDateLabel" text="Date" textFill="WHITE" />
+                        <Label fx:id="headerTimeLabel" text="Time" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
@@ -58,16 +58,16 @@
             </HBox>
          </children>
          <effect>
-            <DropShadow height="5.86" radius="0.9650000000000001" width="0.0" />
+            <DropShadow height="5.86" radius="0.965" width="0.0" />
          </effect>
       </VBox>
    </top>
    <left>
-      <VBox prefHeight="573.0" prefWidth="232.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="573.0" prefWidth="232.0" style="-fx-background-color: white;">
          <children>
             <VBox prefHeight="146.0" prefWidth="232.0" spacing="1.0">
                <children>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="232.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0">
                      <children>
                         <Label contentDisplay="CENTER" prefHeight="18.0" prefWidth="106.0" text="      Booking">
                            <font>
@@ -76,7 +76,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -140;">
                            <image>
@@ -96,7 +96,7 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <Button fx:id="viewBookingButton" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="View Bookings" textFill="#808080" wrapText="true">
                            <font>
@@ -116,7 +116,7 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <Button fx:id="rescheduleBookingButton" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="Reschedule Bookings" textFill="#808080" wrapText="true">
                            <font>
@@ -138,9 +138,9 @@
                   </StackPane>
                </children>
             </VBox>
-            <VBox prefHeight="107.0" prefWidth="232.0" spacing="1.0">
+            <VBox prefHeight="107.0" spacing="1.0">
                <children>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="232.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0">
                      <children>
                         <Label contentDisplay="CENTER" prefHeight="18.0" prefWidth="106.0" text="     Courses">
                            <font>
@@ -149,7 +149,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -140;">
                            <image>
@@ -169,7 +169,7 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <Button fx:id="lessonPlanButton" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="Lesson Plans" textFill="#808080" wrapText="true">
                            <font>
@@ -191,9 +191,9 @@
                   </StackPane>
                </children>
             </VBox>
-            <VBox prefHeight="154.0" prefWidth="232.0" spacing="1.0">
+            <VBox prefHeight="154.0" spacing="1.0">
                <children>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="232.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0">
                      <children>
                         <Label contentDisplay="CENTER" prefHeight="18.0" prefWidth="106.0" text="     Payment">
                            <font>
@@ -202,7 +202,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -140;">
                            <image>
@@ -222,7 +222,7 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0">
                      <children>
                         <Button fx:id="balanceButton" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="Balance" textFill="#808080" wrapText="true">
                            <font>
@@ -244,11 +244,11 @@
                   </StackPane>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="125.0" prefWidth="232.0" spacing="40.0">
+            <VBox alignment="CENTER" prefHeight="125.0" spacing="40.0">
                <children>
-                  <HBox prefHeight="29.0" prefWidth="232.0">
+                  <HBox prefHeight="29.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefWidth="200.0">
                            <children>
                               <Label text="Server Status: " textFill="#808080">
                                  <font>
@@ -257,7 +257,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefWidth="200.0">
                            <children>
                               <Label fx:id="onlineLabel" text="Online" textFill="#009e60" visible="false">
                                  <font>
@@ -276,7 +276,7 @@
                         <Insets left="25.0" />
                      </padding>
                   </HBox>
-                  <Button fx:id="logOutButton" mnemonicParsing="false" onMouseEntered="#logOutButtonHovered" onMouseExited="#logOutButtonExited" prefHeight="22.0" prefWidth="145.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" text="Log Out" textFill="WHITE">
+                  <Button fx:id="logOutButton" onMouseEntered="#logOutButtonHovered" onMouseExited="#logOutButtonExited" prefHeight="22.0" prefWidth="145.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" text="Log Out" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -287,9 +287,9 @@
       </VBox>
    </left>
    <center>
-      <VBox fx:id="centerPane" alignment="CENTER" prefHeight="573.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="centerPane" alignment="CENTER" prefHeight="573.0" prefWidth="805.0">
          <children>
-            <Label fx:id="placeholderLabel" alignment="CENTER" prefHeight="41.0" prefWidth="358.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Click an option to start." textFill="#6f2e2e">
+            <Label fx:id="placeholderLabel" alignment="CENTER" prefHeight="41.0" prefWidth="358.0" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" text="Click an option to start." textFill="#6f2e2e">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>

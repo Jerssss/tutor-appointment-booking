@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.ReportGeneratorView">
+   <children>
+      <VBox prefHeight="74.0" prefWidth="805.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="805.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="500.0">
+                     <children>
+                        <Label fx:id="lessonPlansLabel" prefHeight="43.0" prefWidth="322.0" text="Lesson Plans" textFill="#6f2e2e">
+                           <font>
+                              <Font name="System Bold" size="29.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="56.0" prefWidth="214.0">
+                     <children>
+                        <StackPane alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="231.0">
+                           <children>
+                              <TextField fx:id="searchReportTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="29.0" prefWidth="230.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="56.0" prefWidth="93.0">
+                     <children>
+                        <Button fx:id="createPlanButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#createPlanButtonHovered" onMouseExited="#createPlanButtonExited" prefHeight="26.0" prefWidth="77.0" style="-fx-background-color: #6f2e2e; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Create Plan" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+
+      <!-- Report Tables -->
+      <VBox alignment="CENTER" prefHeight="521.0" prefWidth="805.0">
+         <children>
+            <TabPane fx:id="reportTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab fx:id="highSchoolTab" text="High-school">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="highSchoolTableView" prefHeight="482.0" prefWidth="805.0">
+                                 <columns>
+                                    <TableColumn fx:id="highSchoolCourseColumn" prefWidth="130.0" text="Course" />
+                                    <TableColumn fx:id="highSchoolSubjectColumn" prefWidth="130.0" text="Subject" />
+                                    <TableColumn fx:id="highSchoolObjectivesColumn" prefWidth="180.0" text="Objectives" />
+                                    <TableColumn fx:id="highSchoolTopicsColumn" prefWidth="145.0" text="Topics" />
+                                    <TableColumn fx:id="highSchoolEditColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" />
+                                    <TableColumn fx:id="highSchoolCancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+
+                  <Tab fx:id="collegeTab" text="College">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="collegeTableView" prefHeight="482.0" prefWidth="805.0">
+                                 <columns>
+                                    <TableColumn fx:id="collegeCourseColumn" prefWidth="130.0" text="Course" />
+                                    <TableColumn fx:id="collegeSubjectColumn" prefWidth="130.0" text="Subject" />
+                                    <TableColumn fx:id="collegeObjectivesColumn" prefWidth="180.0" text="Objectives" />
+                                    <TableColumn fx:id="collegeTopicsColumn" prefWidth="145.0" text="Topics" />
+                                    <TableColumn fx:id="collegeEditColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" />
+                                    <TableColumn fx:id="collegeCancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</VBox>

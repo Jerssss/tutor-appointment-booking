@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AddNewTerminalWindowView">
+   <center>
+      <VBox prefHeight="164.0" prefWidth="266.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="197.0" prefWidth="310.0">
+               <children>
+                  <HBox prefHeight="43.0" prefWidth="246.0">
+                     <children>
+                        <VBox prefHeight="50.0" prefWidth="257.0">
+                           <children>
+                              <Label text="Student ID">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="studentIdTextField" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="280.0" stylesheets="@../../css/styles.css">
+                                 <styleClass>
+                                    <String fx:value="background-pane" />
+                                    <String fx:value="text-field2" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="43.0" prefWidth="246.0">
+                     <children>
+                        <VBox prefHeight="50.0" prefWidth="257.0">
+                           <children>
+                              <Label text="First Name">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="firstNameTextField" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="280.0" stylesheets="@../../css/styles.css">
+                                 <styleClass>
+                                    <String fx:value="background-pane" />
+                                    <String fx:value="text-field2" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="43.0" prefWidth="246.0">
+                     <children>
+                        <VBox prefHeight="50.0" prefWidth="257.0">
+                           <children>
+                              <Label text="Last Name">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="lastNameTextField" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="280.0" stylesheets="@../../css/styles.css">
+                                 <styleClass>
+                                    <String fx:value="background-pane" />
+                                    <String fx:value="text-field2" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="43.0" prefWidth="246.0">
+                     <children>
+                        <VBox prefHeight="50.0" prefWidth="257.0">
+                           <children>
+                              <Label text="Phone Number">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="phoneNumberTextField" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="280.0" stylesheets="@../../css/styles.css">
+                                 <styleClass>
+                                    <String fx:value="background-pane" />
+                                    <String fx:value="text-field2" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="43.0" prefWidth="246.0">
+                     <children>
+                        <VBox prefHeight="50.0" prefWidth="257.0">
+                           <children>
+                              <Label text="Email">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="emailTextField" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="280.0" stylesheets="@../../css/styles.css">
+                                 <styleClass>
+                                    <String fx:value="background-pane" />
+                                    <String fx:value="text-field2" />
+                                 </styleClass>
+                              </TextField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="43.0" prefWidth="310.0">
+                     <children>
+                        <VBox prefHeight="43.0" prefWidth="255.0">
+                           <children>
+                              <Label text="Academic Level">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="academicLevelComboBox" prefHeight="26.0" prefWidth="250.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <HBox alignment="CENTER" prefHeight="47.0" prefWidth="310.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="41.0" prefWidth="255.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Add New Student" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="67.0" prefWidth="330.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="addStudentButton" mnemonicParsing="false" onMouseEntered="#addStudentButtonHovered" onMouseExited="#addStudentButtonExited" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #fffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Student" textFill="#6f2e2e">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
