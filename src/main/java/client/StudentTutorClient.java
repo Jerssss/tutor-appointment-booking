@@ -46,7 +46,7 @@ public class StudentTutorClient extends Application {
 
     private void loadLandingPageUI() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/resource/fxml/common/landing_page.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/common/landing_page.fxml"));
             Parent root = loader.load();
 
             // Get the controller
