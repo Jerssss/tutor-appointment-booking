@@ -67,12 +67,14 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="logReportTableView" prefHeight="482.0" prefWidth="805.0">
+                              <TableView fx:id="highSchoolTableView" prefHeight="482.0" prefWidth="805.0">
                                  <columns>
-                                    <TableColumn fx:id="highschoolCourseColumn" prefWidth="150.0" text="Course" />
-                                    <TableColumn fx:id="highschoolSubjectColumn" prefWidth="169.0" text="Subject" />
-                                    <TableColumn fx:id="highschoolObjectivesColumn" prefWidth="281.0" text="Objectives" />
-                                    <TableColumn fx:id="highschoolTopicsColumn" minWidth="0.0" prefWidth="200.0" text="Topics" />
+                                    <TableColumn fx:id="highSchoolCourseColumn" prefWidth="130.0" text="Course" />
+                                    <TableColumn fx:id="highSchoolSubjectColumn" prefWidth="130.0" text="Subject" />
+                                    <TableColumn fx:id="highSchoolObjectivesColumn" prefWidth="180.0" text="Objectives" />
+                                    <TableColumn fx:id="highSchoolTopicsColumn" prefWidth="145.0" text="Topics" />
+                                    <TableColumn fx:id="editColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" />
+                                    <TableColumn fx:id="cancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
                                  </columns>
                               </TableView>
                            </children>
@@ -80,18 +82,22 @@
                      </content>
                   </Tab>
 
-                  <Tab fx:id="reservationReportTab" text=" College ">
+
+                  <Tab fx:id="collegeTab" text=" College ">
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="logReportTableView1" prefHeight="482.0" prefWidth="805.0">
+                              <TableView fx:id="collegeTableView" prefHeight="482.0" prefWidth="805.0">
                                  <columns>
-                                    <TableColumn fx:id="collegeCourseColumn" prefWidth="150.0" text="Course" />
-                                    <TableColumn fx:id="collegeSubjectColumn" prefWidth="169.0" text="Subject" />
-                                    <TableColumn fx:id="collegeObjectivesColumn" prefWidth="281.0" text="Objectives" />
-                                    <TableColumn fx:id="collegeTopicsColumn" minWidth="0.0" prefWidth="200.0" text="Topics" />
+                                    <TableColumn fx:id="collegeCourseColumn" prefWidth="130.0" text="Course" />
+                                    <TableColumn fx:id="collegeSubjectColumn" prefWidth="130.0" text="Subject" />
+                                    <TableColumn fx:id="collegeObjectivesColumn" prefWidth="180.0" text="Objectives" />
+                                    <TableColumn fx:id="collegeTopicsColumn" prefWidth="145.0" text="Topics" />
+                                    <TableColumn fx:id="editColumn2" editable="false" prefWidth="110.0" resizable="false" text="Update" />
+                                    <TableColumn fx:id="cancelColumn2" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
                                  </columns>
                               </TableView>
+
                            </children>
                         </AnchorPane>
                      </content>

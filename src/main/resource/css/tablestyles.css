@@ -17,7 +17,7 @@
 /* header */
 .table-view .column-header-background {
     -fx-text-background-color: #ffffff;
-    -fx-background-color:  #6F2E2E;
+    -fx-background-color:  #6f2e2e;
     -fx-background-radius: 7px 7px 0px 0px;
         -fx-background-insets: 0 0 0 0;
         -fx-padding: 0 0 5px 0;

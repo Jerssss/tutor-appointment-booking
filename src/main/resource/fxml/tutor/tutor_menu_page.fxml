@@ -69,6 +69,18 @@
                <children>
                   <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
                      <children>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -140;">
+                           <image>
+                              <Image url="@../../../../../../learnify_9443/src/main/resource/images/client/create.png" />
+                           </image>
+                           <StackPane.margin>
+                              <Insets left="100.0" />
+                           </StackPane.margin>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="153.0">
+                     <children>
                         <Button fx:id="sessionsButton" mnemonicParsing="false" style="-fx-border-color: transparent; -fx-background-color: transparent;" text="Sessions" textFill="#808080" wrapText="true">
                            <font>
                               <Font name="System Bold" size="16.0" />

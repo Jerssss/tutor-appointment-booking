@@ -49,7 +49,7 @@
          <children>
             <TableView fx:id="viewResTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
-                  <TableColumn fx:id="invoiceColumn" editable="false" prefWidth="115.0" resizable="false" text="Invoice ID" />
+                  <TableColumn fx:id="studentIDColumn" editable="false" prefWidth="115.0" resizable="false" text="Student ID" />
                   <TableColumn fx:id="courseSubjectColumn" editable="false" prefWidth="115.0" resizable="false" text="Course / Subject" />
                   <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="87.0" resizable="false" text="Session Mode" />
                   <TableColumn fx:id="paymentDateColumn" editable="false" prefWidth="85.0" resizable="false" text="Payment Date" />
