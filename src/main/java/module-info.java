@@ -8,4 +8,6 @@ module Learnify {
 
     exports shared.interfaces;
     exports client;
+    exports client.landingpage; // Export the landingpage package
+    opens client.landingpage to javafx.fxml;
 }

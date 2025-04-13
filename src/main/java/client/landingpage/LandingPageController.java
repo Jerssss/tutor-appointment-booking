@@ -1,6 +1,8 @@
 package client.landingpage;
 
 
+
+
 import client.StudentTutorClient;
 import client.landingpage.login.LoginController;
 import client.landingpage.login.LoginModel;
@@ -16,10 +18,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 import javax.swing.*;
 import java.io.IOException;
 
+
 public class LandingPageController {
+
 
     public LandingPageController(LandingPageView view) {
         if (view == null) {
@@ -27,14 +32,17 @@ public class LandingPageController {
             return;
         }
 
+
         view.setActionSignInButton(this::handleSignIn);
         view.setActionSignUpButton(this::handleSignUp);
     }
+
 
     private void handleSignIn(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/client/login_page.fxml"));
             Parent root = loader.load();
+
 
             LoginView loginView = loader.getController();
             if (loginView == null) {
@@ -42,7 +50,9 @@ public class LandingPageController {
                 return;
             }
 
-          //  new LoginController(loginView, new LoginModel(StudentTutorClient.getAuthService())); // Removed extra argument
+
+            //  new LoginController(loginView, new LoginModel(StudentTutorClient.getAuthService())); // Removed extra argument
+
 
             switchScene(event, root);
         } catch (IOException ioe) {
@@ -51,10 +61,12 @@ public class LandingPageController {
         }
     }
 
+
     private void handleSignUp(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/client/sign_up_page.fxml"));
             Parent root = loader.load();
+
 
             SignUpView signUpView = loader.getController();
             if (signUpView == null) {
@@ -62,7 +74,9 @@ public class LandingPageController {
                 return;
             }
 
-           // new SignUpController(signUpView, new SignUpModel());
+
+            // new SignUpController(signUpView, new SignUpModel());
+
 
             switchScene(event, root);
         } catch (IOException ioe) {
@@ -80,8 +94,10 @@ public class LandingPageController {
         stage.show();
     }
 
+
     private void showErrorDialog(String message) {
         Platform.runLater(() -> JOptionPane.showMessageDialog(null, message, "Connection Error", JOptionPane.ERROR_MESSAGE));
     }
+
 
 }

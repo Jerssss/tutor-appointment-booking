@@ -1,5 +1,6 @@
 package client.landingpage;
 
+
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,12 +8,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.util.Duration;
 
+
 public class LandingPageView {
+
 
     @FXML
     private Button landingPageLogInButton; // Button for logging in
     @FXML
     private Button landingPageSignUpButton; // Button for signing up
+
 
     public void initialize() {
         if (landingPageLogInButton == null) {
@@ -23,6 +27,7 @@ public class LandingPageView {
         }
     }
 
+
     public void setActionSignInButton(EventHandler<ActionEvent> event) {
         if (landingPageLogInButton != null) {
             landingPageLogInButton.setOnAction(event);
@@ -31,6 +36,7 @@ public class LandingPageView {
         }
     }
 
+
     public void setActionSignUpButton(EventHandler<ActionEvent> event) {
         if (landingPageSignUpButton != null) {
             landingPageSignUpButton.setOnAction(event);
@@ -38,6 +44,8 @@ public class LandingPageView {
             System.err.println("[ERROR] landingPageSignUpButton is NULL! Cannot set action.");
         }
     }
+
+
 
 
     //Applies a hover effect to the "Log In" button by scaling it down.
@@ -56,6 +64,8 @@ public class LandingPageView {
     }
 
 
+
+
     //Resets the "Log In" button to its original size when the hover ends.
     @FXML
     public void logInButtonExited() {
@@ -72,7 +82,9 @@ public class LandingPageView {
     }
 
 
-     //Applies a hover effect to the "Sign Up" button by scaling it down.
+
+
+    //Applies a hover effect to the "Sign Up" button by scaling it down.
     @FXML
     public void signUpButtonHovered() {
         if (landingPageSignUpButton != null) {
@@ -86,6 +98,7 @@ public class LandingPageView {
             System.err.println("[ERROR] landingPageSignUpButton is NULL!");
         }
     }
+
 
     //Resets the "Sign Up" button to its original size when the hover ends.
     @FXML
