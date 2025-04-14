@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.login.adminLoginview">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.landingpage.login.AdminLoginView">
    <right>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="251.0" spacing="7.0" style="-fx-background-color: #6F2E2E;" BorderPane.alignment="CENTER">
          <children>
@@ -33,7 +33,6 @@
                   <Insets bottom="8.0" top="-7.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="logInPageSignUpButton" mnemonicParsing="false" onMouseEntered="#signUpButtonHovered" onMouseExited="#signUpButtonExited" prefHeight="22.0" prefWidth="145.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" text="SIGN UP" textFill="WHITE" />
          </children>
       </VBox>
    </right>

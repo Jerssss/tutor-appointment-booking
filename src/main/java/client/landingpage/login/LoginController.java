@@ -2,12 +2,6 @@ package client.landingpage.login;
 
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-
-
-import java.io.IOException;
-
 
 public class LoginController {
     private final LoginView loginView; // The associated view for the login page
