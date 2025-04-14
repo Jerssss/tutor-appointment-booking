@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -39,7 +36,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="7.0" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; -fx-font-weight: bold;" text="Sign In" textFill="#6f2e2e">
+            <Label style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; -fx-font-weight: bold;" text="Admin Page" textFill="#6f2e2e">
                <font>
                   <Font size="29.0" />
                </font>
@@ -47,17 +44,6 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
-            <ComboBox fx:id="userTypeBox" prefHeight="25.0" prefWidth="249.0" promptText="User Type" style="-fx-background-color: #BDD1E8;" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css">
-               <items>
-                  <FXCollections fx:factory="observableArrayList">
-                     <String fx:value="Admin" />
-                  </FXCollections>
-               </items>
-               <styleClass>
-                  <String fx:value="userTypePicker" />
-                  <String fx:value="background-pane" />
-               </styleClass>
-            </ComboBox>
             <StackPane id="nameStackPane" prefHeight="29.0" prefWidth="359.0">
                <children>
                   <TextField fx:id="idField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="152.0" promptText="Institutional ID" style="-fx-pref-width: 250px;" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" />
