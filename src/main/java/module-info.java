@@ -5,6 +5,7 @@ module Learnify {
     requires javafx.graphics;
     requires java.desktop;
     requires java.sql;
+    requires java.naming;
 
     exports shared.interfaces;
     exports client;

@@ -7,16 +7,23 @@ public class User {
     private String phoneNumber;
     private String email;
     private String role;
+    private String password;
 
     // Constructor
-    public User(int userID, String firstName, String lastName, String phoneNumber, String email, String role) {
+    public User(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String password) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.role = role;
+        this.password = password;
+
     }
+
+    public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role) {
+    }
+
 
     // Getters and Setters
     public int getUserID() {
@@ -67,6 +74,14 @@ public class User {
         this.role = role;
     }
 
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
     // Override toString for easy object representation
     @Override
     public String toString() {
@@ -77,6 +92,7 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

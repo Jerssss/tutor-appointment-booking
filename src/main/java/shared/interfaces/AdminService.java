@@ -2,9 +2,10 @@ package shared.interfaces;
 
 import shared.classes.*;
 
+import java.rmi.Remote;
 import java.util.List;
 
-public interface AdminService {
+public interface AdminService extends Remote {
     List<Student> viewStudent();
     Student addStudent();
     Student modifyStudent ();

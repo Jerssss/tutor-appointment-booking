@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
+import static java.awt.SystemColor.text;
+
 
 public class LoginView {
     @FXML
@@ -79,8 +81,8 @@ public class LoginView {
     }
 
 
-    public void setPromptLabel(Label promptLabel) {
-        this.promptLabel = promptLabel;
+    public void setPromptLabel(String text) {
+        promptLabel.setText(text);
     }
 
 

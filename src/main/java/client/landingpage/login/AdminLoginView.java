@@ -51,8 +51,8 @@ public class AdminLoginView {
     }
 
 
-    public void setPromptLabel(Label promptLabel) {
-        this.promptLabel = promptLabel;
+    public void setPromptLabel(String text) {
+        promptLabel.setText(text);
     }
 
 

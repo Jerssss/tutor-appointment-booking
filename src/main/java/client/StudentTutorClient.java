@@ -15,11 +15,18 @@ import java.io.File;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Date;
 
 public class StudentTutorClient extends Application {
     private Stage primaryStage; // Declare primaryStage
+    private static AuthService authService; // Declare the authentication service
+    private static TutorService tutorService; // Declare the tutor service
 
     public static void main(String[] args) {
+        System.out.println("=====================================================");
+        System.out.println("[Client] Starting client at " + new Date());
+        System.out.println("=====================================================");
+
         launch(args); // Launch the JavaFX application
     }
 
@@ -27,17 +34,18 @@ public class StudentTutorClient extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage; // Initialize primaryStage
         try {
+            // Connect to the RMI registry
+            System.out.println("[Client] Connecting to RMI registry at localhost:" + 1099);
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-            AuthService authService = (AuthService) registry.lookup("authentication");
-            TutorService tutorService = (TutorService) registry.lookup("tutor_services");
 
-//            TutorCreateLessonPlanModel model = new TutorCreateLessonPlanModel(tutorService);
-//            TutorCreateLessonPlanController controller = new TutorCreateLessonPlanController(model);
-//            TutorCreateLessonPlanPopUp popUpView = new TutorCreateLessonPlanPopUp(); // Renamed
+            authService = (AuthService) registry.lookup("authentication");
+            tutorService = (TutorService) registry.lookup("tutor_services");
 
-            //controller.start(); // Test console flow
+
+            // Load the landing page UI
             loadLandingPageUI();
         } catch (Exception e) {
+            System.err.println("[ERROR] Failed to connect to the server: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -82,5 +90,14 @@ public class StudentTutorClient extends Application {
 
     private void terminateApplication() {
         Platform.exit(); // Properly exit the application
+    }
+
+    // Getter methods for the services
+    public static AuthService getAuthService() {
+        return authService;
+    }
+
+    public static TutorService getTutorService() {
+        return tutorService;
     }
 }

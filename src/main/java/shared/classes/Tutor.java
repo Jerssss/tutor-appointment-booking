@@ -5,8 +5,8 @@ public class Tutor extends User {
 
     //pwede ba to?
     // Constructor
-    public Tutor(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String expertise) {
-        super(userID, firstName, lastName, phoneNumber, email, role);
+    public Tutor(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String password, String expertise) {
+        super(userID, firstName, lastName, phoneNumber, email, role, password);
         this.expertise = expertise;
     }
 
@@ -29,6 +29,7 @@ public class Tutor extends User {
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", role='" + getRole() + '\'' +
+                ", password='" + getPassword() + '\'' +
                 ", expertise='" + expertise + '\'' +
                 '}';
     }

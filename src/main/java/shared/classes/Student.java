@@ -6,8 +6,8 @@ public class Student extends User {
 
     //pwede ba to?
     // Constructor
-    public Student(int userID, String firstName, String lastName, String phoneNumber, String email, String role, double balance, String academicLevel) {
-        super(userID, firstName, lastName, phoneNumber, email, role);
+    public Student(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String password, double balance, String academicLevel) {
+        super(userID, firstName, lastName, phoneNumber, email, role, password);
         this.balance = balance;
         this.academicLevel = academicLevel;
     }
@@ -40,6 +40,7 @@ public class Student extends User {
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", role='" + getRole() + '\'' +
+                ", password='" + getPassword() + '\'' +
                 ", balance=" + balance +
                 ", academicLevel='" + academicLevel + '\'' +
                 '}';
