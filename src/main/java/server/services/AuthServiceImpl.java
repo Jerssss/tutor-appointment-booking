@@ -28,13 +28,13 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
     }
 
     @Override
-    public User login(String email, String password) throws RemoteException {
+    public User login(String userID, String password) throws RemoteException {
         query = "SELECT userID, firstName, lastName, phoneNumber, email, role " +
-                "FROM user WHERE email = ? AND password = ?";
+                "FROM user WHERE userID = ? AND password = ?";
 
         try {
             preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, email);
+            preparedStatement.setString(1, userID);
             preparedStatement.setString(2, password);
 
             resultSet = preparedStatement.executeQuery();

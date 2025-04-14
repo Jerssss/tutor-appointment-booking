@@ -21,22 +21,22 @@ public class LoginController {
     }
 
     private void handleSignIn(ActionEvent event) {
-        String email = loginView.getIdField().getText().trim();
+        String userID = loginView.getIdField().getText().trim();
         String password = loginView.getPassField().getText().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
+        if (userID.isEmpty() || password.isEmpty()) {
             loginView.setPromptLabel("Please complete all fields.");
             loginView.setPromptLabelVisible(true);
             return;
         }
 
         try {
-            User user = getAuthService().login(email, password);
-            System.out.println("[INFO] Login successful for user: " + user.getEmail());
+            User user = getAuthService().login(userID, password);
+            System.out.println("[INFO] Login successful for user: " + user.getUserID());
             redirectToMainMenu(user);
 
         } catch (AccountDoesNotExist e) {
-            loginView.setPromptLabel("Invalid email or password. Please try again.");
+            loginView.setPromptLabel("Invalid userID or password. Please try again.");
             loginView.setPromptLabelVisible(true);
         } catch (AlreadyLoggedInException e) {
             loginView.setPromptLabel("Account was logged in elsewhere. You are now logged in.");
