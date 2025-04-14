@@ -10,4 +10,6 @@ module Learnify {
     exports client;
     exports client.landingpage; // Export the landingpage package
     opens client.landingpage to javafx.fxml;
+    opens client.landingpage.login to javafx.fxml;
+
 }

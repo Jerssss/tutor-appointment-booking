@@ -60,7 +60,7 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <Button id="signInButtonLandingPage" fx:id="landingPageLogInButton" mnemonicParsing="false" onMouseEntered="`#logInButtonHovered" onMouseExited="#logInButtonExited" prefHeight="17.0" prefWidth="192.0" style="-fx-background-color: white; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" stylesheets="@../../css/styles.css" text="Log In" textFill="#6f2e2e">
+                                <Button id="signInButtonLandingPage" fx:id="landingPageLogInButton" mnemonicParsing="false" onMouseEntered="#logInButtonHovered" onMouseExited="#logInButtonExited" prefHeight="17.0" prefWidth="192.0" style="-fx-background-color: white; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" stylesheets="@../../css/styles.css" text="Log In" textFill="#6f2e2e">
                                     <font>
                                         <Font name="System Bold" size="16.0" />
                                     </font>

@@ -31,5 +31,7 @@ public class LoginController {
 
 
     private void redirectToSignUp(ActionEvent event) {
+
+
     }
 }

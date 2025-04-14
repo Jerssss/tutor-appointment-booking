@@ -40,7 +40,7 @@ public class LandingPageController {
 
     private void handleSignIn(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/client/login_page.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/common/login_page.fxml"));
             Parent root = loader.load();
 
 
