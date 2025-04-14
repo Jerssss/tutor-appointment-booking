@@ -1,62 +1,72 @@
 package client;
 
+
 import client.landingpage.LandingPageController;
 import client.landingpage.LandingPageView;
+import client.tutor.controller.TutorCreateLessonPlanController;
+import client.tutor.model.TutorCreateLessonPlanModel;
+import client.tutor.view.TutorCreateLessonPlanPopUp; // Updated import
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import shared.interfaces.AuthService;
+import shared.interfaces.StudentService;
 import shared.interfaces.TutorService;
+
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Date;
+
 
 public class StudentTutorClient extends Application {
-    private Stage primaryStage; // Declare primaryStage
-    private static AuthService authService; // Declare the authentication service
-    private static TutorService tutorService; // Declare the tutor service
-    private static String serverIP = "localhost"; // Server IP will be set by the user
-    private static final int PORT = 1099;
+    private Stage primaryStage;
+    private static AuthService authService;
+    private static StudentService studentService;
+
+    public static AuthService getAuthService() {
+        return authService;
+    }
+
+    public static StudentService getStudentService() {
+        return studentService;
+    }
 
     public static void main(String[] args) {
-        System.out.println("=====================================================");
-        System.out.println("[Client] Starting client at " + new Date());
-        System.out.println("=====================================================");
-
-        launch(args); // Launch the JavaFX application
+        launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage; // Initialize primaryStage
+        this.primaryStage = primaryStage;
         try {
-            // Connect to the RMI registry
-            System.out.println("[Client] Connecting to RMI registry at " +serverIP+ ": " + PORT);
-            Registry registry = LocateRegistry.getRegistry("serverIP", PORT);
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
 
+            // Initialize all required services
             authService = (AuthService) registry.lookup("authentication");
-            tutorService = (TutorService) registry.lookup("tutor_services");
+            studentService = (StudentService) registry.lookup("student_service");
+            TutorService tutorService = (TutorService) registry.lookup("tutor_services");
 
-
-            // Load the landing page UI
             loadLandingPageUI();
         } catch (Exception e) {
-            System.err.println("[ERROR] Failed to connect to the server: " + e.getMessage());
             e.printStackTrace();
+            Platform.exit();
         }
     }
+
 
     private void loadLandingPageUI() {
         try {
             File fxmlFile = new File("src/main/resource/fxml/common/landing_page.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
             Parent root = loader.load();
+
 
             // Get the controller
             LandingPageView landingPageView = loader.getController();
@@ -67,11 +77,13 @@ public class StudentTutorClient extends Application {
                 new LandingPageController(landingPageView); // Link the controller to the view
             }
 
+
             // Set the scene
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
+
 
             primaryStage.setOnCloseRequest(event -> {
                 System.out.println("[INFO] Close request received. Terminating the application...");
@@ -79,6 +91,7 @@ public class StudentTutorClient extends Application {
             });
             // Show the landing page
             primaryStage.show();
+
 
             System.out.println("[Client] WELCOME TO LENDIFY");
         } catch (IOException e) {
@@ -90,20 +103,8 @@ public class StudentTutorClient extends Application {
         }
     }
 
+
     private void terminateApplication() {
         Platform.exit(); // Properly exit the application
-    }
-
-    // Getter methods for the services
-    public static AuthService getAuthService() {
-        return authService;
-    }
-
-    public static TutorService getTutorService() {
-        return tutorService;
-    }
-
-    public static String getServerIP() {
-        return serverIP;
     }
 }
