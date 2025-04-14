@@ -19,7 +19,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
     @Override
     public LessonPlan createLessonPlan(String lessonPlanID, String subjectID, String objectives, String topicsCovered) throws RemoteException {
         LessonPlan lessonPlan = new LessonPlan();
-        try (Connection conn = DatabaseConnection.getCon();
+        try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
                      "INSERT INTO lessonplan (lessonPlanID, subjectID, objectives, topicsCovered) VALUES (?, ?, ?, ?)"
              )) {

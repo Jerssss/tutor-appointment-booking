@@ -113,8 +113,6 @@ public class Server {
 
             } catch (RemoteException | AlreadyBoundException e) {
                 System.err.println("[Server ERROR] " + e.getMessage());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }).start();
     }

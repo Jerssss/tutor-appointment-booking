@@ -2,6 +2,7 @@ package server.services;
 
 import server.database.DatabaseConnection;
 import shared.classes.User;
+import shared.exceptions.AccountDoesNotExist;
 import shared.interfaces.AuthService;
 
 import javax.naming.AuthenticationException;
@@ -16,49 +17,43 @@ import java.sql.SQLException;
 public class AuthServiceImpl extends UnicastRemoteObject implements AuthService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
 
+    private static Connection con = DatabaseConnection.setCon();
+
+    private static String query;
+    private static PreparedStatement preparedStatement;
+    private static ResultSet resultSet;
+
     public AuthServiceImpl() throws RemoteException {
         super();
     }
 
     @Override
     public User login(String email, String password) throws RemoteException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        query = "SELECT userID, firstName, lastName, phoneNumber, email, role " +
+                "FROM user WHERE email = ? AND password = ?";
 
         try {
-            con = DatabaseConnection.getCon();
-            String query = "SELECT userID, firstName, lastName, phoneNumber, email, role " +
-                    "FROM users WHERE email = ? AND password = ?";
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
 
-            pstmt = con.prepareStatement(query);
-            pstmt.setString(1, email);
-            pstmt.setString(2, password); // In production, use hashed passwords!
+            resultSet = preparedStatement.executeQuery();
 
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
+            if (resultSet.next()) {
                 // Create a new User object based on the retrieved data
                 return new User(
-                        rs.getString("userID"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getLong("phoneNumber"),
-                        rs.getString("email"),
-                        rs.getString("role")
+                        resultSet.getString("userID"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getLong("phoneNumber"),
+                        resultSet.getString("email"),
+                        resultSet.getString("role")
                 );
             } else {
-                throw new AuthenticationException("Account Does Not Exist in the DATABASE");
+                throw new AccountDoesNotExist("Account Does Not Exist in the DATABASE");
             }
         } catch (SQLException e) {
             throw new RemoteException("Database error during login", e);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        } finally {
-            // Close resources
-            try { if (rs != null) rs.close(); } catch (SQLException e) { }
-            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) { }
-            // Don't close the connection as it's a static shared connection
         }
     }
 

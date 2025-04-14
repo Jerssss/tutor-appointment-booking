@@ -1,6 +1,8 @@
 package shared.classes;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int userID;
     private String firstName;
     private String lastName;
@@ -9,8 +11,9 @@ public class User {
     private String role;
     private String password;
 
-    // Constructor
-    public User(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String password) {
+    // Primary constructor
+    public User(int userID, String firstName, String lastName, String phoneNumber,
+                String email, String role, String password) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,11 +21,21 @@ public class User {
         this.email = email;
         this.role = role;
         this.password = password;
-
     }
 
-    public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role) {
+    // Secondary constructor (for login results)
+    public User(String userID, String firstName, String lastName,
+                long phoneNumber, String email, String role) {
+        this(Integer.parseInt(userID),
+                firstName,
+                lastName,
+                String.valueOf(phoneNumber),
+                email,
+                role,
+                null); // password not needed for logged-in user
     }
+
+
 
 
     // Getters and Setters

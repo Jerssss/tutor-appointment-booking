@@ -3,12 +3,11 @@ package client.landingpage;
 
 
 
+
 import client.StudentTutorClient;
 import client.landingpage.login.LoginController;
 import client.landingpage.login.LoginModel;
 import client.landingpage.login.LoginView;
-import client.landingpage.signup.SignUpController;
-import client.landingpage.signup.SignUpModel;
 import client.landingpage.signup.SignUpView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -50,8 +49,7 @@ public class LandingPageController {
                 return;
             }
 
-
-            //  new LoginController(loginView, new LoginModel(StudentTutorClient.getAuthService())); // Removed extra argument
+            new LoginController(loginView, new LoginModel(StudentTutorClient.getAuthService()));
 
 
             switchScene(event, root);

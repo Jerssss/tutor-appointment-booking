@@ -2,21 +2,19 @@ package client.landingpage.login;
 
 import javafx.event.ActionEvent;
 
-import javax.naming.AuthenticationException;
-import javax.swing.JOptionPane;
 import shared.classes.User;
+import shared.exceptions.AccountDoesNotExist;
 import shared.exceptions.AlreadyLoggedInException;
-import shared.interfaces.AuthService;
+import static client.StudentTutorClient.getAuthService;
 
 public class LoginController {
     private final LoginView loginView; // The associated view for the login page
     private final LoginModel loginModel; // The associated model for the login page
-    private final AuthService authService; // Authentication service
 
-    public LoginController(LoginView loginView, LoginModel loginModel, AuthService authService) {
+
+    public LoginController(LoginView loginView, LoginModel loginModel) {
         this.loginView = loginView;
         this.loginModel = loginModel;
-        this.authService = authService;
 
         this.loginView.setActionSignInButton(this::handleSignIn);
         this.loginView.setActionSignUpButton(this::redirectToSignUp);
@@ -28,36 +26,28 @@ public class LoginController {
 
         if (email.isEmpty() || password.isEmpty()) {
             loginView.setPromptLabel("Please complete all fields.");
-            System.out.println("test");
             loginView.setPromptLabelVisible(true);
             return;
         }
 
         try {
-            // Attempt to log in the user
-            User user = authService.login(email, password);
+            User user = getAuthService().login(email, password);
+            System.out.println("[INFO] Login successful for user: " + user.getEmail());
+            redirectToMainMenu(user);
 
-            if (user != null) {
-                System.out.println("[INFO] Login successful for user: " + user.getEmail());
-
-                // Redirect to the main menu based on user role
-                redirectToMainMenu(user);
-            } else {
-                loginView.setPromptLabel("Invalid credentials. Please try again.");
-                loginView.setPromptLabelVisible(true);
-            }
+        } catch (AccountDoesNotExist e) {
+            loginView.setPromptLabel("Invalid email or password. Please try again.");
+            loginView.setPromptLabelVisible(true);
         } catch (AlreadyLoggedInException e) {
-            System.err.println("[AUTH FAILED] Account was logged in elsewhere, but you are now logged in.");
             loginView.setPromptLabel("Account was logged in elsewhere. You are now logged in.");
             loginView.setPromptLabelVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null,
-                    "An error occurred during login. Please try again.",
-                    "Login Error",
-                    JOptionPane.ERROR_MESSAGE);
         }
     }
+
+
+
 
     private void redirectToMainMenu(User user) {
         // Logic to redirect to the main menu based on user role

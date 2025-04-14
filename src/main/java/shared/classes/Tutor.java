@@ -1,6 +1,8 @@
 package shared.classes;
 
-public class Tutor extends User {
+import java.io.Serializable;
+
+public class Tutor extends User implements Serializable {
     private String expertise;
 
     //pwede ba to?

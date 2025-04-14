@@ -5,30 +5,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static Connection con;
+    private static final String URL =  "jdbc:mysql://localhost:3306/learnify?user=root&password="; // Update with your database URL
+    private static final String USER = "root"; // Update with your database user
+    private static final String PASSWORD = ""; // Update with your database password
 
-    private DatabaseConnection (){
-        //Yeah this Constructor
-    }
-
-    public static void setCon() throws SQLException {
+    public static Connection setCon() {
+        Connection connection = null;
         try {
             // Load the MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            String url = "jdbc:mysql://localhost:3306/learnify?user=root&password=";
-            con = DriverManager.getConnection(url);
-            System.out.println("[Database] Connection established.");
-        } catch (SQLException e) {
-            System.err.println("[Database ERROR] Connection failed: " + e.getMessage());
-            throw e; // Re-throw to prevent server from starting
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Database connection established successfully.");
         } catch (ClassNotFoundException e) {
-            System.err.println("[Database ERROR] MySQL Driver not found: " + e.getMessage());
-            throw new SQLException("MySQL Driver not found", e);
+            System.err.println("MySQL JDBC Driver not found.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Failed to establish database connection.");
+            e.printStackTrace();
         }
-    }
-
-    public static Connection getCon() {
-        return con;
+        return connection;
     }
 }

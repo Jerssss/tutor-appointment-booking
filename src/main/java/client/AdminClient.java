@@ -1,9 +1,5 @@
 package client;
 
-import client.landingpage.LandingPageController;
-import client.landingpage.LandingPageView;
-import client.landingpage.login.AdminLoginController;
-import client.landingpage.login.AdminLoginModel;
 import client.landingpage.login.AdminLoginView;
 import javafx.application.Application;
 import javafx.application.Platform;
