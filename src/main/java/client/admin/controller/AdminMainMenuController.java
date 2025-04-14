@@ -16,7 +16,32 @@ public class AdminMainMenuController {
 
         this.view.setLoggedInUserName(loggedInUserName);
         this.view.initializeDateTime();
+        this.view.setActionStudentButton(event -> handleStudentButton());
+        this.view.setActionTutorButton(event -> handleTutorButton());
+        this.view.setActionSessionsButton(event -> handleSessionButton());
+        this.view.setActionSubjectButton(event -> handleSubjectButton());
+        this.view.setActionLessonPlanButton(event -> handleLessonPlanButton());
+        this.view.setActionPaymentButton(event -> handlePaymentButton());
+
        // this.view.setActionLogoutButton(this::handleLogout);
 
+    }
+    private void handleStudentButton() {
+        System.out.println("Navigating to Student...");
+    }
+    private void handleTutorButton() {
+        System.out.println("Navigating to Tutor...");
+    }
+    private void handleSessionButton() {
+        System.out.println("Navigating to Session...");
+    }
+    private void handleSubjectButton() {
+        System.out.println("Navigating to Subject...");
+    }
+    private void handleLessonPlanButton() {
+        System.out.println("Navigating to Lesson Plan...");
+    }
+    private void handlePaymentButton() {
+        System.out.println("Navigating to Payment History...");
     }
 }

@@ -25,14 +25,19 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AdminMainMenuView {
-    @FXML
-    private Button addNewTerminalButton;
 
     @FXML
-    private VBox centerPane;
-
+    private Button studentButton;
     @FXML
-    private Button createAdminButton;
+    private Button tutorButton;
+    @FXML
+    private Button sessionsButton;
+    @FXML
+    private Button subjectButton;
+    @FXML
+    private Button lessonPlanButton;
+    @FXML
+    private Button paymentButton;
 
     @FXML
     private Label headerDateLabel;
@@ -46,8 +51,6 @@ public class AdminMainMenuView {
     @FXML
     private Button logOutButton;
 
-    @FXML
-    private Button modifyTerminalButton;
 
     @FXML
     private Label offlineLabel;
@@ -56,16 +59,9 @@ public class AdminMainMenuView {
     private Label onlineLabel;
 
     @FXML
-    private Button reportsButton;
-
-    @FXML
-    private Button resApprovalButton;
-
-    @FXML
     private BorderPane rootPane;
 
     @FXML
-    private Button showStudentReservationButton;
     private Button currentlyHighlightedButton;
 
     // Timer to periodically check server status
@@ -191,65 +187,42 @@ public class AdminMainMenuView {
      * Sets action handler for Add Terminal button.
      * @param event The event handler to set
      */
-    public void setActionAddNewTerminalButton(EventHandler<ActionEvent> event) {
-        addNewTerminalButton.setOnAction(event1 -> {
-            highlightButton(addNewTerminalButton); //highlight the button when clicked
-            loadView("/fxml/admin/add_terminal_pane.fxml"); //load the view
+
+
+    public void setActionStudentButton(EventHandler<ActionEvent> event) {
+        studentButton.setOnAction(event1 -> {
+            highlightButton(studentButton);
+            loadView("/fxml/admin/student_list_pane.fxml");
         });
     }
-
-    /**
-     * Sets action handler for View Student Reservations button.
-     * @param event The event handler to set
-     */
-    public void setActionShowStudentReservationButton(EventHandler<ActionEvent> event) {
-        showStudentReservationButton.setOnAction(event1 -> {
-            highlightButton(showStudentReservationButton); //highlight the button when clicked
-            loadView("/fxml/admin/student_reservations_pane.fxml"); //load the view
+    public void setActionTutorButton(EventHandler<ActionEvent> event) {
+        tutorButton.setOnAction(event1 -> {
+            highlightButton(tutorButton);
+            loadView("/fxml/admin/tutor_list_pane.fxml");
         });
     }
-
-    /**
-     * Sets action handler for Modify Terminal button.
-     * @param event The event handler to set
-     */
-    public void setActionModifyTerminalButton(EventHandler<ActionEvent> event) {
-        modifyTerminalButton.setOnAction(event1 -> {
-            highlightButton(modifyTerminalButton); //highlight the button when clicked
-            loadView("/fxml/admin/modify_terminal_pane.fxml"); //load the view
+    public void setActionSessionsButton(EventHandler<ActionEvent> event) {
+        sessionsButton.setOnAction(event1 -> {
+            highlightButton(sessionsButton);
+            loadView("/fxml/admin/sessions_pane.fxml");
         });
     }
-
-    /**
-     * Sets action handler for Reservation Approval button.
-     * @param event The event handler to set
-     */
-    public void setActionResApprovalButton(EventHandler<ActionEvent> event) {
-        resApprovalButton.setOnAction(event1 -> {
-            highlightButton(resApprovalButton); //highlight the button when clicked
-            loadView("/fxml/admin/reservation_approval_pane.fxml"); //load the view
+    public void setActionSubjectButton(EventHandler<ActionEvent> event) {
+        subjectButton.setOnAction(event1 -> {
+            highlightButton(subjectButton);
+            loadView("/fxml/admin/subject_pane.fxml");
         });
     }
-
-    /**
-     * Sets action handler for Reports button.
-     * @param event The event handler to set
-     */
-    public void setActionReportsButton(EventHandler<ActionEvent> event) {
-        reportsButton.setOnAction(event1 -> {
-            highlightButton(reportsButton); //highlight the button when clicked
-            loadView("/fxml/admin/reports_pane.fxml"); //load the view
+    public void setActionLessonPlanButton(EventHandler<ActionEvent> event) {
+        lessonPlanButton.setOnAction(event1 -> {
+            highlightButton(lessonPlanButton);
+            loadView("/fxml/admin/lesson_plan_pane.fxml");
         });
     }
-
-    /**
-     * Sets action handler for Create Admin button.
-     * @param event The event handler to set
-     */
-    public void setActionCreateAdminButton(EventHandler<ActionEvent> event) {
-        createAdminButton.setOnAction(event1 -> {
-            highlightButton(createAdminButton);
-            loadView("/fxml/admin/add_new_admin.fxml");
+    public void setActionPaymentButton(EventHandler<ActionEvent> event) {
+        paymentButton.setOnAction(event1 -> {
+            highlightButton(paymentButton);
+            loadView("/fxml/admin/payment_history_pane.fxml");
         });
     }
 
@@ -259,13 +232,6 @@ public class AdminMainMenuView {
      */
     public void setActionLogoutButton(EventHandler<ActionEvent> event) {
         logOutButton.setOnAction(event);
-    }
-
-    /**
-     * Shows the Reservation Approval view.
-     */
-    public void showReservationApprovalView() {
-        loadView("/fxml/admin/reservation_approval_pane.fxml");
     }
 
 
