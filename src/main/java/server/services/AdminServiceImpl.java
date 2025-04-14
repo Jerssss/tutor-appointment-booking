@@ -3,10 +3,12 @@ package server.services;
 import shared.classes.*;
 import shared.interfaces.AdminService;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
 
-public class AdminServiceImpl implements Remote, AdminService {
+public class AdminServiceImpl implements Remote, AdminService, Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
     @Override
     public List<Student> viewStudent() {
         return null;

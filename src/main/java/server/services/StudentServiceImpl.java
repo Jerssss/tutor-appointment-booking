@@ -3,9 +3,11 @@ package server.services;
 import shared.classes.*;
 import shared.interfaces.StudentService;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 
-public class StudentServiceImpl implements Remote, StudentService {
+public class StudentServiceImpl implements Remote, StudentService, Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
     @Override
     public Booking createBooking() {
         return null;

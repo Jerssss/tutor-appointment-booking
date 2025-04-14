@@ -2,21 +2,17 @@ package client;
 
 import client.landingpage.LandingPageController;
 import client.landingpage.LandingPageView;
-import client.tutor.controller.TutorCreateLessonPlanController;
-import client.tutor.model.TutorCreateLessonPlanModel;
-import client.tutor.view.TutorCreateLessonPlanPopUp; // Updated import
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import shared.interfaces.AuthService;
 import shared.interfaces.TutorService;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -32,6 +28,7 @@ public class StudentTutorClient extends Application {
         this.primaryStage = primaryStage; // Initialize primaryStage
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            AuthService authService = (AuthService) registry.lookup("authentication");
             TutorService tutorService = (TutorService) registry.lookup("tutor_services");
 
 //            TutorCreateLessonPlanModel model = new TutorCreateLessonPlanModel(tutorService);

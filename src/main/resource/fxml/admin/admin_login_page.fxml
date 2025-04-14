@@ -16,16 +16,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.login.adminLoginview">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-pane" stylesheets="@../../../../../../learnify_9443/src/main/resource/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.landingpage.login.AdminLoginView">
    <right>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="251.0" spacing="7.0" style="-fx-background-color: #6F2E2E;" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; -fx-font-weight: bold;" text="Hello!" textFill="WHITE">
+            <Label style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; -fx-font-weight: bold;" text="hello!" textFill="WHITE">
                <font>
                   <Font size="29.0" />
                </font>
             </Label>
-            <Label prefHeight="16.0" prefWidth="135.0" text="Welcome to the login page" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Label prefWidth="175.0" text="Register your details and join us on this journey." textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font size="11.0" />
                </font>
@@ -39,7 +39,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="7.0" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; -fx-font-weight: bold;" text="Admin Login Page" textFill="#6f2e2e">
+            <Label style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif; -fx-font-weight: bold;" text="Sign In" textFill="#6f2e2e">
                <font>
                   <Font size="29.0" />
                </font>

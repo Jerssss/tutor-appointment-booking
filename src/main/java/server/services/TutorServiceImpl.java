@@ -3,11 +3,14 @@ package server.services;
 import shared.interfaces.TutorService;
 import shared.classes.LessonPlan;
 import server.database.DatabaseConnection;
+
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
-public class TutorServiceImpl extends UnicastRemoteObject implements TutorService {
+public class TutorServiceImpl extends UnicastRemoteObject implements TutorService, Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
 
     public TutorServiceImpl() throws RemoteException {
         super();
