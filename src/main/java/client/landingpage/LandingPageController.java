@@ -3,11 +3,12 @@ package client.landingpage;
 
 
 
-
 import client.StudentTutorClient;
 import client.landingpage.login.LoginController;
 import client.landingpage.login.LoginModel;
 import client.landingpage.login.LoginView;
+import client.landingpage.signup.SignUpController;
+import client.landingpage.signup.SignUpModel;
 import client.landingpage.signup.SignUpView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import shared.interfaces.AuthService;
+import shared.interfaces.StudentService;
 
 
 import javax.swing.*;
@@ -42,15 +45,27 @@ public class LandingPageController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/common/login_page.fxml"));
             Parent root = loader.load();
 
-
             LoginView loginView = loader.getController();
             if (loginView == null) {
                 System.err.println("[CLIENT] LoginView is NULL after loading FXML!");
                 return;
             }
 
-            new LoginController(loginView, new LoginModel(StudentTutorClient.getAuthService()));
+            // Get services from StudentTutorClient
+            AuthService authService = StudentTutorClient.getAuthService();
+            StudentService studentService = StudentTutorClient.getStudentService();
 
+            if (authService == null || studentService == null) {
+                showErrorDialog("Required services are not available");
+                return;
+            }
+
+            new LoginController(
+                    loginView,
+                    new LoginModel(authService),
+                    authService,
+                    studentService
+            );
 
             switchScene(event, root);
         } catch (IOException ioe) {
@@ -96,6 +111,4 @@ public class LandingPageController {
     private void showErrorDialog(String message) {
         Platform.runLater(() -> JOptionPane.showMessageDialog(null, message, "Connection Error", JOptionPane.ERROR_MESSAGE));
     }
-
-
 }

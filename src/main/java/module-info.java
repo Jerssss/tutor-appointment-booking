@@ -15,5 +15,6 @@ module Learnify {
     opens client.landingpage to javafx.fxml;
     opens client.landingpage.login to javafx.fxml;
     opens client.admin.view to javafx.fxml;
-    opens client.admin.controller to javafx.fxml; // allow FXML to access controllers
+    opens client.admin.controller to javafx.fxml;
+    opens client.student.view to javafx.fxml;
 }
