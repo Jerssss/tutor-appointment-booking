@@ -6,11 +6,13 @@ module Learnify {
     requires java.desktop;
     requires java.sql;
     requires java.naming;
+    requires java.compiler;
 
     exports shared.interfaces;
     exports client;
-    exports client.landingpage; // Export the landingpage package
+    exports client.landingpage;
+
     opens client.landingpage to javafx.fxml;
     opens client.landingpage.login to javafx.fxml;
-
+    opens client.admin.view to javafx.fxml;
 }

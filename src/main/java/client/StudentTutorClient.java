@@ -21,6 +21,8 @@ public class StudentTutorClient extends Application {
     private Stage primaryStage; // Declare primaryStage
     private static AuthService authService; // Declare the authentication service
     private static TutorService tutorService; // Declare the tutor service
+    private static String serverIP = "localhost"; // Server IP will be set by the user
+    private static final int PORT = 1099;
 
     public static void main(String[] args) {
         System.out.println("=====================================================");
@@ -35,8 +37,8 @@ public class StudentTutorClient extends Application {
         this.primaryStage = primaryStage; // Initialize primaryStage
         try {
             // Connect to the RMI registry
-            System.out.println("[Client] Connecting to RMI registry at localhost:" + 1099);
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            System.out.println("[Client] Connecting to RMI registry at " +serverIP+ ": " + PORT);
+            Registry registry = LocateRegistry.getRegistry("serverIP", PORT);
 
             authService = (AuthService) registry.lookup("authentication");
             tutorService = (TutorService) registry.lookup("tutor_services");
@@ -99,5 +101,9 @@ public class StudentTutorClient extends Application {
 
     public static TutorService getTutorService() {
         return tutorService;
+    }
+
+    public static String getServerIP() {
+        return serverIP;
     }
 }

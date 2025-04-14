@@ -1,5 +1,6 @@
 package client;
 
+import client.admin.model.AdminMainMenuModel;
 import client.landingpage.login.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import server.services.AdminServiceImpl;
 import shared.interfaces.AdminService;
 import shared.interfaces.AuthService;
 
@@ -20,6 +22,8 @@ public class AdminClient extends Application {
     private Stage primaryStage;
     private static AuthService authService;
     private static AdminService adminService;
+    private static String serverIP = "localhost"; // Server IP will be set by the user
+    private static final int PORT = 1099;
 
     public static AuthService getAuthService() {
         return authService;
@@ -41,7 +45,7 @@ public class AdminClient extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            Registry registry = LocateRegistry.getRegistry(serverIP, PORT);
             authService = (AuthService) registry.lookup("authentication");
             adminService = (AdminService) registry.lookup("admin_services");
 
@@ -76,7 +80,10 @@ public class AdminClient extends Application {
                 AdminLoginModel adminLoginModel = new AdminLoginModel(authService);
 
                 // Pass the view, model, and authService to the controller
-                new AdminLoginController(adminLoginView, adminLoginModel, authService);
+                new AdminLoginController(adminLoginView, adminLoginModel, authService, adminService);
+
+                // Create an instance of AdminMainMenuModel
+                AdminMainMenuModel adminMainMenuModel = new AdminMainMenuModel(adminService);
             }
 
             Scene scene = new Scene(root);
@@ -103,4 +110,10 @@ public class AdminClient extends Application {
         Platform.exit();
         System.exit(0);
     }
+
+    public static String getServerIP() {
+        return serverIP;
+    }
+
+
 }
