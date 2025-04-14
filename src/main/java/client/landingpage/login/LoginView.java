@@ -26,6 +26,19 @@ public class LoginView {
     private Label promptLabel; // Label for displaying prompts or error messages
 
 
+
+    public void initialize() {
+        System.out.println("[DEBUG] Initializing Login View...");
+
+        if (logInPageLogInButton == null) {
+            System.err.println("[ERROR] logInPageLogInButton is NULL! Check FXML.");
+        }
+        if (logInPageSignUpButton == null) {
+            System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
+        }
+    }
+
+
     public Button getLogInPageLogInButton() {
         return logInPageLogInButton;
     }
@@ -85,9 +98,14 @@ public class LoginView {
         promptLabel.setText(text);
     }
 
+    public void setPromptLabelVisible(boolean visible) {
+        promptLabel.setVisible(visible);
+    }
 
     public void setActionSignInButton(EventHandler<ActionEvent> event) {
+        System.out.println("[DEBUG] Setting action for login button");
         if (logInPageLogInButton != null) {
+            System.out.println("[DEBUG] Button is not null, setting handler");
             logInPageLogInButton.setOnAction(event);
         } else {
             System.err.println("[ERROR] logInPageLogInButton is NULL! Check FXML.");

@@ -22,8 +22,12 @@ public class AdminLoginView {
         return logInPageLogInButton;
     }
 
-    public void setLogInPageLogInButton(Button logInPageLogInButton) {
-        this.logInPageLogInButton = logInPageLogInButton;
+    public void setLogInPageLogInButton(EventHandler<ActionEvent> event) {
+        if (logInPageLogInButton != null) {
+            logInPageLogInButton.setOnAction(event);
+        } else {
+            System.err.println("[ERROR] logInPageLogInButton is NULL! Check FXML.");
+        }
     }
 
     public TextField getIdField() {
@@ -55,14 +59,10 @@ public class AdminLoginView {
         promptLabel.setText(text);
     }
 
-
-    public void setActionSignInButton(EventHandler<ActionEvent> event) {
-        if (logInPageLogInButton != null) {
-            logInPageLogInButton.setOnAction(event);
-        } else {
-            System.err.println("[ERROR] logInPageLogInButton is NULL! Check FXML.");
-        }
+    public void setPromptLabelVisible(boolean visible) {
+        promptLabel.setVisible(visible);
     }
+
 
     public void logInButtonExited() {
         animateButton(logInPageLogInButton, 1.0);

@@ -28,6 +28,8 @@ public class LoginController {
 
         if (email.isEmpty() || password.isEmpty()) {
             loginView.setPromptLabel("Please complete all fields.");
+            System.out.println("test");
+            loginView.setPromptLabelVisible(true);
             return;
         }
 
@@ -42,10 +44,12 @@ public class LoginController {
                 redirectToMainMenu(user);
             } else {
                 loginView.setPromptLabel("Invalid credentials. Please try again.");
+                loginView.setPromptLabelVisible(true);
             }
         } catch (AlreadyLoggedInException e) {
             System.err.println("[AUTH FAILED] Account was logged in elsewhere, but you are now logged in.");
             loginView.setPromptLabel("Account was logged in elsewhere. You are now logged in.");
+            loginView.setPromptLabelVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,

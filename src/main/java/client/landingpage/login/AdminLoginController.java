@@ -15,7 +15,7 @@ public class AdminLoginController {
         this.adminLoginModel = adminLoginModel;
         this.authService = authService;
 
-        this.adminLoginView.setActionSignInButton(this::handleSignIn);
+        this.adminLoginView.setLogInPageLogInButton(this::handleSignIn);
     }
 
     private void handleSignIn(ActionEvent event) {
@@ -24,6 +24,7 @@ public class AdminLoginController {
 
         if (email.isEmpty() || password.isEmpty()) {
             adminLoginView.setPromptLabel("Please complete all fields.");
+            adminLoginView.setPromptLabelVisible(true);
             return;
         }
 
@@ -31,6 +32,7 @@ public class AdminLoginController {
             User user = authService.login(email, password);
             if (user != null && "Admin".equalsIgnoreCase(user.getRole())) {
                 adminLoginView.setPromptLabel("Login successful!");
+                adminLoginView.setPromptLabelVisible(true);
                 // Redirect to Admin Main Menu
             } else {
                 adminLoginView.setPromptLabel("Invalid credentials. Please try again.");
