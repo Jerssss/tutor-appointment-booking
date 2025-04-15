@@ -7,10 +7,9 @@ import shared.interfaces.StudentService;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class StudentServiceImpl implements Remote, StudentService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
@@ -74,7 +73,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
                              "WHERE studentID = ? AND sessionID = ?"
              )) {
 
-            // Set parameters for the update
+            // set parameters for the update
             stmt.setString(1, newSessionMode);
             stmt.setString(2, newBookingStatus);
             stmt.setDouble(3, newSessionPrice);
@@ -84,13 +83,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                updatedBooking = new Booking(
-                        studentID,
-                        sessionID,
-                        newSessionMode,
-                        newBookingStatus,
-                        newSessionPrice
-                );
+                updatedBooking = new Booking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
             }
 
         } catch (SQLException e) {
@@ -120,5 +113,61 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
-    public Payment createPayment() {return null;}
+    public Payment createPayment(String studentID, double amount, String paymentMethod) throws RemoteException {
+        // first we get the latest payment ID from database
+        String lastPaymentID = getLastPaymentID();
+        String newPaymentID = incrementPaymentID(lastPaymentID);
+
+        LocalDateTime paymentDateTime = LocalDateTime.now();
+        String paymentDate = paymentDateTime.toLocalDate().toString();
+        String paymentTime = paymentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        Payment newPayment = new Payment(newPaymentID, studentID, amount, paymentDateTime, paymentMethod);
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "INSERT INTO payments (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
+                             "VALUES (?, ?, ?, ?, ?, ?)"
+             )) {
+
+            stmt.setString(1, newPaymentID);
+            stmt.setString(2, studentID);
+            stmt.setDouble(3, amount);
+            stmt.setString(4, paymentDate);
+            stmt.setString(5, paymentTime);
+            stmt.setString(6, paymentMethod);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while creating payment: " + e.getMessage());
+        }
+
+        return newPayment;
+    }
+
+    private String getLastPaymentID() throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT paymentID FROM payments ORDER BY paymentID DESC LIMIT 1")) {
+
+            if (rs.next()) {
+                return rs.getString("paymentID");
+            }
+            return "P000"; // default starting value if no payments exist
+
+        } catch (SQLException e) {
+            throw new RemoteException("Failed to get last payment ID: " + e.getMessage());
+        }
+    }
+
+    private String incrementPaymentID(String lastPaymentID) {
+        // extractor for number parts
+        String prefix = lastPaymentID.substring(0, 1); // "P"
+        int number = Integer.parseInt(lastPaymentID.substring(1)); // "001" -> 1
+
+        // incerment and format back to three digits
+        number++;
+        return prefix + String.format("%03d", number);
+    }
 }
