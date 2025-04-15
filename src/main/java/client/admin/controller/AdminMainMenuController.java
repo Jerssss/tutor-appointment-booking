@@ -39,11 +39,10 @@ public class AdminMainMenuController {
         return adminService;
     }
 
-    public AdminMainMenuController(AdminMainMenuView view, AdminMainMenuModel model, String loggedInUserName, AdminService adminService) {
+    public AdminMainMenuController(AdminMainMenuView view, AdminMainMenuModel model, String loggedInUserName ) {
         this.view = view;
         this.model = model;
         this.loggedInUserName = loggedInUserName;
-        this.adminService = adminService;
 
         this.view.setLoggedInUserName(loggedInUserName);
         this.view.initializeDateTime();
