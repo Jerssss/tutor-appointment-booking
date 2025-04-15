@@ -2,6 +2,7 @@ package client.admin.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import java.util.List;
@@ -13,6 +14,7 @@ public class AdminViewSessionView {
     private final TableColumn<List<String>, String> durationColumn;
     private final TableColumn<List<String>, String> academicLevelColumn;
     private final TableColumn<List<String>, String> subjectColumn;
+    private final Button addSessionButton;
 
     public AdminViewSessionView(
             TableView<List<String>> tableView,
@@ -20,7 +22,7 @@ public class AdminViewSessionView {
             TableColumn<List<String>, String> timeColumn,
             TableColumn<List<String>, String> durationColumn,
             TableColumn<List<String>, String> academicLevelColumn,
-            TableColumn<List<String>, String> subjectColumn) {
+            TableColumn<List<String>, String> subjectColumn, Button addSessionButton) {
 
         this.tableView = tableView;
         this.dateColumn = dateColumn;
@@ -28,6 +30,7 @@ public class AdminViewSessionView {
         this.durationColumn = durationColumn;
         this.academicLevelColumn = academicLevelColumn;
         this.subjectColumn = subjectColumn;
+        this.addSessionButton = addSessionButton;
 
         setupTableColumns();
     }

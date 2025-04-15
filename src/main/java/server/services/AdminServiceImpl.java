@@ -14,6 +14,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class AdminServiceImpl implements Remote, AdminService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
@@ -250,8 +252,36 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public TutorSession addSession() throws RemoteException {
-        return null;
+    public void addSession(TutorSession session) throws RemoteException, SQLException {
+        System.out.println("IN ADD");
+        query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            con.setAutoCommit(false); // Disable auto-commit before manual commit
+
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, session.getSessionID());
+            preparedStatement.setString(2, session.getTutorID());
+            preparedStatement.setString(3, session.getSubjectID());
+            preparedStatement.setString(4, session.getSessionStatus());
+            preparedStatement.setDate(5, java.sql.Date.valueOf(session.getSessionDate()));
+            preparedStatement.setTime(6, java.sql.Time.valueOf(session.getSessionTime()));
+            preparedStatement.setInt(7, session.getSessionDuration());
+            preparedStatement.setInt(8, session.getNumberOfStudents());
+            preparedStatement.setInt(9, session.getMaximumStudents());
+            preparedStatement.setDouble(10, session.getSessionPrice());
+
+            preparedStatement.executeUpdate(); // Execute the insert
+            con.commit(); // Commit if everything is fine
+
+        } catch (SQLException e1) {
+            if (con != null) con.rollback(); // Rollback on error
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true); // Reset auto-commit to default
+        }
     }
 
     @Override
@@ -259,6 +289,125 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         return null;
     }
 
+    @Override
+    public List<String> getAllTutorName() throws RemoteException{
+        List<String> allTutorName = new ArrayList<>();
+        query = "SELECT CONCAT(firstName,' ', lastName) AS names FROM user\n" +
+                "WHERE role = 'tutor';";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                allTutorName.add(resultSet.getString("names"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return allTutorName;
+    }
+
+    @Override
+    public List<String> getAllSubjects() throws RemoteException{
+        List<String> allSubjects = new ArrayList<>();
+        query = "SELECT subjectName FROM `subject`;";
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                allSubjects.add(resultSet.getString("subjectName"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return allSubjects;
+    }
+
+    @Override
+    public String getSubjectID(String subjectName) throws RemoteException{
+        String subjectID = "";
+        query = "SELECT subjectID FROM subject WHERE subjectName = ?";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, subjectName);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                subjectID = resultSet.getString("subjectID");
+            }
+
+            System.out.println("SUBJECT NAME: " + subjectName);
+            System.out.println("SUBJECT ID: " + subjectID);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return subjectID;
+    }
+
+
+    @Override
+    public String getTutorID(String tutorName) throws RemoteException{
+        String[] nameParts = tutorName.split(" ");
+        String firstName = nameParts[0];
+        String lastName = nameParts[1];
+        String tutorID = "";
+        query = "SELECT userID FROM user WHERE firstName = ? AND lastName = ?";
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                tutorID = resultSet.getString("userID");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return tutorID;
+    }
+
+    @Override
+    public List<String> getAllSessionID() throws RemoteException{
+        List<String> allSessionID = new ArrayList<>();
+        query = "SELECT sessionID FROM `tutorsession`;";
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                allSessionID.add(resultSet.getString("sessionID"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return allSessionID;
+    }
+
+    @Override
+    public Map<LocalTime, Integer> getTutorSchedule(String tutorID) throws RemoteException {
+        Map<LocalTime, Integer> scheduleMap = new LinkedHashMap<>(); // preserves insertion order
+        query = "SELECT sessionTime, sessionDuration FROM tutorsession WHERE tutorID = '" + tutorID + "';";
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalTime sessionTime = resultSet.getTime("sessionTime").toLocalTime();
+                int sessionDuration = resultSet.getInt("sessionDuration");
+
+                scheduleMap.put(sessionTime, sessionDuration);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return scheduleMap;
+    }
     @Override
     public List<Subject> viewSubject() throws RemoteException {
         return null;

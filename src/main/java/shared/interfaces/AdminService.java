@@ -5,7 +5,9 @@ import shared.classes.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 public interface AdminService extends Remote {
     List<Student> viewStudent() throws RemoteException;
@@ -15,8 +17,14 @@ public interface AdminService extends Remote {
     void addTutor(Tutor newTutor) throws RemoteException, SQLException;
     void modifyTutor(String tutorID, String newPassword) throws RemoteException;
     List<List<String>> viewSession() throws RemoteException;
-    TutorSession addSession() throws RemoteException;
+    void addSession(TutorSession session) throws RemoteException, SQLException;
     TutorSession modifySession() throws RemoteException;
+    List<String> getAllTutorName() throws RemoteException;
+    List<String> getAllSubjects() throws RemoteException;
+    String getSubjectID(String subjectName) throws RemoteException;
+    String getTutorID(String tutorName) throws RemoteException;
+    List<String> getAllSessionID() throws RemoteException;
+    Map<LocalTime, Integer> getTutorSchedule(String tutorID) throws RemoteException;
     List<Subject> viewSubject() throws RemoteException;
     Subject addSubject() throws RemoteException;
     Subject modifySubject() throws RemoteException;

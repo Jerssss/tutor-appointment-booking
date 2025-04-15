@@ -4,12 +4,21 @@ import client.admin.model.AdminViewSessionModel;
 import client.admin.view.AdminViewSessionView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.interfaces.AdminService;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -30,6 +39,8 @@ public class AdminViewSessionController {
     private TableColumn<List<String>, String> academicLevelColumn;
     @FXML
     private TableColumn<List<String>, String> subjectColumn;
+    @FXML
+    private Button addSessionButton;
 
     public AdminViewSessionController() {
         this.model = new AdminViewSessionModel(service);
@@ -43,9 +54,12 @@ public class AdminViewSessionController {
                 timeColumn,
                 durationColumn,
                 academicLevelColumn,
-                subjectColumn
+                subjectColumn,
+                addSessionButton
         );
         displaySessions();
+
+        setActionaddSessionButton(this::handleAddSession);
     }
 
     private void displaySessions() {
@@ -56,5 +70,43 @@ public class AdminViewSessionController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void handleAddSession(ActionEvent event){
+//        redirectToAddSessionPopup(event);
+        AdminCreateSessionController createSessionController = new AdminCreateSessionController();
+        createSessionController.showWindow();
+    }
+
+    public void setActionaddSessionButton(EventHandler<ActionEvent> event) {
+        if (addSessionButton != null) {
+            addSessionButton.setOnAction(event);
+        } else {
+            System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
+        }
+    }
+
+    private void redirectToAddSessionPopup(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_session_window.fxml"));
+
+            fxmlLoader.setControllerFactory(clazz -> {
+                return new AdminCreateSessionController();
+            });
+
+            Parent root = fxmlLoader.load();
+            changeScene(event, root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changeScene(ActionEvent event, Parent root) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 }
