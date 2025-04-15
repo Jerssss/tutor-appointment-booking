@@ -205,7 +205,6 @@ public class AdminMainMenuView {
         sessionsButton.setOnAction(event1 -> {
             highlightButton(sessionsButton);
             loadView("/fxml/admin/sessions_pane.fxml");
-            sessionsButton.setOnAction(event);
         });
     }
     public void setActionSubjectButton(EventHandler<ActionEvent> event) {
