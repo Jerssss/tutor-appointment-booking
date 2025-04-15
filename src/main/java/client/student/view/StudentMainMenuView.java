@@ -25,19 +25,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class StudentMainMenuView {
+    @FXML
+    private Button createBookingButton;
+    @FXML
+    private Button viewBookingButton;
+    @FXML
+    private Button rescheduleBookingButton;
 
-    @FXML
-    private Button studentButton;
-    @FXML
-    private Button tutorButton;
-    @FXML
-    private Button sessionsButton;
-    @FXML
-    private Button subjectButton;
     @FXML
     private Button lessonPlanButton;
     @FXML
-    private Button paymentButton;
+    private Button subjectsOfferedButton;
+
+    @FXML
+    private Button paymentHistoryButton;
+    @FXML
+    private Button balanceButton;
+
 
     @FXML
     private Label headerDateLabel;
@@ -124,6 +128,48 @@ public class StudentMainMenuView {
             }
         });
     }
+    public void setActionCreateBookingButton(EventHandler<ActionEvent> event) {
+        createBookingButton.setOnAction(event1 -> {
+            highlightButton(createBookingButton); //highlight the button when clicked
+            loadView("/fxml/student/create_booking_pane.fxml"); //load the view
+        });
+    }
+    public void setActionViewBookingButton(EventHandler<ActionEvent> event) {
+        viewBookingButton.setOnAction(event1 -> {
+            highlightButton(viewBookingButton); //highlight the button when clicked
+            loadView("/fxml/student/view_booking_pane.fxml"); //load the view
+        });
+    }
+    public void setActionRescheduleBookingButton(EventHandler<ActionEvent> event) {
+        rescheduleBookingButton.setOnAction(event1 -> {
+            highlightButton(rescheduleBookingButton); //highlight the button when clicked
+            loadView("/fxml/student/modify_booking_pane.fxml"); //load the view
+        });
+    }
+    public void setActionSubjectsOfferedButton(EventHandler<ActionEvent> event) {
+        subjectsOfferedButton.setOnAction(event1 -> {
+            highlightButton(subjectsOfferedButton); //highlight the button when clicked
+            loadView("/fxml/student/subjects_offered_pane.fxml"); //load the view
+        });
+    }
+    public void setActionLessonPlanButton(EventHandler<ActionEvent> event) {
+        lessonPlanButton.setOnAction(event1 -> {
+            highlightButton(lessonPlanButton); //highlight the button when clicked
+            loadView("/fxml/student/lesson_plan_pane.fxml"); //load the view
+        });
+    }
+    public void setActionPaymentHistoryButton(EventHandler<ActionEvent> event) {
+        paymentHistoryButton.setOnAction(event1 -> {
+            highlightButton(paymentHistoryButton); //highlight the button when clicked
+            loadView("/fxml/student/payment_history.fxml"); //load the view
+        });
+    }
+    public void setActionBalanceButtonEventHandler(EventHandler<ActionEvent> event) {
+        balanceButton.setOnAction(event1 -> {
+            highlightButton(balanceButton); //highlight the button when clicked
+            loadView("/fxml/student/balance_pane.fxml"); //load the view
+        });
+    }
 
     /**
      * Loads a new view into the main content area.
@@ -189,42 +235,7 @@ public class StudentMainMenuView {
      */
 
 
-    public void setActionStudentButton(EventHandler<ActionEvent> event) {
-        studentButton.setOnAction(event1 -> {
-            highlightButton(studentButton);
-            loadView("/fxml/admin/student_list_pane.fxml");
-        });
-    }
-    public void setActionTutorButton(EventHandler<ActionEvent> event) {
-        tutorButton.setOnAction(event1 -> {
-            highlightButton(tutorButton);
-            loadView("/fxml/admin/tutor_list_pane.fxml");
-        });
-    }
-    public void setActionSessionsButton(EventHandler<ActionEvent> event) {
-        sessionsButton.setOnAction(event1 -> {
-            highlightButton(sessionsButton);
-            loadView("/fxml/admin/sessions_pane.fxml");
-        });
-    }
-    public void setActionSubjectButton(EventHandler<ActionEvent> event) {
-        subjectButton.setOnAction(event1 -> {
-            highlightButton(subjectButton);
-            loadView("/fxml/admin/subject_pane.fxml");
-        });
-    }
-    public void setActionLessonPlanButton(EventHandler<ActionEvent> event) {
-        lessonPlanButton.setOnAction(event1 -> {
-            highlightButton(lessonPlanButton);
-            loadView("/fxml/admin/lesson_plan_pane.fxml");
-        });
-    }
-    public void setActionPaymentButton(EventHandler<ActionEvent> event) {
-        paymentButton.setOnAction(event1 -> {
-            highlightButton(paymentButton);
-            loadView("/fxml/admin/payment_history_pane.fxml");
-        });
-    }
+
 
     /**
      * Sets action handler for Logout button.

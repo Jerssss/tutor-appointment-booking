@@ -20,15 +20,16 @@ import shared.interfaces.TutorService;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+
 
 
 public class StudentTutorClient extends Application {
     private Stage primaryStage;
     private static AuthService authService;
     private static StudentService studentService;
+    private static TutorService tutorService;
 
     public static AuthService getAuthService() {
         return authService;
@@ -37,10 +38,15 @@ public class StudentTutorClient extends Application {
     public static StudentService getStudentService() {
         return studentService;
     }
+    public static TutorService getTutorService() {
+        return tutorService;
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -51,7 +57,7 @@ public class StudentTutorClient extends Application {
             // Initialize all required services
             authService = (AuthService) registry.lookup("authentication");
             studentService = (StudentService) registry.lookup("student_service");
-            TutorService tutorService = (TutorService) registry.lookup("tutor_services");
+            tutorService = (TutorService) registry.lookup("tutor_services");
 
             loadLandingPageUI();
         } catch (Exception e) {

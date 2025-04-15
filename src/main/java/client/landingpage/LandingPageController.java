@@ -7,8 +7,6 @@ import client.StudentTutorClient;
 import client.landingpage.login.LoginController;
 import client.landingpage.login.LoginModel;
 import client.landingpage.login.LoginView;
-import client.landingpage.signup.SignUpController;
-import client.landingpage.signup.SignUpModel;
 import client.landingpage.signup.SignUpView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import shared.interfaces.AuthService;
 import shared.interfaces.StudentService;
+import shared.interfaces.TutorService;
 
 
 import javax.swing.*;
@@ -54,6 +53,7 @@ public class LandingPageController {
             // Get services from StudentTutorClient
             AuthService authService = StudentTutorClient.getAuthService();
             StudentService studentService = StudentTutorClient.getStudentService();
+            TutorService tutorService = StudentTutorClient.getTutorService();
 
             if (authService == null || studentService == null) {
                 showErrorDialog("Required services are not available");
@@ -64,7 +64,8 @@ public class LandingPageController {
                     loginView,
                     new LoginModel(authService),
                     authService,
-                    studentService
+                    studentService,
+                    tutorService
             );
 
             switchScene(event, root);
