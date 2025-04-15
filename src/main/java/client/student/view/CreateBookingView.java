@@ -5,56 +5,82 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import shared.classes.TutorSession;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class CreateBookingView {
+    @FXML private TableColumn<TutorSession, String> academicLevelColumn;
+    @FXML private VBox centerPane;
+    @FXML private TableView<TutorSession> createReservationTableView;
+    @FXML private TableColumn<TutorSession, String> dateColumn;
+    @FXML private TableColumn<TutorSession, String> durationColumn;
+    @FXML private Button refreshButton;
+    @FXML private TableColumn<TutorSession, Void> reserveColumn;
+    @FXML private TextField searchStudResTextField;
+    @FXML private Label studResTitleLabel;
+    @FXML private TableColumn<TutorSession, String> subjectColumn;
+    @FXML private TableColumn<TutorSession, String> timeColumn;
 
-    @FXML
-    private TableColumn<?, ?> academicLevelColumn;
+    // Initialize method to set up table columns
+    public void initialize() {
+        // Set up cell value factories
+        dateColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSessionDate().toLocalDate().toString()));
+        timeColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSessionTime()));
+        durationColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getSessionDuration() + " mins"));
+        subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subjectID"));
 
-    @FXML
-    private VBox centerPane;
+        // Add reserve button to each row
+        reserveColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button reserveButton = new Button("Reserve");
 
-    @FXML
-    private TableView<?> createReservationTableView;
+            {
+                reserveButton.setOnAction(event -> {
+                    TutorSession session = getTableView().getItems().get(getIndex());
+                    // Handle reservation logic here
+                });
+            }
 
-    @FXML
-    private TableColumn<?, ?> dateColumn;
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(reserveButton);
+                }
+            }
+        });
+    }
 
-    @FXML
-    private TableColumn<?, ?> durationColumn;
-
-    @FXML
-    private Button refreshButton;
-
-    @FXML
-    private TableColumn<?, ?> reserveColumn;
-
-    @FXML
-    private TextField searchStudResTextField;
-
-    @FXML
-    private Label studResTitleLabel;
-
-    @FXML
-    private TableColumn<?, ?> subjectColumn;
-
-    @FXML
-    private TableColumn<?, ?> timeColumn;
-
+    // Animation methods
     public void refreshButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
         st.setToX(1.0);
         st.setToY(1.0);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
         st.play();
     }
+
     public void refreshButtonHovered() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
         st.setToX(0.9);
         st.setToY(0.9);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
         st.play();
+    }
+
+    // Getter methods
+    public TableView<TutorSession> getCreateReservationTableView() {
+        return createReservationTableView;
+    }
+
+    public Button getRefreshButton() {
+        return refreshButton;
+    }
+
+    public TextField getSearchStudResTextField() {
+        return searchStudResTextField;
     }
 }
