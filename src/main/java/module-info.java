@@ -12,6 +12,7 @@ module Learnify {
     exports client;
     exports client.landingpage;
     exports client.student.controller to javafx.fxml;
+    exports client.tutor.controller to javafx.fxml;
 
     opens client.landingpage to javafx.fxml;
     opens client.landingpage.login to javafx.fxml;

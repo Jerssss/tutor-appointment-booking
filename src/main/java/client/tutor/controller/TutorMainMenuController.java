@@ -37,7 +37,18 @@ public class TutorMainMenuController {
         this.view.initializeDateTime();
         this.view.setActionLogoutButton(this::handleLogout);
 
+        this.view.setActionSessionsButton(event -> handleViewSessions());
+        this.view.setActionLessonPlanButton(event -> handleViewLessonPlan() );
+
     }
+    private void handleViewSessions() {
+        System.out.println("Navigating to View Sessions...");
+    }
+
+    private void handleViewLessonPlan() {
+        System.out.println("Navigating to View Lesson Plan...");
+    }
+
 
     private void handleLogout(ActionEvent event){
         try {

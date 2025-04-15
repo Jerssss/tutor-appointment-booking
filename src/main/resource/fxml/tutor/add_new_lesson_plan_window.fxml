@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AddNewTerminalWindowView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.tutor.controller.TutorCreateLessonPlanController">
    <center>
       <VBox prefHeight="164.0" prefWidth="266.0" BorderPane.alignment="CENTER">
          <children>
@@ -105,7 +105,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="67.0" prefWidth="330.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addSessionButton" mnemonicParsing="false" onMouseEntered="#addSessionButtonHovered" onMouseExited="#addSessionButtonExited" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #fffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Create" textFill="#6f2e2e">
+            <Button fx:id="addSessionButton" mnemonicParsing="false"  prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #fffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Create" textFill="#6f2e2e">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
