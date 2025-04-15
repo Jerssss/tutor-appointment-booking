@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.student.view.ModifyReservationView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.student.controller.ModifyBookingController">
    <children>
       <VBox prefHeight="149.0" prefWidth="805.0">
          <children>
@@ -34,7 +34,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="76.0">
                      <children>
-                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" prefHeight="26.0" prefWidth="85.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false"  prefHeight="26.0" prefWidth="85.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
@@ -65,7 +65,7 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="805.0">
          <children>
-            <Button fx:id="saveChangesButton" mnemonicParsing="false" onAction="#handleSaveChanges" onMouseEntered="#saveChangesButtonHovered" onMouseExited="#saveChangesButtonExited" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Save Changes" textFill="WHITE">
+            <Button fx:id="saveChangesButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Save Changes" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

@@ -37,7 +37,43 @@ public class StudentMainMenuController {
         this.view.initializeDateTime();
         this.view.setActionLogoutButton(this::handleLogout);
 
+        this.view.setActionCreateBookingButton(event -> handleCreateReservation());
+        this.view.setActionViewBookingButton(event -> handleViewReservation());
+        this.view.setActionRescheduleBookingButton(event -> handleModifyReservation());
+        this.view.setActionSubjectsOfferedButton(event -> handleSubjectsOffered());
+        this.view.setActionLessonPlanButton(event -> handleLessonPlan());
+        this.view.setActionPaymentHistoryButton(event -> handlePaymentHistory());
+        this.view.setActionBalanceButtonEventHandler(event -> handleBalance());
+
     }
+    private void handleCreateReservation() {
+        System.out.println("Navigating to Create Reservation");
+    }
+
+    private void handleViewReservation() {
+        System.out.println("Navigating to View Reservation");
+    }
+
+    private void handleModifyReservation() {
+        System.out.println("Navigating to Modify Reservation");
+    }
+
+    private void handleSubjectsOffered() {
+        System.out.println("Navigating to Subjects Offered");
+    }
+
+    private void handleLessonPlan() {
+        System.out.println("Navigating to Lesson Plan");
+    }
+
+    private void handlePaymentHistory() {
+        System.out.println("Navigating to Payment History");
+    }
+
+    private void handleBalance() {
+        System.out.println("Navigating to Balance");
+    }
+
 
     private void handleLogout(ActionEvent event){
         try {
