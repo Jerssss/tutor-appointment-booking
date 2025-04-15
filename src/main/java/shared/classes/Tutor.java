@@ -5,10 +5,13 @@ import java.io.Serializable;
 public class Tutor extends User implements Serializable {
     private String expertise;
 
-    //pwede ba to?
-    // Constructor
-    public Tutor(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String password, String expertise) {
-        super(userID, firstName, lastName, phoneNumber, email, role, password);
+    public Tutor(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String expertise) {
+        super(userID, firstName, lastName, phoneNumber, email, role);
+        this.expertise = expertise;
+    }
+
+    public Tutor(String firstName, String lastName, long phoneNumber, String email, String role, String expertise) {
+        super(firstName, lastName, phoneNumber, email, role);
         this.expertise = expertise;
     }
 
@@ -31,7 +34,6 @@ public class Tutor extends User implements Serializable {
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", role='" + getRole() + '\'' +
-                ", password='" + getPassword() + '\'' +
                 ", expertise='" + expertise + '\'' +
                 '}';
     }

@@ -6,10 +6,14 @@ public class Student extends User implements Serializable {
     private double balance;
     private String academicLevel;
 
-    //pwede ba to?
-    // Constructor
-    public Student(int userID, String firstName, String lastName, String phoneNumber, String email, String role, String password, double balance, String academicLevel) {
-        super(userID, firstName, lastName, phoneNumber, email, role, password);
+    public Student(String userID, String firstName, String lastName, long phoneNumber, String email, String role, double balance, String academicLevel) {
+        super(userID, firstName, lastName, phoneNumber, email, role);
+        this.balance = balance;
+        this.academicLevel = academicLevel;
+    }
+
+    public Student(String firstName, String lastName, long phoneNumber, String email, String role, double balance, String academicLevel) {
+        super(firstName, lastName, phoneNumber, email, role);
         this.balance = balance;
         this.academicLevel = academicLevel;
     }
@@ -42,7 +46,6 @@ public class Student extends User implements Serializable {
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", role='" + getRole() + '\'' +
-                ", password='" + getPassword() + '\'' +
                 ", balance=" + balance +
                 ", academicLevel='" + academicLevel + '\'' +
                 '}';

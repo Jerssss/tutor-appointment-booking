@@ -1,16 +1,17 @@
 package shared.classes;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Payment {
-    private int paymentID;
-    private int studentID;
+public class Payment implements Serializable {
+    private String paymentID;
+    private String studentID;
     private double amount;
     private LocalDateTime paymentDateTime;
     private String paymentMethod;
 
     // Constructor
-    public Payment(int paymentID, int studentID, double amount, LocalDateTime paymentDateTime, String paymentMethod) {
+    public Payment(String paymentID, String studentID, double amount, LocalDateTime paymentDateTime, String paymentMethod) {
         this.paymentID = paymentID;
         this.studentID = studentID;
         this.amount = amount;
@@ -19,19 +20,19 @@ public class Payment {
     }
 
     // Getters and Setters
-    public int getPaymentID() {
+    public String getPaymentID() {
         return paymentID;
     }
 
-    public void setPaymentID(int paymentID) {
+    public void setPaymentID(String paymentID) {
         this.paymentID = paymentID;
     }
 
-    public int getStudentID() {
+    public String getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(int studentID) {
+    public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
 
@@ -71,4 +72,3 @@ public class Payment {
                 '}';
     }
 }
-
