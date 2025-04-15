@@ -4,14 +4,16 @@ import shared.classes.*;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminService extends Remote {
     List<Student> viewStudent() throws RemoteException;
-    Student addStudent() throws RemoteException;
-    Student modifyStudent() throws RemoteException;
-    Tutor viewTutor() throws RemoteException;
-    Tutor addTutor() throws RemoteException;
+    void addStudent(Student newStudent) throws RemoteException, SQLException;
+    void modifyStudent(String studentID, String newPassword) throws RemoteException;
+    List<Tutor> viewTutor() throws RemoteException;
+    void addTutor(Tutor newTutor) throws RemoteException, SQLException;
+    void modifyTutor(String tutorID, String newPassword) throws RemoteException;
     List<List<String>> viewSession() throws RemoteException;
     TutorSession addSession() throws RemoteException;
     TutorSession modifySession() throws RemoteException;

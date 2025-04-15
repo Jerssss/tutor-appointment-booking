@@ -39,7 +39,7 @@ public class AdminMainMenuController {
         return adminService;
     }
 
-    public AdminMainMenuController(AdminMainMenuView view, AdminMainMenuModel model, String loggedInUserName) {
+    public AdminMainMenuController(AdminMainMenuView view, AdminMainMenuModel model, String loggedInUserName ) {
         this.view = view;
         this.model = model;
         this.loggedInUserName = loggedInUserName;
@@ -78,10 +78,12 @@ public class AdminMainMenuController {
     private void redirectToSessions(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/sessions_pane.fxml"));
-            Parent root = fxmlLoader.load();
 
-            AdminViewSessionController sessionController = fxmlLoader.getController();
-            sessionController.displaySessions();
+            fxmlLoader.setControllerFactory(clazz -> {
+                return new AdminViewSessionController();
+            });
+
+            Parent root = fxmlLoader.load();
             changeScene(event, root);
         } catch (IOException e) {
             e.printStackTrace();
