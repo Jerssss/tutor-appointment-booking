@@ -3,6 +3,9 @@ package client.landingpage.login;
 import client.student.controller.StudentMainMenuController;
 import client.student.model.StudentMainMenuModel;
 import client.student.view.StudentMainMenuView;
+import client.tutor.controller.TutorMainMenuController;
+import client.tutor.model.TutorMainMenuModel;
+import client.tutor.view.TutorMainMenuView;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXMLLoader;
@@ -13,13 +16,12 @@ import javafx.stage.Stage;
 import shared.classes.User;
 import shared.exceptions.AccountDoesNotExist;
 import shared.exceptions.AlreadyLoggedInException;
-import shared.interfaces.AdminService;
 import shared.interfaces.AuthService;
 import shared.interfaces.StudentService;
+import shared.interfaces.TutorService;
 
 import java.io.IOException;
 
-import static client.AdminClient.getAuthService;
 
 
 public class LoginController {
@@ -27,13 +29,15 @@ public class LoginController {
     private final LoginModel loginModel;
     private final AuthService authService;
     private final StudentService studentService;
+    private final TutorService tutorService;
 
     public LoginController(LoginView loginView, LoginModel loginModel,
-                           AuthService authService, StudentService studentService) {
+                           AuthService authService, StudentService studentService, TutorService tutorService) {
         this.loginView = loginView;
         this.loginModel = loginModel;
         this.authService = authService;
         this.studentService = studentService;
+        this.tutorService = tutorService;
 
         this.loginView.setActionSignInButton(this::handleSignIn);
         this.loginView.setActionSignUpButton(this::redirectToSignUp);
@@ -87,7 +91,19 @@ public class LoginController {
                 e.printStackTrace();
             }
         } else {
-            // TODO: Redirect other roles like Tutor if needed
+            try {
+                // Correct the resource path to point to the resources directory
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/tutor/tutor_menu_page.fxml"));
+                Parent root = fxmlLoader.load();
+                TutorMainMenuView tutorMainMenuView = fxmlLoader.getController();
+
+                String loggedInUserName = user.getFirstName() + " " + user.getLastName();
+                new TutorMainMenuController(tutorMainMenuView, new TutorMainMenuModel(tutorService), loggedInUserName);
+
+                changeScene(event, root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
