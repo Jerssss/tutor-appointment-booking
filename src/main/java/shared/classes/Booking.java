@@ -7,6 +7,13 @@ public class Booking {
     private String bookingStatus;
     private double sessionPrice;
 
+    public Booking(){
+        this.studentID = 0;
+        this.sessionID = 0;
+        this.sessionMode = null;
+        this.bookingStatus = null;
+        this.sessionPrice = 0.0;
+    }
     // Constructor
     public Booking(int studentID, int sessionID, String sessionMode, String bookingStatus, double sessionPrice) {
         this.studentID = studentID;

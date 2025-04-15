@@ -43,7 +43,7 @@
                             <children>
                                 <StackPane prefHeight="74.0" prefWidth="197.0">
                                     <children>
-                                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="11.0" />
                                             </font>
