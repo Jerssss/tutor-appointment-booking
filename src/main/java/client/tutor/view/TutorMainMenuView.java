@@ -25,18 +25,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TutorMainMenuView {
-    @FXML
-    private Button studentButton;
-    @FXML
-    private Button tutorButton;
+
     @FXML
     private Button sessionsButton;
-    @FXML
-    private Button subjectButton;
+
     @FXML
     private Button lessonPlanButton;
-    @FXML
-    private Button paymentButton;
 
     @FXML
     private Label headerDateLabel;
@@ -188,42 +182,21 @@ public class TutorMainMenuView {
      */
 
 
-    public void setActionStudentButton(EventHandler<ActionEvent> event) {
-        studentButton.setOnAction(event1 -> {
-            highlightButton(studentButton);
-            loadView("/fxml/admin/student_list_pane.fxml");
-        });
-    }
-    public void setActionTutorButton(EventHandler<ActionEvent> event) {
-        tutorButton.setOnAction(event1 -> {
-            highlightButton(tutorButton);
-            loadView("/fxml/admin/tutor_list_pane.fxml");
-        });
-    }
+
     public void setActionSessionsButton(EventHandler<ActionEvent> event) {
         sessionsButton.setOnAction(event1 -> {
             highlightButton(sessionsButton);
-            loadView("/fxml/admin/sessions_pane.fxml");
+            loadView("/fxml/tutor/session_pane.fxml");
         });
     }
-    public void setActionSubjectButton(EventHandler<ActionEvent> event) {
-        subjectButton.setOnAction(event1 -> {
-            highlightButton(subjectButton);
-            loadView("/fxml/admin/subject_pane.fxml");
-        });
-    }
+
     public void setActionLessonPlanButton(EventHandler<ActionEvent> event) {
         lessonPlanButton.setOnAction(event1 -> {
             highlightButton(lessonPlanButton);
-            loadView("/fxml/admin/lesson_plan_pane.fxml");
+            loadView("/fxml/tutor/lesson_plan_pane.fxml");
         });
     }
-    public void setActionPaymentButton(EventHandler<ActionEvent> event) {
-        paymentButton.setOnAction(event1 -> {
-            highlightButton(paymentButton);
-            loadView("/fxml/admin/payment_history_pane.fxml");
-        });
-    }
+
 
     /**
      * Sets action handler for Logout button.
