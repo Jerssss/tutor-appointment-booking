@@ -15,6 +15,7 @@ public class AdminViewSessionView {
     private final TableColumn<List<String>, String> academicLevelColumn;
     private final TableColumn<List<String>, String> subjectColumn;
     private final Button addSessionButton;
+    private final Button refreshButton;
 
     public AdminViewSessionView(
             TableView<List<String>> tableView,
@@ -22,7 +23,7 @@ public class AdminViewSessionView {
             TableColumn<List<String>, String> timeColumn,
             TableColumn<List<String>, String> durationColumn,
             TableColumn<List<String>, String> academicLevelColumn,
-            TableColumn<List<String>, String> subjectColumn, Button addSessionButton) {
+            TableColumn<List<String>, String> subjectColumn, Button addSessionButton, Button refreshButton) {
 
         this.tableView = tableView;
         this.dateColumn = dateColumn;
@@ -31,6 +32,7 @@ public class AdminViewSessionView {
         this.academicLevelColumn = academicLevelColumn;
         this.subjectColumn = subjectColumn;
         this.addSessionButton = addSessionButton;
+        this.refreshButton = refreshButton;
 
         setupTableColumns();
     }

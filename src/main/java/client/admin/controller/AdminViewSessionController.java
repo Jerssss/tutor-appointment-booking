@@ -41,6 +41,8 @@ public class AdminViewSessionController {
     private TableColumn<List<String>, String> subjectColumn;
     @FXML
     private Button addSessionButton;
+    @FXML
+    private Button refreshButton;
 
     public AdminViewSessionController() {
         this.model = new AdminViewSessionModel(service);
@@ -55,11 +57,13 @@ public class AdminViewSessionController {
                 durationColumn,
                 academicLevelColumn,
                 subjectColumn,
-                addSessionButton
+                addSessionButton,
+                refreshButton
         );
         displaySessions();
 
-        setActionaddSessionButton(this::handleAddSession);
+        setActionAddSessionButton(this::handleAddSession);
+        setActionRefreshButton(this::handleRefreshSession);
     }
 
     private void displaySessions() {
@@ -73,14 +77,26 @@ public class AdminViewSessionController {
     }
 
     private void handleAddSession(ActionEvent event){
-//        redirectToAddSessionPopup(event);
         AdminCreateSessionController createSessionController = new AdminCreateSessionController();
         createSessionController.showWindow();
     }
 
-    public void setActionaddSessionButton(EventHandler<ActionEvent> event) {
+    private void handleRefreshSession(ActionEvent event){
+        System.out.println("REFRESH CLICKED");
+        displaySessions();
+    }
+
+    public void setActionAddSessionButton(EventHandler<ActionEvent> event) {
         if (addSessionButton != null) {
             addSessionButton.setOnAction(event);
+        } else {
+            System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
+        }
+    }
+
+    public void setActionRefreshButton(EventHandler<ActionEvent> event) {
+        if (refreshButton != null) {
+            refreshButton.setOnAction(event);
         } else {
             System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
         }

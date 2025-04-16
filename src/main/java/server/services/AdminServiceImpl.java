@@ -335,15 +335,11 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
     @Override
     public String getTutorID(String tutorName) throws RemoteException{
-        String[] nameParts = tutorName.split(" ");
-        String firstName = nameParts[0];
-        String lastName = nameParts[1];
         String tutorID = "";
-        query = "SELECT userID FROM user WHERE firstName = ? AND lastName = ?";
+        query = "SELECT userID FROM user WHERE CONCAT(firstName, ' ', lastName) = ?;";
         try{
             preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(1, tutorName);
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
