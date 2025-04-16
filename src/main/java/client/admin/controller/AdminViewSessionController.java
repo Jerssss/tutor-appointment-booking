@@ -81,7 +81,6 @@ public class AdminViewSessionController {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    System.out.println("Option clicked for session: " + clickedSession);
                     AdminModifySessionController modifySessionController= new AdminModifySessionController();
                     modifySessionController.showWindow();
                 });

@@ -455,8 +455,28 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public Subject modifySubject() throws RemoteException {
-        return null;
+    public void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException {
+        subjectID = subjectID.replaceAll(".*subjectID=(\\d+),.*", "$1");
+        query = "UPDATE subject SET subjectLevel = ? WHERE subjectID = ?";
+
+        try {
+            con.setAutoCommit(false);
+
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, academicLevel);
+            preparedStatement.setString(2, subjectID);
+
+            preparedStatement.executeUpdate();
+            con.commit();
+
+        } catch (SQLException e1) {
+            if (con != null) con.rollback();
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true);
+        }
     }
 
     @Override

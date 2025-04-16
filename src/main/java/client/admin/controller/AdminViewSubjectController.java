@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -27,6 +28,7 @@ public class AdminViewSubjectController {
     private final AdminViewSubjectModel model;
     private AdminViewSubjectView view;
     private AdminService service = new AdminServiceImpl();
+    private static String clickedSubject;
     @FXML
     private TableView<Subject> viewResTableView;
     @FXML
@@ -37,6 +39,8 @@ public class AdminViewSubjectController {
     private TableColumn<Subject, String> subjectDescColumn;
     @FXML
     private TableColumn<Subject, String> academicLevelColumn;
+    @FXML
+    private TableColumn<List<String>, Void> optionColumn;
     @FXML
     private Button addSubjectButton;
     @FXML
@@ -60,6 +64,29 @@ public class AdminViewSubjectController {
 
         setActionAddSubjectButton(this::handleAddSubject);
         setActionRefreshButtonButton(this::handleRefreshSubject);
+
+        optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button optionButton = new Button("Option");
+
+            {
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminModifySubjectController modifySubjectController= new AdminModifySubjectController();
+                    modifySubjectController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(optionButton);
+                }
+            }
+        });
     }
 
     public void displaySubjects() {
@@ -102,5 +129,9 @@ public class AdminViewSubjectController {
         } else {
             System.err.println("[ERROR] AddSubjectButton is NULL! Check FXML.");
         }
+    }
+
+    public static String getClickedSubject(){
+        return clickedSubject;
     }
 }
