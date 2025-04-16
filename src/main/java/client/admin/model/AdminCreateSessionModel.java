@@ -27,8 +27,8 @@ public class AdminCreateSessionModel {
         return adminService.getAllSubjects();
     }
 
-    public List<String> getAvailableTimeTutor(String tutorName) throws RemoteException {
-        Map<LocalTime, Integer> currentSched = adminService.getTutorSchedule(adminService.getTutorID(tutorName));
+    public List<String> getAvailableTimeTutor(String tutorName, String date) throws RemoteException {
+        Map<LocalTime, Integer> currentSched = adminService.getTutorSchedule(adminService.getTutorID(tutorName), date);
         availableStartTimes = generateTimeslots();
 
         for (Map.Entry<LocalTime, Integer> entry : currentSched.entrySet()) {
@@ -70,10 +70,10 @@ public class AdminCreateSessionModel {
     }
 
     public void addNewSession(String chosenTutor, LocalDate chosenDate, String chosenStartTime, String chosenDuration, String chosenSubject,
-                              String chosenMode, String chosenType) throws RemoteException, SQLException {
+                              String chosenMode, String chosenType, String maxStudents, String price) throws RemoteException, SQLException {
         TutorSession newSession = new TutorSession(generateSessionID(), adminService.getTutorID(chosenTutor), adminService.getSubjectID(chosenSubject), "Scheduled",
-                chosenDate, LocalTime.parse(chosenStartTime), Integer.parseInt(chosenDuration), 0, 5,
-                0);
+                chosenDate, LocalTime.parse(chosenStartTime), Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
+                Double.parseDouble(price));
         adminService.addSession(newSession);
     }
 

@@ -388,18 +388,19 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public Map<LocalTime, Integer> getTutorSchedule(String tutorID) throws RemoteException {
-        Map<LocalTime, Integer> scheduleMap = new LinkedHashMap<>(); // preserves insertion order
-        query = "SELECT sessionTime, sessionDuration FROM tutorsession WHERE tutorID = '" + tutorID + "';";
+    public Map<LocalTime, Integer> getTutorSchedule(String tutorID, String date) throws RemoteException {
+        Map<LocalTime, Integer> scheduleMap = new LinkedHashMap<>();
+        String query = "SELECT sessionTime, sessionDuration FROM tutorsession WHERE tutorID = ? AND sessionDate = ?";
 
         try {
             preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, tutorID);
+            preparedStatement.setString(2, date);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 LocalTime sessionTime = resultSet.getTime("sessionTime").toLocalTime();
                 int sessionDuration = resultSet.getInt("sessionDuration");
-
                 scheduleMap.put(sessionTime, sessionDuration);
             }
         } catch (SQLException e) {
@@ -408,6 +409,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
         return scheduleMap;
     }
+
     @Override
     public List<Subject> viewSubject() throws RemoteException {
         return null;

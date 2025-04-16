@@ -3,6 +3,7 @@ package client.admin.view;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
@@ -20,6 +21,9 @@ public class AdminCreateSessionView {
     private final DatePicker datePicker;
     private final Button addSessionWindowButton;
 
+    private final TextField sessionPriceTextField;
+    private final TextField maxStudentsTextField;
+
     public AdminCreateSessionView(
             ComboBox<String> tutorComboBox,
             ComboBox<String> subjectComboBox,
@@ -28,7 +32,7 @@ public class AdminCreateSessionView {
             ComboBox<String> startTimeComboBox,
             ComboBox<String> durationComboBox,
             DatePicker datePicker,
-            Button addSessionWindowButton) {
+            Button addSessionWindowButton, TextField sessionPriceTextField, TextField maxStudentsTextField) {
 
         this.tutorComboBox = tutorComboBox;
         this.subjectComboBox = subjectComboBox;
@@ -38,6 +42,8 @@ public class AdminCreateSessionView {
         this.durationComboBox = durationComboBox;
         this.datePicker = datePicker;
         this.addSessionWindowButton = addSessionWindowButton;
+        this.sessionPriceTextField = sessionPriceTextField;
+        this.maxStudentsTextField = maxStudentsTextField;
     }
 
     public void initializeComboBoxes(List<String> tutors, List<String> subjects) {
@@ -127,6 +133,15 @@ public class AdminCreateSessionView {
     public LocalDate getSelectedDate() {
         return datePicker.getValue();
     }
+
+    public String getPrice() {
+        return sessionPriceTextField.getText();
+    }
+
+    public String getMaxStudents(){
+        return maxStudentsTextField.getText();
+    }
+
 
     public void updateStartTimes(List<String> times) {
         startTimeComboBox.getItems().clear();
