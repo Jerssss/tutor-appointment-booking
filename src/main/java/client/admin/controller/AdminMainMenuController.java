@@ -49,7 +49,7 @@ public class AdminMainMenuController {
         this.view.setActionStudentButton(event -> handleStudentButton());
         this.view.setActionTutorButton(event -> handleTutorButton());
         this.view.setActionSessionsButton(event -> handleSessionButton(event));
-        this.view.setActionSubjectButton(event -> handleSubjectButton());
+        this.view.setActionSubjectButton(event -> handleSubjectButton(event));
         this.view.setActionLessonPlanButton(event -> handleLessonPlanButton());
         this.view.setActionPaymentButton(event -> handlePaymentButton());
 
@@ -65,8 +65,8 @@ public class AdminMainMenuController {
     private void handleSessionButton(ActionEvent event) {
         redirectToSessions(event);
     }
-    private void handleSubjectButton() {
-        System.out.println("Navigating to Subject...");
+    private void handleSubjectButton(ActionEvent event) {
+        redirectToSubjects(event);
     }
     private void handleLessonPlanButton() {
         System.out.println("Navigating to Lesson Plan...");
@@ -77,10 +77,26 @@ public class AdminMainMenuController {
 
     private void redirectToSessions(ActionEvent event) {
         try {
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/sessions_pane.fxml"));
 
             fxmlLoader.setControllerFactory(clazz -> {
                 return new AdminViewSessionController();
+            });
+
+            Parent root = fxmlLoader.load();
+            changeScene(event, root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void redirectToSubjects(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/subject_pane.fxml"));
+
+            fxmlLoader.setControllerFactory(clazz -> {
+                return new AdminViewSubjectController();
             });
 
             Parent root = fxmlLoader.load();

@@ -1,13 +1,13 @@
 package shared.classes;
 
 public class Subject {
-    private int subjectID;
+    private String subjectID;
     private String subjectName;
     private String subjectDescription;
     private String subjectLevel;
 
     // Constructor
-    public Subject(int subjectID, String subjectName, String subjectDescription, String subjectLevel) {
+    public Subject(String subjectID, String subjectName, String subjectDescription, String subjectLevel) {
         this.subjectID = subjectID;
         this.subjectName = subjectName;
         this.subjectDescription = subjectDescription;
@@ -15,11 +15,11 @@ public class Subject {
     }
 
     // Getters and Setters
-    public int getSubjectID() {
+    public String getSubjectID() {
         return subjectID;
     }
 
-    public void setSubjectID(int subjectID) {
+    public void setSubjectID(String subjectID) {
         this.subjectID = subjectID;
     }
 

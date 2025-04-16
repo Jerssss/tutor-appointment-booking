@@ -37,6 +37,8 @@ public class AdminCreateSessionController implements Initializable {
     @FXML private ComboBox<String> durationComboBox;
     @FXML private DatePicker datePicker;
     @FXML private Button addSessionWindowButton;
+    @FXML private TextField sessionPriceTextField;
+    @FXML private TextField maxStudentsTextField;
 
     public AdminCreateSessionController() {
         this.model = new AdminCreateSessionModel(service);
@@ -53,7 +55,9 @@ public class AdminCreateSessionController implements Initializable {
                 startTimeComboBox,
                 durationComboBox,
                 datePicker,
-                addSessionWindowButton
+                addSessionWindowButton,
+                sessionPriceTextField,
+                maxStudentsTextField
         );
 
         try {
@@ -73,16 +77,26 @@ public class AdminCreateSessionController implements Initializable {
 
     private void setupEventHandlers() {
         view.setTutorSelectionHandler(this::handleTutorSelection);
-        view.setStartTimeSelectionHandler(this::handleStartTimeSelection);
         view.setAddSessionButtonAction(this::handleAddSession);
+        view.setDateSelectionHandler(this::handleDateSelection);
+        view.setStartTimeSelectionHandler(this::handleStartTimeSelection);
     }
 
-
-
     private void handleTutorSelection(ActionEvent event) {
+//        try {
+            String tutor = view.getSelectedTutor();
+//            List<String> times = model.getAvailableTimeTutor(tutor);
+//            view.updateStartTimes(times);
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
+    }
+
+    private void handleDateSelection(ActionEvent event) {
         try {
             String tutor = view.getSelectedTutor();
-            List<String> times = model.getAvailableTimeTutor(tutor);
+            String date = view.getSelectedDate().toString();
+            List<String> times = model.getAvailableTimeTutor(tutor, date);
             view.updateStartTimes(times);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -110,7 +124,9 @@ public class AdminCreateSessionController implements Initializable {
                     view.getSelectedDuration(),
                     view.getSelectedSubject(),
                     view.getSelectedMode(),
-                    view.getSelectedType()
+                    view.getSelectedType(),
+                    view.getMaxStudents(),
+                    view.getPrice()
             );
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();

@@ -85,28 +85,4 @@ public class AdminViewSessionController {
             System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
         }
     }
-
-    private void redirectToAddSessionPopup(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_session_window.fxml"));
-
-            fxmlLoader.setControllerFactory(clazz -> {
-                return new AdminCreateSessionController();
-            });
-
-            Parent root = fxmlLoader.load();
-            changeScene(event, root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void changeScene(ActionEvent event, Parent root) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
-    }
 }

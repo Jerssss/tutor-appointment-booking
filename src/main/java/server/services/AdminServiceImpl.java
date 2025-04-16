@@ -240,11 +240,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
                 allSessions.add(Arrays.asList(String.valueOf(resultSet.getDate("sessionDate")), String.valueOf(resultSet.getTime("sessionTime")), resultSet.getString("sessionDuration"),
                         resultSet.getString("subjectLevel"), resultSet.getString("subjectID")));
             }
-
-
-            for (List<String> sessions : allSessions){
-                System.out.println(sessions);
-            }
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -412,7 +407,21 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public List<Subject> viewSubject() throws RemoteException {
-        return null;
+        List<Subject> allSubject = new ArrayList<>();
+        query = "SELECT * FROM subject;";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                allSubject.add(new Subject(resultSet.getString("subjectID"), resultSet.getString("subjectName"),
+                        resultSet.getString("subjectDescription"), resultSet.getString("subjectLevel")));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return allSubject;
     }
 
     @Override
