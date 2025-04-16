@@ -11,11 +11,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AdminServiceImpl implements Remote, AdminService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
@@ -248,7 +244,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addSession(TutorSession session) throws RemoteException, SQLException {
-        System.out.println("IN ADD");
         query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -333,9 +328,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             while(resultSet.next()){
                 subjectID = resultSet.getString("subjectID");
             }
-
-            System.out.println("SUBJECT NAME: " + subjectName);
-            System.out.println("SUBJECT ID: " + subjectID);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -435,9 +427,36 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public List<LessonPlan> viewLessonPlan() throws RemoteException {
-        return null;
+    public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
+        Map<LessonPlan, String> allLessonPlans = new HashMap<>();
+
+//        query = "SELECT lessonPlanID, subjectID, subjectName, subjectLevel, objectives, topicsCovered FROM lessonplan " +
+//                "INNER JOIN subject USING(subjectID);";
+        query = "SELECT lessonPlanID, subjectID, subjectLevel, objectives, topicsCovered FROM lessonplan " +
+                "INNER JOIN subject USING(subjectID);";
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LessonPlan lessonPlan = new LessonPlan(
+                        resultSet.getString("lessonPlanID"),
+                        resultSet.getString("subjectID"),
+                        resultSet.getString("objectives"),
+                        resultSet.getString("topicsCovered")
+                );
+
+//                allLessonPlans.put(lessonPlan, Arrays.asList(resultSet.getString("subjectName"), resultSet.getString("subjectLevel")));
+                allLessonPlans.put(lessonPlan, resultSet.getString("subjectLevel"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return allLessonPlans;
     }
+
 
     @Override
     public LessonPlan addLessonPlan() throws RemoteException {

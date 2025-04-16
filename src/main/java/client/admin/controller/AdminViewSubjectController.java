@@ -42,7 +42,6 @@ public class AdminViewSubjectController {
 
     public AdminViewSubjectController() {
         this.model = new AdminViewSubjectModel(service);
-        System.out.println("**********8");
     }
 
     @FXML
@@ -71,9 +70,6 @@ public class AdminViewSubjectController {
                     addSubjectButton
             );
             List<Subject> subjects = model.displaySubjects();
-            System.out.println("Number of subjects received: " + subjects.size());
-            subjects.forEach(subject -> System.out.println(subject.getSubjectName()));
-
             ObservableList<Subject> subjectData = FXCollections.observableArrayList(subjects);
             view.displaySubject(subjectData);
         } catch (RemoteException e) {
@@ -91,7 +87,7 @@ public class AdminViewSubjectController {
         if (addSubjectButton != null) {
             addSubjectButton.setOnAction(event);
         } else {
-            System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
+            System.err.println("[ERROR] AddSubjectButton is NULL! Check FXML.");
         }
     }
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminCreateLessonPlanController">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewLessonPlanController">
    <children>
       <VBox prefHeight="74.0" prefWidth="805.0">
          <children>
@@ -69,12 +69,12 @@
                            <children>
                               <TableView fx:id="highSchoolTableView" prefHeight="482.0" prefWidth="805.0">
                                  <columns>
-                                    <TableColumn fx:id="highSchoolCourseColumn" prefWidth="130.0" text="Course" />
-                                    <TableColumn fx:id="highSchoolSubjectColumn" prefWidth="130.0" text="Subject" />
-                                    <TableColumn fx:id="highSchoolObjectivesColumn" prefWidth="180.0" text="Objectives" />
-                                    <TableColumn fx:id="highSchoolTopicsColumn" prefWidth="145.0" text="Topics" />
-                                    <TableColumn fx:id="editColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" />
-                                    <TableColumn fx:id="cancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
+                                    <TableColumn fx:id="highSchoolLessonPlanIDColumn" prefWidth="130.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolSubjectIDColumn" prefWidth="130.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolObjectivesColumn" prefWidth="180.0" text="Objectives" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolTopicsColumn" prefWidth="145.0" text="Topics" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="editColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="cancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
                                  </columns>
                               </TableView>
                            </children>
@@ -89,12 +89,12 @@
                            <children>
                               <TableView fx:id="collegeTableView" prefHeight="482.0" prefWidth="805.0">
                                  <columns>
-                                    <TableColumn fx:id="collegeCourseColumn" prefWidth="130.0" text="Course" />
-                                    <TableColumn fx:id="collegeSubjectColumn" prefWidth="130.0" text="Subject" />
-                                    <TableColumn fx:id="collegeObjectivesColumn" prefWidth="180.0" text="Objectives" />
-                                    <TableColumn fx:id="collegeTopicsColumn" prefWidth="145.0" text="Topics" />
-                                    <TableColumn fx:id="editColumn2" editable="false" prefWidth="110.0" resizable="false" text="Update" />
-                                    <TableColumn fx:id="cancelColumn2" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
+                                    <TableColumn fx:id="collegeLessonPlanIDColumn" prefWidth="130.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="collegeSubjectIDColumn" prefWidth="130.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeObjectivesColumn" prefWidth="180.0" text="Objectives" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeTopicsColumn" prefWidth="145.0" text="Topics" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="editColumn2" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="cancelColumn2" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
                                  </columns>
                               </TableView>
 

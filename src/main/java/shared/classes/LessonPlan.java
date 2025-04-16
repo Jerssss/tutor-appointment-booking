@@ -17,6 +17,13 @@ public class LessonPlan implements Serializable {
         this.topicsCovered = topicsCovered;
     }
 
+    public LessonPlan(String lessonPlanID, String subjectID, String objectives, String topicsCovered) {
+        this.lessonPlanID = lessonPlanID;
+        this.subjectID = subjectID;
+        this.objectives = objectives;
+        this.topicsCovered = topicsCovered;
+    }
+
     // Getters and Setters
     public String getLessonPlanID() { return lessonPlanID; }
     public void setLessonPlanID(String lessonPlanID) { this.lessonPlanID = lessonPlanID; }

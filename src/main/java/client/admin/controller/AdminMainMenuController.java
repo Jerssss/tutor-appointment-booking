@@ -1,12 +1,8 @@
 package client.admin.controller;
 
-import client.StudentTutorClient;
 import client.admin.model.AdminMainMenuModel;
-import client.admin.model.AdminViewSessionModel;
 import client.admin.view.AdminMainMenuView;
-import client.admin.view.AdminViewSessionView;
 import client.landingpage.login.*;
-import client.landingpage.signup.SignUpView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import shared.interfaces.AdminService;
 import shared.interfaces.AuthService;
-import shared.interfaces.StudentService;
-import shared.interfaces.TutorService;
 
-import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 
 public class AdminMainMenuController {
@@ -50,7 +42,7 @@ public class AdminMainMenuController {
         this.view.setActionTutorButton(event -> handleTutorButton());
         this.view.setActionSessionsButton(event -> handleSessionButton(event));
         this.view.setActionSubjectButton(event -> handleSubjectButton(event));
-        this.view.setActionLessonPlanButton(event -> handleLessonPlanButton());
+        this.view.setActionLessonPlanButton(event -> handleLessonPlanButton(event));
         this.view.setActionPaymentButton(event -> handlePaymentButton());
 
         this.view.setActionLogoutButton(this::handleLogout);
@@ -68,8 +60,8 @@ public class AdminMainMenuController {
     private void handleSubjectButton(ActionEvent event) {
         redirectToSubjects(event);
     }
-    private void handleLessonPlanButton() {
-        System.out.println("Navigating to Lesson Plan...");
+    private void handleLessonPlanButton(ActionEvent event) {
+        redirectToSubjects(event);
     }
     private void handlePaymentButton() {
         System.out.println("Navigating to Payment History...");
@@ -97,6 +89,21 @@ public class AdminMainMenuController {
 
             fxmlLoader.setControllerFactory(clazz -> {
                 return new AdminViewSubjectController();
+            });
+
+            Parent root = fxmlLoader.load();
+            changeScene(event, root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void redirectToLessonPlans(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/lesson_plan_pane.fxml"));
+
+            fxmlLoader.setControllerFactory(clazz -> {
+                return new AdminViewLessonPlanController();
             });
 
             Parent root = fxmlLoader.load();

@@ -28,7 +28,7 @@ public interface AdminService extends Remote {
     List<Subject> viewSubject() throws RemoteException;
     Subject addSubject() throws RemoteException;
     Subject modifySubject() throws RemoteException;
-    List<LessonPlan> viewLessonPlan() throws RemoteException;
+    Map<LessonPlan, String> viewLessonPlan() throws RemoteException;
     LessonPlan addLessonPlan() throws RemoteException;
     LessonPlan modifyLessonPlan() throws RemoteException;
     List<Payment> viewPayment() throws RemoteException;
