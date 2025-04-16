@@ -51,20 +51,20 @@ public class AdminViewLessonPlanController {
     private TableColumn<LessonPlan, String> collegeLessonPlanIDColumn;
     @FXML
     private TableColumn<LessonPlan, String> collegeSubjectIDColumn;
-//    @FXML
-//    private TableColumn<LessonPlan, String> collegeSubjectNameColumn;
     @FXML
     private TableColumn<LessonPlan, String> collegeObjectivesColumn;
     @FXML
     private TableColumn<LessonPlan, String> collegeTopicsColumn;
+    @FXML
+    private Button refreshButton;
 
     public AdminViewLessonPlanController() {
         this.model = new AdminViewLessonPlanModel(service);
     }
 
-    public AdminViewLessonPlanController(AdminViewLessonPlanModel model) {
-        this.model = model;
-    }
+//    public AdminViewLessonPlanController(AdminViewLessonPlanModel model) {
+//        this.model = model;
+//    }
 
     @FXML
     private void initialize() {
@@ -81,6 +81,8 @@ public class AdminViewLessonPlanController {
                 collegeTopicsColumn
         );
         displayLessonPlans();
+
+        setActionRefreshButtonButton(this::handleRefreshLessonPlan);
     }
 
     private void displayLessonPlans() {
@@ -107,6 +109,18 @@ public class AdminViewLessonPlanController {
 //            view.displayLessonPlan(allCollegeLessonPlansData, allCollegeSubjectNamesData, allHighSchoolLessonPlansData, allHighSchoolSubjectNamesData);
         view.displayLessonPlan(allCollegeLessonPlansData, allHighSchoolLessonPlansData);
 
+    }
+
+    private void handleRefreshLessonPlan(ActionEvent event){
+        displayLessonPlans();
+    }
+
+    public void setActionRefreshButtonButton(EventHandler<ActionEvent> event) {
+        if (refreshButton != null) {
+            refreshButton.setOnAction(event);
+        } else {
+            System.err.println("[ERROR] AddSubjectButton is NULL! Check FXML.");
+        }
     }
 
 }

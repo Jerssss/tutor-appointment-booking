@@ -12,10 +12,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
+import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
 
 import java.io.IOException;
@@ -26,9 +28,12 @@ public class AdminViewSessionController {
     private final AdminViewSessionModel model;
     private AdminViewSessionView view;
     private AdminService service = new AdminServiceImpl();
+    private static List<String> clickedSession;
 
     @FXML
     private TableView<List<String>> viewResTableView;
+    @FXML
+    private TableColumn<List<String>, String> sessionIDColumn;
     @FXML
     private TableColumn<List<String>, String> dateColumn;
     @FXML
@@ -39,6 +44,9 @@ public class AdminViewSessionController {
     private TableColumn<List<String>, String> academicLevelColumn;
     @FXML
     private TableColumn<List<String>, String> subjectColumn;
+    @FXML
+    private TableColumn<List<String>, Void> optionColumn;
+
     @FXML
     private Button addSessionButton;
     @FXML
@@ -52,6 +60,7 @@ public class AdminViewSessionController {
     private void initialize() {
         this.view = new AdminViewSessionView(
                 viewResTableView,
+                sessionIDColumn,
                 dateColumn,
                 timeColumn,
                 durationColumn,
@@ -64,6 +73,30 @@ public class AdminViewSessionController {
 
         setActionAddSessionButton(this::handleAddSession);
         setActionRefreshButton(this::handleRefreshSession);
+
+        optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button optionButton = new Button("Option");
+
+            {
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedSession = getTableView().getItems().get(getIndex());
+                    System.out.println("Option clicked for session: " + clickedSession);
+                    AdminModifySessionController modifySessionController= new AdminModifySessionController();
+                    modifySessionController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(optionButton);
+                }
+            }
+        });
     }
 
     private void displaySessions() {
@@ -100,5 +133,9 @@ public class AdminViewSessionController {
         } else {
             System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
         }
+    }
+
+    public static List<String> getClickedSession(){
+        return clickedSession;
     }
 }

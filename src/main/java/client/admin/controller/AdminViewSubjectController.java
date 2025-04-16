@@ -39,6 +39,8 @@ public class AdminViewSubjectController {
     private TableColumn<Subject, String> academicLevelColumn;
     @FXML
     private Button addSubjectButton;
+    @FXML
+    private Button refreshButton;
 
     public AdminViewSubjectController() {
         this.model = new AdminViewSubjectModel(service);
@@ -57,6 +59,7 @@ public class AdminViewSubjectController {
         displaySubjects();
 
         setActionAddSubjectButton(this::handleAddSubject);
+        setActionRefreshButtonButton(this::handleRefreshSubject);
     }
 
     public void displaySubjects() {
@@ -78,14 +81,24 @@ public class AdminViewSubjectController {
     }
 
     private void handleAddSubject(ActionEvent event){
-//        redirectToAddSessionPopup(event);
         AdminCreateSubjectController createSubjectController = new AdminCreateSubjectController();
         createSubjectController.showWindow();
+    }
+
+    private void handleRefreshSubject(ActionEvent event){
+        displaySubjects();
     }
 
     public void setActionAddSubjectButton(EventHandler<ActionEvent> event) {
         if (addSubjectButton != null) {
             addSubjectButton.setOnAction(event);
+        } else {
+            System.err.println("[ERROR] AddSubjectButton is NULL! Check FXML.");
+        }
+    }
+    public void setActionRefreshButtonButton(EventHandler<ActionEvent> event) {
+        if (refreshButton != null) {
+            refreshButton.setOnAction(event);
         } else {
             System.err.println("[ERROR] AddSubjectButton is NULL! Check FXML.");
         }

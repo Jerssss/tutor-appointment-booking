@@ -9,6 +9,7 @@ import java.util.List;
 
 public class AdminViewSessionView {
     private final TableView<List<String>> tableView;
+    private final TableColumn<List<String>, String> sessionIDColumn;
     private final TableColumn<List<String>, String> dateColumn;
     private final TableColumn<List<String>, String> timeColumn;
     private final TableColumn<List<String>, String> durationColumn;
@@ -18,7 +19,7 @@ public class AdminViewSessionView {
     private final Button refreshButton;
 
     public AdminViewSessionView(
-            TableView<List<String>> tableView,
+            TableView<List<String>> tableView, TableColumn<List<String>, String> sessionIDColumn,
             TableColumn<List<String>, String> dateColumn,
             TableColumn<List<String>, String> timeColumn,
             TableColumn<List<String>, String> durationColumn,
@@ -26,6 +27,7 @@ public class AdminViewSessionView {
             TableColumn<List<String>, String> subjectColumn, Button addSessionButton, Button refreshButton) {
 
         this.tableView = tableView;
+        this.sessionIDColumn = sessionIDColumn;
         this.dateColumn = dateColumn;
         this.timeColumn = timeColumn;
         this.durationColumn = durationColumn;
@@ -38,11 +40,12 @@ public class AdminViewSessionView {
     }
 
     public void setupTableColumns() {
-        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-        timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
-        durationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
-        academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
-        subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
+        sessionIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
+        timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
+        durationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+        academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
+        subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(5)));
     }
 
     public void displaySession(ObservableList<List<String>> sessions) {

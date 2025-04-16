@@ -225,7 +225,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
-        query = "SELECT sessionDate, sessionTime, sessionDuration, subjectLevel, subjectID FROM tutorsession\n" +
+        query = "SELECT sessionID, sessionDate, sessionTime, sessionDuration, subjectLevel, subjectID FROM tutorsession\n" +
                 "INNER JOIN subject USING (subjectID); ";
 
         try{
@@ -233,7 +233,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                allSessions.add(Arrays.asList(String.valueOf(resultSet.getDate("sessionDate")), String.valueOf(resultSet.getTime("sessionTime")), resultSet.getString("sessionDuration"),
+                allSessions.add(Arrays.asList(resultSet.getString("sessionID"), String.valueOf(resultSet.getDate("sessionDate")), String.valueOf(resultSet.getTime("sessionTime")), resultSet.getString("sessionDuration"),
                         resultSet.getString("subjectLevel"), resultSet.getString("subjectID")));
             }
         }catch (SQLException e){
@@ -247,7 +247,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            con.setAutoCommit(false); // Disable auto-commit before manual commit
+            con.setAutoCommit(false);
 
             preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, session.getSessionID());
@@ -275,8 +275,26 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public TutorSession modifySession() throws RemoteException {
-        return null;
+    public void modifySession(String sessionID, String sessionMode, String sessionType) throws RemoteException, SQLException {
+        query = "UPDATE tutorsession SET numberOfStudents = 1 WHERE sessionID = ?";
+
+        try {
+            con.setAutoCommit(false);
+
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, sessionID);
+
+            preparedStatement.executeUpdate();
+            con.commit();
+
+        } catch (SQLException e1) {
+            if (con != null) con.rollback();
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true);
+        }
     }
 
     @Override
