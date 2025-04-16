@@ -9,7 +9,7 @@
 <?import javafx.scene.control.Label?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="client.admin.controller.AdminModifySubjectController"
+      fx:controller="client.admin.controller.AdminModifySubjectPopUpController"
       stylesheets="@../../css/styles.css"
       styleClass="background-pane"
       prefWidth="400.0" prefHeight="250.0">

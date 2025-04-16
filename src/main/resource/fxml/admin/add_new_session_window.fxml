@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="620.0" prefWidth="360.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminCreateSessionController">
+<BorderPane prefHeight="620.0" prefWidth="360.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminAddSessionPopUpController">
    <top>
       <HBox alignment="CENTER" prefHeight="47.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
          <children>

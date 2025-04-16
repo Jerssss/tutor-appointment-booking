@@ -8,14 +8,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 
-public class AdminCreateSubjectView {
+public class AdminAddSubjectPopUpView {
     private final ComboBox<String> academicLevelComboBox;
     private final TextField subjectNameTextField;
     private final TextField subjectIDTextField;
     private final TextArea descriptionTextArea;
     private final Button addSubjectWindowButton;
 
-    public AdminCreateSubjectView(ComboBox<String> academicLevelComboBox, TextField subjectNameTextField, TextField subjectIDTextField, TextArea descriptionTextArea, Button addSubjectWindowButton) {
+    public AdminAddSubjectPopUpView(ComboBox<String> academicLevelComboBox, TextField subjectNameTextField, TextField subjectIDTextField, TextArea descriptionTextArea, Button addSubjectWindowButton) {
         this.academicLevelComboBox = academicLevelComboBox;
         this.subjectNameTextField = subjectNameTextField;
         this.subjectIDTextField = subjectIDTextField;

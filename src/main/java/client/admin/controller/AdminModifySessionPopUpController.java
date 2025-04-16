@@ -1,11 +1,7 @@
 package client.admin.controller;
 
-import client.admin.model.AdminCreateSubjectModel;
-import client.admin.model.AdminModifySessionModel;
-import client.admin.model.AdminModifySubjectModel;
-import client.admin.view.AdminCreateSubjectView;
-import client.admin.view.AdminModifySessionView;
-import client.admin.view.AdminModifySubjectView;
+import client.admin.model.AdminModifySessionPopUpModel;
+import client.admin.view.AdminModifySessionPopUpView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,25 +20,28 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AdminModifySubjectController implements Initializable {
-    private final AdminModifySubjectModel model;
-    private AdminModifySubjectView view;
+public class AdminModifySessionPopUpController implements Initializable {
+    private final AdminModifySessionPopUpModel model;
+    private AdminModifySessionPopUpView view;
     private final AdminService service = new AdminServiceImpl();
 
     @FXML
-    private ComboBox<String> academicLevelComboBox;
+    private ComboBox<String> sessionTypeComboBox;
     @FXML
-    private Button modifySubjectButton;
+    private ComboBox<String> sessionModeComboBox;
+    @FXML
+    private Button modifySessionButton;
 
-    public AdminModifySubjectController() {
-        this.model = new AdminModifySubjectModel(service);
+    public AdminModifySessionPopUpController() {
+        this.model = new AdminModifySessionPopUpModel(service);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.view = new AdminModifySubjectView(
-                academicLevelComboBox,
-                modifySubjectButton
+        this.view = new AdminModifySessionPopUpView(
+                sessionTypeComboBox,
+                sessionModeComboBox,
+                modifySessionButton
         );
 
         try {
@@ -59,15 +58,15 @@ public class AdminModifySubjectController implements Initializable {
     }
 
     private void setupEventHandlers() {
-        view.setModifySubjectButton(this::handleUpdateSubject);
+        view.setModifySessionButton(this::handleUpdateSession);
     }
 
 
-    private void handleUpdateSubject(ActionEvent event) {
+    private void handleUpdateSession(ActionEvent event) {
         try {
             System.out.println("WOAH");
-            String subjectID = AdminViewSubjectController.getClickedSubject();
-            model.updateSession(subjectID, view.getSelectedAcademicLevel());
+            String sessionID = AdminViewSessionController.getClickedSession().get(0);
+            model.updateSession(sessionID, view.getSelectedSessionMode(), view.getSelectedSessionType());
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -77,7 +76,7 @@ public class AdminModifySubjectController implements Initializable {
 
     public void showWindow() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/modify_subject.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/modify_session.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -91,12 +90,12 @@ public class AdminModifySubjectController implements Initializable {
     }
 
     @FXML
-    private void modifySubjectButtonHovered(MouseEvent event) {
+    private void modifySessionButtonHovered(MouseEvent event) {
         view.handleButtonHover(event);
     }
 
     @FXML
-    private void modifySubjectButtonExited(MouseEvent event) {
+    private void modifySessionButtonExited(MouseEvent event) {
         view.handleButtonExit(event);
     }
 }

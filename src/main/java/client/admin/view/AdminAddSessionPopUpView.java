@@ -3,7 +3,6 @@ package client.admin.view;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
@@ -11,7 +10,7 @@ import javafx.util.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AdminCreateSessionView {
+public class AdminAddSessionPopUpView {
     private final ComboBox<String> tutorComboBox;
     private final ComboBox<String> subjectComboBox;
     private final ComboBox<String> sessionModeComboBox;
@@ -24,7 +23,7 @@ public class AdminCreateSessionView {
     private final TextField sessionPriceTextField;
     private final TextField maxStudentsTextField;
 
-    public AdminCreateSessionView(
+    public AdminAddSessionPopUpView(
             ComboBox<String> tutorComboBox,
             ComboBox<String> subjectComboBox,
             ComboBox<String> sessionModeComboBox,

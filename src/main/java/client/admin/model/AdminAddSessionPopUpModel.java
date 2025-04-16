@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AdminCreateSessionModel {
+public class AdminAddSessionPopUpModel {
     private final AdminService adminService;
     private static List<LocalTime> availableStartTimes = new ArrayList<>();
 
-    public AdminCreateSessionModel(AdminService adminService){
+    public AdminAddSessionPopUpModel(AdminService adminService){
         this.adminService = adminService;
     }
 

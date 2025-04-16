@@ -1,7 +1,7 @@
 package client.admin.controller;
 
-import client.admin.model.AdminCreateSessionModel;
-import client.admin.view.AdminCreateSessionView;
+import client.admin.model.AdminAddSessionPopUpModel;
+import client.admin.view.AdminAddSessionPopUpView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,15 +18,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminCreateSessionController implements Initializable {
-    private final AdminCreateSessionModel model;
-    private AdminCreateSessionView view;
+public class AdminAddSessionPopUpController implements Initializable {
+    private final AdminAddSessionPopUpModel model;
+    private AdminAddSessionPopUpView view;
     private final AdminService service = new AdminServiceImpl();
 
     @FXML private ComboBox<String> tutorComboBox;
@@ -40,14 +38,14 @@ public class AdminCreateSessionController implements Initializable {
     @FXML private TextField sessionPriceTextField;
     @FXML private TextField maxStudentsTextField;
 
-    public AdminCreateSessionController() {
-        this.model = new AdminCreateSessionModel(service);
+    public AdminAddSessionPopUpController() {
+        this.model = new AdminAddSessionPopUpModel(service);
 //        showWindow();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.view = new AdminCreateSessionView(
+        this.view = new AdminAddSessionPopUpView(
                 tutorComboBox,
                 subjectComboBox,
                 sessionModeComboBox,

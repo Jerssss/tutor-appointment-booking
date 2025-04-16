@@ -6,10 +6,10 @@ import shared.interfaces.AdminService;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class AdminCreateSubjectModel {
+public class AdminAddSubjectPopUpModel {
     private final AdminService adminService;
 
-    public AdminCreateSubjectModel(AdminService adminService){
+    public AdminAddSubjectPopUpModel(AdminService adminService){
         this.adminService = adminService;
     }
 

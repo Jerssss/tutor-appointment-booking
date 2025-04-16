@@ -84,7 +84,7 @@ public class AdminViewSessionController {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    AdminModifySessionController modifySessionController= new AdminModifySessionController();
+                    AdminModifySessionPopUpController modifySessionController= new AdminModifySessionPopUpController();
                     modifySessionController.showWindow();
                 });
             }
@@ -112,7 +112,7 @@ public class AdminViewSessionController {
     }
 
     private void handleAddSession(ActionEvent event){
-        AdminCreateSessionController createSessionController = new AdminCreateSessionController();
+        AdminAddSessionPopUpController createSessionController = new AdminAddSessionPopUpController();
         createSessionController.showWindow();
     }
 

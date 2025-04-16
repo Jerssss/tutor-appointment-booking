@@ -3,17 +3,16 @@ package client.admin.view;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 
-public class AdminModifySubjectView {
+public class AdminModifySubjectPopUpView {
     private final ComboBox<String> academicLevelComboBox;
     private final Button modifySubjectButton;
 
-    public AdminModifySubjectView(ComboBox<String> academicLevelComboBox, Button modifySubjectButton) {
+    public AdminModifySubjectPopUpView(ComboBox<String> academicLevelComboBox, Button modifySubjectButton) {
         this.academicLevelComboBox = academicLevelComboBox;
         this.modifySubjectButton = modifySubjectButton;
     }

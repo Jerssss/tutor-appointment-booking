@@ -75,7 +75,7 @@ public class AdminViewSubjectController {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
-                    AdminModifySubjectController modifySubjectController= new AdminModifySubjectController();
+                    AdminModifySubjectPopUpController modifySubjectController= new AdminModifySubjectPopUpController();
                     modifySubjectController.showWindow();
                 });
             }
@@ -111,7 +111,7 @@ public class AdminViewSubjectController {
     }
 
     private void handleAddSubject(ActionEvent event){
-        AdminCreateSubjectController createSubjectController = new AdminCreateSubjectController();
+        AdminAddSubjectPopUpController createSubjectController = new AdminAddSubjectPopUpController();
         createSubjectController.showWindow();
     }
 

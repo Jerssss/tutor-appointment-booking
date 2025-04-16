@@ -3,18 +3,17 @@ package client.admin.view;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 
-public class AdminModifySessionView {
+public class AdminModifySessionPopUpView {
     private final ComboBox<String> sessionTypeComboBox;
     private final ComboBox<String> sessionModeComboBox;
     private final Button modifySessionButton;
 
-    public AdminModifySessionView(ComboBox<String> sessionTypeComboBox, ComboBox<String> sessionModeComboBox, Button modifySessionButton) {
+    public AdminModifySessionPopUpView(ComboBox<String> sessionTypeComboBox, ComboBox<String> sessionModeComboBox, Button modifySessionButton) {
         this.sessionTypeComboBox = sessionTypeComboBox;
         this.sessionModeComboBox = sessionModeComboBox;
         this.modifySessionButton = modifySessionButton;

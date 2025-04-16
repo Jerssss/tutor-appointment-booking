@@ -1,7 +1,7 @@
 package client.admin.controller;
 
-import client.admin.model.AdminCreateSubjectModel;
-import client.admin.view.AdminCreateSubjectView;
+import client.admin.model.AdminAddSubjectPopUpModel;
+import client.admin.view.AdminAddSubjectPopUpView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +20,9 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AdminCreateSubjectController implements Initializable {
-    private final AdminCreateSubjectModel model;
-    private AdminCreateSubjectView view;
+public class AdminAddSubjectPopUpController implements Initializable {
+    private final AdminAddSubjectPopUpModel model;
+    private AdminAddSubjectPopUpView view;
     private final AdminService service = new AdminServiceImpl();
 
     @FXML
@@ -36,13 +36,13 @@ public class AdminCreateSubjectController implements Initializable {
     @FXML
     private Button addSubjectWindowButton;
 
-    public AdminCreateSubjectController() {
-        this.model = new AdminCreateSubjectModel(service);
+    public AdminAddSubjectPopUpController() {
+        this.model = new AdminAddSubjectPopUpModel(service);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.view = new AdminCreateSubjectView(
+        this.view = new AdminAddSubjectPopUpView(
                 academicLevelComboBox,
                 subjectNameTextField,
                 subjectIDTextField,

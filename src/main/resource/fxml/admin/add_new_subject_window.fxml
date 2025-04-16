@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.control.TextArea?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminCreateSubjectController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminAddSubjectPopUpController">
    <center>
       <VBox prefHeight="164.0" prefWidth="266.0" BorderPane.alignment="CENTER">
          <children>
