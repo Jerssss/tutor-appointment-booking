@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+
 import java.util.List;
 
 public class AdminViewSessionView {
@@ -17,6 +19,7 @@ public class AdminViewSessionView {
     private final TableColumn<List<String>, String> subjectColumn;
     private final Button addSessionButton;
     private final Button refreshButton;
+    private final TextField searchResTextField;
 
     public AdminViewSessionView(
             TableView<List<String>> tableView, TableColumn<List<String>, String> sessionIDColumn,
@@ -24,7 +27,7 @@ public class AdminViewSessionView {
             TableColumn<List<String>, String> timeColumn,
             TableColumn<List<String>, String> durationColumn,
             TableColumn<List<String>, String> academicLevelColumn,
-            TableColumn<List<String>, String> subjectColumn, Button addSessionButton, Button refreshButton) {
+            TableColumn<List<String>, String> subjectColumn, Button addSessionButton, Button refreshButton, TextField searchResTextField) {
 
         this.tableView = tableView;
         this.sessionIDColumn = sessionIDColumn;
@@ -35,6 +38,7 @@ public class AdminViewSessionView {
         this.subjectColumn = subjectColumn;
         this.addSessionButton = addSessionButton;
         this.refreshButton = refreshButton;
+        this.searchResTextField = searchResTextField;
 
         setupTableColumns();
     }
@@ -51,4 +55,12 @@ public class AdminViewSessionView {
     public void displaySession(ObservableList<List<String>> sessions) {
         tableView.setItems(sessions);
     }
+
+    public String getsearchResTextField() {
+        return searchResTextField.getText();
+    }
+
+//    public List<String> getListListedSession(){
+//        return tableView.getItems();
+//    }
 }

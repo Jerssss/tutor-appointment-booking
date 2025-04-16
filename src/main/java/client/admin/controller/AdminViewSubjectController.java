@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.classes.Subject;
@@ -45,6 +42,8 @@ public class AdminViewSubjectController {
     private Button addSubjectButton;
     @FXML
     private Button refreshButton;
+    @FXML
+    private TextField searchResTextField;
 
     public AdminViewSubjectController() {
         this.model = new AdminViewSubjectModel(service);
@@ -64,6 +63,10 @@ public class AdminViewSubjectController {
 
         setActionAddSubjectButton(this::handleAddSubject);
         setActionRefreshButtonButton(this::handleRefreshSubject);
+
+        searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterSubject(newValue);
+        });
 
         optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
             private final Button optionButton = new Button("Option");
@@ -133,5 +136,31 @@ public class AdminViewSubjectController {
 
     public static String getClickedSubject(){
         return clickedSubject;
+    }
+
+    private void filterSubject(String searchText) {
+        try {
+            List<Subject> allSubjects = model.displaySubjects();
+            ObservableList<Subject> filteredData = FXCollections.observableArrayList();
+
+            if (searchText == null || searchText.isEmpty()) {
+                filteredData.addAll(allSubjects);
+            } else {
+                String lowerCaseSearchText = searchText.toLowerCase();
+                for (Subject subject : allSubjects) {
+                    boolean match = subject.getSubjectID().toLowerCase().contains(lowerCaseSearchText) || subject.getSubjectName().toLowerCase().contains(lowerCaseSearchText) ||
+                            subject.getSubjectDescription().toLowerCase().contains(lowerCaseSearchText) ||
+                            subject.getSubjectLevel().toLowerCase().contains(lowerCaseSearchText);
+
+                    if (match) {
+                        filteredData.add(subject);
+                    }
+                }
+            }
+
+            view.displaySubject(filteredData);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

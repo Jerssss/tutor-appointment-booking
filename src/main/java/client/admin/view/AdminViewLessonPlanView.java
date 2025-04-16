@@ -2,14 +2,11 @@ package client.admin.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import shared.classes.LessonPlan;
-import shared.classes.Subject;
 
-import java.util.List;
 
 public class AdminViewLessonPlanView {
     private final TableView<LessonPlan> highSchoolTableView;
@@ -24,6 +21,7 @@ public class AdminViewLessonPlanView {
 //    private final TableColumn<LessonPlan, String> collegeSubjectNameColumn;
     private final TableColumn<LessonPlan, String> collegeObjectivesColumn;
     private final TableColumn<LessonPlan, String> collegeTopicsColumn;
+
 
     public AdminViewLessonPlanView(TableView<LessonPlan> highSchoolTableView, TableColumn<LessonPlan, String> highSchoolLessonPlanIDColumn,
                                    TableColumn<LessonPlan, String> highSchoolSubjectIDColumn,

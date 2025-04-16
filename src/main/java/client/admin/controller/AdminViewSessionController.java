@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.classes.TutorSession;
@@ -46,11 +43,12 @@ public class AdminViewSessionController {
     private TableColumn<List<String>, String> subjectColumn;
     @FXML
     private TableColumn<List<String>, Void> optionColumn;
-
     @FXML
     private Button addSessionButton;
     @FXML
     private Button refreshButton;
+    @FXML
+    private TextField searchResTextField;
 
     public AdminViewSessionController() {
         this.model = new AdminViewSessionModel(service);
@@ -67,12 +65,17 @@ public class AdminViewSessionController {
                 academicLevelColumn,
                 subjectColumn,
                 addSessionButton,
-                refreshButton
+                refreshButton,
+                searchResTextField
         );
         displaySessions();
 
         setActionAddSessionButton(this::handleAddSession);
         setActionRefreshButton(this::handleRefreshSession);
+
+        searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterSessions(newValue);
+        });
 
         optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
             private final Button optionButton = new Button("Option");
@@ -114,7 +117,9 @@ public class AdminViewSessionController {
     }
 
     private void handleRefreshSession(ActionEvent event){
-        System.out.println("REFRESH CLICKED");
+        displaySessions();
+    }
+    private void handleSearch(ActionEvent event){
         displaySessions();
     }
 
@@ -136,5 +141,29 @@ public class AdminViewSessionController {
 
     public static List<String> getClickedSession(){
         return clickedSession;
+    }
+
+    private void filterSessions(String searchText) {
+        try {
+            List<List<String>> allSessions = model.displaySessions();
+            ObservableList<List<String>> filteredData = FXCollections.observableArrayList();
+
+            if (searchText == null || searchText.isEmpty()) {
+                filteredData.addAll(allSessions);
+            } else {
+                String lowerCaseSearchText = searchText.toLowerCase();
+                for (List<String> session : allSessions) {
+                    boolean match = session.stream()
+                            .anyMatch(field -> field != null && field.toLowerCase().contains(lowerCaseSearchText));
+                    if (match) {
+                        filteredData.add(session);
+                    }
+                }
+            }
+
+            view.displaySession(filteredData);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

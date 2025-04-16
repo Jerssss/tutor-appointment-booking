@@ -13,10 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.classes.LessonPlan;
@@ -57,14 +54,12 @@ public class AdminViewLessonPlanController {
     private TableColumn<LessonPlan, String> collegeTopicsColumn;
     @FXML
     private Button refreshButton;
+    @FXML
+    private TextField searchReportTextField;
 
     public AdminViewLessonPlanController() {
         this.model = new AdminViewLessonPlanModel(service);
     }
-
-//    public AdminViewLessonPlanController(AdminViewLessonPlanModel model) {
-//        this.model = model;
-//    }
 
     @FXML
     private void initialize() {
@@ -81,7 +76,9 @@ public class AdminViewLessonPlanController {
                 collegeTopicsColumn
         );
         displayLessonPlans();
-
+        searchReportTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterLessonPlans(newValue);
+        });
         setActionRefreshButtonButton(this::handleRefreshLessonPlan);
     }
 
@@ -123,4 +120,48 @@ public class AdminViewLessonPlanController {
         }
     }
 
+    private void filterLessonPlans(String searchText) {
+        try {
+            List<LessonPlan> collegePlans = model.getLessonPlanCollege();
+            List<LessonPlan> highSchoolPlans = model.getLessonPlanHighSchool();
+
+            ObservableList<LessonPlan> filteredCollegePlans = FXCollections.observableArrayList();
+            ObservableList<LessonPlan> filteredHighSchoolPlans = FXCollections.observableArrayList();
+
+            if (searchText == null || searchText.isEmpty()) {
+                filteredCollegePlans.addAll(collegePlans);
+            } else {
+                String lowerCaseSearchText = searchText.toLowerCase();
+                for (LessonPlan plan : collegePlans) {
+                    if (matchesSearch(plan, lowerCaseSearchText)) {
+                        filteredCollegePlans.add(plan);
+                    }
+                }
+            }
+
+            if (searchText == null || searchText.isEmpty()) {
+                filteredHighSchoolPlans.addAll(highSchoolPlans);
+            } else {
+                String lowerCaseSearchText = searchText.toLowerCase();
+                for (LessonPlan plan : highSchoolPlans) {
+                    if (matchesSearch(plan, lowerCaseSearchText)) {
+                        filteredHighSchoolPlans.add(plan);
+                    }
+                }
+            }
+
+
+            view.displayLessonPlan(filteredCollegePlans, filteredHighSchoolPlans);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean matchesSearch(LessonPlan plan, String searchText) {
+        return plan.getLessonPlanID().toLowerCase().contains(searchText) ||
+                plan.getSubjectID().toLowerCase().contains(searchText) ||
+                plan.getObjectives().toLowerCase().contains(searchText) ||
+                plan.getTopicsCovered().toLowerCase().contains(searchText);
+    }
 }
