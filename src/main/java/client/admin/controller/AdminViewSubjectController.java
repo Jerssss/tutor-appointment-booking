@@ -79,8 +79,8 @@ public class AdminViewSubjectController {
 
     private void handleAddSubject(ActionEvent event){
 //        redirectToAddSessionPopup(event);
-        AdminCreateSessionController createSessionController = new AdminCreateSessionController();
-        createSessionController.showWindow();
+        AdminCreateSubjectController createSubjectController = new AdminCreateSubjectController();
+        createSubjectController.showWindow();
     }
 
     public void setActionAddSubjectButton(EventHandler<ActionEvent> event) {

@@ -1,4 +1,103 @@
 package client.admin.controller;
 
-public class AdminCreateSubjectController {
+import client.admin.model.AdminCreateSubjectModel;
+import client.admin.view.AdminCreateSubjectView;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import server.services.AdminServiceImpl;
+import shared.interfaces.AdminService;
+
+import java.io.IOException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+public class AdminCreateSubjectController implements Initializable {
+    private final AdminCreateSubjectModel model;
+    private AdminCreateSubjectView view;
+    private final AdminService service = new AdminServiceImpl();
+
+    @FXML
+    private ComboBox<String> academicLevelComboBox;
+    @FXML
+    private TextField subjectIDTextField;
+    @FXML
+    private TextField subjectNameTextField;
+    @FXML
+    private TextArea descriptionTextArea;
+    @FXML
+    private Button addSubjectWindowButton;
+
+    public AdminCreateSubjectController() {
+        this.model = new AdminCreateSubjectModel(service);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.view = new AdminCreateSubjectView(
+                academicLevelComboBox,
+                subjectNameTextField,
+                subjectIDTextField,
+                descriptionTextArea,
+                addSubjectWindowButton
+        );
+
+        try {
+            initializeData();
+            setupEventHandlers();
+            view.setupButtonHoverEffects();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void initializeData() throws RemoteException {
+        view.initializeComboBoxes();
+    }
+
+    private void setupEventHandlers() {
+        view.setAddSubjectWindowButton(this::handleAddSubject);
+    }
+
+
+    private void handleAddSubject(ActionEvent event) {
+        try {
+            model.addNewSubject(view.getSubjectID(), view.getSubjectName(), view.getSubjectDescrip(), view.getSelectedAcademicLevel());
+        } catch (SQLException | RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_subject_window.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Add New Subject");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("[ERROR] Failed to load Add Subject window: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void addSubjectButtonHovered(MouseEvent event) {
+        view.handleButtonHover(event);
+    }
+
+    @FXML
+    private void addSubjectButtonExited(MouseEvent event) {
+        view.handleButtonExit(event);
+    }
 }

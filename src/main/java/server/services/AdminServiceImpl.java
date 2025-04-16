@@ -261,16 +261,16 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             preparedStatement.setInt(9, session.getMaximumStudents());
             preparedStatement.setDouble(10, session.getSessionPrice());
 
-            preparedStatement.executeUpdate(); // Execute the insert
-            con.commit(); // Commit if everything is fine
+            preparedStatement.executeUpdate();
+            con.commit();
 
         } catch (SQLException e1) {
-            if (con != null) con.rollback(); // Rollback on error
+            if (con != null) con.rollback();
             e1.printStackTrace();
         } catch (Exception e2) {
             e2.printStackTrace();
         } finally {
-            if (con != null) con.setAutoCommit(true); // Reset auto-commit to default
+            if (con != null) con.setAutoCommit(true);
         }
     }
 
@@ -333,8 +333,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         }
         return subjectID;
     }
-
-
     @Override
     public String getTutorID(String tutorName) throws RemoteException{
         String[] nameParts = tutorName.split(" ");
@@ -417,8 +415,29 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public Subject addSubject() throws RemoteException {
-        return null;
+    public void addSubject(Subject subject) throws RemoteException, SQLException {
+        query = "INSERT INTO subject (subjectID, subjectName, subjectDescription, subjectLevel) VALUES (?, ?, ?, ?)";
+
+        try {
+            con.setAutoCommit(false); // Disable auto-commit before manual commit
+
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, subject.getSubjectID());
+            preparedStatement.setString(2, subject.getSubjectName());
+            preparedStatement.setString(3, subject.getSubjectDescription());
+            preparedStatement.setString(4, subject.getSubjectLevel());
+
+            preparedStatement.executeUpdate();
+            con.commit();
+
+        } catch (SQLException e1) {
+            if (con != null) con.rollback();
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true);
+        }
     }
 
     @Override
