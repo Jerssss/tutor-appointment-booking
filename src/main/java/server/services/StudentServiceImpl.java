@@ -127,8 +127,67 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
-    public LessonPlan viewLessonPlan() {
-        return null;
+    public List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException {
+        System.out.println("[SERVER] Fetching high school lesson plans from database...");
+        List<LessonPlan> lessonPlans = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'HS%'"
+             )) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                LessonPlan lessonPlan = new LessonPlan(
+                        rs.getString("lessonPlanID"),
+                        rs.getString("subjectID"),
+                        rs.getString("objectives"),
+                        rs.getString("topicsCovered")
+                );
+                lessonPlans.add(lessonPlan);
+                System.out.println("[SERVER] Fetched high school lesson plan: " + lessonPlan);
+            }
+
+            if (lessonPlans.isEmpty()) {
+                System.out.println("[SERVER] No high school lesson plans found in the database.");
+            }
+
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while fetching high school lesson plans: " + e.getMessage());
+        }
+        return lessonPlans;
+    }
+
+    @Override
+    public List<LessonPlan> viewCollegeLessonPlan() throws RemoteException {
+        System.out.println("[SERVER] Fetching college lesson plans from database...");
+        List<LessonPlan> lessonPlans = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'IT%'"
+             )) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                LessonPlan lessonPlan = new LessonPlan(
+                        rs.getString("lessonPlanID"),
+                        rs.getString("subjectID"),
+                        rs.getString("objectives"),
+                        rs.getString("topicsCovered")
+                );
+                lessonPlans.add(lessonPlan);
+                System.out.println("[SERVER] Fetched college lesson plan: " + lessonPlan);
+            }
+
+            if (lessonPlans.isEmpty()) {
+                System.out.println("[SERVER] No college lesson plans found in the database.");
+            }
+
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while fetching college lesson plans: " + e.getMessage());
+        }
+        return lessonPlans;
     }
 
     @Override
