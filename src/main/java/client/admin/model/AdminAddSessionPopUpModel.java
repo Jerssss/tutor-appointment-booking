@@ -3,6 +3,7 @@ package client.admin.model;
 import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -19,13 +20,38 @@ public class AdminAddSessionPopUpModel {
         this.adminService = adminService;
     }
 
-    public List<String> getTutorNames() throws RemoteException {
-        return adminService.getAllTutorName();
+    public List<String> getAllTutorNames() throws RemoteException {
+        return adminService.getAllTutorNames();
     }
 
-    public List<String> getSubjectNames() throws RemoteException {
-        return adminService.getAllSubjects();
+    public List<String> getAllTutorIDs() throws RemoteException{
+        return adminService.getAllTutorIDs();
     }
+
+    public List<String> getAllSubjectNames() throws RemoteException {
+        return adminService.getAllSubjectNames();
+    }
+
+    public List<String> getAllSubjectIDs() throws RemoteException{
+        return adminService.getAllSubjectIDs();
+    }
+
+    public String getTutorName(String tutorID) throws RemoteException {
+        return adminService.getTutorName(tutorID);
+    }
+
+    public String getTutorID(String tutorName) throws RemoteException {
+        return adminService.getTutorID(tutorName);
+    }
+
+    public String getSubjectName(String subjectID) throws RemoteException {
+        return adminService.getSubjectName(subjectID);
+    }
+
+    public String getSubjectID(String subjectName) throws RemoteException {
+        return adminService.getSubjectID(subjectName);
+    }
+
 
     public List<String> getAvailableTimeTutor(String tutorName, String date) throws RemoteException {
         Map<LocalTime, Integer> currentSched = adminService.getTutorSchedule(adminService.getTutorID(tutorName), date);
@@ -71,9 +97,12 @@ public class AdminAddSessionPopUpModel {
 
     public void addNewSession(String chosenTutor, LocalDate chosenDate, String chosenStartTime, String chosenDuration, String chosenSubject,
                               String chosenMode, String chosenType, String maxStudents, String price) throws RemoteException, SQLException {
-        TutorSession newSession = new TutorSession(generateSessionID(), adminService.getTutorID(chosenTutor), adminService.getSubjectID(chosenSubject), "Scheduled",
+        TutorSession newSession = new TutorSession(generateSessionID(), chosenTutor, adminService.getSubjectID(chosenSubject), "Scheduled",
                 chosenDate, LocalTime.parse(chosenStartTime), chosenMode, chosenType, Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
                 Double.parseDouble(price));
+        System.out.println("chosenSubject: " + adminService.getSubjectID(chosenSubject));
+        System.out.println("chosenType: " + chosenType);
+        System.out.println("chosenMode: " + chosenMode);
         adminService.addSession(newSession);
     }
 

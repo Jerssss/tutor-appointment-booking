@@ -8,8 +8,6 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -220,8 +218,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             e2.printStackTrace();
         }
     }
-
-
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
@@ -273,10 +269,13 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addSession(TutorSession session) throws RemoteException, SQLException {
-        query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             con.setAutoCommit(false);
+
+            System.out.println("TUTOR!: " + session.getTutorID());
+            System.out.println("SUBJECT!: " + session.getSubjectID());
 
             preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, session.getSessionID());
@@ -286,9 +285,11 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             preparedStatement.setDate(5, java.sql.Date.valueOf(session.getSessionDate()));
             preparedStatement.setTime(6, java.sql.Time.valueOf(session.getSessionTime()));
             preparedStatement.setInt(7, session.getSessionDuration());
-            preparedStatement.setInt(8, session.getNumberOfStudents());
-            preparedStatement.setInt(9, session.getMaximumStudents());
-            preparedStatement.setDouble(10, session.getSessionPrice());
+            preparedStatement.setString(8, session.getSessionType());
+            preparedStatement.setString(9, session.getSessionMode());
+            preparedStatement.setInt(10, session.getNumberOfStudents());
+            preparedStatement.setInt(11, session.getMaximumStudents());
+            preparedStatement.setDouble(12, session.getSessionPrice());
 
             preparedStatement.executeUpdate();
             con.commit();
@@ -357,7 +358,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public List<String> getAllTutorName() throws RemoteException{
+    public List<String> getAllTutorNames() throws RemoteException{
         List<String> allTutorName = new ArrayList<>();
         query = "SELECT CONCAT(firstName,' ', lastName) AS names FROM user\n" +
                 "WHERE role = 'tutor';";
@@ -376,7 +377,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public List<String> getAllSubjects() throws RemoteException{
+    public List<String> getAllSubjectNames() throws RemoteException{
         List<String> allSubjects = new ArrayList<>();
         query = "SELECT subjectName FROM `subject`;";
         try{
@@ -391,11 +392,46 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         }
         return allSubjects;
     }
+    @Override
+    public List<String> getAllTutorIDs() throws RemoteException{
+        List<String> allTutorID = new ArrayList<>();
+        query = "SELECT userID FROM user WHERE role = 'Tutor'";
 
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                allTutorID.add(resultSet.getString("userID"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return allTutorID;
+    }
+    @Override
+    public List<String> getAllSubjectIDs() throws RemoteException{
+        List<String> allSubjectID = new ArrayList<>();
+        query = "SELECT subjectID FROM subject";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                allSubjectID.add(resultSet.getString("subjectID"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return allSubjectID;
+    }
     @Override
     public String getSubjectID(String subjectName) throws RemoteException{
         String subjectID = "";
         query = "SELECT subjectID FROM subject WHERE subjectName = ?";
+
+        System.out.println("SSSUBBBJJECCTT: " + subjectName);
 
         try{
             preparedStatement = con.prepareStatement(query);
@@ -409,6 +445,24 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             e.printStackTrace();
         }
         return subjectID;
+    }
+    @Override
+    public String getSubjectName(String subjectID) throws RemoteException{
+        String subjectName = "";
+        query = "SELECT subjectName FROM subject WHERE subjectID = ?";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, subjectID);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                subjectName = resultSet.getString("subjectName");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return subjectName;
     }
     @Override
     public String getTutorID(String tutorName) throws RemoteException{
@@ -426,6 +480,23 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             e.printStackTrace();
         }
         return tutorID;
+    }
+    @Override
+    public String getTutorName(String tutorID) throws RemoteException{
+        String tutorName = "";
+        query = "SELECT CONCAT(firstName,' ', lastName) AS name FROM user WHERE userID = ?;";
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, tutorID);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                tutorName = resultSet.getString("name");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return tutorName;
     }
 
     @Override
