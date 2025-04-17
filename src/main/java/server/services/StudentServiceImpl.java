@@ -10,6 +10,8 @@ import java.rmi.RemoteException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentServiceImpl implements Remote, StudentService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
@@ -93,8 +95,35 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
-    public Subject viewSubject() {
-        return null;
+    public List<Subject> viewSubject() throws RemoteException {
+        System.out.println("[SERVER] Fetching subjects from database...");
+        List<Subject> subjects = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM subject"
+             )) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Subject subject = new Subject(
+                        rs.getString("subjectID"),
+                        rs.getString("subjectName"),
+                        rs.getString("subjectDescription"),
+                        rs.getString("subjectLevel")
+                );
+                subjects.add(subject);
+                System.out.println("[SERVER] Fetched subject: " + subject);
+            }
+
+            if (subjects.isEmpty()) {
+                System.out.println("[SERVER] No subjects found in the database.");
+            }
+
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while fetching subjects: " + e.getMessage());
+        }
+        return subjects;
     }
 
     @Override

@@ -1,4 +1,108 @@
 package client.student.view;
 
-public class ViewSubjectView {
+import client.student.controller.ViewSubjectController;
+import client.student.model.ViewSubjectModel;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import server.services.StudentServiceImpl;
+import shared.classes.Subject;
+import shared.interfaces.StudentService;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
+public class ViewSubjectView implements Initializable {
+    @FXML private TextField searchResTextField;
+    @FXML private Button refreshButton;
+    @FXML private TableView<Subject> viewResTableView;
+    @FXML private TableColumn<Subject, String> dateColumn;
+    @FXML private TableColumn<Subject, String> timeColumn;
+    @FXML private TableColumn<Subject, String> durationColumn;
+    @FXML private TableColumn<Subject, String> courseColumn;
+
+    private final ObservableList<Subject> allSubjects = FXCollections.observableArrayList();
+    private ViewSubjectController controller;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initializeTableColumns();
+        initializeController();
+        initializeSearchListener();
+    }
+
+    private void initializeTableColumns() {
+        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
+        timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
+        durationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
+        courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectLevel()));
+    }
+
+    private void initializeController() {
+        System.out.println("[CLIENT] Controller initialized!");
+        StudentService service = new StudentServiceImpl(); // Initialize the service
+        ViewSubjectModel model = new ViewSubjectModel(service);
+        this.controller = new ViewSubjectController(this, model);
+
+        // Call refreshTable to fetch and display data
+        controller.refreshTable();
+    }
+
+    public void initializeSearchListener() {
+        searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchSubjects(newValue.toLowerCase().trim());
+        });
+    }
+
+    public void searchSubjects(String query) {
+        String searchText = searchResTextField.getText().trim().toLowerCase();
+        if (allSubjects.isEmpty()) {
+            return;
+        }
+
+        if (query == null || query.isEmpty()) {
+            viewResTableView.setItems(allSubjects);
+            return;
+        }
+
+        List<Subject> filteredList = allSubjects.stream()
+                .filter(subject -> subject.getSubjectID().toLowerCase().contains(searchText) ||
+                        subject.getSubjectName().toLowerCase().contains(searchText) ||
+                        subject.getSubjectDescription().toLowerCase().contains(searchText) ||
+                        subject.getSubjectLevel().toLowerCase().contains(searchText))
+                .collect(Collectors.toList());
+        viewResTableView.setItems(FXCollections.observableArrayList(filteredList));
+    }
+
+    public void updateTable(List<Subject> subjects) {
+        if (subjects == null || subjects.isEmpty()) {
+            System.out.println("[CLIENT] No data to display in TableView.");
+            return;
+        }
+
+        allSubjects.setAll(subjects);
+        viewResTableView.setItems(allSubjects);
+        viewResTableView.refresh();
+        System.out.println("[CLIENT] Table updated with " + subjects.size() + " subjects.");
+        viewResTableView.requestLayout();
+    }
+
+    @FXML
+    private void handleRefresh() {
+        System.out.println("[CLIENT] Refresh button clicked.");
+        if (controller != null) {
+            controller.refreshTable();
+        }
+    }
+
+    public void setRefreshButtonAction(EventHandler<ActionEvent> event) {
+        refreshButton.setOnAction(event);
+    }
 }
