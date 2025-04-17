@@ -10,7 +10,8 @@ public interface StudentService {
     Booking viewStudentBooking(int studentID) throws RemoteException;
     Booking modifyBooking(int studentID, int sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice) throws RemoteException;
     List<Subject> viewSubject() throws RemoteException;
-    LessonPlan viewLessonPlan();
+    List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException;
+    List<LessonPlan> viewCollegeLessonPlan() throws RemoteException;
     Payment viewPaymentHistory();
     Student viewStudentBalance();
     Payment createPayment(String studentID, double amount, String paymentMethod) throws RemoteException;
