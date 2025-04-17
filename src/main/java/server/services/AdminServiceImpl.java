@@ -304,14 +304,20 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public void modifySession(String sessionID, String sessionMode, String sessionType) throws RemoteException, SQLException {
-        query = "UPDATE tutorsession SET numberOfStudents = 1 WHERE sessionID = ?";
+    public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException {
+        query = "UPDATE tutorsession SET sessionMode = ?, sessionType = ?, numberOfStudents = ?, maximumStudents = ?, sessionPrice = ? WHERE sessionID = ?";
 
         try {
             con.setAutoCommit(false);
 
             preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, sessionID);
+            preparedStatement.setString(1, sessionMode);
+            preparedStatement.setString(2, sessionType);
+            preparedStatement.setString(3, numStudents);
+            preparedStatement.setString(4, maxStudents);
+            preparedStatement.setString(5, sessionPrice);
+            preparedStatement.setString(6, sessionID);
+
 
             preparedStatement.executeUpdate();
             con.commit();
@@ -324,6 +330,30 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         } finally {
             if (con != null) con.setAutoCommit(true);
         }
+    }
+
+    @Override
+    public List<String> getEditableDetails(String sessionID) throws RemoteException{
+        List<String> details = new ArrayList<>();
+        query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice FROM tutorsession\n" +
+                "WHERE sessionID = ? ;";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, sessionID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                details.add(resultSet.getString("sessionType"));
+                details.add(resultSet.getString("sessionMode"));
+                details.add(resultSet.getString("numberOfStudents"));
+                details.add(resultSet.getString("maximumStudents"));
+                details.add(resultSet.getString("sessionPrice"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return details;
     }
 
     @Override
@@ -554,34 +584,36 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public List<Payment> viewPayment() throws RemoteException{
-        List<Payment> studentPayments = new ArrayList<>();
-
-        query = "SELECT p.paymentID, p.studentID, ts.subjectID AS courseID, b.sessionMode, p.paymentDate, p.paymentTime, p.paymentMethod, p.amount  " +
-                "FROM payment p " +
-                "JOIN booking b ON p.studentID = b.studentID " +
-                "JOIN tutorsession ts ON b.sessionID = ts.sessionID;";
-
-        try {
-            stmt = con.createStatement();
-            resultSet = stmt.executeQuery(query);
-            while (resultSet.next()) {
-                String paymentID = resultSet.getString(1);
-                String studentID = resultSet.getString(2);
-                String subjectID = resultSet.getString(3);
-                String mode = resultSet.getString(4);
-                LocalDate date = resultSet.getDate(5).toLocalDate();
-                LocalTime time = resultSet.getTime(6).toLocalTime();
-                String paymentMethod = resultSet.getString(7);
-                double amount = resultSet.getDouble(8);
-
-                Payment payment = new Payment(paymentID, studentID, subjectID, mode, date, time, paymentMethod, amount);
-                studentPayments.add(payment);
-            }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        }
-        return studentPayments;
+//        List<Payment> studentPayments = new ArrayList<>();
+//
+//        query = "SELECT p.paymentID, p.studentID, ts.subjectID AS courseID, b.sessionMode, p.paymentDate, p.paymentTime, p.paymentMethod, p.amount  " +
+//                "FROM payment p " +
+//                "JOIN booking b ON p.studentID = b.studentID " +
+//                "JOIN tutorsession ts ON b.sessionID = ts.sessionID;";
+//
+//        try {
+//            stmt = con.createStatement();
+//            resultSet = stmt.executeQuery(query);
+//            while (resultSet.next()) {
+//                String paymentID = resultSet.getString(1);
+//                String studentID = resultSet.getString(2);
+//                String subjectID = resultSet.getString(3);
+//                String mode = resultSet.getString(4);
+//                LocalDate date = resultSet.getDate(5).toLocalDate();
+//                LocalTime time = resultSet.getTime(6).toLocalTime();
+//                String paymentMethod = resultSet.getString(7);
+//                double amount = resultSet.getDouble(8);
+//
+//                Payment payment = new Payment(paymentID, studentID, subjectID, mode, date, time, paymentMethod, amount);
+//                studentPayments.add(payment);
+//            }
+//        } catch (SQLException e1) {
+//            e1.printStackTrace();
+//        } catch (Exception e2) {
+//            e2.printStackTrace();
+//        }
+//        return studentPayments;
+    return null;
     }
+
 }

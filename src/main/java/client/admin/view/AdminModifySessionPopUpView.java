@@ -20,7 +20,7 @@ public class AdminModifySessionPopUpView {
     }
 
     public void initializeComboBoxes() {
-        sessionTypeComboBox.getItems().addAll("High School", "College");
+        sessionTypeComboBox.getItems().addAll("Individual", "Group");
         sessionModeComboBox.getItems().addAll("Online", "Face-To-Face");
     }
 

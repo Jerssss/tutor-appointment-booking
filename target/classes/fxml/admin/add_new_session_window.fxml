@@ -38,7 +38,7 @@
                         <Font name="System Bold" size="12.0"/>
                      </font>
                   </Label>
-                  <DatePicker fx:id="datePicker" prefWidth="250.0"/>
+                  <DatePicker fx:id="datePicker" prefWidth="250.0" styleClass="background-pane" stylesheets="@../../css/styles.css"/>
 
                   <Label text="Start Time">
                      <font>
@@ -80,14 +80,14 @@
                         <Font name="System Bold" size="12.0"/>
                      </font>
                   </Label>
-                  <TextField fx:id="sessionPriceTextField" prefWidth="250.0" promptText="Enter price"/>
+                  <TextField fx:id="sessionPriceTextField" prefWidth="250.0" promptText="Enter price" styleClass="background-pane" stylesheets="@../../css/styles.css"/>
 
                   <Label text="Max Number of Students">
                      <font>
                         <Font name="System Bold" size="12.0"/>
                      </font>
                   </Label>
-                  <TextField fx:id="maxStudentsTextField" prefWidth="250.0" promptText="Enter maximum students"/>
+                  <TextField fx:id="maxStudentsTextField" prefWidth="250.0" promptText="Enter maximum students" styleClass="background-pane" stylesheets="@../../css/styles.css"/>
                </children>
             </VBox>
             <!-- Now the button is part of the same VBox and will appear right after the fields -->

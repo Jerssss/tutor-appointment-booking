@@ -10,7 +10,7 @@ import javafx.util.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AdminAddSessionPopUpView {
+public class AdminViewMoreSessionsPopUpView {
     private final ComboBox<String> tutorComboBox;
     private final ComboBox<String> subjectComboBox;
     private final ComboBox<String> sessionModeComboBox;
@@ -23,7 +23,7 @@ public class AdminAddSessionPopUpView {
     private final TextField sessionPriceTextField;
     private final TextField maxStudentsTextField;
 
-    public AdminAddSessionPopUpView(
+    public AdminViewMoreSessionsPopUpView(
             ComboBox<String> tutorComboBox,
             ComboBox<String> subjectComboBox,
             ComboBox<String> sessionModeComboBox,
@@ -140,9 +140,6 @@ public class AdminAddSessionPopUpView {
     public String getMaxStudents(){
         return maxStudentsTextField.getText();
     }
-
-
-
 
 
     public void updateStartTimes(List<String> times) {

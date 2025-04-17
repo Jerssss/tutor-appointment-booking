@@ -31,6 +31,19 @@ public class AdminModifySessionPopUpController implements Initializable {
     private ComboBox<String> sessionModeComboBox;
     @FXML
     private Button modifySessionButton;
+    @FXML
+    private TextField numberOfStudentsField;
+    @FXML
+    private TextField sessionPriceField;
+    @FXML
+    private TextField maxNumberOfStudentsField;
+    @FXML
+    private Label numberStudentsErrorLabel;
+    @FXML
+    private Label maxStudentsErrorLabel;
+    @FXML
+    private Label priceErrorLabel;
+
 
     public AdminModifySessionPopUpController() {
         this.model = new AdminModifySessionPopUpModel(service);
@@ -46,11 +59,27 @@ public class AdminModifySessionPopUpController implements Initializable {
 
         try {
             initializeData();
+            populateFields();
             setupEventHandlers();
             view.setupButtonHoverEffects();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
+        sessionTypeComboBox.setOnAction(event -> {
+            String selectedType = sessionTypeComboBox.getSelectionModel().getSelectedItem();
+            if ("Individual".equalsIgnoreCase(selectedType)) {
+                maxNumberOfStudentsField.setText("1");
+                maxNumberOfStudentsField.setEditable(false);
+            } else {
+                maxNumberOfStudentsField.setEditable(true);
+                maxNumberOfStudentsField.setPromptText("Enter maximum students...");
+                maxNumberOfStudentsField.clear();
+            }
+        });
+
     }
 
     private void initializeData() throws RemoteException {
@@ -63,15 +92,82 @@ public class AdminModifySessionPopUpController implements Initializable {
 
 
     private void handleUpdateSession(ActionEvent event) {
-        try {
-            System.out.println("WOAH");
-            String sessionID = AdminViewSessionController.getClickedSession().get(0);
-            model.updateSession(sessionID, view.getSelectedSessionMode(), view.getSelectedSessionType());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        numberStudentsErrorLabel.setVisible(false);
+        maxStudentsErrorLabel.setVisible(false);
+        priceErrorLabel.setVisible(false);
+
+        boolean hasError = false;
+
+        String sessionType = view.getSelectedSessionType();
+        String sessionMode = view.getSelectedSessionMode();
+        String numStudents = numberOfStudentsField.getText();
+        String maxStudents = maxNumberOfStudentsField.getText();
+        String price = sessionPriceField.getText();
+
+        if (numStudents.isEmpty()) {
+            numberStudentsErrorLabel.setText("This field is required.");
+            numberStudentsErrorLabel.setVisible(true);
+            hasError = true;
+        } else if (!numStudents.matches("\\d+")) {
+            numberStudentsErrorLabel.setText("Only numeric values allowed.");
+            numberStudentsErrorLabel.setVisible(true);
+            hasError = true;
         }
+
+        if (maxStudents.isEmpty()) {
+            maxStudentsErrorLabel.setText("This field is required.");
+            maxStudentsErrorLabel.setVisible(true);
+            hasError = true;
+        } else if (!maxStudents.matches("\\d+")) {
+            maxStudentsErrorLabel.setText("Only numeric values allowed.");
+            maxStudentsErrorLabel.setVisible(true);
+            hasError = true;
+        }
+
+        if (price.isEmpty()) {
+            priceErrorLabel.setText("This field is required.");
+            priceErrorLabel.setVisible(true);
+            hasError = true;
+        } else if (!price.matches("\\d+(\\.\\d{1,2})?")) {
+            priceErrorLabel.setText("Enter valid amount (e.g., 50 or 50.00).");
+            priceErrorLabel.setVisible(true);
+            hasError = true;
+        }
+
+        if (!numStudents.isEmpty() && !maxStudents.isEmpty()
+                && numStudents.matches("\\d+") && maxStudents.matches("\\d+")) {
+
+            int num = Integer.parseInt(numStudents);
+            int max = Integer.parseInt(maxStudents);
+
+            if (num > max) {
+                numberStudentsErrorLabel.setText("Cannot exceed maximum students.");
+                numberStudentsErrorLabel.setVisible(true);
+                hasError = true;
+            }
+        }
+
+        if (hasError) return;
+
+        try {
+            String sessionID = AdminViewSessionController.getClickedSession().get(0);
+            model.updateSession(sessionID, sessionMode, sessionType, numStudents, maxStudents, price);
+
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Session Updated");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("The session was successfully updated.");
+
+            successAlert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    ((Stage) modifySessionButton.getScene().getWindow()).close();
+                }
+            });
+
+        } catch (RemoteException | SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void showWindow() {
@@ -86,6 +182,24 @@ public class AdminModifySessionPopUpController implements Initializable {
         } catch (IOException e) {
             System.err.println("[ERROR] Failed to load Edit Session window: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void populateFields() throws RemoteException, SQLException {
+        String sessionID = AdminViewSessionController.getClickedSession().get(0);
+        var details = model.getEditableDetails(sessionID);
+
+        sessionTypeComboBox.setValue(details.get(0));
+        sessionModeComboBox.setValue(details.get(1));
+        numberOfStudentsField.setText(details.get(2));
+        maxNumberOfStudentsField.setText(details.get(3));
+
+        if ("Individual".equalsIgnoreCase(details.get(0))) {
+            maxNumberOfStudentsField.setEditable(false);
+        }
+
+        if (sessionPriceField != null) {
+            sessionPriceField.setText(details.get(4));
         }
     }
 

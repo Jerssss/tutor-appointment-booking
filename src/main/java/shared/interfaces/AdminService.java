@@ -19,7 +19,8 @@ public interface AdminService extends Remote {
     List<List<String>> viewSession() throws RemoteException;
     List<String> viewOtherSessionDetails(String sessionID) throws RemoteException;
     void addSession(TutorSession session) throws RemoteException, SQLException;
-    void modifySession(String sessionID, String sessionMode, String sessionType) throws RemoteException, SQLException;
+    void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException;
+    List<String> getEditableDetails(String sessionID) throws RemoteException;
     List<String> getAllTutorName() throws RemoteException;
     List<String> getAllSubjects() throws RemoteException;
     String getSubjectID(String subjectName) throws RemoteException;
