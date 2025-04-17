@@ -63,7 +63,7 @@
       </VBox>
    </top>
    <left>
-      <VBox prefHeight="573.0" prefWidth="232.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="573.0" prefWidth="180.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="450.0" prefWidth="172.0" spacing="10.0">
                <children>

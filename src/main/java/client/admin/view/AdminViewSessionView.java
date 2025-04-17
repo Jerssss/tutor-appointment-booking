@@ -15,30 +15,26 @@ public class AdminViewSessionView {
     private final TableColumn<List<String>, String> dateColumn;
     private final TableColumn<List<String>, String> timeColumn;
     private final TableColumn<List<String>, String> durationColumn;
-    private final TableColumn<List<String>, String> academicLevelColumn;
+    private final TableColumn<List<String>, String> tutorIDColumn;
     private final TableColumn<List<String>, String> subjectColumn;
-    private final Button addSessionButton;
-    private final Button refreshButton;
-    private final TextField searchResTextField;
+    private final TableColumn<List<String>, String> statusColumn;
 
     public AdminViewSessionView(
             TableView<List<String>> tableView, TableColumn<List<String>, String> sessionIDColumn,
             TableColumn<List<String>, String> dateColumn,
             TableColumn<List<String>, String> timeColumn,
             TableColumn<List<String>, String> durationColumn,
-            TableColumn<List<String>, String> academicLevelColumn,
-            TableColumn<List<String>, String> subjectColumn, Button addSessionButton, Button refreshButton, TextField searchResTextField) {
+            TableColumn<List<String>, String> tutorIDColumn,
+            TableColumn<List<String>, String> subjectColumn, TableColumn<List<String>, String> statusColumn) {
 
         this.tableView = tableView;
         this.sessionIDColumn = sessionIDColumn;
         this.dateColumn = dateColumn;
         this.timeColumn = timeColumn;
         this.durationColumn = durationColumn;
-        this.academicLevelColumn = academicLevelColumn;
+        this.tutorIDColumn = tutorIDColumn;
         this.subjectColumn = subjectColumn;
-        this.addSessionButton = addSessionButton;
-        this.refreshButton = refreshButton;
-        this.searchResTextField = searchResTextField;
+        this.statusColumn = statusColumn;
 
         setupTableColumns();
     }
@@ -48,19 +44,17 @@ public class AdminViewSessionView {
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
         timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
         durationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
-        academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
+        tutorIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
         subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(5)));
+        statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(6)));
     }
 
     public void displaySession(ObservableList<List<String>> sessions) {
         tableView.setItems(sessions);
     }
 
-    public String getsearchResTextField() {
-        return searchResTextField.getText();
-    }
 
-//    public List<String> getListListedSession(){
+//    public List<String> getListListedSession(){a
 //        return tableView.getItems();
 //    }
 }

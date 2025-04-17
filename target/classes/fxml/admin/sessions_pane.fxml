@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewSessionController">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" VBox.vgrow="ALWAYS" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewSessionController">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
@@ -56,22 +56,25 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0">
+      <VBox alignment="CENTER" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="viewResTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+            <TableView fx:id="viewResTableView" VBox.vgrow="ALWAYS" focusTraversable="false" minHeight="-Infinity" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
                   <TableColumn fx:id="sessionIDColumn" editable="false" prefWidth="70.0" resizable="false" text="Session ID" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="dateColumn" editable="false" prefWidth="115.0" resizable="false" text="Date" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="timeColumn" editable="false" prefWidth="105.0" resizable="false" text="Time" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="durationColumn" editable="false" prefWidth="110.0" resizable="false" text="Duration" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="120.0" resizable="false" text="Academic Level" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="subjectColumn" editable="false" prefWidth="140.0" resizable="false" text="Subject" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="optionColumn" editable="false" prefWidth="135.0" resizable="false" text="Option" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="dateColumn" editable="false" prefWidth="110.0" resizable="false" text="Date" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="timeColumn" editable="false" prefWidth="90.0" resizable="false" text="Time" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="durationColumn" editable="false" prefWidth="90.0" resizable="false" text="Duration" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="tutorIDColumn" editable="false" prefWidth="95.0" resizable="false" text="Tutor ID" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="subjectColumn" editable="false" prefWidth="110.0" resizable="false" text="Subject" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="statusColumn" editable="false" prefWidth="90.0" resizable="false" text="Status" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="105.0" resizable="false" text="View More" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="optionColumn" editable="false" prefWidth="80.0" resizable="false" text="Option" style="-fx-alignment: CENTER;" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+
          </children>
       </VBox>
    </children>

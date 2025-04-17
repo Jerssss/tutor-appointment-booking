@@ -72,7 +72,7 @@ public class AdminAddSessionPopUpModel {
     public void addNewSession(String chosenTutor, LocalDate chosenDate, String chosenStartTime, String chosenDuration, String chosenSubject,
                               String chosenMode, String chosenType, String maxStudents, String price) throws RemoteException, SQLException {
         TutorSession newSession = new TutorSession(generateSessionID(), adminService.getTutorID(chosenTutor), adminService.getSubjectID(chosenSubject), "Scheduled",
-                chosenDate, LocalTime.parse(chosenStartTime), Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
+                chosenDate, LocalTime.parse(chosenStartTime), chosenMode, chosenType, Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
                 Double.parseDouble(price));
         adminService.addSession(newSession);
     }

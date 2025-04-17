@@ -7,17 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
-import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
-
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -26,6 +18,7 @@ public class AdminViewSessionController {
     private AdminViewSessionView view;
     private AdminService service = new AdminServiceImpl();
     private static List<String> clickedSession;
+
 
     @FXML
     private TableView<List<String>> viewResTableView;
@@ -38,11 +31,15 @@ public class AdminViewSessionController {
     @FXML
     private TableColumn<List<String>, String> durationColumn;
     @FXML
-    private TableColumn<List<String>, String> academicLevelColumn;
+    private TableColumn<List<String>, String> tutorIDColumn;
     @FXML
     private TableColumn<List<String>, String> subjectColumn;
     @FXML
+    private TableColumn<List<String>, String> statusColumn;
+    @FXML
     private TableColumn<List<String>, Void> optionColumn;
+    @FXML
+    private TableColumn<List<String>, Void> viewMoreColumn;
     @FXML
     private Button addSessionButton;
     @FXML
@@ -62,11 +59,9 @@ public class AdminViewSessionController {
                 dateColumn,
                 timeColumn,
                 durationColumn,
-                academicLevelColumn,
+                tutorIDColumn,
                 subjectColumn,
-                addSessionButton,
-                refreshButton,
-                searchResTextField
+                statusColumn
         );
         displaySessions();
 
@@ -77,6 +72,29 @@ public class AdminViewSessionController {
             filterSessions(newValue);
         });
 
+        viewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button viewMoreButton = new Button("View More");
+
+            {
+                viewMoreButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                viewMoreButton.setOnAction(event -> {
+                    clickedSession = getTableView().getItems().get(getIndex());
+                    AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController= new AdminViewMoreSessionsPopUpController();
+                    adminViewMoreSessionsPopUpController.showWindow(clickedSession.get(0));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewMoreButton);
+                }
+            }
+        });
+
         optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
             private final Button optionButton = new Button("Option");
 
@@ -84,7 +102,7 @@ public class AdminViewSessionController {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    AdminModifySessionPopUpController modifySessionController= new AdminModifySessionPopUpController();
+                    AdminModifySessionPopUpController modifySessionController = new AdminModifySessionPopUpController();
                     modifySessionController.showWindow();
                 });
             }
@@ -95,13 +113,16 @@ public class AdminViewSessionController {
                 if (empty) {
                     setGraphic(null);
                 } else {
+                    List<String> sessionData = getTableView().getItems().get(getIndex());
+                    String status = sessionData.get(6);
+                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
                 }
             }
         });
-    }
+        }
 
-    private void displaySessions() {
+        private void displaySessions() {
         try {
             List<List<String>> sessions = model.displaySessions();
             ObservableList<List<String>> sessionData = FXCollections.observableArrayList(sessions);

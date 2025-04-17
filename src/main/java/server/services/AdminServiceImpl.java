@@ -225,7 +225,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
-        query = "SELECT sessionID, sessionDate, sessionTime, sessionDuration, subjectLevel, subjectID FROM tutorsession\n" +
+        query = "SELECT sessionID, sessionDate, sessionTime, sessionDuration, tutorID, subjectID, subjectLevel, sessionStatus FROM tutorsession\n" +
                 "INNER JOIN subject USING (subjectID); ";
 
         try{
@@ -234,12 +234,41 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
             while (resultSet.next()){
                 allSessions.add(Arrays.asList(resultSet.getString("sessionID"), String.valueOf(resultSet.getDate("sessionDate")), String.valueOf(resultSet.getTime("sessionTime")), resultSet.getString("sessionDuration"),
-                        resultSet.getString("subjectLevel"), resultSet.getString("subjectID")));
+                        resultSet.getString("subjectLevel"), resultSet.getString("subjectID"), resultSet.getString("sessionStatus")));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
         return allSessions;
+    }
+
+    @Override
+    public List<String> viewOtherSessionDetails(String sessionID) throws RemoteException{
+        List<String> otherDetails = new ArrayList<>();
+        query = "SELECT firstName, lastName, subjectName, subjectLevel, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice FROM tutorsession\n" +
+                "INNER JOIN subject USING (subjectID)\n" +
+                "INNER JOIN user ON tutorID = userID\n" +
+                "WHERE sessionID = ?; ";
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, sessionID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                otherDetails.add(resultSet.getString("firstName")+" " + resultSet.getString("lastName"));
+                otherDetails.add(resultSet.getString("subjectName"));
+                otherDetails.add(resultSet.getString("subjectLevel"));
+                otherDetails.add(resultSet.getString("sessionType"));
+                otherDetails.add(resultSet.getString("sessionMode"));
+                otherDetails.add(resultSet.getString("numberOfStudents"));
+                otherDetails.add(resultSet.getString("maximumStudents"));
+                otherDetails.add(resultSet.getString("sessionPrice"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return otherDetails;
     }
 
     @Override
@@ -458,6 +487,8 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     public void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException {
         subjectID = subjectID.replaceAll(".*subjectID=(\\d+),.*", "$1");
         query = "UPDATE subject SET subjectLevel = ? WHERE subjectID = ?";
+        System.out.println("SUBJECT ID: " + subjectID);
+        System.out.println("ACADEMIC LEVEL: " + academicLevel);
 
         try {
             con.setAutoCommit(false);
@@ -481,7 +512,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
-        Map<LessonPlan, String> allLessonPlans = new LinkedHashMap<>();
+        Map<LessonPlan, String> allLessonPlans = new HashMap<>();
 
 //        query = "SELECT lessonPlanID, subjectID, subjectName, subjectLevel, objectives, topicsCovered FROM lessonplan " +
 //                "INNER JOIN subject USING(subjectID);";
@@ -500,20 +531,15 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
                         resultSet.getString("topicsCovered")
                 );
 
+//                allLessonPlans.put(lessonPlan, Arrays.asList(resultSet.getString("subjectName"), resultSet.getString("subjectLevel")));
                 allLessonPlans.put(lessonPlan, resultSet.getString("subjectLevel"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        for (Map.Entry<LessonPlan, String> entry : allLessonPlans.entrySet()) {
-            LessonPlan lessonPlan = entry.getKey();
-            System.out.println(lessonPlan);
-        }
-
         return allLessonPlans;
     }
-
 
 
     @Override

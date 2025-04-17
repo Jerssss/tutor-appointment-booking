@@ -12,18 +12,25 @@ public class TutorSession {
     private LocalDate sessionDate;
     private LocalTime sessionTime;
     private int sessionDuration;
+    private String sessionMode;
+    private String sessionType;
     private int numberOfStudents;
     private int maximumStudents;
     private double sessionPrice;
 
     // Constructor
-    public TutorSession(String sessionID, String tutorID, String subjectID, String sessionStatus, LocalDate sessionDate, LocalTime sessionTime, int sessionDuration, int numberOfStudents, int maximumStudents, double sessionPrice) {
+    public TutorSession(String sessionID, String tutorID, String subjectID, String sessionStatus,
+                        LocalDate sessionDate, LocalTime sessionTime,String sessionMode, String sessionType,
+                        int sessionDuration, int numberOfStudents,
+                         int maximumStudents, double sessionPrice) {
         this.sessionID = sessionID;
         this.tutorID = tutorID;
         this.subjectID = subjectID;
         this.sessionStatus = sessionStatus;
         this.sessionDate = sessionDate;
         this.sessionTime = sessionTime;
+        this.sessionMode = sessionMode;
+        this.sessionType = sessionType;
         this.sessionDuration = sessionDuration;
         this.numberOfStudents = numberOfStudents;
         this.maximumStudents = maximumStudents;
@@ -85,6 +92,22 @@ public class TutorSession {
 
     public void setSessionDuration(int sessionDuration) {
         this.sessionDuration = sessionDuration;
+    }
+
+    public String getSessionType() {
+        return sessionType;
+    }
+
+    public void setSessionType(String sessionType) {
+        this.sessionType = sessionType;
+    }
+
+    public String getSessionMode() {
+        return sessionMode;
+    }
+
+    public void setSessionMode(String sessionMode) {
+
     }
 
     public int getNumberOfStudents() {
