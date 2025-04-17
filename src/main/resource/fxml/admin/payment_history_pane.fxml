@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewPaymentController">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewPaymentController">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
@@ -51,12 +51,11 @@
                <columns>
                   <TableColumn fx:id="studentIDColumn" editable="false" prefWidth="115.0" resizable="false" text="Student ID" />
                   <TableColumn fx:id="courseSubjectColumn" editable="false" prefWidth="115.0" resizable="false" text="Course / Subject" />
-                  <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="87.0" resizable="false" text="Session Mode" />
-                  <TableColumn fx:id="paymentDateColumn" editable="false" prefWidth="85.0" resizable="false" text="Payment Date" />
-                  <TableColumn fx:id="paymentTimeColumn" editable="false" prefWidth="105.0" resizable="false" text="Payment Time" />
-                  <TableColumn fx:id="paymentMethodColumn" editable="false" prefWidth="81.0" resizable="false" text="Payment Method" />
-                  <TableColumn fx:id="amountColumn" editable="false" prefWidth="89.0" resizable="false" text="Amount " />
-                  <TableColumn fx:id="statusColumn" editable="false" prefWidth="99.0" resizable="false" text="Status" />
+                  <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="138.33335876464844" resizable="false" text="Session Mode" />
+                  <TableColumn fx:id="paymentDateColumn" editable="false" prefWidth="103.66668701171875" resizable="false" text="Payment Date" />
+                  <TableColumn fx:id="paymentTimeColumn" editable="false" prefWidth="105.6666259765625" resizable="false" text="Payment Time" />
+                  <TableColumn fx:id="paymentMethodColumn" editable="false" prefWidth="114.33334350585938" resizable="false" text="Payment Method" />
+                  <TableColumn fx:id="amountColumn" editable="false" prefWidth="106.66668701171875" resizable="false" text="Amount " />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

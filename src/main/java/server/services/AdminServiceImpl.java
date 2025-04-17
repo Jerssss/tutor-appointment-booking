@@ -530,7 +530,10 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     public List<Payment> viewPayment() throws RemoteException{
         List<Payment> studentPayments = new ArrayList<>();
 
-        query = "SELECT * FROM payment";
+        query = "SELECT p.paymentID, p.studentID, ts.subjectID AS courseID, b.sessionMode, p.paymentDate, p.paymentTime, p.paymentMethod, p.amount  " +
+                "FROM payment p " +
+                "JOIN booking b ON p.studentID = b.studentID " +
+                "JOIN tutorsession ts ON b.sessionID = ts.sessionID;";
 
         try {
             stmt = con.createStatement();
@@ -538,13 +541,14 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             while (resultSet.next()) {
                 String paymentID = resultSet.getString(1);
                 String studentID = resultSet.getString(2);
-                double amount = resultSet.getDouble(3);
-                LocalDate date = resultSet.getDate(4).toLocalDate();
-                LocalTime time = resultSet.getTime(5).toLocalTime();
-                LocalDateTime paymentDateTime = LocalDateTime.of(date, time);
-                String paymentMethod = resultSet.getString(5);
+                String subjectID = resultSet.getString(3);
+                String mode = resultSet.getString(4);
+                LocalDate date = resultSet.getDate(5).toLocalDate();
+                LocalTime time = resultSet.getTime(6).toLocalTime();
+                String paymentMethod = resultSet.getString(7);
+                double amount = resultSet.getDouble(8);
 
-                Payment payment = new Payment(paymentID, studentID, amount, paymentDateTime, paymentMethod);
+                Payment payment = new Payment(paymentID, studentID, subjectID, mode, date, time, paymentMethod, amount);
                 studentPayments.add(payment);
             }
         } catch (SQLException e1) {

@@ -41,6 +41,10 @@ public class AdminClient extends Application {
         launch(args);
     }
 
+    public static AdminService getAdminProcessors() {
+        return adminService;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
