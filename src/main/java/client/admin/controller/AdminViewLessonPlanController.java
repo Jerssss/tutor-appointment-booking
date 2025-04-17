@@ -98,6 +98,9 @@ public class AdminViewLessonPlanController {
 //            }
 
         List<LessonPlan> collegeLessonPlans = model.getLessonPlanCollege();
+        for (LessonPlan lessonplan : collegeLessonPlans){
+            System.out.println(lessonplan.getLessonPlanID());
+        }
         List<LessonPlan> highSchoolLessonPlans = model.getLessonPlanHighSchool();
         ObservableList<LessonPlan> allCollegeLessonPlansData = FXCollections.observableArrayList(collegeLessonPlans);
 //            ObservableList<String> allCollegeSubjectNamesData = FXCollections.observableArrayList(allCollegeSubjectNames);

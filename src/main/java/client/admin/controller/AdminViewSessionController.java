@@ -119,9 +119,6 @@ public class AdminViewSessionController {
     private void handleRefreshSession(ActionEvent event){
         displaySessions();
     }
-    private void handleSearch(ActionEvent event){
-        displaySessions();
-    }
 
     public void setActionAddSessionButton(EventHandler<ActionEvent> event) {
         if (addSessionButton != null) {

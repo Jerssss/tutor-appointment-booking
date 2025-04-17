@@ -481,7 +481,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
-        Map<LessonPlan, String> allLessonPlans = new HashMap<>();
+        Map<LessonPlan, String> allLessonPlans = new LinkedHashMap<>();
 
 //        query = "SELECT lessonPlanID, subjectID, subjectName, subjectLevel, objectives, topicsCovered FROM lessonplan " +
 //                "INNER JOIN subject USING(subjectID);";
@@ -500,15 +500,20 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
                         resultSet.getString("topicsCovered")
                 );
 
-//                allLessonPlans.put(lessonPlan, Arrays.asList(resultSet.getString("subjectName"), resultSet.getString("subjectLevel")));
                 allLessonPlans.put(lessonPlan, resultSet.getString("subjectLevel"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        for (Map.Entry<LessonPlan, String> entry : allLessonPlans.entrySet()) {
+            LessonPlan lessonPlan = entry.getKey();
+            System.out.println(lessonPlan);
+        }
+
         return allLessonPlans;
     }
+
 
 
     @Override
