@@ -2,12 +2,15 @@ package client.student.view;
 
 import client.student.controller.ViewLessonPlanController;
 import client.student.model.ViewLessonPlanModel;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import server.services.StudentServiceImpl;
 import shared.classes.LessonPlan;
 import shared.interfaces.StudentService;
@@ -119,4 +122,24 @@ public class ViewLessonPlanView implements Initializable {
         logReportTableView.setItems(filteredHighSchool);
         logReportTableView1.setItems(filteredCollege);
     }
+
+    public void refreshButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void refreshButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+
 }

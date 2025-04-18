@@ -36,6 +36,7 @@ public interface AdminService extends Remote {
     String getSubjectName(String SubjectID) throws RemoteException;
     void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException;
     Map<LessonPlan, String> viewLessonPlan() throws RemoteException;
+    List<String> viewOtherLessonPlanDetails(String lessonPlanID) throws RemoteException;
     LessonPlan addLessonPlan() throws RemoteException;
     LessonPlan modifyLessonPlan() throws RemoteException;
     List<Payment> viewPayment() throws RemoteException;

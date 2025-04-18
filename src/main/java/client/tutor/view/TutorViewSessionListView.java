@@ -1,6 +1,7 @@
 package client.tutor.view;
 
 import client.tutor.controller.TutorViewSessionListController;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,12 +15,14 @@ import javafx.scene.control.TableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import shared.classes.TutorSession;
 
 import java.io.IOException;
 import java.util.List;
 
 public class TutorViewSessionListView {
+    public Button refreshButton;
     @FXML private TableColumn<TutorSession, String> sessionTimeColumn;
     @FXML private TableView<TutorSession> sessionListTableView;
     @FXML private TableColumn<TutorSession, String> sessionNoColumn;
@@ -91,5 +94,24 @@ public class TutorViewSessionListView {
             System.err.println("FXML not found! Check your resource path.");
             e.printStackTrace();
         }
+    }
+
+
+    public void refreshButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void refreshButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
     }
 }

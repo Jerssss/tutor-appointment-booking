@@ -143,8 +143,8 @@ public class TutorSession implements Serializable {
         this.subjectName = subjectName;
     }
 
-    public int getTutorID() {
-        return tutorID;
+    public String getTutorID() {
+        return String.valueOf(tutorID);
     }
 
     public void setTutorID(int tutorID) {
@@ -169,4 +169,9 @@ public class TutorSession implements Serializable {
                 ", sessionMode='" + sessionMode + '\'' +
                 '}';
     }
+
+    public String getSessionType() {
+        return null;
+    }
+
 }

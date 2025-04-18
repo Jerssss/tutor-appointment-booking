@@ -29,6 +29,7 @@ public class AdminViewLessonPlanController {
     private final AdminViewLessonPlanModel model;
     private AdminViewLessonPlanView view;
     private AdminService service = new AdminServiceImpl();
+    private static String clickedLessonPlan;
 
     @FXML
     private TableView<LessonPlan> highSchoolTableView;
@@ -42,6 +43,12 @@ public class AdminViewLessonPlanController {
     private TableColumn<LessonPlan, String> highSchoolObjectivesColumn;
     @FXML
     private TableColumn<LessonPlan, String> highSchoolTopicsColumn;
+
+    @FXML
+    private TableColumn<List<String>, Void> highSchoolViewMoreColumn;
+    @FXML
+    private TableColumn<List<String>, Void> highSchoolDeleteColumn;
+
     @FXML
     private TableView<LessonPlan> collegeTableView;
     @FXML
@@ -52,6 +59,10 @@ public class AdminViewLessonPlanController {
     private TableColumn<LessonPlan, String> collegeObjectivesColumn;
     @FXML
     private TableColumn<LessonPlan, String> collegeTopicsColumn;
+    @FXML
+    private TableColumn<List<String>, Void> collegeViewMoreColumn;
+    @FXML
+    private TableColumn<List<String>, Void> collegeDeleteColumn;
     @FXML
     private Button refreshButton;
     @FXML
@@ -79,6 +90,98 @@ public class AdminViewLessonPlanController {
         searchReportTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filterLessonPlans(newValue);
         });
+
+        highSchoolViewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button highSchoolViewMoreColumnButton = new Button("View More");
+
+            {
+                highSchoolViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                highSchoolViewMoreColumnButton.setOnAction(event -> {
+                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController= new AdminViewMoreLessonPlanPopUpController();
+                    viewMoreLessonPlanPopUpController.showWindow(clickedLessonPlan.replaceAll(".*lessonPlanID=([^,]+),.*", "$1"));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(highSchoolViewMoreColumnButton);
+                }
+            }
+        });
+
+        highSchoolDeleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button highSchoolDeleteColumnButton = new Button("Delete");
+
+            {
+                highSchoolDeleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                highSchoolDeleteColumnButton.setOnAction(event -> {
+                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
+//                    AdminViewMoreSubjectPopUpController viewMoreSubjectPopUpController= new AdminViewMoreSubjectPopUpController();
+//                    viewMoreSubjectModel.showWindow(clickedSubject);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(highSchoolDeleteColumnButton);
+                }
+            }
+        });
+
+        collegeViewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button collegeViewMoreColumnButton = new Button("View More");
+
+            {
+                collegeViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                collegeViewMoreColumnButton.setOnAction(event -> {
+                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController= new AdminViewMoreLessonPlanPopUpController();
+                    viewMoreLessonPlanPopUpController.showWindow(clickedLessonPlan.replaceAll(".*lessonPlanID=([^,]+),.*", "$1"));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(collegeViewMoreColumnButton);
+                }
+            }
+        });
+
+        collegeDeleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button collegeDeleteColumnButton = new Button("Delete");
+
+            {
+                collegeDeleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                collegeDeleteColumnButton.setOnAction(event -> {
+                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
+//                    AdminViewMoreSubjectPopUpController viewMoreSubjectPopUpController= new AdminViewMoreSubjectPopUpController();
+//                    viewMoreSubjectModel.showWindow(clickedSubject);
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(collegeDeleteColumnButton);
+                }
+            }
+        });
+
         setActionRefreshButtonButton(this::handleRefreshLessonPlan);
     }
 
@@ -98,9 +201,6 @@ public class AdminViewLessonPlanController {
 //            }
 
         List<LessonPlan> collegeLessonPlans = model.getLessonPlanCollege();
-        for (LessonPlan lessonplan : collegeLessonPlans){
-            System.out.println(lessonplan.getLessonPlanID());
-        }
         List<LessonPlan> highSchoolLessonPlans = model.getLessonPlanHighSchool();
         ObservableList<LessonPlan> allCollegeLessonPlansData = FXCollections.observableArrayList(collegeLessonPlans);
 //            ObservableList<String> allCollegeSubjectNamesData = FXCollections.observableArrayList(allCollegeSubjectNames);

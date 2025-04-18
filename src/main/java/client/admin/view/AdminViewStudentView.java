@@ -1,6 +1,7 @@
 package client.admin.view;
 
 import client.admin.controller.AdminViewStudentController;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import shared.classes.Student;
 
 import java.io.IOException;
@@ -151,5 +153,60 @@ public class AdminViewStudentView {
         studentTableView.setItems(studentData); // Reload table data
         studentTableView.refresh(); // Force UI refresh
         System.out.println("[CLIENT(Admin)] Student data updated. New table size: " + studentData.size());
+    }
+    private void applyHoverEffect(Button button) {
+        button.setOnMouseEntered(event -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), button);
+            st.setToX(0.9);
+            st.setToY(0.9);
+            st.setCycleCount(1);
+            st.setAutoReverse(false);
+            st.play();
+        });
+
+        button.setOnMouseExited(event -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), button);
+            st.setToX(1.0);
+            st.setToY(1.0);
+            st.setCycleCount(1);
+            st.setAutoReverse(false);
+            st.play();
+        });
+    }
+
+    public void addStudentButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), addStudentButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void addStudentButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), addStudentButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void refreshButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void refreshButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
     }
 }
