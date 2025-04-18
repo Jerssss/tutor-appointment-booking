@@ -20,7 +20,7 @@
                <children>
                   <HBox prefHeight="43.0" prefWidth="290.0">
                      <children>
-                        <VBox prefHeight="50.0" prefWidth="290.0">
+                        <VBox prefHeight="50.0" prefWidth="290.0" >
                            <children>
                               <Label text="Subject ID">
                                  <font>
@@ -66,8 +66,7 @@
                                  </font>
                               </Label>
                               <TextArea fx:id="descriptionTextArea" editable="true" wrapText="true"
-                                        prefHeight="200.0" prefWidth="290.0"
-                                        stylesheets="@../../css/styles.css">
+                                        prefHeight="200.0" prefWidth="290.0">
                                  <styleClass>
                                     <String fx:value="background-pane" />
                                     <String fx:value="text-field2" />

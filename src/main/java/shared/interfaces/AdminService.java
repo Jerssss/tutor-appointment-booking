@@ -30,6 +30,7 @@ public interface AdminService extends Remote {
     List<String> getAllSessionID() throws RemoteException;
     Map<LocalTime, Integer> getTutorSchedule(String tutorID, String date) throws RemoteException;
     List<Subject> viewSubject() throws RemoteException;
+    List<String> viewOtherSubjectDetails(String subjectID) throws RemoteException;
     void addSubject(Subject subject) throws RemoteException, SQLException;
     String getSubjectID(String SubjectName) throws RemoteException;
     String getSubjectName(String SubjectID) throws RemoteException;

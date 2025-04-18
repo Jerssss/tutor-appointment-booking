@@ -275,14 +275,12 @@ public class AdminAddSessionPopUpController implements Initializable {
         if (!isValid) return;
 
         try {
-            System.out.println("Mode: " + view.getSelectedMode());
-            System.out.println("Type: " + view.getSelectedType());
             model.addNewSession(
                     view.getSelectedTutorID(),
                     view.getSelectedDate(),
                     view.getSelectedStartTime(),
                     view.getSelectedDuration(),
-                    view.getSelectedSubjectName(),
+                    view.getSelectedSubjectID(),
                     view.getSelectedMode(),
                     view.getSelectedType(),
                     view.getMaxStudents(),

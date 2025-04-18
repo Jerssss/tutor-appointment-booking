@@ -1,5 +1,6 @@
 package client.admin.controller;
 
+import client.admin.model.AdminViewMoreSubjectPopUpModel;
 import client.admin.model.AdminViewSubjectModel;
 import client.admin.view.AdminViewSubjectView;
 import javafx.collections.FXCollections;
@@ -39,6 +40,10 @@ public class AdminViewSubjectController {
     @FXML
     private TableColumn<List<String>, Void> optionColumn;
     @FXML
+    private TableColumn<List<String>, Void> viewMoreColumn;
+    @FXML
+    private TableColumn<List<String>, Void> deleteColumn;
+    @FXML
     private Button addSubjectButton;
     @FXML
     private Button refreshButton;
@@ -68,6 +73,29 @@ public class AdminViewSubjectController {
             filterSubject(newValue);
         });
 
+        viewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button viewMoreColumnButton = new Button("View More");
+
+            {
+                viewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                viewMoreColumnButton.setOnAction(event -> {
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreSubjectPopUpController viewMoreSubjectModel= new AdminViewMoreSubjectPopUpController();
+                    viewMoreSubjectModel.showWindow(clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1"));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewMoreColumnButton);
+                }
+            }
+        });
+
         optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
             private final Button optionButton = new Button("Option");
 
@@ -87,6 +115,29 @@ public class AdminViewSubjectController {
                     setGraphic(null);
                 } else {
                     setGraphic(optionButton);
+                }
+            }
+        });
+
+        deleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button deleteColumnButton = new Button("Delete");
+
+            {
+                deleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                deleteColumnButton.setOnAction(event -> {
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreSubjectPopUpController viewMoreSubjectPopUpController= new AdminViewMoreSubjectPopUpController();
+//                    viewMoreSubjectModel.showWindow(clickedSubject);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteColumnButton);
                 }
             }
         });

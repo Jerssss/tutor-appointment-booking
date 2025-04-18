@@ -69,8 +69,45 @@ public class AdminAddSubjectPopUpController implements Initializable {
 
 
     private void handleAddSubject(ActionEvent event) {
+        boolean isValid = true;
+        view.clearAllErrorMessages();
+
+        if (view.getSubjectID().isEmpty() || view.getSubjectID().isBlank()) {
+            view.showErrorBelowTextField(subjectIDTextField, "Please input Subject ID.");
+            isValid = false;
+        }
+
+        if (view.getSubjectName().isEmpty() || view.getSubjectName().isBlank()) {
+            view.showErrorBelowTextField(subjectNameTextField, "Please input Subject Name.");
+            isValid = false;
+        }
+
+        if (view.getSubjectDescrip().isEmpty() || view.getSubjectDescrip().isBlank()) {
+            view.showErrorBelowTextField(subjectIDTextField, "Please input Subject Description.");
+            isValid = false;
+        }
+
+        if (view.getSelectedAcademicLevel() == null ) {
+            view.showErrorBelowComboBox(academicLevelComboBox, "Please select an Academic Level.");
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
         try {
             model.addNewSubject(view.getSubjectID(), view.getSubjectName(), view.getSubjectDescrip(), view.getSelectedAcademicLevel());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Subject Added");
+            alert.setHeaderText(null);
+            alert.setContentText("The subject has been added successfully.");
+
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    Stage stage = (Stage) addSubjectWindowButton.getScene().getWindow();
+                    stage.close();
+                }
+            });
         } catch (SQLException | RemoteException e) {
             e.printStackTrace();
         }

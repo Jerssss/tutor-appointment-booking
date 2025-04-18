@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="360.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewMoreSubjectPopUpController">
+    <top>
+        <HBox alignment="CENTER" prefHeight="47.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Subject Details" textFill="WHITE" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" prefHeight="220.0" BorderPane.alignment="CENTER">
+            <content>
+                <VBox spacing="8" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="20" left="20" right="20" bottom="20"/>
+                    </padding>
+                    <children>
+                        <Label text="Subject Level">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="subjectLevelLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Subject Description">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="subjectDescriptionLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

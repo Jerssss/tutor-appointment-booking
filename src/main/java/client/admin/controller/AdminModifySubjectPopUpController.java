@@ -45,6 +45,9 @@ public class AdminModifySubjectPopUpController implements Initializable {
             initializeData();
             setupEventHandlers();
             view.setupButtonHoverEffects();
+            if (!academicLevelComboBox.getItems().isEmpty()) {
+                academicLevelComboBox.getSelectionModel().select(0);
+            }
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +64,6 @@ public class AdminModifySubjectPopUpController implements Initializable {
 
     private void handleUpdateSubject(ActionEvent event) {
         try {
-            System.out.println("WOAH");
             String subjectID = AdminViewSubjectController.getClickedSubject();
             model.updateSession(subjectID, view.getSelectedAcademicLevel());
         } catch (RemoteException e) {

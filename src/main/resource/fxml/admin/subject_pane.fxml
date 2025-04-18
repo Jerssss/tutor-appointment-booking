@@ -56,24 +56,22 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0">
+      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="viewResTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+            <TableView fx:id="viewResTableView" VBox.vgrow="ALWAYS" focusTraversable="false"
+                       prefHeight="472.0" prefWidth="805.0"
+                       style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
-                  <TableColumn fx:id="subjectIdColumn" editable="false" prefWidth="115.19997864961624" resizable="false" text="Subject ID" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="subjectNameColumn" editable="false" prefWidth="144.8000030517578" resizable="false" text="Subject Name" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="subjectDescColumn" editable="false" prefWidth="242.39996337890625" resizable="false" text="Subject Description" style="-fx-alignment: CENTER;"/>
-                  <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="127.20001220703125" resizable="false" text="Academic Level" style="-fx-alignment: CENTER;"/>
-                  <TableColumn fx:id="optionColumn" editable="false" prefWidth="180.0" resizable="false" text="Option" style="-fx-alignment: CENTER;"/>
+                  <TableColumn fx:id="subjectIdColumn" prefWidth="115" text="Subject ID" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="subjectNameColumn" prefWidth="270" text="Subject Name" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="academicLevelColumn" prefWidth="140" text="Academic Level" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="viewMoreColumn" prefWidth="80" text="View More" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="optionColumn" prefWidth="110" text="Option" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="deleteColumn" prefWidth="90" text="Delete" style="-fx-alignment: CENTER;" />
                </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
             </TableView>
-
-
-
          </children>
       </VBox>
+
    </children>
 </VBox>

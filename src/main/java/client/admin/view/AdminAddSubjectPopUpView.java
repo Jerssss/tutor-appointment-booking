@@ -5,7 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.util.List;
 
 
 public class AdminAddSubjectPopUpView {
@@ -48,6 +51,40 @@ public class AdminAddSubjectPopUpView {
         st.setToX(1.0);
         st.setToY(1.0);
         st.play();
+    }
+
+    public void showErrorBelowTextField(TextField field, String message) {
+        if (field.getParent() instanceof VBox container) {
+            Label errorLabel = new Label(message);
+            errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 10;");
+            if (container.getChildren().size() < 3) {
+                container.getChildren().add(errorLabel);
+            }
+        } else {
+            System.out.println("[DEBUG] TextField is not inside a VBox!");
+        }
+    }
+
+
+    public void showErrorBelowComboBox(ComboBox<?> comboBox, String message) {
+        Label errorLabel = new Label(message);
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 10;");
+        VBox container = (VBox) comboBox.getParent();
+        if (container.getChildren().size() < 3) {
+            container.getChildren().add(errorLabel);
+        }
+    }
+
+    public void clearAllErrorMessages() {
+        List<Control> controls = List.of(
+                academicLevelComboBox, subjectNameTextField, subjectIDTextField, descriptionTextArea
+        );
+        for (Control control : controls) {
+            VBox container = (VBox) control.getParent();
+            if (container.getChildren().size() == 3) {
+                container.getChildren().remove(2);
+            }
+        }
     }
 
     public String getSelectedAcademicLevel() {

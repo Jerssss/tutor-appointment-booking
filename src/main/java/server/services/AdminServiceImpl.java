@@ -557,6 +557,25 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         }
         return allSubject;
     }
+    @Override
+    public List<String> viewOtherSubjectDetails(String subjectID) throws RemoteException{
+        List<String> otherDetails = new ArrayList<>();
+        query = "SELECT subjectName, subjectDescription FROM subject WHERE subjectID = ?;"; // Fixed SQL query
+
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, subjectID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                otherDetails.add(resultSet.getString("subjectName"));
+                otherDetails.add(resultSet.getString("subjectDescription"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return otherDetails;
+    }
 
     @Override
     public void addSubject(Subject subject) throws RemoteException, SQLException {

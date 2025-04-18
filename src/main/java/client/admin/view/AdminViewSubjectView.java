@@ -36,7 +36,7 @@ public class AdminViewSubjectView {
     public void setupTableColumns() {
         subjectIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
         subjectNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
-        subjectDescColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
+//        subjectDescColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
         academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectLevel()));
     }
 
