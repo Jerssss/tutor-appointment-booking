@@ -73,15 +73,14 @@
                                     <TableColumn fx:id="highSchoolSubjectIDColumn" prefWidth="130.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="highSchoolObjectivesColumn" prefWidth="180.0" text="Objectives" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="highSchoolTopicsColumn" prefWidth="145.0" text="Topics" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="editColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="cancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="View More" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolDeleteColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
                                  </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                      </content>
                   </Tab>
-
 
                   <Tab fx:id="collegeTab" text=" College ">
                      <content>
@@ -93,8 +92,8 @@
                                     <TableColumn fx:id="collegeSubjectIDColumn" prefWidth="130.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="collegeObjectivesColumn" prefWidth="180.0" text="Objectives" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="collegeTopicsColumn" prefWidth="145.0" text="Topics" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="editColumn2" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="cancelColumn2" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeDeleteColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
                                  </columns>
                               </TableView>
 

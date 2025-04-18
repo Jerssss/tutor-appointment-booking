@@ -273,10 +273,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
         try {
             con.setAutoCommit(false);
-
-            System.out.println("TUTOR!: " + session.getTutorID());
-            System.out.println("SUBJECT!: " + session.getSubjectID());
-
             preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, session.getSessionID());
             preparedStatement.setString(2, session.getTutorID());
@@ -431,8 +427,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         String subjectID = "";
         query = "SELECT subjectID FROM subject WHERE subjectName = ?";
 
-        System.out.println("SSSUBBBJJECCTT: " + subjectName);
-
         try{
             preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, subjectName);
@@ -560,7 +554,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<String> viewOtherSubjectDetails(String subjectID) throws RemoteException{
         List<String> otherDetails = new ArrayList<>();
-        query = "SELECT subjectName, subjectDescription FROM subject WHERE subjectID = ?;"; // Fixed SQL query
+        query = "SELECT subjectName, subjectDescription FROM subject WHERE subjectID = ?;";
 
         try{
             preparedStatement = con.prepareStatement(query);
@@ -607,8 +601,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     public void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException {
         subjectID = subjectID.replaceAll(".*subjectID=(\\d+),.*", "$1");
         query = "UPDATE subject SET subjectLevel = ? WHERE subjectID = ?";
-        System.out.println("SUBJECT ID: " + subjectID);
-        System.out.println("ACADEMIC LEVEL: " + academicLevel);
 
         try {
             con.setAutoCommit(false);
@@ -632,7 +624,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
-        Map<LessonPlan, String> allLessonPlans = new HashMap<>();
+        Map<LessonPlan, String> allLessonPlans = new LinkedHashMap<>();
 
 //        query = "SELECT lessonPlanID, subjectID, subjectName, subjectLevel, objectives, topicsCovered FROM lessonplan " +
 //                "INNER JOIN subject USING(subjectID);";
@@ -661,7 +653,27 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         return allLessonPlans;
     }
 
+    @Override
+    public List<String> viewOtherLessonPlanDetails(String lessonPlanID) throws RemoteException{
+        List<String> otherDetails = new ArrayList<>();
+        query = "SELECT subjectName, objectives, topicsCovered FROM lessonplan" +
+                " INNER JOIN subject USING(subjectID) WHERE lessonPlanID = ?;";
 
+        try{
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, lessonPlanID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                otherDetails.add(resultSet.getString("subjectName"));
+                otherDetails.add(resultSet.getString("objectives"));
+                otherDetails.add(resultSet.getString("topicsCovered"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return otherDetails;
+    }
     @Override
     public LessonPlan addLessonPlan() throws RemoteException {
         return null;
