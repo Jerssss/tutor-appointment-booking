@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import shared.classes.SessionManager;
 import shared.classes.User;
 import shared.exceptions.AccountDoesNotExist;
 import shared.exceptions.AlreadyLoggedInException;
@@ -54,16 +55,16 @@ public class LoginController {
         }
 
         try {
-            // Use the authService passed in the constructor, not AdminClient.getAuthService()
             User user = authService.login(userID, password);
             System.out.println("[INFO] Login successful for user: " + user.getUserID());
+
+            // Create session with user details
+            SessionManager.createSession(user.getUserID(), user.getRole());
+
             redirectToMainMenu(event, user);
 
         } catch (AccountDoesNotExist e) {
             loginView.setPromptLabel("Invalid userID or password. Please try again.");
-            loginView.setPromptLabelVisible(true);
-        } catch (AlreadyLoggedInException e) {
-            loginView.setPromptLabel("Account was logged in elsewhere. You are now logged in.");
             loginView.setPromptLabelVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,8 +72,6 @@ public class LoginController {
             loginView.setPromptLabelVisible(true);
         }
     }
-
-
 
 
     private void redirectToMainMenu(ActionEvent event, User user) {

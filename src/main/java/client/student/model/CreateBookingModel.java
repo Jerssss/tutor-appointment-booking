@@ -13,4 +13,20 @@ public class CreateBookingModel {
         this.studentService = studentService;
     }
 
+    public List<TutorSession> fetchSessions() throws RemoteException {
+        return studentService.viewAvailableSessions();
+    }
+
+    public Booking createBooking(String studentId, String sessionId,
+                                 String sessionMode, String status, double price)
+            throws RemoteException {
+
+        return studentService.createBooking(
+                Integer.parseInt(studentId),
+                sessionId,
+                sessionMode,
+                status,
+                price
+        );
+    }
 }

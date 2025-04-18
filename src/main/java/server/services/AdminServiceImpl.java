@@ -269,39 +269,39 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addSession(TutorSession session) throws RemoteException, SQLException {
-        query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try {
-            con.setAutoCommit(false);
-
-            System.out.println("TUTOR!: " + session.getTutorID());
-            System.out.println("SUBJECT!: " + session.getSubjectID());
-
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, session.getSessionID());
-            preparedStatement.setString(2, session.getTutorID());
-            preparedStatement.setString(3, session.getSubjectID());
-            preparedStatement.setString(4, session.getSessionStatus());
-            preparedStatement.setDate(5, java.sql.Date.valueOf(session.getSessionDate()));
-            preparedStatement.setTime(6, java.sql.Time.valueOf(session.getSessionTime()));
-            preparedStatement.setInt(7, session.getSessionDuration());
-            preparedStatement.setString(8, session.getSessionType());
-            preparedStatement.setString(9, session.getSessionMode());
-            preparedStatement.setInt(10, session.getNumberOfStudents());
-            preparedStatement.setInt(11, session.getMaximumStudents());
-            preparedStatement.setDouble(12, session.getSessionPrice());
-
-            preparedStatement.executeUpdate();
-            con.commit();
-
-        } catch (SQLException e1) {
-            if (con != null) con.rollback();
-            e1.printStackTrace();
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        } finally {
-            if (con != null) con.setAutoCommit(true);
-        }
+//        query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//
+//        try {
+//            con.setAutoCommit(false);
+//
+//            System.out.println("TUTOR!: " + session.getTutorID());
+//            System.out.println("SUBJECT!: " + session.getSubjectID());
+//
+//            preparedStatement = con.prepareStatement(query);
+//            preparedStatement.setString(1, session.getSessionID());
+//            preparedStatement.setString(2, session.getTutorID());
+//            preparedStatement.setString(3, session.getSubjectID());
+//            preparedStatement.setString(4, session.getSessionStatus());
+//            preparedStatement.setDate(5, java.sql.Date.valueOf(session.getSessionDate()));
+//            preparedStatement.setTime(6, java.sql.Time.valueOf(session.getSessionTime()));
+//            preparedStatement.setInt(7, session.getSessionDuration());
+//            preparedStatement.setString(8, session.getSessionType());
+//            preparedStatement.setString(9, session.getSessionMode());
+//            preparedStatement.setInt(10, session.getNumberOfStudents());
+//            preparedStatement.setInt(11, session.getMaximumStudents());
+//            preparedStatement.setDouble(12, session.getSessionPrice());
+//
+//            preparedStatement.executeUpdate();
+//            con.commit();
+//
+//        } catch (SQLException e1) {
+//            if (con != null) con.rollback();
+//            e1.printStackTrace();
+//        } catch (Exception e2) {
+//            e2.printStackTrace();
+//        } finally {
+//            if (con != null) con.setAutoCommit(true);
+//        }
     }
 
     @Override

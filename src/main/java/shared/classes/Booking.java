@@ -2,20 +2,20 @@ package shared.classes;
 
 public class Booking {
     private int studentID;
-    private int sessionID;
+    private String sessionID;
     private String sessionMode;
     private String bookingStatus;
     private double sessionPrice;
 
     public Booking(){
         this.studentID = 0;
-        this.sessionID = 0;
+        this.sessionID = null;
         this.sessionMode = null;
         this.bookingStatus = null;
         this.sessionPrice = 0.0;
     }
     // Constructor
-    public Booking(int studentID, int sessionID, String sessionMode, String bookingStatus, double sessionPrice) {
+    public Booking(int studentID, String sessionID, String sessionMode, String bookingStatus, double sessionPrice) {
         this.studentID = studentID;
         this.sessionID = sessionID;
         this.sessionMode = sessionMode;
@@ -32,11 +32,11 @@ public class Booking {
         this.studentID = studentID;
     }
 
-    public int getSessionID() {
+    public String getSessionID() {
         return sessionID;
     }
 
-    public void setSessionID(int sessionID) {
+    public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
     }
 

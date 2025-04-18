@@ -97,13 +97,13 @@ public class AdminAddSessionPopUpModel {
 
     public void addNewSession(String chosenTutor, LocalDate chosenDate, String chosenStartTime, String chosenDuration, String chosenSubject,
                               String chosenMode, String chosenType, String maxStudents, String price) throws RemoteException, SQLException {
-        TutorSession newSession = new TutorSession(generateSessionID(), chosenTutor, chosenSubject, "Scheduled",
-                chosenDate, LocalTime.parse(chosenStartTime), chosenMode, chosenType, Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
-                Double.parseDouble(price));
-        System.out.println("chosenSubject: " + chosenSubject);
-        System.out.println("chosenType: " + chosenType);
-        System.out.println("chosenMode: " + chosenMode);
-        adminService.addSession(newSession);
+//        TutorSession newSession = new TutorSession(generateSessionID(), chosenTutor, chosenSubject, "Scheduled",
+//                chosenDate, LocalTime.parse(chosenStartTime), chosenMode, chosenType, Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
+//                Double.parseDouble(price));
+//        System.out.println("chosenSubject: " + chosenSubject);
+//        System.out.println("chosenType: " + chosenType);
+//        System.out.println("chosenMode: " + chosenMode);
+//        adminService.addSession(newSession);
     }
 
     private List<LocalTime> generateTimeslots(){

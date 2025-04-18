@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import shared.classes.SessionManager;
 import shared.interfaces.AuthService;
 import shared.interfaces.StudentService;
 import shared.interfaces.TutorService;
@@ -29,6 +30,11 @@ public class StudentMainMenuController {
     private Thread serverThread;
 
     public StudentMainMenuController(StudentMainMenuView view, StudentMainMenuModel model, String loggedInUserName) {
+
+        //for security
+        if (!"Student".equals(SessionManager.getCurrentUserRole())) {
+            throw new IllegalStateException("Unauthorized access");
+        }
         this.view = view;
         this.model = model;
         this.loggedInUserName = loggedInUserName;

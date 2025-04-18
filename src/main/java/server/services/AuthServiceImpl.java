@@ -1,6 +1,7 @@
 package server.services;
 
 import server.database.DatabaseConnection;
+import shared.classes.SessionManager;
 import shared.classes.User;
 import shared.exceptions.AccountDoesNotExist;
 import shared.interfaces.AuthService;
@@ -58,7 +59,11 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
     }
 
     @Override
-    public User logout() {
+    public User logout() throws RemoteException {
+        String userId = SessionManager.getCurrentUserId();
+        if (userId != null) {
+            SessionManager.endSession();
+        }
         return null;
     }
 }

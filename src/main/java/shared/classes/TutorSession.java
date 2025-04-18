@@ -1,29 +1,32 @@
 package shared.classes;
 
-
-
-
 import java.io.Serializable;
 
-
-
-
 public class TutorSession implements Serializable {
+    // Session and tutor info
     private String sessionID;
     private int tutorID;
+
+    // Subject details
     private String subjectID;
     private String subjectName;
+    private transient String subjectLevel;
+
+    // Session schedule
     private String sessionDate;
     private String sessionTime;
     private int sessionDuration;
+
+    // Enrollment and status
     private String sessionStatus;
     private int numberOfStudents;
     private int maximumStudents;
+
+    // Pricing and mode
     private double sessionPrice;
-    private String sessionMode; // New field for sessionMode
+    private String sessionMode;
 
-
-    // Updated constructor to include sessionMode
+    // Constructor
     public TutorSession(String sessionID, int tutorID, String subjectID, String subjectName,
                         String sessionDate, String sessionTime, int sessionDuration,
                         String sessionStatus, int numberOfStudents, int maximumStudents,
@@ -39,170 +42,116 @@ public class TutorSession implements Serializable {
         this.numberOfStudents = numberOfStudents;
         this.maximumStudents = maximumStudents;
         this.sessionPrice = sessionPrice;
-        this.sessionMode = sessionMode; // Initialize sessionMode
+        this.sessionMode = sessionMode;
     }
 
-
-    // Getters for all fields, including sessionMode
-    public String getSessionMode() {
-        return sessionMode;
-    }
     // Getters and Setters
-    public String getSessionID() {
-        return sessionID;
-    }
-
-
-
-
-    public void setSessionID(String sessionID) {
-        this.sessionID = sessionID;
-    }
-
-
-
-
-    public int getTutorID() {
-        return tutorID;
-    }
-
-
-
-
-    public void setTutorID(int tutorID) {
-        this.tutorID = tutorID;
-    }
-
-
-
-
-    public String getSubjectID() {
-        return subjectID;
-    }
-
-
-
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-
-
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-
-
-
-    public void setSubjectID(String subjectID) {
-        this.subjectID = subjectID;
-    }
-
-
-
-
-    public String getSessionStatus() {
-        return sessionStatus;
-    }
-
-
-
-
-    public void setSessionStatus(String sessionStatus) {
-        this.sessionStatus = sessionStatus;
-    }
-
-
-
-
-    public String getSessionDate() {
-        return sessionDate;
-    }
-
-
-
-
-    public void setSessionDate(String sessionDate) {
-        this.sessionDate = sessionDate;
-    }
-
-
-
-
-    public String getSessionTime() {
-        return sessionTime;
-    }
-
-
-
-
-    public void setSessionTime(String sessionTime) {
-        this.sessionTime = sessionTime;
-    }
-
-
-
-
-    public int getSessionDuration() {
-        return sessionDuration;
-    }
-
-
-
-
-    public void setSessionDuration(int sessionDuration) {
-        this.sessionDuration = sessionDuration;
-    }
-
-
-
-
-    public int getNumberOfStudents() {
-        return numberOfStudents;
-    }
-
-
-
-
-    public void setNumberOfStudents(int numberOfStudents) {
-        this.numberOfStudents = numberOfStudents;
-    }
-
-
-
 
     public int getMaximumStudents() {
         return maximumStudents;
     }
 
-
-
-
     public void setMaximumStudents(int maximumStudents) {
         this.maximumStudents = maximumStudents;
     }
 
-
-
-
-    public double getSessionPrice() {
-        return sessionPrice;
+    public int getNumberOfStudents() {
+        return numberOfStudents;
     }
 
+    public void setNumberOfStudents(int numberOfStudents) {
+        this.numberOfStudents = numberOfStudents;
+    }
 
+    public int getSessionDuration() {
+        return sessionDuration;
+    }
 
+    public void setSessionDuration(int sessionDuration) {
+        this.sessionDuration = sessionDuration;
+    }
+
+    public String getSessionDate() {
+        return sessionDate;
+    }
+
+    public void setSessionDate(String sessionDate) {
+        this.sessionDate = sessionDate;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public String getSessionMode() {
+        return sessionMode;
+    }
+
+    public void setSessionMode(String sessionMode) {
+        this.sessionMode = sessionMode;
+    }
+
+    public int getSessionPrice() {
+        return (int) sessionPrice;
+    }
 
     public void setSessionPrice(double sessionPrice) {
         this.sessionPrice = sessionPrice;
     }
 
+    public String getSessionStatus() {
+        return sessionStatus;
+    }
 
+    public void setSessionStatus(String sessionStatus) {
+        this.sessionStatus = sessionStatus;
+    }
 
+    public String getSessionTime() {
+        return sessionTime;
+    }
 
-    // Override toString for easy object representation
+    public void setSessionTime(String sessionTime) {
+        this.sessionTime = sessionTime;
+    }
+
+    public String getSubjectID() {
+        return subjectID;
+    }
+
+    public void setSubjectID(String subjectID) {
+        this.subjectID = subjectID;
+    }
+
+    public String getSubjectLevel() {
+        return subjectLevel;
+    }
+
+    public void setSubjectLevel(String subjectLevel) {
+        this.subjectLevel = subjectLevel;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public int getTutorID() {
+        return tutorID;
+    }
+
+    public void setTutorID(int tutorID) {
+        this.tutorID = tutorID;
+    }
+
+    // String representation
     @Override
     public String toString() {
         return "TutorSession{" +
@@ -217,9 +166,7 @@ public class TutorSession implements Serializable {
                 ", numberOfStudents=" + numberOfStudents +
                 ", maximumStudents=" + maximumStudents +
                 ", sessionPrice=" + sessionPrice +
+                ", sessionMode='" + sessionMode + '\'' +
                 '}';
-    }
-    public void setSessionMode(String sessionMode) {
-        this.sessionMode = sessionMode;
     }
 }

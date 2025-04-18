@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="360.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewMoreSessionsPopUpController">
+    <top>
+        <HBox alignment="CENTER" prefHeight="47.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Session Details" textFill="WHITE" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" prefHeight="220.0" BorderPane.alignment="CENTER">
+            <content>
+                <VBox spacing="8" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="20" left="20" right="20" bottom="20"/>
+                    </padding>
+                    <children>
+                        <Label text="Tutor Name">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="tutorNameLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Subject Name">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="subjectNameLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Academic Level">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="academicLevelLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Session Type">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="sessionTypeLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Session Mode">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="sessionModeLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Number of Students Enrolled">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="numberOfStudentsLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Maximum Number of Student Allowed">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="maxStudentsLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+
+                        <Label text="Session Price">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="sessionPriceLabel" prefWidth="250.0" wrapText="true" styleClass="indented-label"/>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
