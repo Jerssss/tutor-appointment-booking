@@ -70,7 +70,7 @@ public class AdminClient extends Application {
 
     private void loadAdminLoginPageUI() {
         try {
-            File fxmlFile = new File("src/main/resource/fxml/admin/admin_login_page.fxml");
+            File fxmlFile = new File("src/main/resources/fxml/admin/admin_login_page.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
             Parent root = loader.load();
 
