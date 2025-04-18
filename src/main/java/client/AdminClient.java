@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.interfaces.AdminService;
@@ -14,6 +15,7 @@ import shared.interfaces.AuthService;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Date;
@@ -95,6 +97,18 @@ public class AdminClient extends Application {
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
             primaryStage.setTitle("Admin Portal - Learnify");
+
+            // Load application icon
+            try {
+                URL iconUrl = AdminClient.class.getResource("/images/client/app_icon.png");
+                if (iconUrl == null) {
+                    throw new RuntimeException("Icon file not found!");
+                }
+                primaryStage.getIcons().add(new Image(iconUrl.openStream()));
+            } catch (Exception e) {
+                System.err.println("[ERROR] Failed to load icon: " + e.getMessage());
+                e.printStackTrace();
+            }
 
             primaryStage.setOnCloseRequest(event -> {
                 System.out.println("[INFO] Close request received. Terminating the application...");

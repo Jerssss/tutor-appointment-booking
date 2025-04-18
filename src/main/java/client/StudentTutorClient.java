@@ -20,6 +20,7 @@ import shared.interfaces.TutorService;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -73,7 +74,6 @@ public class StudentTutorClient extends Application {
             FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
             Parent root = loader.load();
 
-
             // Get the controller
             LandingPageView landingPageView = loader.getController();
             if (landingPageView == null) {
@@ -83,22 +83,32 @@ public class StudentTutorClient extends Application {
                 new LandingPageController(landingPageView); // Link the controller to the view
             }
 
-
             // Set the scene
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
+            primaryStage.setTitle("Lendify - Student & Tutor Portal");
 
+            // Load application icon
+            try {
+                URL iconUrl = StudentTutorClient.class.getResource("/images/client/app_icon.png");
+                if (iconUrl == null) {
+                    throw new RuntimeException("Icon file not found!");
+                }
+                primaryStage.getIcons().add(new Image(iconUrl.openStream()));
+            } catch (Exception e) {
+                System.err.println("[ERROR] Failed to load icon: " + e.getMessage());
+                e.printStackTrace();
+            }
 
             primaryStage.setOnCloseRequest(event -> {
                 System.out.println("[INFO] Close request received. Terminating the application...");
                 terminateApplication();
             });
+
             // Show the landing page
             primaryStage.show();
-
-
             System.out.println("[Client] WELCOME TO LENDIFY");
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,6 +118,7 @@ public class StudentTutorClient extends Application {
             System.err.println("[ERROR] Unexpected error in loadLandingPageUI(): " + e.getMessage());
         }
     }
+
 
 
     private void terminateApplication() {
