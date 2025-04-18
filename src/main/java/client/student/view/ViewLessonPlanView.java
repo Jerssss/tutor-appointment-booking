@@ -140,4 +140,6 @@ public class ViewLessonPlanView implements Initializable {
         st.setAutoReverse(false);
         st.play();
     }
+
+
 }
