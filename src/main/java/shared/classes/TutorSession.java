@@ -222,4 +222,8 @@ public class TutorSession implements Serializable {
     public void setSessionMode(String sessionMode) {
         this.sessionMode = sessionMode;
     }
+
+    public String getSessionType() {
+        return null;
+    }
 }
