@@ -69,7 +69,7 @@ public class StudentTutorClient extends Application {
 
     private void loadLandingPageUI() {
         try {
-            File fxmlFile = new File("src/main/resource/fxml/common/landing_page.fxml");
+            File fxmlFile = new File("src/main/resources/fxml/common/landing_page.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
             Parent root = loader.load();
 
