@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StudentService {
     Booking createBooking(int studentID, String sessionID, String sessionMode, String bookingStatus, double sessionPrice) throws RemoteException;
-    Booking viewStudentBooking(int studentID) throws RemoteException;
+    List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException;
     List<TutorSession> viewAvailableSessions() throws RemoteException;
     Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice) throws RemoteException;
     List<Subject> viewSubject() throws RemoteException;

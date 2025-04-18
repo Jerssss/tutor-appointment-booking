@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -52,7 +53,49 @@ public class CreateBookingView implements Initializable {
     }
 
     private void initializeSearchListener() {
+        // store filtered results
+        FilteredList<TutorSession> filteredData = new FilteredList<>(
+                createReservationTableView.getItems(), p -> true
+        );
 
+        // replace curretn table content with search queries
+        createReservationTableView.setItems(filteredData);
+
+        // active listener naol u know im just rephrasing these commaents
+        searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(session -> {
+                // if no search query show all
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // search input is converted to lowercase
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                // check attributes if matches to the search query
+                if (session.getSubjectName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Matches subject name
+                }
+                if (session.getSubjectLevel().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Matches academic level
+                }
+                if (session.getSessionDate().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Matches date
+                }
+                if (session.getSessionTime().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Matches time
+                }
+                if (session.getSessionMode().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Matches mode (Online/Face-to-Face)
+                }
+                // Check session type (Solo/Group)
+                String type = session.getMaximumStudents() == 1 ? "solo" : "group";
+                if (type.contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false; // No matches found
+            });
+        });
     }
 
     private void initializeController() {
@@ -95,6 +138,7 @@ public class CreateBookingView implements Initializable {
             private final Button reserveButton = new Button("Reserve");
 
             {
+                reserveButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
                 reserveButton.getStyleClass().add("reserve-button");
                 reserveButton.setOnAction(event -> {
                     TutorSession session = getTableView().getItems().get(getIndex());

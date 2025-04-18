@@ -48,30 +48,57 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
-    public Booking viewStudentBooking(int studentID) throws RemoteException {
-        Booking booking = null;
+    public List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException {
+        List<BookingDetails> bookings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT * FROM booking WHERE studentID = ?"
+                     "SELECT b.studentID, b.sessionID, b.sessionMode, " +
+                             "b.bookingStatus, b.sessionPrice, ts.sessionDate, " +
+                             "ts.sessionTime, ts.sessionDuration, s.subjectName, " +
+                             "CONCAT(ut.firstName, ' ', ut.lastName) AS tutorName " +
+                             "FROM booking b " +
+                             "JOIN tutorsession ts ON b.sessionID = ts.sessionID " +
+                             "JOIN subject s ON ts.subjectID = s.subjectID " +
+                             "JOIN user ut ON ut.userID = ts.tutorID " +
+                             "WHERE b.studentID = ?"
              )) {
 
             stmt.setInt(1, studentID);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                booking = new Booking(
+            while (rs.next()) {
+                // Create base Booking object using parent class constructor
+                Booking booking = new Booking(
                         rs.getInt("studentID"),
                         rs.getString("sessionID"),
                         rs.getString("sessionMode"),
                         rs.getString("bookingStatus"),
                         rs.getDouble("sessionPrice")
                 );
+
+                // Create BookingDetails with extended information
+                BookingDetails details = new BookingDetails(
+                        rs.getString("subjectName"),
+                        rs.getString("tutorName"),
+                        rs.getString("sessionDate"),
+                        rs.getString("sessionTime"),
+                        rs.getInt("sessionDuration")
+                );
+
+                // Set the inherited booking fields
+                details.setStudentID(booking.getStudentID());
+                details.setSessionID(booking.getSessionID());
+                details.setSessionMode(booking.getSessionMode());
+                details.setBookingStatus(booking.getBookingStatus());
+                details.setSessionPrice(booking.getSessionPrice());
+
+                bookings.add(details);
             }
 
         } catch (SQLException e) {
-            throw new RemoteException("Database error while viewing booking: " + e.getMessage());
+            throw new RemoteException("Database error while viewing bookings: " + e.getMessage());
         }
-        return booking;
+        return bookings;
     }
 
     @Override
