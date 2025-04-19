@@ -47,7 +47,6 @@ public class AdminViewStudentView {
     private TableColumn<Student, String> balanceColumn;
     @FXML
     private TableColumn<Student, String> optionColumn;
-
     private AdminViewStudentController controller;
     private ObservableList<Student> studentData = FXCollections.observableArrayList();
 
@@ -60,9 +59,7 @@ public class AdminViewStudentView {
             controller.searchStudents(newValue);
         });
         refreshButton.setOnAction(event -> controller.loadStudents());
-        //setActionRefreshButton(event -> controller.loadStudents());
         addStudentButton.setOnAction(event -> openAddStudentWindow());
-
     }
 
     public void initializeTableColumns() {
@@ -108,10 +105,13 @@ public class AdminViewStudentView {
         };
     }
 
-    public void showModifyPane(Student s) {
+    public void showModifyPane(Student student) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_student_window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/modify_student_window.fxml"));
             Parent root = loader.load();
+
+            AdminModifyStudentPopUp view = loader.getController();
+            view.setStudent(student);
 
             Stage stage = new Stage();
             stage.setTitle("Add Student");
@@ -123,10 +123,6 @@ public class AdminViewStudentView {
             e.printStackTrace();
             System.out.println("[CLIENT] Failed to load Add Student window.");
         }
-    }
-
-    public void setActionRefreshButton(EventHandler<ActionEvent> event) {
-        refreshButton.setOnAction(event);
     }
 
     private void openAddStudentWindow() {
@@ -153,25 +149,6 @@ public class AdminViewStudentView {
         studentTableView.setItems(studentData); // Reload table data
         studentTableView.refresh(); // Force UI refresh
         System.out.println("[CLIENT(Admin)] Student data updated. New table size: " + studentData.size());
-    }
-    private void applyHoverEffect(Button button) {
-        button.setOnMouseEntered(event -> {
-            ScaleTransition st = new ScaleTransition(Duration.millis(200), button);
-            st.setToX(0.9);
-            st.setToY(0.9);
-            st.setCycleCount(1);
-            st.setAutoReverse(false);
-            st.play();
-        });
-
-        button.setOnMouseExited(event -> {
-            ScaleTransition st = new ScaleTransition(Duration.millis(200), button);
-            st.setToX(1.0);
-            st.setToY(1.0);
-            st.setCycleCount(1);
-            st.setAutoReverse(false);
-            st.play();
-        });
     }
 
     public void addStudentButtonExited() {

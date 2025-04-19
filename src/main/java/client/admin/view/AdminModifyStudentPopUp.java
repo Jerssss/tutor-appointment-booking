@@ -1,4 +1,66 @@
 package client.admin.view;
 
+import client.admin.controller.AdminModifyStudentPopUpController;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import shared.classes.Student;
+
+import javax.swing.*;
+
 public class AdminModifyStudentPopUp {
+    @FXML
+    private TextField passwordTextField;
+    @FXML
+    private Button saveChangesButton;
+    private Student student;
+    private AdminModifyStudentPopUpController controller;
+
+    public void initialize() {
+        initializeController();
+        saveChangesButton.setOnAction(event -> handleSave());
+    }
+
+    public void initializeController() {
+        System.out.println("[CLIENT] Initializing AdminModifyStudentPopUpController...");
+        this.controller = new AdminModifyStudentPopUpController();
+        System.out.println("[CLIENT] AdminModifyStudentPopUpController successfully created.");
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    private void handleSave() {
+        String newPass = passwordTextField.getText();
+
+        if (student == null || newPass == null || newPass.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "Invalid input. Please check the form.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String id = student.getUserID();
+        boolean success = controller.modifyStudent(id, newPass);
+
+        if (!success) {
+            JOptionPane.showMessageDialog(null,
+                    "Failed to update student.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Student updated successfully.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        closeWindow();
+    }
+
+    private void closeWindow() {
+        Stage stage = (Stage) saveChangesButton.getScene().getWindow();
+        stage.close();
+    }
 }

@@ -124,7 +124,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="67.0" prefWidth="330.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="addStudentButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #fffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Student" textFill="#6f2e2e">
+            <Button fx:id="addStudentButton" mnemonicParsing="false" onMouseEntered="#addStudentButtonHovered" onMouseExited="#addStudentButtonExited" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #fffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Student" textFill="#6f2e2e">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

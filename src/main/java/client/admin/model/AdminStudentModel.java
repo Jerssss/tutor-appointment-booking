@@ -1,6 +1,5 @@
 package client.admin.model;
 
-import server.services.AdminServiceImpl;
 import shared.classes.Student;
 import shared.interfaces.AdminService;
 import client.AdminClient;
@@ -19,7 +18,7 @@ public class AdminStudentModel {
         try {
             return adminService.viewStudent();
         } catch (Exception e) {
-            System.err.println("[ERROR] Failed to fetch terminals: " + e.getMessage());
+            System.err.println("[ERROR] Failed to fetch students: " + e.getMessage());
             return null;
         }
     }
@@ -34,5 +33,13 @@ public class AdminStudentModel {
         }
     }
 
-
+    public boolean modifyStudentPassword(String id, String newPassword) {
+        try {
+            adminService.modifyStudent(id, newPassword);
+            return true;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to modify student via RMI: " + e.getMessage());
+            return false;
+        }
+    }
 }

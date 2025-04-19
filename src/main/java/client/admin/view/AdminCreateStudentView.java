@@ -1,11 +1,13 @@
 package client.admin.view;
 
 import client.admin.controller.AdminCreateStudentController;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.swing.*;
 
@@ -42,7 +44,7 @@ public class AdminCreateStudentView {
         String email = emailTextField.getText();
         String acadLvl = (String) academicLevelComboBox.getValue();
 
-        // Pass data to the controller to save to JSON
+        // Pass data to the controller to save it in the database
         boolean success = controller.addNewStudent(fname, lname, pNum, email, acadLvl);
 
         if (!success) {
@@ -64,4 +66,21 @@ public class AdminCreateStudentView {
         stage.close();
     }
 
+    public void addStudentButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), addStudentButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void addStudentButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), addStudentButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
 }
