@@ -1,22 +1,26 @@
 package shared.classes;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Payment implements Serializable {
     private String paymentID;
     private String studentID;
-    private double amount;
-    private LocalDateTime paymentDateTime;
+    private LocalDate paymentDate;
+    private LocalTime paymentTime;
     private String paymentMethod;
+    private double amount;
 
     // Constructor
-    public Payment(String paymentID, String studentID, double amount, LocalDateTime paymentDateTime, String paymentMethod) {
+    public Payment(String paymentID, String studentID, LocalDate date,  LocalTime time, String paymentMethod, double amount) {
         this.paymentID = paymentID;
         this.studentID = studentID;
-        this.amount = amount;
-        this.paymentDateTime = paymentDateTime;
+        this.paymentDate = date;
+        this.paymentTime = time;
         this.paymentMethod = paymentMethod;
+        this.amount = amount;
     }
 
     // Getters and Setters
@@ -36,20 +40,20 @@ public class Payment implements Serializable {
         this.studentID = studentID;
     }
 
-    public double getAmount() {
-        return amount;
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
-    public LocalDateTime getPaymentDateTime() {
-        return paymentDateTime;
+    public LocalTime getPaymentTime() {
+        return paymentTime;
     }
 
-    public void setPaymentDateTime(LocalDateTime paymentDateTime) {
-        this.paymentDateTime = paymentDateTime;
+    public void setPaymentTime(LocalTime paymentTime) {
+        this.paymentTime = paymentTime;
     }
 
     public String getPaymentMethod() {
@@ -60,15 +64,25 @@ public class Payment implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     // Override toString for easy object representation
     @Override
     public String toString() {
         return "Payment{" +
-                "paymentID=" + paymentID +
-                ", studentID=" + studentID +
-                ", amount=" + amount +
-                ", paymentDateTime=" + paymentDateTime +
+                "paymentID='" + paymentID + '\'' +
+                ", studentID='" + studentID + '\'' +
+                ", paymentDate=" + paymentDate +
+                ", paymentTime=" + paymentTime +
                 ", paymentMethod='" + paymentMethod + '\'' +
+                ", amount=" + amount +
                 '}';
     }
+
 }

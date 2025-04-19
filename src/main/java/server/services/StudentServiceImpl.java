@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -294,10 +296,12 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
         String newPaymentID = incrementPaymentID(lastPaymentID);
 
         LocalDateTime paymentDateTime = LocalDateTime.now();
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
         String paymentDate = paymentDateTime.toLocalDate().toString();
         String paymentTime = paymentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-        Payment newPayment = new Payment(newPaymentID, studentID, amount, paymentDateTime, paymentMethod);
+        Payment newPayment = new Payment(newPaymentID, studentID, date, time, paymentMethod, amount);
 
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
