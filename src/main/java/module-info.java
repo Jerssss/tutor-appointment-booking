@@ -20,5 +20,6 @@ module Learnify {
     opens client.admin.controller to javafx.fxml;
     opens client.student.view to javafx.fxml;
     opens client.tutor.view to javafx.fxml;
+    opens shared.classes to javafx.base;
 
 }

@@ -37,7 +37,7 @@
                             <children>
                                 <StackPane prefHeight="74.0" prefWidth="197.0">
                                     <children>
-                                        <Button fx:id="refreshButton" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="11.0" />
                                             </font>
@@ -56,10 +56,10 @@
                 <TableColumn fx:id="subjectColumn" editable="false" prefWidth="141.33333587646484" resizable="false" text="Subject" />
                 <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="97.33332824707031" resizable="false" text="Session Mode" />
                 <TableColumn fx:id="dateColumn" editable="false" prefWidth="98.33334350585938" resizable="false" text="Date" />
-                <TableColumn fx:id="sessionTimeColumn" editable="false" prefWidth="104.3333740234375" resizable="false" text="Session Time" />
-                <TableColumn fx:id="durationColumn" editable="false" prefWidth="61.66668701171875" resizable="false" text="Duration" />
-                <TableColumn fx:id="statusColumn" editable="false" prefWidth="93.33331298828125" resizable="false" text="Status" />
-                <TableColumn fx:id="studentColumn" editable="false" prefWidth="126.66668701171875" resizable="false" text="View Student" />
+                <TableColumn fx:id="sessionTimeColumn" editable="false" prefWidth="97.0" resizable="false" text="Session Time" />
+                <TableColumn fx:id="durationColumn" editable="false" prefWidth="67.0" resizable="false" text="Duration" />
+                <TableColumn fx:id="statusColumn" editable="false" prefWidth="91.0" resizable="false" text="Status" />
+                <TableColumn fx:id="studentColumn" editable="false" prefWidth="133.0" resizable="false" text="View Student" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

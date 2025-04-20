@@ -86,4 +86,41 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         }
         return tutorsessions;
     }
+
+    @Override
+    public List<Student> getStudentsBySession(String sessionID) throws RemoteException {
+        List<Student> students = new ArrayList<>();
+        String query = "SELECT u.userID, u.firstName, u.lastName " +
+                "FROM booking b " +
+                "JOIN student s ON b.studentID = s.studentID " +
+                "JOIN user u ON s.studentID = u.userID " +
+                "WHERE b.sessionID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, sessionID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String userID = rs.getString("userID");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+
+                // Provide default/dummy values for the fields not returned by the query
+                long phoneNumber = 0L;
+                String email = "";
+                String role = "student";
+                double balance = 0.0;
+                String academicLevel = "";
+
+                Student student = new Student(userID, firstName, lastName, phoneNumber, email, role, balance, academicLevel);
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while retrieving students: " + e.getMessage());
+        }
+        return students;
+    }
+
 }
