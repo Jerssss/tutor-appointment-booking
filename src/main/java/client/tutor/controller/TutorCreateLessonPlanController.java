@@ -1,19 +1,16 @@
 package client.tutor.controller;
 
-import client.tutor.model.TutorCreateLessonPlanModel;
+import client.tutor.model.TutorLessonPlanModel;
 import shared.classes.LessonPlan;
 
 public class TutorCreateLessonPlanController {
+    private final TutorLessonPlanModel model;
+    public TutorCreateLessonPlanController() {
+        this.model = new TutorLessonPlanModel();
+    }
 
-
-//    // For console testing
-//    public void start() {
-//        // Generate example values
-//        String lessonPlanID = "LP416";
-//        String subjectID = "HS 111";
-//        String objectives = "Familiarize students with basic computing concepts and more";
-//        String topicsCovered = "Classes, Inheritance";
-//
-//        createLessonPlan(lessonPlanID, subjectID, objectives, topicsCovered);
-//    }
+    public boolean addNewLessonPlan(String lessonPlanID, String subjectID, String objectives, String topicsCovered) {
+        LessonPlan newLessonPlan = new LessonPlan(lessonPlanID, subjectID, objectives, topicsCovered);
+        return model.addNewLessonPlan(newLessonPlan);
+    }
 }
