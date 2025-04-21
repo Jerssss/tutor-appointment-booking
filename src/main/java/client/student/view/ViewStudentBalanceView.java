@@ -1,11 +1,54 @@
 package client.student.view;
 
 import javafx.animation.ScaleTransition;
-import javafx.scene.control.Button;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class ViewStudentBalanceView {
-    public Button refreshButton;
+    @FXML
+    private VBox centerPane;
+
+    @FXML
+    private TableColumn<?, ?> courseColumn;
+
+    @FXML
+    private Button createPaymentButton;
+
+    @FXML
+    private TableColumn<?, ?> dateColumn;
+
+    @FXML
+    private TableColumn<?, ?> durationColumn;
+
+    @FXML
+    private TableColumn<?, ?> modeColumn;
+
+    @FXML
+    private Button refreshButton;
+
+    @FXML
+    private Label remBalanceLabel;
+
+    @FXML
+    private TextField searchBalTextField;
+
+    @FXML
+    private TableColumn<?, ?> statusColumn;
+
+    @FXML
+    private TableColumn<?, ?> timeColumn;
+
+    @FXML
+    private TableColumn<?, ?> tutorColumn;
+
+    @FXML
+    private TableView<?> viewResTableView;
+
+
+
+
 
     public void refreshButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
@@ -24,4 +67,22 @@ public class ViewStudentBalanceView {
         st.setAutoReverse(false);
         st.play();
     }
+    public void createPaymentButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void createPaymentButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
 }
