@@ -51,6 +51,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
 
     @Override
     public List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException {
+        System.out.println("[SERVER] Executing query for studentID: " + studentID);
         List<BookingDetails> bookings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
