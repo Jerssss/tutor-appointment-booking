@@ -49,7 +49,7 @@ public class ModifyBookingController {
         }
     }
 
-    public void modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice) {
+    public void modifyBooking(int studentID, String sessionID, String newSessionMode, String newsessionDate, String newsessionTime, String newBookingStatus, double newSessionPrice) {
         try {
             Booking updatedBooking = model.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
             if (updatedBooking != null) {
@@ -60,6 +60,21 @@ public class ModifyBookingController {
             }
         } catch (RemoteException e) {
             System.err.println("Error modifying booking: " + e.getMessage());
+        }
+    }
+
+    public void cancelBooking(String sessionID) {
+        try {
+            // Call the model to cancel the booking
+            boolean success = model.cancelBooking(sessionID);
+            if (success) {
+                System.out.println("Booking cancelled successfully.");
+                refreshTable(); // Refresh the table to reflect the cancellation
+            } else {
+                view.showErrorAlert("Cancellation Failed", "Failed to cancel the booking.");
+            }
+        } catch (RemoteException e) {
+            view.showErrorAlert("Connection Error", "Failed to cancel the booking: " + e.getMessage());
         }
     }
 }

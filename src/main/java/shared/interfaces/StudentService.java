@@ -10,6 +10,7 @@ public interface StudentService {
     List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException;
     List<TutorSession> viewAvailableSessions() throws RemoteException;
     Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice) throws RemoteException;
+    boolean cancelBooking(String sessionID) throws RemoteException;
     List<Subject> viewSubject() throws RemoteException;
     List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException;
     List<LessonPlan> viewCollegeLessonPlan() throws RemoteException;

@@ -1,33 +1,62 @@
 package client.student.view;
 
+import client.student.controller.ModifyBookingController;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.util.Callback;
 import javafx.util.Duration;
-import shared.classes.Booking;
-import client.student.controller.ModifyBookingController;
 import shared.classes.BookingDetails;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
 public class UpdateBookingPopUp {
-    @FXML private ComboBox<String> sessionDateComboBox;
+    @FXML private DatePicker sessionDatePicker; // Changed from ComboBox to DatePicker
     @FXML private ComboBox<String> sessionTimeComboBox;
     @FXML private ComboBox<String> sessionModeComboBox;
     @FXML private Button updateBookingButton;
 
-    private Booking selectedBooking;
+    private BookingDetails selectedBooking;
     private ModifyBookingController controller;
 
     public void setSelectedBooking(BookingDetails booking) {
         this.selectedBooking = booking;
-        // Populate the combo boxes with the booking details
-        sessionDateComboBox.setValue(booking.getSessionDate());
+        // Populate the fields with the booking details
+        sessionDatePicker.setValue(LocalDate.parse(booking.getSessionDate()));
         sessionTimeComboBox.setValue(booking.getSessionTime());
         sessionModeComboBox.setValue(booking.getSessionMode());
     }
 
     public void setController(ModifyBookingController controller) {
         this.controller = controller;
+    }
+
+    @FXML
+    private void initialize() {
+        // Initialize the session mode ComboBox with options
+        sessionModeComboBox.getItems().addAll("Online", "Face-to-Face");
+
+        // Disable past dates and Sundays in the DatePicker
+        sessionDatePicker.setDayCellFactory(new Callback<>() {
+            @Override
+            public DateCell call(DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        // Disable past dates and Sundays
+                        if (date.isBefore(LocalDate.now()) || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffc0cb;"); // Optional: Highlight disabled dates
+                        }
+                    }
+                };
+            }
+        });
     }
 
     @FXML
@@ -52,7 +81,7 @@ public class UpdateBookingPopUp {
 
     @FXML
     private void handleUpdateBooking() {
-        String newSessionDate = sessionDateComboBox.getValue();
+        String newSessionDate = sessionDatePicker.getValue().toString(); // Get date from DatePicker
         String newSessionTime = sessionTimeComboBox.getValue();
         String newSessionMode = sessionModeComboBox.getValue();
 
@@ -62,6 +91,8 @@ public class UpdateBookingPopUp {
                     selectedBooking.getStudentID(),
                     selectedBooking.getSessionID(),
                     newSessionMode,
+                    newSessionDate,
+                    newSessionTime,
                     selectedBooking.getBookingStatus(),
                     selectedBooking.getSessionPrice()
             );

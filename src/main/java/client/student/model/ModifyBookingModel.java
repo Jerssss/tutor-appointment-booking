@@ -25,4 +25,9 @@ public class ModifyBookingModel {
         // Modify booking using the service
         return service.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
     }
+
+    public boolean cancelBooking(String sessionID) throws RemoteException {
+        // Call the service to cancel the booking
+        return service.cancelBooking(sessionID);
+    }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 
 public class StudentServiceImpl implements Remote, StudentService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
+
     @Override
     public Booking createBooking(int studentID, String sessionID, String sessionMode, String bookingStatus,
                                  double sessionPrice) throws RemoteException {
@@ -110,20 +111,20 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
         String query = "SELECT \n" +
                 "    ts.sessionID, \n" +
                 "    ts.tutorID, \n" +
-                "            ts.subjectID, \n" +
-                "            ts.sessionStatus, \n" +
-                "            ts.sessionDate, \n" +
-                "            ts.sessionTime, \n" +
-                "            ts.sessionDuration, \n" +
-                "            ts.numberOfStudents, \n" +
-                "            ts.maximumStudents, \n" +
-                "            ts.sessionPrice, \n" +
-                "            ts.sessionMode, \n" +
-                "            s.subjectLevel, \n" +
-                "            s.subjectName \n" +
-                "            FROM tutorsession ts \n" +
-                "            JOIN subject s ON ts.subjectID = s.subjectID \n" +
-                "            WHERE ts.sessionStatus IN ('In Progress', 'Scheduled')";
+                "    ts.subjectID, \n" +
+                "    ts.sessionStatus, \n" +
+                "    ts.sessionDate, \n" +
+                "    ts.sessionTime, \n" +
+                "    ts.sessionDuration, \n" +
+                "    ts.numberOfStudents, \n" +
+                "    ts.maximumStudents, \n" +
+                "    ts.sessionPrice, \n" +
+                "    ts.sessionMode, \n" +
+                "    s.subjectLevel, \n" +
+                "    s.subjectName \n" +
+                "FROM tutorsession ts \n" +
+                "JOIN subject s ON ts.subjectID = s.subjectID \n" +
+                "WHERE ts.sessionStatus IN ('In Progress', 'Scheduled')";
 
         try (Connection conn = DatabaseConnection.setCon();
              Statement stmt = conn.createStatement();
@@ -185,6 +186,20 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
+    public boolean cancelBooking(String sessionID) throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?"
+             )) {
+            stmt.setString(1, sessionID);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Return true if a booking was cancelled
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while cancelling booking: " + e.getMessage());
+        }
+    }
+
+    @Override
     public List<Subject> viewSubject() throws RemoteException {
         System.out.println("[SERVER] Fetching subjects from database...");
         List<Subject> subjects = new ArrayList<>();
@@ -222,7 +237,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
         List<LessonPlan> lessonPlans = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'HS%'"
+                     "SELECT * FROM lesson plan WHERE subjectID LIKE 'HS%'"
              )) {
 
             ResultSet rs = stmt.executeQuery();
@@ -346,7 +361,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
         String prefix = lastPaymentID.substring(0, 1); // "P"
         int number = Integer.parseInt(lastPaymentID.substring(1)); // "001" -> 1
 
-        // incerment and format back to three digits
+        // increment and format back to three digits
         number++;
         return prefix + String.format("%03d", number);
     }

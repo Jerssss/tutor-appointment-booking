@@ -86,3 +86,11 @@
     -fx-opacity: 0.5;
     -fx-disable: true;
 }
+
+.past-date-row {
+    -fx-background-color: #cccccc;
+}
+
+.cancelled-row {
+    -fx-background-color: #d3d3d3;
+}

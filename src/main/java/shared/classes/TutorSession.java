@@ -30,16 +30,16 @@ public class TutorSession implements Serializable {
     private String sessionType;
 
     // Constructor
-    public TutorSession(String sessionID, String tutorID, String subjectID, String subjectName,
-                        LocalDate sessionDate, LocalTime sessionTime, int sessionDuration,
+    public TutorSession(String sessionID, int tutorID, String subjectID, String subjectName,
+                        String sessionDate, String sessionTime, int sessionDuration,
                         String sessionStatus, int numberOfStudents, int maximumStudents,
                         double sessionPrice, String sessionMode) {
         this.sessionID = sessionID;
-        this.tutorID = tutorID;
+        this.tutorID = String.valueOf(tutorID);
         this.subjectID = subjectID;
         this.subjectName = subjectName;
-        this.sessionDate = sessionDate;
-        this.sessionTime = sessionTime;
+        this.sessionDate = LocalDate.parse(sessionDate);
+        this.sessionTime = LocalTime.parse(sessionTime);
         this.sessionDuration = sessionDuration;
         this.sessionStatus = sessionStatus;
         this.numberOfStudents = numberOfStudents;
@@ -64,6 +64,23 @@ public class TutorSession implements Serializable {
         this.numberOfStudents = numberOfStudents;
         this.maximumStudents = maximumStudents;
         this.sessionPrice = sessionPrice;
+    }
+
+    public TutorSession(String sessionID, String s, String subjectID, String subjectName,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String sessionStatus, int numberOfStudents,
+                        int maximumStudents, double sessionPrice, String sessionMode) {
+        this.sessionID = sessionID;
+        this.subjectID = subjectID;
+        this.subjectName = subjectName;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionDuration = sessionDuration;
+        this.sessionStatus = sessionStatus;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+        this.sessionMode = sessionMode;
     }
 
     // Getters and Setters
