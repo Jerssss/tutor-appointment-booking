@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="437.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="437.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.tutor.view.TutorModifyLessonPlanPopUp">
    <center>
       <VBox prefHeight="394.0" prefWidth="438.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,7 +25,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="objectivesTextField" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" promptText="Set Objectives..." stylesheets="@../../css/styles.css">
+                              <TextField fx:id="objectivesTextField" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" promptText="Set Objectives..." stylesheets="@../../css/styles.css">
                                  <styleClass>
                                     <String fx:value="background-pane" />
                                     <String fx:value="text-field2" />
@@ -44,7 +44,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="topicsCoveredTextField" alignment="TOP_CENTER" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" promptText="Specify topics covered..." stylesheets="@../../css/styles.css">
+                              <TextField fx:id="topicsCoveredTextField" alignment="TOP_CENTER" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" promptText="Specify topics covered..." stylesheets="@../../css/styles.css">
                                  <styleClass>
                                     <String fx:value="background-pane" />
                                     <String fx:value="text-field2" />
@@ -65,12 +65,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="47.0" prefWidth="310.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="42.0" prefWidth="258.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Updating Lesson Plan: " textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" prefHeight="42.0" prefWidth="168.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Name" textFill="WHITE">
+            <Label alignment="CENTER" prefHeight="42.0" prefWidth="258.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Updating Lesson Plan" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

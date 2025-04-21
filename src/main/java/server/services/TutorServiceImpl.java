@@ -9,40 +9,64 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TutorServiceImpl extends UnicastRemoteObject implements TutorService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
     private Connection connection;
+    private static Connection con = DatabaseConnection.setCon();
+    private static Statement stmt;
 
     public TutorServiceImpl() throws RemoteException {
         super();
         this.connection = DatabaseConnection.setCon();
     }
 
-    @Override
-    public LessonPlan createLessonPlan(String lessonPlanID, String subjectID, String objectives, String topicsCovered) throws RemoteException {
-        LessonPlan lessonPlan = new LessonPlan();
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
-                     "INSERT INTO lessonplan (lessonPlanID, subjectID, objectives, topicsCovered) VALUES (?, ?, ?, ?)"
-             )) {
-            // Set parameters
-            stmt.setString(1, lessonPlanID);
-            stmt.setString(2, subjectID);
-            stmt.setString(3, objectives);
-            stmt.setString(4, topicsCovered);
-            stmt.executeUpdate();
-            // Populate the LessonPlan object
-            lessonPlan.setLessonPlanID(lessonPlanID);
-            lessonPlan.setSubjectID(subjectID);
-            lessonPlan.setObjectives(objectives);
-            lessonPlan.setTopicsCovered(topicsCovered);
+    public String generateNewLessonPlanID() {
+        String query = "SELECT lessonPlanID FROM lessonplan ORDER BY lessonPlanID DESC LIMIT 1";
+        String latestLessonPlanID = ""; // default
+
+        try {
+            stmt = con.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+
+            if (resultSet.next()) {
+                latestLessonPlanID = resultSet.getString("lessonPlanID");
+            }
         } catch (SQLException e) {
-            throw new RemoteException("Database error: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-        return lessonPlan;
+
+        // Extract numeric part and increment
+        String numericPart = latestLessonPlanID.replaceAll("[^0-9]", "");
+        int nextID = Integer.parseInt(numericPart) + 1;
+        return "LP" + nextID;
+    }
+
+
+    @Override
+    public void addLessonPlan(LessonPlan newLessonPlan) throws RemoteException, SQLException {
+        String query = "INSERT INTO lessonplan (lessonPlanID, subjectID, objectives, topicsCovered) VALUES (?, ?, ?, ?);";
+        try {
+            String newLessonPlanID = generateNewLessonPlanID();
+
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, newLessonPlanID);
+            preparedStatement.setString(2, newLessonPlan.getSubjectID());
+            preparedStatement.setString(3, newLessonPlan.getObjectives());
+            preparedStatement.setString(4, newLessonPlan.getTopicsCovered());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e1) {
+            if (con != null) con.rollback(); // Rollback on error
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true);
+        }
     }
 
     @Override
@@ -65,15 +89,15 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 String subjectID = resultSet.getString("subjectID");
                 String subjectName = resultSet.getString("subjectName");
                 String sessionStatus = resultSet.getString("sessionStatus");
-                String sessionDate = resultSet.getDate("sessionDate").toString();
-                String sessionTime = resultSet.getString("sessionTime");
+                LocalDate sessionDate = LocalDate.parse(resultSet.getDate("sessionDate").toString());
+                LocalTime sessionTime = resultSet.getTime("sessionTime").toLocalTime();
                 int sessionDuration = resultSet.getInt("sessionDuration");
                 int numberOfStudents = resultSet.getInt("numberOfStudents");
                 int maximumStudents = resultSet.getInt("maximumStudents");
                 double sessionPrice = resultSet.getDouble("sessionPrice");
                 String sessionMode = resultSet.getString("sessionMode");
 
-                TutorSession session = new TutorSession(sessionID, tutorID, subjectID, subjectName,
+                TutorSession session = new TutorSession(sessionID, String.valueOf(tutorID), subjectID, subjectName,
                         sessionDate, sessionTime, sessionDuration, sessionStatus, numberOfStudents, maximumStudents, sessionPrice, sessionMode);
                 tutorsessions.add(session);
                 System.out.println(session);
@@ -121,6 +145,67 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
             throw new RemoteException("Database error while retrieving students: " + e.getMessage());
         }
         return students;
+    }
+
+    @Override
+    public List<LessonPlan> viewLessonPlan() throws RemoteException{
+        List<LessonPlan> lessonPlanList = new ArrayList<>();
+
+        String query = "SELECT lp.lessonPlanID, s.subjectName, lp.objectives, lp.topicsCovered FROM lessonplan lp " +
+                "NATURAL JOIN subject s";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            ResultSet resultSet = stmt.executeQuery(query);
+
+            while (resultSet.next()) {
+                String lessonPlanID = resultSet.getString(1);
+                String subjectName = resultSet.getString(2);
+                String objectives = resultSet.getString(3);
+                String topicsCovered = resultSet.getString(4);
+
+                LessonPlan lessonPlan = new LessonPlan(lessonPlanID, subjectName, objectives, topicsCovered);
+                lessonPlanList.add(lessonPlan);
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+        return lessonPlanList;
+    }
+
+    @Override
+    public void modifyLessonPlan(String lessonPlanID, String newObjectives, String newTopicsCovered) throws RemoteException {
+        String query = "UPDATE lessonplan SET objectives = ?, topicsCovered = ? WHERE lessonPlanID = ?";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, newObjectives);
+            preparedStatement.setString(2, newTopicsCovered);
+            preparedStatement.setString(3, lessonPlanID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteLessonPlan(String lessonPlanID) throws RemoteException {
+        String sql = "DELETE FROM lessonplan WHERE lessonPlanID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, lessonPlanID);
+            stmt.executeUpdate();
+
+            System.out.println("[SERVER] Deleted lesson plan with ID: " + lessonPlanID);
+        } catch (SQLException e) {
+            System.err.println("[SERVER ERROR] Failed to delete lesson plan: " + e.getMessage());
+        }
     }
 
 }
