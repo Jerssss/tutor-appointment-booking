@@ -1,11 +1,13 @@
 package shared.classes;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class TutorSession implements Serializable {
     // Session and tutor info
     private String sessionID;
-    private int tutorID;
+    private String tutorID;
 
     // Subject details
     private String subjectID;
@@ -13,8 +15,8 @@ public class TutorSession implements Serializable {
     private transient String subjectLevel;
 
     // Session schedule
-    private String sessionDate;
-    private String sessionTime;
+    private LocalDate sessionDate;
+    private LocalTime sessionTime;
     private int sessionDuration;
 
     // Enrollment and status
@@ -25,10 +27,11 @@ public class TutorSession implements Serializable {
     // Pricing and mode
     private double sessionPrice;
     private String sessionMode;
+    private String sessionType;
 
     // Constructor
-    public TutorSession(String sessionID, int tutorID, String subjectID, String subjectName,
-                        String sessionDate, String sessionTime, int sessionDuration,
+    public TutorSession(String sessionID, String tutorID, String subjectID, String subjectName,
+                        LocalDate sessionDate, LocalTime sessionTime, int sessionDuration,
                         String sessionStatus, int numberOfStudents, int maximumStudents,
                         double sessionPrice, String sessionMode) {
         this.sessionID = sessionID;
@@ -43,6 +46,24 @@ public class TutorSession implements Serializable {
         this.maximumStudents = maximumStudents;
         this.sessionPrice = sessionPrice;
         this.sessionMode = sessionMode;
+    }
+
+    public TutorSession(String sessionID, String tutorID, String subjectID, String sessionStatus,
+                        LocalDate sessionDate, LocalTime sessionTime,String sessionMode, String sessionType,
+                        int sessionDuration, int numberOfStudents,
+                        int maximumStudents, double sessionPrice) {
+        this.sessionID = sessionID;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionMode = sessionMode;
+        this.sessionType = sessionType;
+        this.sessionDuration = sessionDuration;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
     }
 
     // Getters and Setters
@@ -71,11 +92,11 @@ public class TutorSession implements Serializable {
         this.sessionDuration = sessionDuration;
     }
 
-    public String getSessionDate() {
+    public LocalDate getSessionDate() {
         return sessionDate;
     }
 
-    public void setSessionDate(String sessionDate) {
+    public void setSessionDate(LocalDate sessionDate) {
         this.sessionDate = sessionDate;
     }
 
@@ -111,11 +132,11 @@ public class TutorSession implements Serializable {
         this.sessionStatus = sessionStatus;
     }
 
-    public String getSessionTime() {
+    public LocalTime getSessionTime() {
         return sessionTime;
     }
 
-    public void setSessionTime(String sessionTime) {
+    public void setSessionTime(LocalTime sessionTime) {
         this.sessionTime = sessionTime;
     }
 
@@ -144,10 +165,10 @@ public class TutorSession implements Serializable {
     }
 
     public String getTutorID() {
-        return String.valueOf(tutorID);
+        return tutorID;
     }
 
-    public void setTutorID(int tutorID) {
+    public void setTutorID(String tutorID) {
         this.tutorID = tutorID;
     }
 
@@ -171,7 +192,10 @@ public class TutorSession implements Serializable {
     }
 
     public String getSessionType() {
-        return null;
+        return sessionType;
     }
 
+    public void setSessionType(String sessionType) {
+        this.sessionType = sessionType;
+    }
 }
