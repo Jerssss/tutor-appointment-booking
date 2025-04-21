@@ -79,10 +79,10 @@ public class CreateBookingView implements Initializable {
                 if (session.getSubjectLevel().toLowerCase().contains(lowerCaseFilter)) {
                     return true; // Matches academic level
                 }
-                if (session.getSessionDate().toLowerCase().contains(lowerCaseFilter)) {
+                if (String.valueOf(session.getSessionDate()).toLowerCase().contains(lowerCaseFilter)) {
                     return true; // Matches date
                 }
-                if (session.getSessionTime().toLowerCase().contains(lowerCaseFilter)) {
+                if (String.valueOf(session.getSessionTime()).toLowerCase().contains(lowerCaseFilter)) {
                     return true; // Matches time
                 }
                 if (session.getSessionMode().toLowerCase().contains(lowerCaseFilter)) {
@@ -111,10 +111,10 @@ public class CreateBookingView implements Initializable {
     private void initializeTableColumns() {
         // Existing columns setup
         dateColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getSessionDate()));
+                new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionDate())));
 
         timeColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getSessionTime()));
+                new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionTime())));
 
         durationColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionDuration())));
