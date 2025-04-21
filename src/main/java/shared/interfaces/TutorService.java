@@ -8,18 +8,15 @@ import shared.classes.TutorSession;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 
 public interface TutorService extends Remote {
-    /*
-    TutorSession viewSessionList();
-    TutorSession modifySession();
-    Student viewStudentList();
-    LessonPlan viewLessonPlan();
-    LessonPlan modifyLessonPlan();
-     */
+    void addLessonPlan(LessonPlan newLessonPlan) throws RemoteException, SQLException;
+    void modifyLessonPlan(String lessonPlanID, String newObjectives, String newTopicsCovered) throws RemoteException;
+    List<LessonPlan> viewLessonPlan() throws RemoteException;
     List<Student> getStudentsBySession(String sessionID) throws RemoteException;
     List<TutorSession> viewSessionList() throws RemoteException;
-    LessonPlan createLessonPlan(String lessonPlanID, String subjectID, String objectives, String topicsCovered) throws RemoteException;
+    void deleteLessonPlan(String lessonPlanID) throws RemoteException;
 }
