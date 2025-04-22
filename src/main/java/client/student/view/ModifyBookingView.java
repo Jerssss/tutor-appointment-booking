@@ -147,7 +147,7 @@ public class ModifyBookingView implements Initializable {
             private final Button editButton = new Button("Edit");
 
             {
-                editButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                editButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 editButton.setOnAction(event -> {
                     BookingDetails booking = getTableRow().getItem();
                     if (booking != null && "Approved".equals(booking.getBookingStatus()) && !isPastSession(booking.getSessionDate(), booking.getSessionTime())) {
@@ -177,7 +177,7 @@ public class ModifyBookingView implements Initializable {
             private final Button cancelButton = new Button("Cancel");
 
             {
-                cancelButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                cancelButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 cancelButton.setOnAction(event -> {
                     BookingDetails booking = getTableRow().getItem();
                     if (booking != null && "Approved".equals(booking.getBookingStatus()) && !isPastSession(booking.getSessionDate(), booking.getSessionTime())) {

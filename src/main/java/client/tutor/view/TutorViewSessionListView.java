@@ -81,7 +81,7 @@ public class TutorViewSessionListView {
             private final Button viewButton = new Button("View Students");
 
             {
-                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 viewButton.setOnAction(event -> {
                     TutorSession session = getTableRow().getItem();
                     if (session != null) {

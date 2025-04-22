@@ -84,7 +84,7 @@ public class AdminViewStudentView {
             private final Button modifyButton = new Button("Change Pass");
 
             {
-                modifyButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                modifyButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 modifyButton.setOnAction(event -> {
                     Student student = getTableRow().getItem();
                     if (student != null) {
