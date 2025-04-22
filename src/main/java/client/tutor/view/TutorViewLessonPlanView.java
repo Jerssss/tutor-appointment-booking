@@ -174,8 +174,8 @@ public class TutorViewLessonPlanView {
 
     public void addLessonPlanButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), addLessonPlanButton);
-        st.setToX(0.9);
-        st.setToY(0.9);
+        st.setToX(1.0);
+        st.setToY(1.0);
         st.setCycleCount(1);
         st.setAutoReverse(false);
         st.play();
