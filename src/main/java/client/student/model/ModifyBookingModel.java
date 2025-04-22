@@ -21,9 +21,9 @@ public class ModifyBookingModel {
         return bookings;
     }
 
-    public Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice) throws RemoteException {
+    public Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
         // Modify booking using the service
-        return service.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
+        return service.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice, newSessionDate, newSessionTime);
     }
 
     public boolean cancelBooking(String sessionID) throws RemoteException {

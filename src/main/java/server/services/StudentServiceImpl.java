@@ -157,32 +157,34 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
-    public Booking modifyBooking(int studentID, String sessionID, String newSessionMode,
-                                 String newBookingStatus, double newSessionPrice) throws RemoteException {
-        Booking updatedBooking = null;
+    public Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
-                     "UPDATE booking SET sessionMode = ?, bookingStatus = ?, sessionPrice = ? " +
-                             "WHERE studentID = ? AND sessionID = ?"
+                     "UPDATE booking b " +
+                             "JOIN tutorsession ts ON b.sessionID = ts.sessionID " +
+                             "SET b.sessionMode = ?, b.bookingStatus = ?, b.sessionPrice = ?, ts.sessionDate = ?, ts.sessionTime = ? " +
+                             "WHERE b.studentID = ? AND b.sessionID = ?"
              )) {
 
-            // set parameters for the update
+            // Set parameters for the update
             stmt.setString(1, newSessionMode);
             stmt.setString(2, newBookingStatus);
             stmt.setDouble(3, newSessionPrice);
-            stmt.setInt(4, studentID);
-            stmt.setString(5, sessionID);
+            stmt.setString(4, newSessionDate);
+            stmt.setString(5, newSessionTime);
+            stmt.setInt(6, studentID);
+            stmt.setString(7, sessionID);
 
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                updatedBooking = new Booking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
+                return new Booking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
             }
 
         } catch (SQLException e) {
             throw new RemoteException("Database error while modifying booking: " + e.getMessage());
         }
-        return updatedBooking;
+        return null;
     }
 
     @Override

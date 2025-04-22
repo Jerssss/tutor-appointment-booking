@@ -81,7 +81,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="67.0" prefWidth="266.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="updateBookingButton" mnemonicParsing="false" onMouseEntered="#updateBookingButtonHovered" onMouseExited="#updateBookingButtonExited" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #ffffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Update" textFill="#6f2e2e">
+            <Button fx:id="updateBookingButton" mnemonicParsing="false" onMouseEntered="#updateBookingButtonHovered" onMouseExited="#updateBookingButtonExited" onAction="#handleUpdateBooking" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #ffffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Update" textFill="#6f2e2e">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

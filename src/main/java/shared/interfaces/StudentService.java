@@ -9,7 +9,7 @@ public interface StudentService {
     Booking createBooking(int studentID, String sessionID, String sessionMode, String bookingStatus, double sessionPrice) throws RemoteException;
     List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException;
     List<TutorSession> viewAvailableSessions() throws RemoteException;
-    Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice) throws RemoteException;
+    Booking modifyBooking(int studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException;
     boolean cancelBooking(String sessionID) throws RemoteException;
     List<Subject> viewSubject() throws RemoteException;
     List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException;

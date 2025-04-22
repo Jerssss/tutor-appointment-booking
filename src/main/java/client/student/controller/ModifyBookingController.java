@@ -49,12 +49,12 @@ public class ModifyBookingController {
         }
     }
 
-    public void modifyBooking(int studentID, String sessionID, String newSessionMode, String newsessionDate, String newsessionTime, String newBookingStatus, double newSessionPrice) {
+    public void modifyBooking(int studentID, String sessionID, String newSessionMode, String newSessionDate, String newSessionTime, String newBookingStatus, double newSessionPrice) {
         try {
-            Booking updatedBooking = model.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
+            Booking updatedBooking = model.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice, newSessionDate, newSessionTime);
             if (updatedBooking != null) {
                 System.out.println("[CLIENT] Booking modified successfully.");
-                refreshTable();
+                refreshTable(); // Refresh the table to show updated bookings
             } else {
                 System.out.println("Failed to modify booking.");
             }
