@@ -138,7 +138,7 @@ public class CreateBookingView implements Initializable {
             private final Button reserveButton = new Button("Reserve");
 
             {
-                reserveButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                reserveButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 reserveButton.getStyleClass().add("reserve-button");
                 reserveButton.setOnAction(event -> {
                     TutorSession session = getTableView().getItems().get(getIndex());

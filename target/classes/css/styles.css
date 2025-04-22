@@ -43,12 +43,14 @@
 }
 
 .highlighted-button {
-    -fx-effect: dropshadow(gaussian, white, 10, 0.0, 0, 1);
+    -fx-effect: dropshadow(gaussian, #6f2e2e, 10, 0.0, 0, 1);
+    -fx-text-fill: #6f2e2e; /* Set the actual text color */
 }
 
 .highlighted-button .text {
-    -fx-effect: dropshadow(gaussian, #3d5c9e, 3, 0.0, 0, 1);
+    -fx-effect: dropshadow(gaussian, white, 3, 0.0, 0, 1);
 }
+
 
 .cancelled-row {
     -fx-background-color: #d3d3d3;

@@ -72,7 +72,7 @@ public class TutorViewLessonPlanView {
             private final Button updateButton = new Button("Update");
 
             {
-                updateButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                updateButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 updateButton.setOnAction(event -> {
                     LessonPlan lessonPLan = getTableRow().getItem();
                     if (lessonPLan != null) {
@@ -118,7 +118,7 @@ public class TutorViewLessonPlanView {
             private final Button deleteButton = new Button("Delete");
 
             {
-                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 deleteButton.setOnAction(event -> {
                     LessonPlan lessonPlan = getTableRow().getItem();
                     if (lessonPlan != null) {
