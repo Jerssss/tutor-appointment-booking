@@ -84,5 +84,4 @@ public class Payment implements Serializable {
                 ", amount=" + amount +
                 '}';
     }
-
 }

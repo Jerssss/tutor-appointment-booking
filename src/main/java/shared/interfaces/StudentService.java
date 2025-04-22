@@ -14,7 +14,7 @@ public interface StudentService {
     List<Subject> viewSubject() throws RemoteException;
     List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException;
     List<LessonPlan> viewCollegeLessonPlan() throws RemoteException;
-    Payment viewPaymentHistory();
+    List<PaymentDetails> viewPaymentHistory(int studentID) throws RemoteException;
     Student viewStudentBalance();
     Payment createPayment(String studentID, double amount, String paymentMethod) throws RemoteException;
 }

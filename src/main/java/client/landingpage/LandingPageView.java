@@ -23,9 +23,9 @@ public class LandingPageView {
     }
 
 
-    public void setActionSignUpButton(EventHandler<ActionEvent> event) {
-            landingPageSignUpButton.setOnAction(event);
-    }
+//    public void setActionSignUpButton(EventHandler<ActionEvent> event) {
+//            landingPageSignUpButton.setOnAction(event);
+//    }
 
 
 

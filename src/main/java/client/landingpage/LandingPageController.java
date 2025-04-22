@@ -35,7 +35,7 @@ public class LandingPageController {
 
 
         view.setActionSignInButton(this::handleSignIn);
-        view.setActionSignUpButton(this::handleSignUp);
+//        view.setActionSignUpButton(this::handleSignUp);
     }
 
 
