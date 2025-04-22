@@ -16,6 +16,7 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -35,7 +36,6 @@ public class Server {
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(1000);
 
     public static void main(String[] args) {
-        // Shutdown hook to ensure that the server is entirely dead on 'exit'
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (running) {
                 stopServer();
@@ -79,14 +79,16 @@ public class Server {
         }
     }
 
-
-    //Starts the RMI server and binds services.
     private static void startServer() {
-        // Use a new thread to start the server so that the main thread remains responsive.
         new Thread(() -> {
             try {
+                // First, check if we can connect to the database
+                Connection dbConnection = DatabaseConnection.setCon();
+                if (dbConnection == null) {
+                    System.err.println("[Server] Could not establish database connection. Server cannot start.");
+                    return;
+                }
 
-                DatabaseConnection.setCon();
                 registry = LocateRegistry.createRegistry(PORT);
 
                 authService = new AuthServiceImpl();
@@ -94,42 +96,46 @@ public class Server {
                 tutorService = new TutorServiceImpl();
                 adminService = new AdminServiceImpl();
 
-
                 registry.bind("authentication", authService);
                 registry.bind("student_service", studentService);
                 registry.bind("tutor_services", tutorService);
                 registry.bind("admin_services", adminService);
 
                 running = true;
-                String serverIP = getServerIP(); // Display the IP address
+                String serverIP = getServerIP();
                 System.out.println("=====================================================");
                 System.out.println("[Server] RMI Server started successfully on port " + PORT);
                 System.out.println("[Server] Server IP Address: " + serverIP);
                 System.out.println("[Server] Available RMI Services: " + String.join(", ", registry.list()));
                 System.out.println("=====================================================");
 
-                // Start a heartbeat monitor in a separate thread.
                 startHeartbeatMonitor();
 
             } catch (RemoteException | AlreadyBoundException e) {
                 System.err.println("[Server ERROR] " + e.getMessage());
+                handleServerStartupFailure();
             }
         }).start();
     }
 
-    // Stops the RMI server.
+    private static void handleServerStartupFailure() {
+        System.out.println("[Server] Server failed to start. Please check the logs for more details.");
+        // Additional handling could include:
+        // - Notifying administrators
+        // - Logging the failure
+        // - Attempting to restart
+    }
+
     private static void stopServer() {
         if (registry != null) {
             try {
                 System.out.println("[Server] Stopping server...");
 
-                // Unbind all services
                 for (String name : registry.list()) {
                     registry.unbind(name);
                     System.out.println("[Server] Unbound service: " + name);
                 }
 
-                // Unexport RMI objects
                 if (authService != null) {
                     java.rmi.server.UnicastRemoteObject.unexportObject(authService, true);
                     System.out.println("[Server] Unexported authService.");
@@ -147,14 +153,11 @@ public class Server {
                     System.out.println("[Server] Unexported adminService.");
                 }
 
-                // Unexport the registry
                 java.rmi.server.UnicastRemoteObject.unexportObject(registry, true);
                 System.out.println("[Server] Unexported RMI registry.");
 
-                // Shutdown the thread pool gracefully
                 threadPool.shutdownNow();
 
-                // Nullify references
                 registry = null;
                 authService = null;
                 studentService = null;
@@ -162,40 +165,49 @@ public class Server {
                 adminService = null;
                 running = false;
 
-                // Force garbage collection to clean up RMI resources
                 System.gc();
                 System.out.println("[Server] Server stopped.");
             } catch (Exception e) {
                 System.err.println("[Server ERROR] Could not stop: " + e.getMessage());
+                handleServerShutdownFailure();
             }
         } else {
             System.out.println("[Server] Server is already stopped.");
         }
     }
 
-    // Starts a heartbeat monitor that logs server status every 30 seconds.
+    private static void handleServerShutdownFailure() {
+        System.out.println("[Server] Error during server shutdown. Resources may not have been properly released.");
+        // Additional handling could include:
+        // - Forcing resource cleanup
+        // - Logging the failure
+    }
+
     private static void startHeartbeatMonitor() {
         threadPool.submit(() -> {
             while (running) {
                 try {
-                    Thread.sleep(30000); // sleep for 30 seconds
-                    // System.out.println("[Heartbeat] Server is running. Active clients: " + connectedClients.size());
+                    Thread.sleep(30000);
+                    System.out.println("[Heartbeat] Server is running. Active clients: ");
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     System.err.println("[Heartbeat] Monitor interrupted.");
+                    handleHeartbeatMonitorInterrupt();
                 }
             }
         });
     }
 
+    private static void handleHeartbeatMonitorInterrupt() {
+        System.out.println("[Heartbeat] Monitor stopped due to interruption.");
+    }
 
-    // Gets the server's actual IP address.
     private static String getServerIP() {
         try {
             return InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
+            System.err.println("[Server] Could not get server IP address: " + e.getMessage());
             return "Unknown";
         }
     }
-
 }

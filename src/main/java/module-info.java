@@ -7,6 +7,7 @@ module Learnify {
     requires java.sql;
     requires java.naming;
     requires java.compiler;
+    requires mysql.connector.j;
 
     exports shared.interfaces;
     exports client;
