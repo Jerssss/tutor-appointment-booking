@@ -47,9 +47,16 @@ public class LoginController {
     private void handleSignIn(ActionEvent event) {
         String userID = loginView.getIdField().getText().trim();
         String password = loginView.getPassField().getText().trim();
+        String selectedUserType = loginView.getUserTypeBox().getValue();
 
         if (userID.isEmpty() || password.isEmpty()) {
             loginView.setPromptLabel("Please complete all fields.");
+            loginView.setPromptLabelVisible(true);
+            return;
+        }
+
+        if (selectedUserType == null || selectedUserType.isEmpty()) {
+            loginView.setPromptLabel("Please select a user type.");
             loginView.setPromptLabelVisible(true);
             return;
         }
@@ -58,9 +65,25 @@ public class LoginController {
             User user = authService.login(userID, password);
             System.out.println("[INFO] Login successful for user: " + user.getUserID());
 
-            // Create session with user details
-            SessionManager.createSession(user.getUserID(), user.getRole());
+            if ("Student".equalsIgnoreCase(selectedUserType)) {
+                if (!"Student".equalsIgnoreCase(user.getRole())) {
+                    loginView.setPromptLabel("User is not registered as a Student.");
+                    loginView.setPromptLabelVisible(true);
+                    return;
+                }
+            } else if ("Tutor".equalsIgnoreCase(selectedUserType)) {
+                if (!"Tutor".equalsIgnoreCase(user.getRole())) {
+                    loginView.setPromptLabel("User is not registered as a Tutor.");
+                    loginView.setPromptLabelVisible(true);
+                    return;
+                }
+            } else {
+                loginView.setPromptLabel("Invalid user type selected.");
+                loginView.setPromptLabelVisible(true);
+                return;
+            }
 
+            SessionManager.createSession(user.getUserID(), user.getRole());
             redirectToMainMenu(event, user);
 
         } catch (AccountDoesNotExist e) {
