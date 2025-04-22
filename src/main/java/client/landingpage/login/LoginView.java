@@ -26,19 +26,6 @@ public class LoginView {
     private Label promptLabel; // Label for displaying prompts or error messages
 
 
-
-    public void initialize() {
-        System.out.println("[DEBUG] Initializing Login View...");
-
-        if (logInPageLogInButton == null) {
-            System.err.println("[ERROR] logInPageLogInButton is NULL! Check FXML.");
-        }
-        if (logInPageSignUpButton == null) {
-            System.err.println("[ERROR] logInPageSignUpButton is NULL! Check FXML.");
-        }
-    }
-
-
     public Button getLogInPageLogInButton() {
         return logInPageLogInButton;
     }
