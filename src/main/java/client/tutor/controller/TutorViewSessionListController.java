@@ -69,10 +69,10 @@ public class TutorViewSessionListController {
                 .filter(session ->
                         safeLower(session.getSessionID()).contains(lowerCaseQuery) ||
                                 safeLower(session.getSessionMode()).contains(lowerCaseQuery) ||
-                                safeLower(session.getSessionDate()).contains(lowerCaseQuery) ||
+                                safeLower(session.getSessionDate().toString()).contains(lowerCaseQuery) || // Convert LocalDate to String
                                 safeLower(session.getSubjectName()).contains(lowerCaseQuery) ||
                                 safeLower(session.getSessionStatus()).contains(lowerCaseQuery) ||
-                                safeLower(session.getSessionTime()).contains(lowerCaseQuery) ||
+                                safeLower(session.getSessionTime().toString()).contains(lowerCaseQuery) || // Convert LocalTime to String
                                 safeLower(String.valueOf(session.getSessionDuration())).contains(lowerCaseQuery)
                 )
                 .collect(Collectors.toList());

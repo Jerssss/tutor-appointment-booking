@@ -699,7 +699,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
                 double amount = resultSet.getDouble(3);
                 LocalDate date = resultSet.getDate(4).toLocalDate();
                 LocalTime time = resultSet.getTime(5).toLocalTime();
-                String paymentMethod = resultSet.getString(5);
+                String paymentMethod = resultSet.getString(6);
 
                 Payment payment = new Payment(paymentID, studentID, date, time, paymentMethod, amount);
                 studentPayments.add(payment);

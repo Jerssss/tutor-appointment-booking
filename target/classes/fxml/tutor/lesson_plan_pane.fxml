@@ -5,15 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.tutor.view.TutorModifyLessonPlanView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.tutor.view.TutorViewLessonPlanView">
     <children>
         <VBox prefHeight="74.0" prefWidth="805.0">
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="805.0">
                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="392.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="418.0">
                             <children>
-                                <Label fx:id="studResTitleLabel" prefHeight="43.0" prefWidth="402.0" text="Session List" textFill="#6f2e2e">
+                                <Label fx:id="studResTitleLabel" prefHeight="43.0" prefWidth="298.0" text="Lesson Plan" textFill="#6f2e2e">
                                     <font>
                                         <Font name="System Bold" size="29.0" />
                                     </font>
@@ -33,11 +33,20 @@
                                 <TextField fx:id="searchStudResTextField" prefHeight="30.0" prefWidth="500.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
                             </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="74.0" prefWidth="121.0" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="74.0" prefWidth="248.0" spacing="10.0">
                             <children>
                                 <StackPane prefHeight="74.0" prefWidth="197.0">
                                     <children>
-                                        <Button fx:id="refreshButton" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" prefHeight="26.0" prefWidth="98.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                                            <font>
+                                                <Font name="System Bold" size="11.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </StackPane>
+                                <StackPane prefHeight="74.0" prefWidth="197.0">
+                                    <children>
+                                        <Button fx:id="addLessonPlanButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#addLessonPlanButtonHovered" onMouseExited="#addLessonPlanButtonExited" prefHeight="26.0" prefWidth="114.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Lesson Plan" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="11.0" />
                                             </font>
@@ -50,14 +59,14 @@
                 </HBox>
             </children>
         </VBox>
-        <TableView fx:id="sessionListTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="477.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+        <TableView fx:id="lessonPlanListTableView" editable="true" focusTraversable="false" minHeight="-Infinity" prefHeight="477.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
             <columns>
-                <TableColumn fx:id="courseColumn" prefWidth="130.0" text="Course" />
-                <TableColumn fx:id="subjectColumn" prefWidth="130.0" text="Subject" />
+                <TableColumn fx:id="courseColumn" minWidth="0.0" prefWidth="105.0" text="Course" />
+                <TableColumn fx:id="subjectColumn" minWidth="0.0" prefWidth="161.0" text="Subject" />
                 <TableColumn fx:id="objectivesColumn" prefWidth="180.0" text="Objectives" />
-                <TableColumn fx:id="topicsColumn" prefWidth="145.0" text="Topics" />
-                <TableColumn fx:id="editColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" />
-                <TableColumn fx:id="cancelColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" />
+                <TableColumn fx:id="topicsColumn" minWidth="0.0" prefWidth="161.0" text="Topics" />
+                <TableColumn fx:id="updateColumn" editable="false" prefWidth="155.0" resizable="false" text="Update" />
+                <TableColumn fx:id="deleteColumn" editable="false" prefWidth="121.0" resizable="false" text="Delete" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
