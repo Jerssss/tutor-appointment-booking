@@ -342,8 +342,49 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     }
 
     @Override
-    public Student viewStudentBalance() {
-        return null;
+    public List<BalanceDetails> viewStudentBalanceDetails(int studentID) throws RemoteException {
+        List<BalanceDetails> balanceDetailsList = new ArrayList<>();
+        String query = "SELECT u.userID, u.firstName, u.lastName, u.phoneNumber, u.email, u.role, s.balance, s.academicLevel," +
+                "       ts.sessionDate, ts.sessionTime, ts.sessionDuration, sub.subjectName AS courseName, b.sessionMode," +
+                "       CONCAT(t.firstName, ' ', t.lastName) AS tutorName, b.bookingStatus" +
+                "       FROM user u" +
+                "       JOIN student s ON u.userID = s.studentID" +
+                "       JOIN booking b ON u.userID = b.studentID " +
+                "       JOIN tutorsession ts ON b.sessionID = ts.sessionID " +
+                "       JOIN subject sub ON ts.subjectID = sub.subjectID " +
+                "       JOIN user t ON ts.tutorID = t.userID" +
+                "       WHERE u.userID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, studentID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                BalanceDetails details = new BalanceDetails(
+                        rs.getString("userID"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getLong("phoneNumber"),
+                        rs.getString("email"),
+                        rs.getString("role"),
+                        rs.getDouble("balance"),
+                        rs.getString("academicLevel"),
+                        rs.getDate("sessionDate").toLocalDate(),
+                        rs.getTime("sessionTime").toLocalTime(),
+                        rs.getInt("sessionDuration"),
+                        rs.getString("courseName"),
+                        rs.getString("sessionMode"),
+                        rs.getString("tutorName"),
+                        rs.getString("bookingStatus")
+                );
+                balanceDetailsList.add(details);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RemoteException("Error fetching balance details", e);
+        }
+        return balanceDetailsList;
     }
 
     @Override
