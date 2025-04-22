@@ -64,20 +64,5 @@
             </TableView>
          </children>
       </VBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="805.0">
-         <children>
-            <Button fx:id="saveChangesButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Save Changes" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="17.0" right="17.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
-      </HBox>
    </children>
 </VBox>

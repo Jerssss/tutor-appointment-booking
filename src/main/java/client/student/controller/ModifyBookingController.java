@@ -53,7 +53,7 @@ public class ModifyBookingController {
         try {
             Booking updatedBooking = model.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
             if (updatedBooking != null) {
-                System.out.println("Booking modified successfully.");
+                System.out.println("[CLIENT] Booking modified successfully.");
                 refreshTable();
             } else {
                 System.out.println("Failed to modify booking.");
@@ -68,7 +68,7 @@ public class ModifyBookingController {
             // Call the model to cancel the booking
             boolean success = model.cancelBooking(sessionID);
             if (success) {
-                System.out.println("Booking cancelled successfully.");
+                System.out.println("[CLIENT] Booking cancelled successfully.");
                 refreshTable(); // Refresh the table to reflect the cancellation
             } else {
                 view.showErrorAlert("Cancellation Failed", "Failed to cancel the booking.");

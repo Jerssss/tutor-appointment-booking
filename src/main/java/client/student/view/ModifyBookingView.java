@@ -4,6 +4,8 @@ import client.student.controller.ModifyBookingController;
 import client.student.model.ModifyBookingModel;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,8 +28,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ModifyBookingView implements Initializable {
+    @FXML private TextField searchStudResTextField;
     @FXML private Button refreshButton;
     @FXML private TableView<BookingDetails> modResTableView;
     @FXML private TableColumn<BookingDetails, String> roomNumberColumn;
@@ -38,6 +42,7 @@ public class ModifyBookingView implements Initializable {
     @FXML private TableColumn<BookingDetails, String> editColumn;
     @FXML private TableColumn<BookingDetails, String> cancelColumn;
 
+    private final ObservableList<BookingDetails> allBookings = FXCollections.observableArrayList();
     private ModifyBookingController controller;
 
     @Override
@@ -46,6 +51,9 @@ public class ModifyBookingView implements Initializable {
         initializeRowFactory();
         System.out.println("[CLIENT] Table columns initialized successfully.");
         initializeController();
+        System.out.println("[CLIENT] Controller initialized successfully.");
+        initializeSearchListener();
+        System.out.println("[CLIENT] Search field initialized successfully.");
     }
 
     private void initializeTableColumns() {
@@ -94,9 +102,43 @@ public class ModifyBookingView implements Initializable {
         controller.refreshTable();
     }
 
-    public void setController(ModifyBookingController controller) {
-        this.controller = controller;
+    public void initializeSearchListener() {
+        searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchBookings(newValue.toLowerCase().trim());
+        });
     }
+
+    public void searchBookings(String query) {
+        if (allBookings.isEmpty()) {
+            return;
+        }
+
+        if (query == null || query.isEmpty()) {
+            modResTableView.setItems(allBookings);
+            return;
+        }
+
+        List<BookingDetails> filteredList = allBookings.stream()
+                .filter(booking -> booking.getSubjectName().toLowerCase().contains(query) ||
+                        booking.getTutorName().toLowerCase().contains(query) ||
+                        booking.getSessionDate().toLowerCase().contains(query) ||
+                        booking.getSessionTime().toLowerCase().contains(query) ||
+                        booking.getSessionMode().toLowerCase().contains(query))
+                .collect(Collectors.toList());
+        modResTableView.setItems(FXCollections.observableArrayList(filteredList));
+    }
+
+    public void updateTable(List<BookingDetails> bookings) {
+        if (bookings == null || bookings.isEmpty()) {
+            System.out.println("[CLIENT] No bookings to display.");
+        } else {
+            System.out.println("[CLIENT] Updating table with " + bookings.size() + " bookings.");
+            allBookings.setAll(bookings); // Populate the ObservableList
+            modResTableView.setItems(allBookings);
+            modResTableView.refresh();
+        }
+    }
+
 
     @FXML
     private void handleRefresh() {
@@ -110,7 +152,7 @@ public class ModifyBookingView implements Initializable {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
         st.setToX(1.0);
         st.setToY(1.0);
-        st.setCycleCount (1);
+        st.setCycleCount(1);
         st.setAutoReverse(false);
         st.play();
     }
@@ -124,22 +166,9 @@ public class ModifyBookingView implements Initializable {
         st.play();
     }
 
-    public void updateTable(List<BookingDetails> bookings) {
-        if (bookings == null || bookings.isEmpty()) {
-            System.out.println("[CLIENT] No bookings to display.");
-        } else {
-            System.out.println("[CLIENT] Updating table with " + bookings.size() + " bookings.");
-            modResTableView.getItems().setAll(bookings);
-            modResTableView.refresh();
-        }
-    }
-
-    public void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private boolean isPastSession(String sessionDate, String sessionTime) {
+        LocalDateTime sessionDateTime = LocalDateTime.parse(sessionDate + "T" + sessionTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return sessionDateTime.isBefore(LocalDateTime.now());
     }
 
     private Callback<TableColumn<BookingDetails, String>, TableCell<BookingDetails, String>> createEditButtonCellFactory() {
@@ -147,7 +176,7 @@ public class ModifyBookingView implements Initializable {
             private final Button editButton = new Button("Edit");
 
             {
-                editButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                editButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
                 editButton.setOnAction(event -> {
                     BookingDetails booking = getTableRow().getItem();
                     if (booking != null && "Approved".equals(booking.getBookingStatus()) && !isPastSession(booking.getSessionDate(), booking.getSessionTime())) {
@@ -163,7 +192,7 @@ public class ModifyBookingView implements Initializable {
                 super.updateItem(item, empty);
                 BookingDetails booking = getTableRow().getItem();
                 if (empty || booking == null || booking.getSubjectName() == null || booking.getSubjectName().isEmpty()) {
-                    setGraphic(null); // Do not show button for empty rows
+                    setGraphic(null);
                 } else {
                     editButton.setDisable(!"Approved".equals(booking.getBookingStatus()) || isPastSession(booking.getSessionDate(), booking.getSessionTime()));
                     setGraphic(editButton);
@@ -177,20 +206,17 @@ public class ModifyBookingView implements Initializable {
             private final Button cancelButton = new Button("Cancel");
 
             {
-                cancelButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                cancelButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
                 cancelButton.setOnAction(event -> {
                     BookingDetails booking = getTableRow().getItem();
                     if (booking != null && "Approved".equals(booking.getBookingStatus()) && !isPastSession(booking.getSessionDate(), booking.getSessionTime())) {
-                        // Show confirmation dialog
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Confirm Cancellation");
                         alert.setHeaderText("Cancel Booking");
                         alert.setContentText("Are you sure you want to cancel this booking?");
 
-                        // Handle user's response
                         alert.showAndWait().ifPresent(response -> {
-                            if (response == ButtonType.OK) {
-                                // Call the controller method to cancel the booking
+                            if (response == ButtonType.OK ) {
                                 controller.cancelBooking(booking.getSessionID());
                             }
                         });
@@ -205,7 +231,7 @@ public class ModifyBookingView implements Initializable {
                 super.updateItem(item, empty);
                 BookingDetails booking = getTableRow().getItem();
                 if (empty || booking == null || booking.getSubjectName() == null || booking.getSubjectName().isEmpty()) {
-                    setGraphic(null); // Do not show button for empty rows
+                    setGraphic(null);
                 } else {
                     cancelButton.setDisable(!"Approved".equals(booking.getBookingStatus()) || isPastSession(booking.getSessionDate(), booking.getSessionTime()));
                     setGraphic(cancelButton);
@@ -215,7 +241,6 @@ public class ModifyBookingView implements Initializable {
     }
 
     private void showEditDialog(BookingDetails booking) {
-        // Logic to show the edit dialog
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/modify_booking_window.fxml"));
             Parent root = loader.load();
@@ -232,8 +257,15 @@ public class ModifyBookingView implements Initializable {
         }
     }
 
-    private boolean isPastSession(String sessionDate, String sessionTime) {
-        LocalDateTime sessionDateTime = LocalDateTime.parse(sessionDate + "T" + sessionTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        return sessionDateTime.isBefore(LocalDateTime.now());
+    public void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void setController(ModifyBookingController controller) {
+        this.controller = controller;
     }
 }
