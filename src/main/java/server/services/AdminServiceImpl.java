@@ -222,8 +222,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
-        query = "SELECT sessionID, sessionDate, sessionTime, sessionDuration, tutorID, subjectID, subjectLevel, sessionStatus FROM tutorsession\n" +
-                "INNER JOIN subject USING (subjectID); ";
+        query = "CALL viewSession();";
 
         try{
             preparedStatement = con.prepareStatement(query);
@@ -270,7 +269,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addSession(TutorSession session) throws RemoteException, SQLException {
-        query = "INSERT INTO tutorsession (sessionID, tutorID, subjectID, sessionStatus, sessionDate, sessionTime, sessionDuration, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        query = "CALL AddSession(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             con.setAutoCommit(false);
