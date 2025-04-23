@@ -13,6 +13,10 @@ import shared.classes.BookingDetails;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateBookingPopUp {
     @FXML private DatePicker sessionDatePicker;
@@ -27,7 +31,7 @@ public class UpdateBookingPopUp {
         this.selectedBooking = booking;
         // Populate the fields with the booking details
         sessionDatePicker.setValue(LocalDate.parse(booking.getSessionDate()));
-        sessionTimeComboBox.setValue(booking.getSessionTime());
+        populateSessionTimeComboBox(booking.getSessionTime());
         sessionModeComboBox.setValue(booking.getSessionMode());
     }
 
@@ -57,6 +61,32 @@ public class UpdateBookingPopUp {
                 };
             }
         });
+    }
+
+    private void populateSessionTimeComboBox(String currentSessionTime) {
+        // Parse the current session time with seconds
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime startTime = LocalTime.parse(currentSessionTime, timeFormatter);
+
+        // Define the durations in minutes
+        int[] durations = {60, 90, 120, 150};
+        List<String> endTimes = new ArrayList<>();
+
+        // Populate the ComboBox with the original session time first
+        sessionTimeComboBox.getItems().clear();
+        sessionTimeComboBox.getItems().add(currentSessionTime); // Add original session time
+
+        // Calculate end times based on the durations
+        for (int duration : durations) {
+            LocalTime endTime = startTime.plusMinutes(duration);
+            endTimes.add(endTime.format(timeFormatter)); // Keep the format with seconds
+        }
+
+        // Add calculated end times to the ComboBox
+        sessionTimeComboBox.getItems().addAll(endTimes);
+
+        // Set default value to the original session time
+        sessionTimeComboBox.setValue(currentSessionTime);
     }
 
     @FXML
