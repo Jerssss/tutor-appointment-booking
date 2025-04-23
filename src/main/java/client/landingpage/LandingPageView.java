@@ -18,13 +18,29 @@ public class LandingPageView {
     private Button landingPageSignUpButton; // Button for signing up
 
 
+    public void initialize() {
+        if (landingPageLogInButton == null) {
+        }
+        if (landingPageSignUpButton == null) {
+        }
+    }
+
+
     public void setActionSignInButton(EventHandler<ActionEvent> event) {
+        if (landingPageLogInButton != null) {
             landingPageLogInButton.setOnAction(event);
+        } else {
+            System.err.println("landingPageLogInButton");
+        }
     }
 
 
     public void setActionSignUpButton(EventHandler<ActionEvent> event) {
+        if (landingPageSignUpButton != null) {
             landingPageSignUpButton.setOnAction(event);
+        } else {
+            System.err.println("landingPageSignUpButton");
+        }
     }
 
 

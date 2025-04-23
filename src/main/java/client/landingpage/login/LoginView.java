@@ -26,6 +26,19 @@ public class LoginView {
     private Label promptLabel; // Label for displaying prompts or error messages
 
 
+
+    public void initialize() {
+        System.out.println("[DEBUG] Initializing Login View...");
+
+        if (logInPageLogInButton == null) {
+            System.err.println("logInPageLogInButton");
+        }
+        if (logInPageSignUpButton == null) {
+            System.err.println("logInPageSignUpButton");
+        }
+    }
+
+
     public Button getLogInPageLogInButton() {
         return logInPageLogInButton;
     }
