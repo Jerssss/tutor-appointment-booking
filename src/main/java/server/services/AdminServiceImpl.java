@@ -222,7 +222,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
-        query = "CALL viewSession();";
+        query = "CALL ViewSession();";
 
         try{
             preparedStatement = con.prepareStatement(query);
@@ -326,6 +326,19 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             e2.printStackTrace();
         } finally {
             if (con != null) con.setAutoCommit(true);
+        }
+    }
+
+    @Override
+    public void deleteSession(String sessionID) throws RemoteException {
+        query = "DELETE FROM tutorsession WHERE sessionID = ?;";
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, sessionID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -623,6 +636,24 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
+    public int deleteSubject(String subjectID) throws RemoteException{
+        query = "DELETE FROM subject WHERE subjectID = ?;";
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, subjectID);
+            preparedStatement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e){
+            return -1;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+
+    }
+
+    @Override
     public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
         Map<LessonPlan, String> allLessonPlans = new LinkedHashMap<>();
 
@@ -673,15 +704,6 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             e.printStackTrace();
         }
         return otherDetails;
-    }
-    @Override
-    public LessonPlan addLessonPlan() throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public LessonPlan modifyLessonPlan() throws RemoteException {
-        return null;
     }
 
     @Override

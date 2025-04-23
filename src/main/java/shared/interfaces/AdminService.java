@@ -5,6 +5,7 @@ import shared.classes.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public interface AdminService extends Remote {
     List<String> viewOtherSessionDetails(String sessionID) throws RemoteException;
     void addSession(TutorSession session) throws RemoteException, SQLException;
     void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException;
+    void deleteSession(String sessionID) throws RemoteException;
     List<String> getEditableDetails(String sessionID) throws RemoteException;
     List<String> getAllTutorNames() throws RemoteException;
     List<String> getAllSubjectNames() throws RemoteException;
@@ -35,10 +37,9 @@ public interface AdminService extends Remote {
     String getSubjectID(String SubjectName) throws RemoteException;
     String getSubjectName(String SubjectID) throws RemoteException;
     void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException;
+    int deleteSubject(String subjectID) throws RemoteException, SQLIntegrityConstraintViolationException;
     Map<LessonPlan, String> viewLessonPlan() throws RemoteException;
     List<String> viewOtherLessonPlanDetails(String lessonPlanID) throws RemoteException;
-    LessonPlan addLessonPlan() throws RemoteException;
-    LessonPlan modifyLessonPlan() throws RemoteException;
     List<Payment> viewPayment() throws RemoteException;
 
 }

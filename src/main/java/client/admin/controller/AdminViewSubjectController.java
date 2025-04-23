@@ -2,6 +2,7 @@ package client.admin.controller;
 
 import client.admin.model.AdminViewMoreSubjectPopUpModel;
 import client.admin.model.AdminViewSubjectModel;
+import client.admin.view.AdminDeleteSubjectPopUpView;
 import client.admin.view.AdminViewSubjectView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -102,7 +103,9 @@ public class AdminViewSubjectController {
             {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
-                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()).getFirst());
+//                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([A-Za-z0-9_]+).*", "$1");
+//                    System.out.println("djksah: " + clickedSubject);
                     AdminModifySubjectPopUpController modifySubjectController= new AdminModifySubjectPopUpController();
                     modifySubjectController.showWindow();
                 });
@@ -126,8 +129,10 @@ public class AdminViewSubjectController {
                 deleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 deleteColumnButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
-                    AdminViewMoreSubjectPopUpController viewMoreSubjectPopUpController= new AdminViewMoreSubjectPopUpController();
-//                    viewMoreSubjectModel.showWindow(clickedSubject);
+                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
+
+                    AdminDeleteSubjectPopUpController deleteSubjectPopUpController= new AdminDeleteSubjectPopUpController();
+                    deleteSubjectPopUpController.showWindow(clickedSubject);
                 });
             }
 
@@ -137,6 +142,7 @@ public class AdminViewSubjectController {
                 if (empty) {
                     setGraphic(null);
                 } else {
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status))
                     setGraphic(deleteColumnButton);
                 }
             }

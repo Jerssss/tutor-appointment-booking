@@ -41,6 +41,8 @@ public class AdminViewSessionController {
     @FXML
     private TableColumn<List<String>, Void> viewMoreColumn;
     @FXML
+    private TableColumn<List<String>, Void> deleteColumn;
+    @FXML
     private Button addSessionButton;
     @FXML
     private Button refreshButton;
@@ -117,6 +119,29 @@ public class AdminViewSessionController {
                     String status = sessionData.get(6);
                     optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
+                }
+            }
+        });
+
+        deleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                deleteButton.setOnAction(event -> {
+                    clickedSession = getTableView().getItems().get(getIndex());
+                    AdminDeleteSessionPopUpController deleteSessionPopUpController= new AdminDeleteSessionPopUpController();
+                    deleteSessionPopUpController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
                 }
             }
         });
