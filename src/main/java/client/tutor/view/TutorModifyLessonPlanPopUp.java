@@ -24,9 +24,9 @@ public class TutorModifyLessonPlanPopUp {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing AdminModifyStudentPopUpController...");
+        System.out.println("[CLIENT] Initializing TutorModifyLessonPlanController...");
         this.controller = new TutorModifyLessonPlanController();
-        System.out.println("[CLIENT] AdminModifyStudentPopUpController successfully created.");
+        System.out.println("[CLIENT] TutorModifyLessonPlanController successfully created.");
     }
 
     public void setLessonPlan(LessonPlan lessonPlan) {

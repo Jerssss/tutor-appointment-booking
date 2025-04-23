@@ -19,18 +19,8 @@ public class TutorViewStudentListPopUpModel {
         try {
             return tutorService.getStudentsBySession(sessionID);
         } catch (Exception e) {
-            System.err.println("[ERROR] Failed to fetch sessions: " + e.getMessage());
+            System.err.println("[ERROR] Failed to fetch students: " + e.getMessage());
             return null;
-        }
-    }
-
-    public List<Student> getStudentsBySession(String sessionID) {
-        try {
-            return tutorService.getStudentsBySession(sessionID);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            System.out.println("[CLIENT] Failed to retrieve students for session ID: " + sessionID);
-            return Collections.emptyList();
         }
     }
 }
