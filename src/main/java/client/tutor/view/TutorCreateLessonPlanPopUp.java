@@ -46,21 +46,34 @@ public class TutorCreateLessonPlanPopUp {
         String objectives = objectivesTextField.getText();
         String topicsCovered = topicsCoveredTextField.getText();
 
-        // Pass data to the controller to save it in the database
+        //Check for empty fields or null combo box selections
+        if (acadLvl == null || acadLvl.trim().isEmpty() ||
+                subject == null || subject.trim().isEmpty() ||
+                objectives == null || objectives.trim().isEmpty() ||
+                topicsCovered == null || topicsCovered.trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null,
+                    "All fields must be filled in. Please check again.",
+                    "Missing Information",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // All good, proceed to create and add the lesson plan
         boolean success = controller.addNewLessonPlan(acadLvl, subject, objectives, topicsCovered);
 
         if (!success) {
             JOptionPane.showMessageDialog(null,
-                    "Failed to add lesson plan                                 .",
+                    "Failed to add lesson plan.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null,
-                    "Lesson plan added successfully                                 .",
-                    "Error",
+                    "Lesson plan added successfully!",
+                    "Success",
                     JOptionPane.INFORMATION_MESSAGE);
+            closeWindow(); // only close if success
         }
-        closeWindow();
     }
 
     private void closeWindow() {

@@ -33,17 +33,22 @@ public class TutorModifyLessonPlanPopUp {
         this.lessonPlan = lessonPlan;
     }
 
+    //Validation checks if the objectives filed and topics covered field are empty
     private void handleSave() {
         String newObjectives = objectivesTextField.getText();
         String newTopicsCovered = topicsCoveredTextField.getText();
 
-        if (lessonPlan == null || newObjectives == null || newObjectives.isEmpty() || newTopicsCovered == null || newTopicsCovered.isEmpty()) {
+        if (lessonPlan == null ||
+                newObjectives == null || newObjectives.trim().isEmpty() ||
+                newTopicsCovered == null || newTopicsCovered.trim().isEmpty()) {
+
             JOptionPane.showMessageDialog(null,
-                    "Invalid input. Please check the form.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+                    "All fields must be filled in. Please complete the form.",
+                    "Missing Information",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         String id = lessonPlan.getLessonPlanID();
         boolean success = controller.updateLessonPlanObjectives(id, newObjectives, newTopicsCovered);
 
@@ -54,11 +59,11 @@ public class TutorModifyLessonPlanPopUp {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null,
-                    "objectives updated successfully.",
+                    "Objectives updated successfully!",
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
+            closeWindow(); // only close if successful
         }
-        closeWindow();
     }
 
     private void closeWindow() {
