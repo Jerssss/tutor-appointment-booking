@@ -34,7 +34,6 @@ public class Server {
     private static AdminServiceImpl adminService;
 
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(1000);
-
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (running) {

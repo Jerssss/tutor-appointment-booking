@@ -7,7 +7,6 @@ import java.util.List;
 
 public class CreateBookingModel {
     private final StudentService studentService;
-    private int currentStudentId;
 
     public CreateBookingModel(StudentService studentService) {
         this.studentService = studentService;
@@ -20,13 +19,22 @@ public class CreateBookingModel {
     public Booking createBooking(String studentId, String sessionId,
                                  String sessionMode, String status, double price)
             throws RemoteException {
-
         return studentService.createBooking(
-                Integer.parseInt(studentId),
+                studentId,
                 sessionId,
                 sessionMode,
                 status,
                 price
         );
+    }
+
+    public Payment createPayment(String studentId, double amount,
+                                 String paymentMethod) throws RemoteException {
+        return studentService.createPayment(studentId, amount, paymentMethod);
+    }
+
+    public void updateStudentBalance(String studentId, double amount)
+            throws RemoteException {
+        studentService.updateStudentBalance(studentId, amount);
     }
 }

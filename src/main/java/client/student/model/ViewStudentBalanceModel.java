@@ -13,7 +13,7 @@ public class ViewStudentBalanceModel {
         this.service = service;
     }
 
-    public List<BalanceDetails> fetchBalanceDetails(int studentID) throws RemoteException {
+    public List<BalanceDetails> fetchBalanceDetails(String studentID) throws RemoteException {
         return service.viewStudentBalanceDetails(studentID);
     }
 }

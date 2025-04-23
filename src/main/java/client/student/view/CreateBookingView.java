@@ -1,8 +1,10 @@
 package client.student.view;
 
 import client.student.controller.CreateBookingController;
+import client.student.controller.ReserveBookingPopUpController;
 import client.student.controller.ViewSubjectController;
 import client.student.model.CreateBookingModel;
+import client.student.model.ReserveBookingPopUpModel;
 import client.student.model.ViewSubjectModel;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -12,16 +14,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import server.services.StudentServiceImpl;
 import shared.classes.Booking;
+import shared.classes.BookingDetails;
 import shared.classes.SessionManager;
 import shared.classes.TutorSession;
 import shared.interfaces.StudentService;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -41,6 +50,7 @@ public class CreateBookingView implements Initializable {
     @FXML private TableColumn<TutorSession, String> timeColumn;
     @FXML private TableColumn<TutorSession, String> typeColumn;
     @FXML private TableColumn<TutorSession, String> modeColumn;
+    @FXML private TableColumn<TutorSession, String> priceColumn;
 
     private final ObservableList<TutorSession> allBookings = FXCollections.observableArrayList();
     private CreateBookingController controller;
@@ -48,7 +58,11 @@ public class CreateBookingView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle loc) {
         initializeTableColumns();
-        initializeController();
+        try {
+            initializeController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         initializeSearchListener();
     }
 
@@ -98,7 +112,7 @@ public class CreateBookingView implements Initializable {
         });
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException{
         System.out.println("[CLIENT] Controller initialized!");
         StudentService service = new StudentServiceImpl(); // Initialize the service
         CreateBookingModel model = new CreateBookingModel(service);
@@ -132,6 +146,8 @@ public class CreateBookingView implements Initializable {
         });
         modeColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSessionMode()));
+        priceColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionPrice())));
 
         // Reserve button column setup
         reserveColumn.setCellFactory(param -> new TableCell<>() {
@@ -166,29 +182,41 @@ public class CreateBookingView implements Initializable {
         createReservationTableView.setItems(allBookings);
     }
 
+
     private void handleReserveAction(TutorSession session) throws Exception {
         // Verify active session
         String studentId = SessionManager.getCurrentUserId();
         if (studentId == null) {
             throw new Exception("Please login to make reservations");
         }
+        showReservePopUp(session);
 
+    }
 
-        // Create booking through controller
-        Booking newBooking = controller.createBooking(
-                studentId,
-                session.getSessionID(),
-                session.getSessionMode(),
-                "Pending", // Initial status
-                session.getSessionPrice()
-        );
+    private void showReservePopUp(TutorSession session) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/reserve_booking_window.fxml"));
+            Parent root = loader.load();
 
-        // Update UI
-        showSuccessAlert("Booking Created",
-                "Successfully reserved " + session.getSessionMode() + " session");
+            ReserveBookingPopUpView popupController = loader.getController();
+            popupController.setSelectedSession(session);
 
-        // Refresh available sessions
-        controller.refreshTable();
+            // Create the proper controller for the popup
+            ReserveBookingPopUpModel popupModel = new ReserveBookingPopUpModel(new StudentServiceImpl());
+            ReserveBookingPopUpController popupControllerInstance = new ReserveBookingPopUpController(popupModel);
+            popupController.setController(popupControllerInstance);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reserve Booking");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh the table after popup closes
+            controller.refreshTable();
+        } catch (IOException e) {
+            showErrorAlert("Error", "Could not open reserve dialog: " + e.getMessage());
+        }
     }
 
     private void showSuccessAlert(String title, String message) {

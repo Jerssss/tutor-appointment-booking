@@ -32,6 +32,7 @@ public class ViewStudentBalanceView implements Initializable {
     @FXML private TableColumn<BalanceDetails, String> modeColumn;
     @FXML private TableColumn<BalanceDetails, String> tutorColumn;
     @FXML private TableColumn<BalanceDetails, String> statusColumn;
+    @FXML private Label remBalanceLabel;
 
     private final ObservableList<BalanceDetails> allBalanceDetails = FXCollections.observableArrayList();
     private ViewStudentBalanceController controller;

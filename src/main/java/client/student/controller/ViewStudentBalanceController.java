@@ -31,9 +31,9 @@ public class ViewStudentBalanceController {
             }
 
             // Parse to integer (assuming your student IDs are numeric)
-            int studentId;
+            String studentId;
             try {
-                studentId = Integer.parseInt(studentIdStr);
+                studentId = studentIdStr;
             } catch (NumberFormatException e) {
                 view.showErrorAlert("Invalid ID", "Student ID must be numeric");
                 return;

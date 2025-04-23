@@ -49,7 +49,7 @@ public class ModifyBookingController {
         }
     }
 
-    public void modifyBooking(int studentID, String sessionID, String newSessionMode, String newSessionDate, String newSessionTime, String newBookingStatus, double newSessionPrice) {
+    public void modifyBooking(String studentID, String sessionID, String newSessionMode, String newSessionDate, String newSessionTime, String newBookingStatus, double newSessionPrice) {
         try {
             Booking updatedBooking = model.modifyBooking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice, newSessionDate, newSessionTime);
             if (updatedBooking != null) {

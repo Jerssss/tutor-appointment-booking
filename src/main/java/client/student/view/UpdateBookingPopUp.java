@@ -10,6 +10,7 @@ import javafx.scene.control.DatePicker;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import shared.classes.BookingDetails;
+import shared.classes.TutorSession;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -118,7 +119,7 @@ public class UpdateBookingPopUp {
         // Call the method to modify the booking
         if (selectedBooking != null && controller != null) {
             controller.modifyBooking(
-                    selectedBooking.getStudentID(),
+                    String.valueOf(selectedBooking.getStudentID()),
                     selectedBooking.getSessionID(),
                     newSessionMode,
                     newSessionDate,
@@ -128,4 +129,6 @@ public class UpdateBookingPopUp {
             );
         }
     }
+
+
 }

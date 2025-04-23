@@ -13,7 +13,7 @@ public class ViewPaymentHistoryModel {
         this.service = service;
     }
 
-    public List<PaymentDetails> fetchPaymentHistory(int studentID) throws RemoteException {
+    public List<PaymentDetails> fetchPaymentHistory(String studentID) throws RemoteException {
         System.out.println("[CLIENT] Fetching payment history for studentID: " + studentID);
         List<PaymentDetails> payments = service.viewPaymentHistory(studentID);
         System.out.println("[CLIENT] Fetched " + payments.size() + " payments.");
