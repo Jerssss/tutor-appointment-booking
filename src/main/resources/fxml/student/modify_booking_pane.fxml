@@ -51,7 +51,7 @@
             <TableView fx:id="modResTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="433.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
                   <TableColumn fx:id="roomNumberColumn" editable="false" prefWidth="96.0" resizable="false" text="Course" />
-                  <TableColumn fx:id="terminalIDColumn" editable="false" prefWidth="150.0" resizable="false" text="Subject" />
+                  <TableColumn fx:id="terminalIDColumn" editable="false" prefWidth="150.0" resizable="false" text="Tutor" />
                   <TableColumn fx:id="reservationDateColumn" editable="false" prefWidth="127.0" resizable="false" text="Session Date" />
                   <TableColumn fx:id="startTimeColumn" editable="false" prefWidth="127.0" resizable="false" text="Session Time" />
                   <TableColumn fx:id="endTimeColumn" editable="false" prefWidth="109.0" resizable="false" text="Session Mode" />
@@ -64,20 +64,5 @@
             </TableView>
          </children>
       </VBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="805.0">
-         <children>
-            <Button fx:id="saveChangesButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Save Changes" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="17.0" right="17.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
-      </HBox>
    </children>
 </VBox>

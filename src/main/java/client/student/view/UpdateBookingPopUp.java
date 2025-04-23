@@ -15,7 +15,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class UpdateBookingPopUp {
-    @FXML private DatePicker sessionDatePicker; // Changed from ComboBox to DatePicker
+    @FXML private DatePicker sessionDatePicker;
     @FXML private ComboBox<String> sessionTimeComboBox;
     @FXML private ComboBox<String> sessionModeComboBox;
     @FXML private Button updateBookingButton;
