@@ -3,6 +3,7 @@ package client.admin.view;
 import client.admin.controller.AdminModifyTutorPopUpController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import shared.classes.Tutor;
@@ -10,6 +11,10 @@ import shared.classes.Tutor;
 import javax.swing.*;
 
 public class AdminModifyTutorPopUp {
+    @FXML
+    private Label tutorIDLabel;
+    @FXML
+    private Label oldPassLabel;
     @FXML
     private TextField passwordTextField;
     @FXML
@@ -30,6 +35,11 @@ public class AdminModifyTutorPopUp {
 
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
+
+        if (tutorIDLabel != null && oldPassLabel != null) {
+            tutorIDLabel.setText(tutor.getUserID());
+            oldPassLabel.setText(tutor.getPassword());
+        }
     }
 
     private void handleSave() {
