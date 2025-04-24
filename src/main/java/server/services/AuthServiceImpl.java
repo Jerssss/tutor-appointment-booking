@@ -30,7 +30,7 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
 
     @Override
     public User login(String userID, String password) throws RemoteException {
-        query = "SELECT userID, firstName, lastName, phoneNumber, email, role " +
+        query = "SELECT userID, firstName, lastName, phoneNumber, email, role, password " +
                 "FROM user WHERE userID = ? AND password = ?";
 
         try {
@@ -48,7 +48,8 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
                         resultSet.getString("lastName"),
                         resultSet.getLong("phoneNumber"),
                         resultSet.getString("email"),
-                        resultSet.getString("role")
+                        resultSet.getString("role"),
+                        resultSet.getString("password")
                 );
             } else {
                 throw new AccountDoesNotExist("Account Does Not Exist in the DATABASE");

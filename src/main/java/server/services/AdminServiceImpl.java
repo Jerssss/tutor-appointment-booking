@@ -17,6 +17,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     private static Connection con = DatabaseConnection.setCon(); // creates the connection to the database
     private static String query; // holds the sql query
     private static Statement stmt; // used to execute queries without parameters
+    private static CallableStatement callStmt;
     private static PreparedStatement preparedStatement; // prepares and executes parameterized sql queries
     private static ResultSet resultSet; // stores the result returned by executing a query
 
@@ -51,25 +52,24 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     public List<Student> viewStudent() throws RemoteException{
         List<Student> studentList = new ArrayList<>();
 
-        query = "SELECT s.studentID, u.firstName, u.lastName, u.phoneNumber, u.email, u.role, s.balance, s.academicLevel " +
-                "FROM student s " +
-                "INNER JOIN user u ON s.studentID = u.userID;";
+        query = "{CALL viewStudent()}";
 
         try {
-            stmt = con.createStatement();
-            resultSet = stmt.executeQuery(query);
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
 
             while (resultSet.next()) {
-                String tutorID = resultSet.getString(1);
+                String studentID = resultSet.getString(1);
                 String firstName = resultSet.getString(2);
                 String lastName = resultSet.getString(3);
                 long phoneNumber = resultSet.getLong(4);
                 String email = resultSet.getString(5);
                 String role = resultSet.getString(6);
-                double balance = resultSet.getDouble(7);
-                String academicLevel = resultSet.getString(8);
+                String password = resultSet.getString(7);
+                double balance = resultSet.getDouble(8);
+                String academicLevel = resultSet.getString(9);
 
-                Student student = new Student(tutorID, firstName, lastName, phoneNumber, email, role, balance, academicLevel);
+                Student student = new Student(studentID, firstName, lastName, phoneNumber, email, role, password, balance, academicLevel);
                 studentList.add(student);
             }
         } catch (SQLException e1) {
@@ -82,34 +82,26 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addStudent(Student newStudent) throws RemoteException, SQLException {
-        String latestUserID = "SELECT userID FROM user ORDER BY userID DESC LIMIT 1";
-        String query1 = "INSERT INTO user (userID, firstName, lastName, phoneNumber, email, role, password)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?);";
-        String query2 = "INSERT INTO student (studentID, balance, academicLevel)" +
-                "VALUES (?, ?, ?);";
+        query = "{CALL addStudent(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         try {
-            con.setAutoCommit(false); // creates a transaction for grouped query
-
+            con.setAutoCommit(false);
             String newUserID = generateNewUserID();
             String newUserPassword = generateNewUserPassword(newStudent);
 
-            PreparedStatement preparedStatement1 = con.prepareStatement(query1);
-            preparedStatement1.setString(1, newUserID);
-            preparedStatement1.setString(2, newStudent.getFirstName());
-            preparedStatement1.setString(3, newStudent.getLastName());
-            preparedStatement1.setLong(4, newStudent.getPhoneNumber());
-            preparedStatement1.setString(5, newStudent.getEmail());
-            preparedStatement1.setString(6, newStudent.getRole());
-            preparedStatement1.setString(7, newUserPassword);
-            preparedStatement1.executeUpdate();
+            callStmt = con.prepareCall(query);
 
-            PreparedStatement preparedStatement2 = con.prepareStatement(query2);
-            preparedStatement2.setString(1, newUserID);
-            preparedStatement2.setDouble(2, newStudent.getBalance());
-            preparedStatement2.setString(3, newStudent.getAcademicLevel());
-            preparedStatement2.executeUpdate();
+            callStmt.setString(1, newUserID);
+            callStmt.setString(2, newStudent.getFirstName());
+            callStmt.setString(3, newStudent.getLastName());
+            callStmt.setLong(4, newStudent.getPhoneNumber());
+            callStmt.setString(5, newStudent.getEmail());
+            callStmt.setString(6, newStudent.getRole());
+            callStmt.setString(7, newUserPassword);
+            callStmt.setDouble(8, newStudent.getBalance());
+            callStmt.setString(9, newStudent.getAcademicLevel());
 
-            con.commit(); // commits both queries
+            callStmt.executeUpdate();
+            con.commit();
         } catch (SQLException e1) {
             if (con != null) con.rollback(); // Rollback on error
             e1.printStackTrace();
@@ -121,12 +113,13 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
     @Override
     public void modifyStudent(String studentID, String newPassword) throws RemoteException {
-        String query = "UPDATE user SET password = ? WHERE userID = ?";
+        query = "{CALL modifyStudent(?, ?)}";
+
         try {
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, newPassword);
-            preparedStatement.setString(2, studentID);
-            preparedStatement.executeUpdate();
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, studentID);
+            callStmt.setString(2, newPassword);
+            callStmt.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();
         } catch (Exception e2) {
@@ -138,13 +131,11 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     public List<Tutor> viewTutor() throws RemoteException{
         List<Tutor> tutorList = new ArrayList<>();
 
-        query = "SELECT t.tutorID, u.firstName, u.lastName, u.phoneNumber, u.email, u.role, t.expertise " +
-                "FROM tutor t " +
-                "INNER JOIN user u ON t.tutorID = u.userID;";
+        query = "{CALL viewTutor()}";
 
         try {
-            stmt = con.createStatement();
-            resultSet = stmt.executeQuery(query);
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
 
             while (resultSet.next()) {
                 String tutorID = resultSet.getString(1);
@@ -153,9 +144,10 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
                 long phoneNumber = resultSet.getLong(4);
                 String email = resultSet.getString(5);
                 String role = resultSet.getString(6);
-                String expertise = resultSet.getString(7);
+                String pass = resultSet.getString(7);
+                String expertise = resultSet.getString(8);
 
-                Tutor tutor = new Tutor(tutorID, firstName, lastName, phoneNumber, email, role, expertise);
+                Tutor tutor = new Tutor(tutorID, firstName, lastName, phoneNumber, email, role, pass, expertise);
                 tutorList.add(tutor);
             }
         } catch (SQLException e1) {
@@ -168,32 +160,27 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addTutor(Tutor newTutor) throws RemoteException, SQLException {
-        String query1 = "INSERT INTO user (userID, firstName, lastName, phoneNumber, email, role, password)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?);";
-        String query2 = "INSERT INTO tutor (tutorID, expertise)" +
-                "VALUES (?, ?);";
+        query = "{CALL addTutor(?, ?, ?, ?, ?, ?, ?, ?)}";
+
         try {
             con.setAutoCommit(false); // creates a transaction for grouped query
 
             String newUserID = generateNewUserID();
             String newUserPassword = generateNewUserPassword(newTutor);
 
-            PreparedStatement preparedStatement1 = con.prepareStatement(query1);
-            preparedStatement1.setString(1, newUserID);
-            preparedStatement1.setString(2, newTutor.getFirstName());
-            preparedStatement1.setString(3, newTutor.getLastName());
-            preparedStatement1.setLong(4, newTutor.getPhoneNumber());
-            preparedStatement1.setString(5, newTutor.getEmail());
-            preparedStatement1.setString(6, newTutor.getRole());
-            preparedStatement1.setString(7, newUserPassword);
-            preparedStatement1.executeUpdate();
+            callStmt = con.prepareCall(query);
 
-            PreparedStatement preparedStatement2 = con.prepareStatement(query2);
-            preparedStatement2.setString(1, newUserID);
-            preparedStatement2.setString(2, newTutor.getExpertise());
-            preparedStatement2.executeUpdate();
+            callStmt.setString(1, newUserID);
+            callStmt.setString(2, newTutor.getFirstName());
+            callStmt.setString(3, newTutor.getLastName());
+            callStmt.setLong(4, newTutor.getPhoneNumber());
+            callStmt.setString(5, newTutor.getEmail());
+            callStmt.setString(6, newTutor.getRole());
+            callStmt.setString(7, newUserPassword);
+            callStmt.setString(8, newTutor.getExpertise());
 
-            con.commit(); // commits both queries
+            callStmt.executeUpdate();
+            con.commit();
         } catch (SQLException e1) {
             if (con != null) con.rollback(); // Rollback on error
             e1.printStackTrace();
@@ -206,19 +193,20 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void modifyTutor(String tutorID, String newPassword) throws RemoteException {
-        String query = "UPDATE user SET password = ? WHERE userID = ?";
+        query = "{CALL modifyTutor(?, ?)}";
 
         try {
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, newPassword);
-            preparedStatement.setString(2, tutorID);
-            preparedStatement.executeUpdate();
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, tutorID);
+            callStmt.setString(2, newPassword);
+            callStmt.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();
         } catch (Exception e2) {
             e2.printStackTrace();
         }
     }
+
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
@@ -716,8 +704,9 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
         query = "SELECT * FROM payment";
 
         try {
-            stmt = con.createStatement();
-            resultSet = stmt.executeQuery(query);
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
+
             while (resultSet.next()) {
                 String paymentID = resultSet.getString(1);
                 String studentID = resultSet.getString(2);
