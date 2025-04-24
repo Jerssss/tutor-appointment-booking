@@ -27,10 +27,17 @@ public class ReserveBookingPopUpModel {
 
     public void processPayment(String studentId, double amount, String paymentMethod) throws Exception {
         try {
-            System.out.println("[DEBUG][Model] Processing payment for student: " + studentId);
             studentService.createPayment(studentId, amount, paymentMethod);
         } catch (Exception e) {
             throw new Exception("Payment failed: " + e.getMessage());
+        }
+    }
+
+    public void updateStudentBalance(String studentId, double amount) throws Exception {
+        try {
+            studentService.updateStudentBalance(studentId, amount);
+        } catch (Exception e) {
+            throw new Exception("Balance update failed: " + e.getMessage());
         }
     }
 }

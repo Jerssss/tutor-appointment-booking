@@ -392,68 +392,22 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     @Override
     public Payment createPayment(String studentId, double amount, String paymentMethod)
             throws RemoteException {
-
-        // Temporary workaround - force valid student ID
-        studentId = "2240000";
-        System.out.println("[OVERRIDE] Using studentId: " + studentId);
-
         try (Connection conn = DatabaseConnection.setCon()) {
             conn.setAutoCommit(false);
 
             try {
-
                 String paymentId = getNextPaymentId(conn);
                 System.out.println("[PAYMENT] Generated payment ID: " + paymentId);
 
-
+                // Only create the payment record (no balance update)
                 try (PreparedStatement paymentStmt = conn.prepareStatement(
                         "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
                                 "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
-
                     paymentStmt.setString(1, paymentId);
                     paymentStmt.setString(2, studentId);
                     paymentStmt.setDouble(3, amount);
                     paymentStmt.setString(4, paymentMethod);
                     paymentStmt.executeUpdate();
-                }
-
-
-                try (PreparedStatement balanceStmt = conn.prepareStatement(
-                        "UPDATE student SET balance = balance - ? WHERE studentID = ?")) {
-
-                    balanceStmt.setDouble(1, amount);
-                    balanceStmt.setString(2, studentId);
-                    int rowsUpdated = balanceStmt.executeUpdate();
-
-                    if (rowsUpdated == 0) {
-                        throw new RemoteException("Failed to update balance - student not found");
-                    }
-                    System.out.println("[BALANCE] Updated balance for student: " + studentId);
-                }
-
-
-                try (PreparedStatement verifyStmt = conn.prepareStatement(
-                        "SELECT p.studentID, s.balance " +
-                                "FROM payment p " +
-                                "JOIN student s ON p.studentID = s.studentID " +
-                                "WHERE p.paymentID = ?")) {
-
-                    verifyStmt.setString(1, paymentId);
-                    ResultSet rs = verifyStmt.executeQuery();
-
-                    if (rs.next()) {
-                        String dbStudentId = rs.getString(1);
-                        double newBalance = rs.getDouble(2);
-
-                        System.out.println("[VERIFY] Payment recorded for: " + dbStudentId);
-                        System.out.println("[VERIFY] New balance: " + newBalance);
-
-                        if (!dbStudentId.equals(studentId)) {
-                            throw new RemoteException("ID mismatch in verification");
-                        }
-                    } else {
-                        throw new RemoteException("Payment verification failed");
-                    }
                 }
 
                 conn.commit();
@@ -499,6 +453,25 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RemoteException("Balance update failed: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public double getStudentBalance(String studentID) throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT balance FROM student WHERE studentID = ?"
+             )) {
+            stmt.setString(1, studentID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("balance");
+            } else {
+                throw new RemoteException("Student not found");
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while fetching balance: " + e.getMessage());
         }
     }
 

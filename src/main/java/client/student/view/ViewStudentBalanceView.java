@@ -1,5 +1,6 @@
 package client.student.view;
 
+import client.student.controller.CreatePaymentWindowController;
 import client.student.controller.ViewStudentBalanceController;
 import client.student.model.ViewStudentBalanceModel;
 import javafx.animation.ScaleTransition;
@@ -7,9 +8,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import server.services.StudentServiceImpl;
 import shared.classes.BalanceDetails;
@@ -17,7 +23,9 @@ import shared.classes.SessionManager;
 import shared.interfaces.StudentService;
 
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ViewStudentBalanceView implements Initializable {
@@ -42,9 +50,8 @@ public class ViewStudentBalanceView implements Initializable {
         initializeTableColumns();
         initializeSearchListener();
         System.out.println("[CLIENT] Balance details view initialized successfully.");
-        initializeController(); // Initialize the controller here
+        initializeController();
 
-        // Automatically refresh the table when the view is loaded
         if (controller != null) {
             controller.refreshTable();
         }
@@ -58,6 +65,37 @@ public class ViewStudentBalanceView implements Initializable {
         modeColumn.setCellValueFactory(new PropertyValueFactory<>("sessionMode"));
         tutorColumn.setCellValueFactory(new PropertyValueFactory<>("tutorName"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("bookingStatus"));
+    }
+
+    // Add this method to ViewStudentBalanceView.java
+    @FXML
+    private void handleCreatePayment() {
+        try {
+            // Get the selected booking from the table
+            BalanceDetails selectedBooking = viewResTableView.getSelectionModel().getSelectedItem();
+
+            if (selectedBooking == null) {
+                showErrorAlert("No Selection", "Please select a booking to make payment");
+                return;
+            }
+
+            // Open the payment window
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/create_payment_window.fxml"));
+            Parent root = loader.load();
+
+//            CreatePaymentWindowView paymentView = loader.getController();
+//            paymentView.setBookingDetails(selectedBooking);
+//            paymentView.setBalanceView(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Make Payment");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (Exception e) {
+            showErrorAlert("Error", "Failed to open payment window: " + e.getMessage());
+        }
     }
 
     private void initializeSearchListener() {
@@ -94,6 +132,23 @@ public class ViewStudentBalanceView implements Initializable {
             viewResTableView.setItems(allBalanceDetails);
             viewResTableView.refresh();
         }
+    }
+
+
+    public void updateBalanceDisplay(double balance) {
+        // Create Philippine Peso formatter
+        NumberFormat pesoFormat = NumberFormat.getCurrencyInstance(new Locale("en", "PH"));
+
+        String formattedBalance = pesoFormat.format(Math.abs(balance));
+
+        if (balance < 0) {
+            remBalanceLabel.setStyle("-fx-text-fill: red;");
+            formattedBalance = "-" + formattedBalance;
+        } else {
+            remBalanceLabel.setStyle("-fx-text-fill: green;");
+        }
+
+        remBalanceLabel.setText(formattedBalance);
     }
 
     public void showErrorAlert(String title, String message) {

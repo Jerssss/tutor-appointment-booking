@@ -18,4 +18,5 @@ public interface StudentService {
     List<BalanceDetails> viewStudentBalanceDetails(String studentID) throws RemoteException;
     Payment createPayment(String studentId, double amount, String paymentMethod) throws RemoteException;
     boolean updateStudentBalance(String studentId, double amount) throws RemoteException;
+    double getStudentBalance(String studentID) throws RemoteException;
 }

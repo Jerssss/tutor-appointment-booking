@@ -16,4 +16,8 @@ public class ViewStudentBalanceModel {
     public List<BalanceDetails> fetchBalanceDetails(String studentID) throws RemoteException {
         return service.viewStudentBalanceDetails(studentID);
     }
+
+    public double fetchStudentBalance(String studentID) throws RemoteException {
+        return service.getStudentBalance(studentID);
+    }
 }

@@ -17,32 +17,27 @@ public class ViewStudentBalanceController {
     public ViewStudentBalanceController(ViewStudentBalanceModel model, ViewStudentBalanceView view) {
         this.model = model;
         this.view = view;
-        this.view.setController(this); // Set the controller in the view
+        this.view.setController(this);
     }
 
     public void refreshTable() {
         try {
-            // Get student ID from session
-            String studentIdStr = SessionManager.getCurrentUserId();
-            System.out.println("[CLIENT] Fetching balance details for student ID: " + studentIdStr);
-            if (studentIdStr == null) {
+            String studentId = SessionManager.getCurrentUserId();
+            System.out.println("[CLIENT] Fetching balance details for student ID: " + studentId);
+
+            if (studentId == null) {
                 view.showErrorAlert("Session Error", "No active session found");
                 return;
             }
 
-            // Parse to integer (assuming your student IDs are numeric)
-            String studentId;
-            try {
-                studentId = studentIdStr;
-            } catch (NumberFormatException e) {
-                view.showErrorAlert("Invalid ID", "Student ID must be numeric");
-                return;
-            }
-
-            // Fetch and display balance details
+            // Fetch balance details for the table
             List<BalanceDetails> balanceDetails = model.fetchBalanceDetails(studentId);
             ObservableList<BalanceDetails> observableBalanceDetails = FXCollections.observableArrayList(balanceDetails);
             view.updateTable(observableBalanceDetails);
+
+            // Fetch and display the current balance
+            double balance = model.fetchStudentBalance(studentId);
+            view.updateBalanceDisplay(balance);
 
         } catch (RemoteException e) {
             view.showErrorAlert("Connection Error", "Failed to load balance details: " + e.getMessage());
