@@ -6,6 +6,12 @@ public class Student extends User implements Serializable {
     private double balance;
     private String academicLevel;
 
+    public Student(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String password, double balance, String academicLevel) {
+        super(userID, firstName, lastName, phoneNumber, email, role, password);
+        this.balance = balance;
+        this.academicLevel = academicLevel;
+    }
+
     public Student(String userID, String firstName, String lastName, long phoneNumber, String email, String role, double balance, String academicLevel) {
         super(userID, firstName, lastName, phoneNumber, email, role);
         this.balance = balance;
@@ -16,6 +22,10 @@ public class Student extends User implements Serializable {
         super(firstName, lastName, phoneNumber, email, role);
         this.balance = balance;
         this.academicLevel = academicLevel;
+    }
+
+    public Student(String userID, String firstName, String lastName){
+        super(userID, firstName, lastName);
     }
 
     // Getter and Setter for balance

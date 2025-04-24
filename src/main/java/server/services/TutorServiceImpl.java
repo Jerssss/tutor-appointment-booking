@@ -131,14 +131,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
 
-                // Provide default/dummy values for the fields not returned by the query
-                long phoneNumber = 0L;
-                String email = "";
-                String role = "student";
-                double balance = 0.0;
-                String academicLevel = "";
-
-                Student student = new Student(userID, firstName, lastName, phoneNumber, email, role, balance, academicLevel);
+                Student student = new Student(userID, firstName, lastName);
                 students.add(student);
             }
         } catch (SQLException e) {

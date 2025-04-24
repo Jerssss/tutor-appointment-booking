@@ -9,8 +9,19 @@ public class User implements Serializable {
     private long phoneNumber;
     private String email;
     private String role;
+    private String password;
 
     // Constructor
+    public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String pass) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.role = role;
+        this.password = pass;
+    }
+
     public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role) {
         this.userID = userID;
         this.firstName = firstName;
@@ -26,6 +37,12 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.role = role;
+    }
+
+    public User(String userID, String firstName, String lastName){
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     // Getters and Setters
@@ -75,6 +92,14 @@ public class User implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     // Override toString for easy object representation
