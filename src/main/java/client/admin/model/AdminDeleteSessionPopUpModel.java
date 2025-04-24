@@ -12,7 +12,7 @@ public class AdminDeleteSessionPopUpModel {
     public AdminDeleteSessionPopUpModel(AdminService adminService) {
         this.adminService = adminService;
     }
-    public void deleteSession(String sessionID) throws RemoteException {
-        adminService.deleteSession(sessionID);
+    public int deleteSession(String sessionID) throws RemoteException {
+        return adminService.deleteSession(sessionID);
     }
 }

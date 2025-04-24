@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -56,7 +57,20 @@ public class AdminDeleteSessionPopUpController implements Initializable {
     private void handleConfirm(ActionEvent event) {
         try {
             String sessionID = AdminViewSessionController.getClickedSession().getFirst();
-            model.deleteSession(sessionID);
+            int output = model.deleteSession(sessionID);
+            if (output == 0){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Deletion Successful");
+                alert.setHeaderText("Session successfully Deleted.");
+                alert.setContentText("The session was deleted.");
+                alert.showAndWait();
+            } else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Deletion Error");
+                alert.setHeaderText("Cannot Delete Session");
+                alert.setContentText("This session cannot be deleted because it is associated with booking records.");
+                alert.showAndWait();
+            }
             Stage stage = (Stage) confirmButton.getScene().getWindow();
             stage.close();
         } catch (RemoteException e) {

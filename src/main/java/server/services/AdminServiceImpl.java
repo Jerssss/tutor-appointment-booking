@@ -302,19 +302,18 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException {
-        query = "UPDATE tutorsession SET sessionMode = ?, sessionType = ?, numberOfStudents = ?, maximumStudents = ?, sessionPrice = ? WHERE sessionID = ?";
+        query = "CALL UpdateSession(?, ?, ?, ?, ?, ?);";
 
         try {
             con.setAutoCommit(false);
 
             preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, sessionMode);
-            preparedStatement.setString(2, sessionType);
-            preparedStatement.setString(3, numStudents);
-            preparedStatement.setString(4, maxStudents);
-            preparedStatement.setString(5, sessionPrice);
-            preparedStatement.setString(6, sessionID);
-
+            preparedStatement.setString(1, sessionID);
+            preparedStatement.setString(2, sessionMode);
+            preparedStatement.setString(3, sessionType);
+            preparedStatement.setString(4, numStudents);
+            preparedStatement.setString(5, maxStudents);
+            preparedStatement.setString(6, sessionPrice);
 
             preparedStatement.executeUpdate();
             con.commit();
@@ -330,17 +329,21 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public void deleteSession(String sessionID) throws RemoteException {
-        query = "DELETE FROM tutorsession WHERE sessionID = ?;";
+    public int deleteSession(String sessionID) throws RemoteException {
+        query = "CALL DeleteSession(?);";
 
         try {
             preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, sessionID);
             preparedStatement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return -1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0;
     }
+
 
     @Override
     public List<String> getEditableDetails(String sessionID) throws RemoteException{
