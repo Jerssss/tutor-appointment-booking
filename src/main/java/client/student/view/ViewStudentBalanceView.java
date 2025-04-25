@@ -22,7 +22,9 @@ import shared.classes.BalanceDetails;
 import shared.classes.SessionManager;
 import shared.interfaces.StudentService;
 
+import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -49,14 +51,11 @@ public class ViewStudentBalanceView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeTableColumns();
         initializeSearchListener();
-        System.out.println("[CLIENT] Balance details view initialized successfully.");
         initializeController();
-
-        if (controller != null) {
-            controller.refreshTable();
-        }
+        if (controller != null) controller.refreshTable();
     }
 
+    // Initialize table columns
     private void initializeTableColumns() {
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionDate().toString()));
         timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionTime().toString()));
@@ -67,36 +66,31 @@ public class ViewStudentBalanceView implements Initializable {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("bookingStatus"));
     }
 
-    // Add this method to ViewStudentBalanceView.java
     @FXML
     private void handleCreatePayment() {
         try {
-            // Get the selected booking from the table
-            BalanceDetails selectedBooking = viewResTableView.getSelectionModel().getSelectedItem();
-
-            if (selectedBooking == null) {
-                showErrorAlert("No Selection", "Please select a booking to make payment");
-                return;
-            }
-
-            // Open the payment window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/create_payment_window.fxml"));
             Parent root = loader.load();
 
-//            CreatePaymentWindowView paymentView = loader.getController();
-//            paymentView.setBookingDetails(selectedBooking);
-//            paymentView.setBalanceView(this);
+            CreatePaymentWindowView paymentView = loader.getController();
+            String studentId = SessionManager.getCurrentUserId();
+            double currentBalance = controller.getCurrentBalance();
 
-            Stage stage = new Stage();
-            stage.setTitle("Make Payment");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            paymentView.initializeData(studentId, currentBalance);
 
-        } catch (Exception e) {
-            showErrorAlert("Error", "Failed to open payment window: " + e.getMessage());
+            Stage paymentStage = new Stage();
+            paymentStage.initModality(Modality.APPLICATION_MODAL);
+            paymentStage.initOwner(createPaymentButton.getScene().getWindow());
+            paymentStage.setTitle("Create Payment");
+            paymentStage.setScene(new Scene(root));
+            paymentStage.showAndWait();
+
+            controller.refreshTable();
+        } catch (IOException e) {
+            showErrorAlert("Error", "Payment window error: " + e.getMessage());
         }
     }
+
 
     private void initializeSearchListener() {
         searchBalTextField.textProperty().addListener((observable, oldValue, newValue) -> {

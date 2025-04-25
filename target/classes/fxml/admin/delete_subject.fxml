@@ -20,7 +20,7 @@
         </font>
     </Label>
 
-    <Label text="Are you sure you want to delete this session?" wrapText="true" textAlignment="CENTER" style="-fx-font-size: 13;" />
+    <Label text="Are you sure you want to delete this subject?" wrapText="true" textAlignment="CENTER" style="-fx-font-size: 13;" />
 
     <HBox alignment="CENTER" spacing="15.0">
         <Button fx:id="confirmButton" text="Yes" prefWidth="90.0" style="-fx-background-color: #6f2e2e; -fx-text-fill: white; -fx-background-radius: 30px;">

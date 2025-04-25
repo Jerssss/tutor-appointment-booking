@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="client.student.view.ViewStudentBalanceView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.student.view.ViewStudentBalanceView">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
@@ -86,7 +85,7 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="createPaymentButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#createPaymentButtonHovered" onMouseExited="#createPaymentButtonExited" prefHeight="37.0" prefWidth="172.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Make a Payment" textFill="WHITE">
+            <Button fx:id="createPaymentButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleCreatePayment" onMouseEntered="#createPaymentButtonHovered" onMouseExited="#createPaymentButtonExited" prefHeight="37.0" prefWidth="172.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Make a Payment" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
