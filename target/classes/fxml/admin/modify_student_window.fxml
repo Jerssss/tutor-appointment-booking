@@ -11,41 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminModifyStudentPopUp">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminModifyStudentPopUp">
    <center>
       <VBox prefHeight="164.0" prefWidth="266.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="197.0" prefWidth="310.0">
-               <children>
-                  <HBox prefHeight="28.0" prefWidth="330.0" spacing="10.0">
-                     <children>
-                        <Label text="Student ID:">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="studentIDLabel" text="#" textFill="black">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="28.0" prefWidth="330.0" spacing="10.0">
-                     <children>
-                        <Label text="Old password:">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="oldPassLabel" text="#" textFill="black">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="15.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
                <children>
                   <HBox prefHeight="43.0" prefWidth="246.0">
                      <children>
@@ -88,7 +58,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="67.0" prefWidth="330.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="saveChangesButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #ffffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Save Changes" textFill="#6f2e2e">
+            <Button fx:id="saveChangesButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #fffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Save Changes" textFill="#6f2e2e">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
