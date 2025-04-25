@@ -116,9 +116,9 @@ public class AdminViewSessionController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    TutorSession sessionData = getTableView().getItems().get(getIndex());
-                    String status = sessionData.getSessionStatus();
-                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
+//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
+//                    String status = sessionData.getSessionStatus();
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
                 }
             }

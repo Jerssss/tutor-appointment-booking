@@ -123,7 +123,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
                         rs.getString("sessionMode")
                 );
 
-                session.setSubjectLevel(rs.getString("academicLevel"));
+                session.setAcademicLevel(rs.getString("academicLevel"));
                 sessions.add(session);
             }
             return sessions;

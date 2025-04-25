@@ -22,7 +22,7 @@ public class AdminModifySessionPopUpView {
     }
 
     public void initializeComboBoxes() {
-        sessionStatusComboBox.getItems().addAll("Scheduled","In Progress","Completed","Cancelled","Rescheduled");
+        sessionStatusComboBox.getItems().addAll("Scheduled","In Progress","Completed","Cancelled");
         sessionTypeComboBox.getItems().addAll("Individual", "Group");
         sessionModeComboBox.getItems().addAll("Online", "Face-To-Face");
     }

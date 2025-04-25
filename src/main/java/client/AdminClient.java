@@ -26,7 +26,7 @@ public class AdminClient extends Application {
     private static AuthService authService;
     private static AdminService adminService;
 
-    private static final String SERVER_IP = "30.30.29.129"; // Default IP
+    private static final String SERVER_IP = "localhost"; // Default IP
     private static final int PORT = 1099;
 
     public static AuthService getAuthService() {

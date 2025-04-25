@@ -30,9 +30,11 @@ public class TutorSession implements Serializable {
     private String sessionType;
 
     // Constructor
-    public TutorSession(String sessionID, int tutorID, String subjectID, String subjectName,
-                        String sessionDate, String sessionTime, int sessionDuration,
-                        String sessionStatus, int numberOfStudents, int maximumStudents,
+    public TutorSession(String sessionID, int tutorID,
+                        String subjectID, String subjectName,
+                        String sessionDate, String sessionTime,
+                        int sessionDuration, String sessionStatus,
+                        int numberOfStudents, int maximumStudents,
                         double sessionPrice, String sessionMode) {
         this.sessionID = sessionID;
         this.tutorID = String.valueOf(tutorID);
@@ -48,8 +50,10 @@ public class TutorSession implements Serializable {
         this.sessionMode = sessionMode;
     }
 
-    public TutorSession(String sessionID, String tutorID, String subjectID, String sessionStatus,
-                        LocalDate sessionDate, LocalTime sessionTime,String sessionMode, String sessionType,
+    public TutorSession(String sessionID, String tutorID,
+                        String subjectID, String sessionStatus,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        String sessionMode, String sessionType,
                         int sessionDuration, int numberOfStudents,
                         int maximumStudents, double sessionPrice) {
         this.sessionID = sessionID;
@@ -78,7 +82,6 @@ public class TutorSession implements Serializable {
         this.academicLevel = academicLevel;
         this.tutorID = tutorID;
         this.subjectID = subjectID;
-
     }
 
     public TutorSession(String sessionStatus, String sessionMode,
@@ -92,9 +95,10 @@ public class TutorSession implements Serializable {
         this.sessionPrice = sessionPrice;
     }
 
-    public TutorSession(String sessionID, String s, String subjectID, String subjectName,
-                        LocalDate sessionDate, LocalTime sessionTime,
-                        int sessionDuration, String sessionStatus, int numberOfStudents,
+    public TutorSession(String sessionID, String s, String subjectID,
+                        String subjectName, LocalDate sessionDate,
+                        LocalTime sessionTime, int sessionDuration,
+                        String sessionStatus, int numberOfStudents,
                         int maximumStudents, double sessionPrice, String sessionMode) {
         this.sessionID = sessionID;
         this.subjectID = subjectID;
@@ -109,6 +113,8 @@ public class TutorSession implements Serializable {
         this.sessionMode = sessionMode;
     }
 
+    public TutorSession() {
+    }
 
 
     // Getters and Setters

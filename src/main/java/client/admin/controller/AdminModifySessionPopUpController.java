@@ -199,6 +199,14 @@ public class AdminModifySessionPopUpController implements Initializable {
         numberOfStudentsField.setText(String.valueOf(details.getNumberOfStudents()));
         maxNumberOfStudentsField.setText(String.valueOf(details.getMaximumStudents()));
 
+        if("Cancelled".equalsIgnoreCase(details.getSessionStatus()) || "In Progress".equalsIgnoreCase(details.getSessionStatus()) || "Completed".equalsIgnoreCase(details.getSessionStatus())){
+            sessionModeComboBox.setDisable(true);
+            sessionTypeComboBox.setDisable(true);
+            numberOfStudentsField.setEditable(false);
+            maxNumberOfStudentsField.setEditable(false);
+            sessionPriceField.setEditable(false);
+        }
+
         if ("Individual".equalsIgnoreCase(details.getSessionType())) {
             maxNumberOfStudentsField.setEditable(false);
         }

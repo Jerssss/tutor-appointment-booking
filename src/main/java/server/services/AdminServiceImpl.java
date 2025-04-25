@@ -342,8 +342,8 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
 
     @Override
-    public TutorSession getEditableDetails(String sessionID) throws RemoteException{
-        TutorSession details = new TutorSession("","", "", 0, 0, 0.0);
+    public TutorSession getEditableDetails(String sessionID) throws RemoteException {
+        TutorSession details = new TutorSession();
         query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice, sessionStatus FROM tutorsession\n" +
                 "WHERE sessionID = ? ;";
 
