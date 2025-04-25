@@ -65,7 +65,18 @@ public class AdminModifySubjectPopUpController implements Initializable {
     private void handleUpdateSubject(ActionEvent event) {
         try {
             String subjectID = AdminViewSubjectController.getClickedSubject();
-            model.updateSession(subjectID, view.getSelectedAcademicLevel());
+            model.updateSubject(subjectID, view.getSelectedAcademicLevel());
+
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Subject Updated");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("The subject was successfully updated.");
+
+            successAlert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    ((Stage) modifySubjectButton.getScene().getWindow()).close();
+                }
+            });
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (SQLException e) {
