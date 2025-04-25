@@ -87,7 +87,7 @@ public class ReserveBookingPopUpView {
         dateLabel.setText(String.valueOf(selectedSession.getSessionDate()));
         timeLabel.setText(String.valueOf(selectedSession.getSessionTime()));
         durationLabel.setText(selectedSession.getSessionDuration() + " mins");
-        acadLevelLabel.setText(selectedSession.getSubjectLevel());
+        acadLevelLabel.setText(selectedSession.getAcademicLevel());
         subjectLabel.setText(selectedSession.getSubjectName());
         modeLabel.setText(selectedSession.getSessionMode());
         priceLabel.setText(String.format("₱%,d", selectedSession.getSessionPrice())); // Fixed line

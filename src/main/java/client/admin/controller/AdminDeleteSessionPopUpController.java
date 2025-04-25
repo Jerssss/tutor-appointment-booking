@@ -56,7 +56,7 @@ public class AdminDeleteSessionPopUpController implements Initializable {
 
     private void handleConfirm(ActionEvent event) {
         try {
-            String sessionID = AdminViewSessionController.getClickedSession().getFirst();
+            String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
             int output = model.deleteSession(sessionID);
             if (output == 0){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

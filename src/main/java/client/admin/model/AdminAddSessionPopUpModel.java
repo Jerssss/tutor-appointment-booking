@@ -99,9 +99,6 @@ public class AdminAddSessionPopUpModel {
         TutorSession newSession = new TutorSession(generateSessionID(), chosenTutor, chosenSubject, "Scheduled",
                 chosenDate, LocalTime.parse(chosenStartTime), chosenMode, chosenType, Integer.parseInt(chosenDuration), 0, Integer.parseInt(maxStudents),
                 Double.parseDouble(price));
-        System.out.println("chosenSubject: " + chosenSubject);
-        System.out.println("chosenType: " + chosenType);
-        System.out.println("chosenMode: " + chosenMode);
         adminService.addSession(newSession);
     }
 

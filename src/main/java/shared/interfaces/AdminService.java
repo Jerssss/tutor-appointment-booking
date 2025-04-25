@@ -17,12 +17,12 @@ public interface AdminService extends Remote {
     List<Tutor> viewTutor() throws RemoteException;
     void addTutor(Tutor newTutor) throws RemoteException, SQLException;
     void modifyTutor(String tutorID, String newPassword) throws RemoteException;
-    List<List<String>> viewSession() throws RemoteException;
+    List<TutorSession> viewSession() throws RemoteException;
     List<String> viewOtherSessionDetails(String sessionID) throws RemoteException;
     void addSession(TutorSession session) throws RemoteException, SQLException;
-    void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException;
+    void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus) throws RemoteException, SQLException;
     int deleteSession(String sessionID) throws RemoteException;
-    List<String> getEditableDetails(String sessionID) throws RemoteException;
+    TutorSession getEditableDetails(String sessionID) throws RemoteException;
     List<String> getAllTutorNames() throws RemoteException;
     List<String> getAllSubjectNames() throws RemoteException;
     List<String> getAllTutorIDs() throws RemoteException;

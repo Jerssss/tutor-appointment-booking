@@ -125,7 +125,6 @@ public class AdminAddSessionPopUpController implements Initializable {
     private void handleDateSelection(ActionEvent event) {
         try {
             String tutor = view.getSelectedTutorName();
-            System.out.println("TU TOR: " + view.getSelectedTutorName());
             String date = view.getSelectedDate().toString();
             List<String> times = model.getAvailableTimeTutor(tutor, date);
             view.updateStartTimes(times);

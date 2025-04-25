@@ -208,8 +208,8 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public List<List<String>> viewSession() throws RemoteException{
-        List<List<String>> allSessions = new ArrayList<>();
+    public List<TutorSession> viewSession() throws RemoteException{
+        List<TutorSession> allSessions = new ArrayList<>();
         query = "{CALL viewSession()}";
 
         try{
@@ -217,8 +217,15 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             resultSet = callStmt.executeQuery();
 
             while (resultSet.next()){
-                allSessions.add(Arrays.asList(resultSet.getString("sessionID"), String.valueOf(resultSet.getDate("sessionDate")), String.valueOf(resultSet.getTime("sessionTime")), resultSet.getString("sessionDuration"),
-                        resultSet.getString("academicLevel"), resultSet.getString("subjectID"), resultSet.getString("sessionStatus")));
+                allSessions.add(
+                        new TutorSession(resultSet.getString("sessionID"),
+                                resultSet.getString("sessionStatus"),
+                                resultSet.getDate("sessionDate").toLocalDate(),
+                                resultSet.getTime("sessionTime").toLocalTime(),
+                                resultSet.getInt("sessionDuration"),
+                                resultSet.getString("academicLevel"),
+                                resultSet.getString("tutorID"),
+                                resultSet.getString("subjectID")));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -289,8 +296,8 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     }
 
     @Override
-    public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException {
-        query = "{CALL modifySession(?, ?, ?, ?, ?, ?)}";
+    public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus) throws RemoteException, SQLException {
+        query = "{CALL modifySession(?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             con.setAutoCommit(false);
@@ -302,6 +309,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             callStmt.setString(4, numStudents);
             callStmt.setString(5, maxStudents);
             callStmt.setString(6, sessionPrice);
+            callStmt.setString(7, sessionStatus);
 
             callStmt.executeUpdate();
             con.commit();
@@ -334,9 +342,9 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
 
     @Override
-    public List<String> getEditableDetails(String sessionID) throws RemoteException{
-        List<String> details = new ArrayList<>();
-        query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice FROM tutorsession\n" +
+    public TutorSession getEditableDetails(String sessionID) throws RemoteException{
+        TutorSession details = new TutorSession("","", "", 0, 0, 0.0);
+        query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice, sessionStatus FROM tutorsession\n" +
                 "WHERE sessionID = ? ;";
 
         try{
@@ -345,11 +353,12 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                details.add(resultSet.getString("sessionType"));
-                details.add(resultSet.getString("sessionMode"));
-                details.add(resultSet.getString("numberOfStudents"));
-                details.add(resultSet.getString("maximumStudents"));
-                details.add(resultSet.getString("sessionPrice"));
+                details.setSessionStatus(resultSet.getString("sessionStatus"));
+                details.setSessionType(resultSet.getString("sessionType"));
+                details.setSessionMode(resultSet.getString("sessionMode"));
+                details.setNumberOfStudents(resultSet.getInt("numberOfStudents"));
+                details.setMaximumStudents(resultSet.getInt("maximumStudents"));
+                details.setSessionPrice(resultSet.getInt("sessionPrice"));
             }
         }catch (SQLException e){
             e.printStackTrace();

@@ -14,7 +14,7 @@ public class AdminViewSessionModel {
         this.adminService = adminService;
     }
 
-    public List<List<String>> displaySessions() throws RemoteException {
+    public List<TutorSession> displaySessions() throws RemoteException {
         return adminService.viewSession();
     }
 }

@@ -90,7 +90,7 @@ public class CreateBookingView implements Initializable {
                 if (session.getSubjectName().toLowerCase().contains(lowerCaseFilter)) {
                     return true; // Matches subject name
                 }
-                if (session.getSubjectLevel().toLowerCase().contains(lowerCaseFilter)) {
+                if (session.getAcademicLevel().toLowerCase().contains(lowerCaseFilter)) {
                     return true; // Matches academic level
                 }
                 if (String.valueOf(session.getSessionDate()).toLowerCase().contains(lowerCaseFilter)) {
@@ -134,7 +134,7 @@ public class CreateBookingView implements Initializable {
                 new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionDuration())));
 
         academicLevelColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getSubjectLevel()));
+                new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
 
         subjectColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSubjectName()));

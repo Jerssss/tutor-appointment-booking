@@ -9,17 +9,20 @@ import javafx.util.Duration;
 
 
 public class AdminModifySessionPopUpView {
+    private final ComboBox<String> sessionStatusComboBox;
     private final ComboBox<String> sessionTypeComboBox;
     private final ComboBox<String> sessionModeComboBox;
     private final Button modifySessionButton;
 
-    public AdminModifySessionPopUpView(ComboBox<String> sessionTypeComboBox, ComboBox<String> sessionModeComboBox, Button modifySessionButton) {
+    public AdminModifySessionPopUpView(ComboBox<String> sessionStatusComboBox, ComboBox<String> sessionTypeComboBox, ComboBox<String> sessionModeComboBox, Button modifySessionButton) {
+        this.sessionStatusComboBox = sessionStatusComboBox;
         this.sessionTypeComboBox = sessionTypeComboBox;
         this.sessionModeComboBox = sessionModeComboBox;
         this.modifySessionButton = modifySessionButton;
     }
 
     public void initializeComboBoxes() {
+        sessionStatusComboBox.getItems().addAll("Scheduled","In Progress","Completed","Cancelled","Rescheduled");
         sessionTypeComboBox.getItems().addAll("Individual", "Group");
         sessionModeComboBox.getItems().addAll("Online", "Face-To-Face");
     }
@@ -47,6 +50,9 @@ public class AdminModifySessionPopUpView {
         st.play();
     }
 
+    public String getSelectedSessionStatus() {
+        return sessionStatusComboBox.getValue();
+    }
     public String getSelectedSessionType() {
         return sessionTypeComboBox.getValue();
     }

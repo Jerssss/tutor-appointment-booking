@@ -12,7 +12,7 @@ public class TutorSession implements Serializable {
     // Subject details
     private String subjectID;
     private String subjectName;
-    private transient String subjectLevel;
+    private transient String academicLevel;
 
     // Session schedule
     private LocalDate sessionDate;
@@ -66,6 +66,32 @@ public class TutorSession implements Serializable {
         this.sessionPrice = sessionPrice;
     }
 
+    public TutorSession(String sessionID, String sessionStatus,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String academicLevel,
+                        String tutorID, String subjectID) {
+        this.sessionID = sessionID;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionDuration = sessionDuration;
+        this.academicLevel = academicLevel;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+
+    }
+
+    public TutorSession(String sessionStatus, String sessionMode,
+                        String sessionType, int numberOfStudents,
+                        int maximumStudents, double sessionPrice) {
+        this.sessionStatus = sessionStatus;
+        this.sessionMode = sessionMode;
+        this.sessionType = sessionType;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+    }
+
     public TutorSession(String sessionID, String s, String subjectID, String subjectName,
                         LocalDate sessionDate, LocalTime sessionTime,
                         int sessionDuration, String sessionStatus, int numberOfStudents,
@@ -82,6 +108,8 @@ public class TutorSession implements Serializable {
         this.sessionPrice = sessionPrice;
         this.sessionMode = sessionMode;
     }
+
+
 
     // Getters and Setters
 
@@ -165,12 +193,12 @@ public class TutorSession implements Serializable {
         this.subjectID = subjectID;
     }
 
-    public String getSubjectLevel() {
-        return subjectLevel;
+    public String getAcademicLevel() {
+        return academicLevel;
     }
 
-    public void setSubjectLevel(String subjectLevel) {
-        this.subjectLevel = subjectLevel;
+    public void setAcademicLevel(String academicLevel) {
+        this.academicLevel = academicLevel;
     }
 
     public String getSubjectName() {

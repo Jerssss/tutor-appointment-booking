@@ -26,6 +26,8 @@ public class AdminModifySessionPopUpController implements Initializable {
     private final AdminService service = new AdminServiceImpl();
 
     @FXML
+    private ComboBox<String> sessionStatusComboBox;
+    @FXML
     private ComboBox<String> sessionTypeComboBox;
     @FXML
     private ComboBox<String> sessionModeComboBox;
@@ -52,6 +54,7 @@ public class AdminModifySessionPopUpController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.view = new AdminModifySessionPopUpView(
+                sessionStatusComboBox,
                 sessionTypeComboBox,
                 sessionModeComboBox,
                 modifySessionButton
@@ -98,6 +101,7 @@ public class AdminModifySessionPopUpController implements Initializable {
 
         boolean hasError = false;
 
+        String sessionStatus = view.getSelectedSessionStatus();
         String sessionType = view.getSelectedSessionType();
         String sessionMode = view.getSelectedSessionMode();
         String numStudents = numberOfStudentsField.getText();
@@ -150,8 +154,8 @@ public class AdminModifySessionPopUpController implements Initializable {
         if (hasError) return;
 
         try {
-            String sessionID = AdminViewSessionController.getClickedSession().get(0);
-            model.updateSession(sessionID, sessionMode, sessionType, numStudents, maxStudents, price);
+            String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
+            model.updateSession(sessionID, sessionMode, sessionType, numStudents, maxStudents, price, sessionStatus);
 
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Session Updated");
@@ -186,20 +190,21 @@ public class AdminModifySessionPopUpController implements Initializable {
     }
 
     private void populateFields() throws RemoteException, SQLException {
-        String sessionID = AdminViewSessionController.getClickedSession().get(0);
+        String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
         var details = model.getEditableDetails(sessionID);
 
-        sessionTypeComboBox.setValue(details.get(0));
-        sessionModeComboBox.setValue(details.get(1));
-        numberOfStudentsField.setText(details.get(2));
-        maxNumberOfStudentsField.setText(details.get(3));
+        sessionStatusComboBox.setValue(details.getSessionStatus());
+        sessionTypeComboBox.setValue(details.getSessionType());
+        sessionModeComboBox.setValue(details.getSessionMode());
+        numberOfStudentsField.setText(String.valueOf(details.getNumberOfStudents()));
+        maxNumberOfStudentsField.setText(String.valueOf(details.getMaximumStudents()));
 
-        if ("Individual".equalsIgnoreCase(details.get(0))) {
+        if ("Individual".equalsIgnoreCase(details.getSessionType())) {
             maxNumberOfStudentsField.setEditable(false);
         }
 
         if (sessionPriceField != null) {
-            sessionPriceField.setText(details.get(4));
+            sessionPriceField.setText(String.valueOf(details.getSessionPrice()));
         }
     }
 
