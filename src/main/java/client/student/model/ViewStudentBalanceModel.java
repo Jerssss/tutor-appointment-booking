@@ -20,7 +20,4 @@ public class ViewStudentBalanceModel {
     public double fetchStudentBalance(String studentID) throws RemoteException {
         return service.getStudentBalance(studentID);
     }
-    public double getCurrentBalance(String studentID) throws RemoteException {
-        return service.getStudentBalance(studentID);
-    }
 }
