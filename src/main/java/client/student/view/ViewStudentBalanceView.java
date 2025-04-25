@@ -1,6 +1,5 @@
 package client.student.view;
 
-import client.student.controller.CreatePaymentWindowController;
 import client.student.controller.ViewStudentBalanceController;
 import client.student.model.ViewStudentBalanceModel;
 import javafx.animation.ScaleTransition;
@@ -24,7 +23,6 @@ import shared.interfaces.StudentService;
 
 import java.io.IOException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
