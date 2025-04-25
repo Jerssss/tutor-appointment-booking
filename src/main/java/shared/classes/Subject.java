@@ -4,14 +4,14 @@ public class Subject {
     private String subjectID;
     private String subjectName;
     private String subjectDescription;
-    private String subjectLevel;
+    private String academicLevel;
 
     // Constructor
-    public Subject(String subjectID, String subjectName, String subjectDescription, String subjectLevel) {
+    public Subject(String subjectID, String subjectName, String subjectDescription, String academicLevel) {
         this.subjectID = subjectID;
         this.subjectName = subjectName;
         this.subjectDescription = subjectDescription;
-        this.subjectLevel = subjectLevel;
+        this.academicLevel = academicLevel;
     }
 
     // Getters and Setters
@@ -39,12 +39,12 @@ public class Subject {
         this.subjectDescription = subjectDescription;
     }
 
-    public String getSubjectLevel() {
-        return subjectLevel;
+    public String getAcademicLevel() {
+        return academicLevel;
     }
 
-    public void setSubjectLevel(String subjectLevel) {
-        this.subjectLevel = subjectLevel;
+    public void setAcademicLevel(String academicLevel) {
+        this.academicLevel = academicLevel;
     }
 
     // Override toString for easy object representation
@@ -54,7 +54,7 @@ public class Subject {
                 "subjectID=" + subjectID +
                 ", subjectName='" + subjectName + '\'' +
                 ", subjectDescription='" + subjectDescription + '\'' +
-                ", subjectLevel='" + subjectLevel + '\'' +
+                ", academicLevel='" + academicLevel + '\'' +
                 '}';
     }
 }

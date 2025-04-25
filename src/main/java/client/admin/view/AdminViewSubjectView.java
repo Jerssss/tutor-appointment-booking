@@ -37,7 +37,7 @@ public class AdminViewSubjectView {
         subjectIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
         subjectNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
 //        subjectDescColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
-        academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectLevel()));
+        academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
     }
 
     public void displaySubject(ObservableList<Subject> subjects) {

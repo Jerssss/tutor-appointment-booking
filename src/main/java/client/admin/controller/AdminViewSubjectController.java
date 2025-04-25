@@ -103,9 +103,8 @@ public class AdminViewSubjectController {
             {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
-                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()).getFirst());
-//                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([A-Za-z0-9_]+).*", "$1");
-//                    System.out.println("djksah: " + clickedSubject);
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
                     AdminModifySubjectPopUpController modifySubjectController= new AdminModifySubjectPopUpController();
                     modifySubjectController.showWindow();
                 });
@@ -207,7 +206,7 @@ public class AdminViewSubjectController {
                 for (Subject subject : allSubjects) {
                     boolean match = subject.getSubjectID().toLowerCase().contains(lowerCaseSearchText) || subject.getSubjectName().toLowerCase().contains(lowerCaseSearchText) ||
                             subject.getSubjectDescription().toLowerCase().contains(lowerCaseSearchText) ||
-                            subject.getSubjectLevel().toLowerCase().contains(lowerCaseSearchText);
+                            subject.getAcademicLevel().toLowerCase().contains(lowerCaseSearchText);
 
                     if (match) {
                         filteredData.add(subject);

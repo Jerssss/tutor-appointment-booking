@@ -45,7 +45,7 @@ public class ViewSubjectView implements Initializable {
         dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
         timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
         durationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
-        courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectLevel()));
+        courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
     }
 
     private void initializeController() {
@@ -79,7 +79,7 @@ public class ViewSubjectView implements Initializable {
                 .filter(subject -> subject.getSubjectID().toLowerCase().contains(searchText) ||
                         subject.getSubjectName().toLowerCase().contains(searchText) ||
                         subject.getSubjectDescription().toLowerCase().contains(searchText) ||
-                        subject.getSubjectLevel().toLowerCase().contains(searchText))
+                        subject.getAcademicLevel().toLowerCase().contains(searchText))
                 .collect(Collectors.toList());
         viewResTableView.setItems(FXCollections.observableArrayList(filteredList));
     }

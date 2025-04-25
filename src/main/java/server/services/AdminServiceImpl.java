@@ -210,15 +210,15 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<List<String>> viewSession() throws RemoteException{
         List<List<String>> allSessions = new ArrayList<>();
-        query = "CALL ViewSession();";
+        query = "{CALL viewSession()}";
 
         try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
 
             while (resultSet.next()){
                 allSessions.add(Arrays.asList(resultSet.getString("sessionID"), String.valueOf(resultSet.getDate("sessionDate")), String.valueOf(resultSet.getTime("sessionTime")), resultSet.getString("sessionDuration"),
-                        resultSet.getString("subjectLevel"), resultSet.getString("subjectID"), resultSet.getString("sessionStatus")));
+                        resultSet.getString("academicLevel"), resultSet.getString("subjectID"), resultSet.getString("sessionStatus")));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -229,7 +229,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<String> viewOtherSessionDetails(String sessionID) throws RemoteException{
         List<String> otherDetails = new ArrayList<>();
-        query = "SELECT firstName, lastName, subjectName, subjectLevel, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice FROM tutorsession\n" +
+        query = "SELECT firstName, lastName, subjectName, academicLevel, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice FROM tutorsession\n" +
                 "INNER JOIN subject USING (subjectID)\n" +
                 "INNER JOIN user ON tutorID = userID\n" +
                 "WHERE sessionID = ?; ";
@@ -242,7 +242,7 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
             while (resultSet.next()){
                 otherDetails.add(resultSet.getString("firstName")+" " + resultSet.getString("lastName"));
                 otherDetails.add(resultSet.getString("subjectName"));
-                otherDetails.add(resultSet.getString("subjectLevel"));
+                otherDetails.add(resultSet.getString("academicLevel"));
                 otherDetails.add(resultSet.getString("sessionType"));
                 otherDetails.add(resultSet.getString("sessionMode"));
                 otherDetails.add(resultSet.getString("numberOfStudents"));
@@ -257,25 +257,25 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addSession(TutorSession session) throws RemoteException, SQLException {
-        query = "CALL AddSession(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        query = "{CALL addSession(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             con.setAutoCommit(false);
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, session.getSessionID());
-            preparedStatement.setString(2, session.getTutorID());
-            preparedStatement.setString(3, session.getSubjectID());
-            preparedStatement.setString(4, session.getSessionStatus());
-            preparedStatement.setDate(5, java.sql.Date.valueOf(session.getSessionDate()));
-            preparedStatement.setTime(6, java.sql.Time.valueOf(session.getSessionTime()));
-            preparedStatement.setInt(7, session.getSessionDuration());
-            preparedStatement.setString(8, session.getSessionType());
-            preparedStatement.setString(9, session.getSessionMode());
-            preparedStatement.setInt(10, session.getNumberOfStudents());
-            preparedStatement.setInt(11, session.getMaximumStudents());
-            preparedStatement.setDouble(12, session.getSessionPrice());
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, session.getSessionID());
+            callStmt.setString(2, session.getTutorID());
+            callStmt.setString(3, session.getSubjectID());
+            callStmt.setString(4, session.getSessionStatus());
+            callStmt.setDate(5, java.sql.Date.valueOf(session.getSessionDate()));
+            callStmt.setTime(6, java.sql.Time.valueOf(session.getSessionTime()));
+            callStmt.setInt(7, session.getSessionDuration());
+            callStmt.setString(8, session.getSessionType());
+            callStmt.setString(9, session.getSessionMode());
+            callStmt.setInt(10, session.getNumberOfStudents());
+            callStmt.setInt(11, session.getMaximumStudents());
+            callStmt.setDouble(12, session.getSessionPrice());
 
-            preparedStatement.executeUpdate();
+            callStmt.executeUpdate();
             con.commit();
 
         } catch (SQLException e1) {
@@ -290,20 +290,20 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice) throws RemoteException, SQLException {
-        query = "CALL UpdateSession(?, ?, ?, ?, ?, ?);";
+        query = "{CALL modifySession(?, ?, ?, ?, ?, ?)}";
 
         try {
             con.setAutoCommit(false);
 
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, sessionID);
-            preparedStatement.setString(2, sessionMode);
-            preparedStatement.setString(3, sessionType);
-            preparedStatement.setString(4, numStudents);
-            preparedStatement.setString(5, maxStudents);
-            preparedStatement.setString(6, sessionPrice);
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, sessionID);
+            callStmt.setString(2, sessionMode);
+            callStmt.setString(3, sessionType);
+            callStmt.setString(4, numStudents);
+            callStmt.setString(5, maxStudents);
+            callStmt.setString(6, sessionPrice);
 
-            preparedStatement.executeUpdate();
+            callStmt.executeUpdate();
             con.commit();
 
         } catch (SQLException e1) {
@@ -318,12 +318,12 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public int deleteSession(String sessionID) throws RemoteException {
-        query = "CALL DeleteSession(?);";
+        query = "{CALL deleteSession(?)}";
 
         try {
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, sessionID);
-            preparedStatement.executeUpdate();
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, sessionID);
+            callStmt.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e) {
             return -1;
         } catch (SQLException e) {
@@ -540,15 +540,15 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public List<Subject> viewSubject() throws RemoteException {
         List<Subject> allSubject = new ArrayList<>();
-        query = "SELECT * FROM subject;";
+        query = "{CALL viewSubject()}";
 
         try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
 
             while (resultSet.next()){
                 allSubject.add(new Subject(resultSet.getString("subjectID"), resultSet.getString("subjectName"),
-                        resultSet.getString("subjectDescription"), resultSet.getString("subjectLevel")));
+                        resultSet.getString("subjectDescription"), resultSet.getString("academicLevel")));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -577,18 +577,17 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public void addSubject(Subject subject) throws RemoteException, SQLException {
-        query = "INSERT INTO subject (subjectID, subjectName, subjectDescription, subjectLevel) VALUES (?, ?, ?, ?)";
+        query = "{CALL addSubject(?, ?, ?, ?)}";
 
         try {
-            con.setAutoCommit(false); // Disable auto-commit before manual commit
+            con.setAutoCommit(false);
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, subject.getSubjectID());
+            callStmt.setString(2, subject.getSubjectName());
+            callStmt.setString(3, subject.getSubjectDescription());
+            callStmt.setString(4, subject.getAcademicLevel());
 
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, subject.getSubjectID());
-            preparedStatement.setString(2, subject.getSubjectName());
-            preparedStatement.setString(3, subject.getSubjectDescription());
-            preparedStatement.setString(4, subject.getSubjectLevel());
-
-            preparedStatement.executeUpdate();
+            callStmt.executeUpdate();
             con.commit();
 
         } catch (SQLException e1) {
@@ -604,16 +603,16 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     @Override
     public void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException {
         subjectID = subjectID.replaceAll(".*subjectID=(\\d+),.*", "$1");
-        query = "UPDATE subject SET subjectLevel = ? WHERE subjectID = ?";
+        query = "{CALL modifySubject(?,?)}";
 
         try {
             con.setAutoCommit(false);
 
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, academicLevel);
-            preparedStatement.setString(2, subjectID);
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, subjectID);
+            callStmt.setString(2, academicLevel);
 
-            preparedStatement.executeUpdate();
+            callStmt.executeUpdate();
             con.commit();
 
         } catch (SQLException e1) {
@@ -628,12 +627,11 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
 
     @Override
     public int deleteSubject(String subjectID) throws RemoteException{
-        query = "DELETE FROM subject WHERE subjectID = ?;";
-
+        query = "{CALL deleteSubject(?)}";
         try {
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, subjectID);
-            preparedStatement.executeUpdate();
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, subjectID);
+            callStmt.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e){
             return -1;
         }catch (SQLException e) {
@@ -648,14 +646,13 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
     public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
         Map<LessonPlan, String> allLessonPlans = new LinkedHashMap<>();
 
-//        query = "SELECT lessonPlanID, subjectID, subjectName, subjectLevel, objectives, topicsCovered FROM lessonplan " +
+//        query = "SELECT lessonPlanID, subjectID, subjectName, academicLevel, objectives, topicsCovered FROM lessonplan " +
 //                "INNER JOIN subject USING(subjectID);";
-        query = "SELECT lessonPlanID, subjectID, subjectLevel, objectives, topicsCovered FROM lessonplan " +
-                "INNER JOIN subject USING(subjectID);";
+        query = "{CALL viewLessonPlan()}";
 
         try {
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
 
             while (resultSet.next()) {
                 LessonPlan lessonPlan = new LessonPlan(
@@ -665,8 +662,8 @@ public class AdminServiceImpl implements Remote, AdminService, Serializable {
                         resultSet.getString("topicsCovered")
                 );
 
-//                allLessonPlans.put(lessonPlan, Arrays.asList(resultSet.getString("subjectName"), resultSet.getString("subjectLevel")));
-                allLessonPlans.put(lessonPlan, resultSet.getString("subjectLevel"));
+//                allLessonPlans.put(lessonPlan, Arrays.asList(resultSet.getString("subjectName"), resultSet.getString("academicLevel")));
+                allLessonPlans.put(lessonPlan, resultSet.getString("academicLevel"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
