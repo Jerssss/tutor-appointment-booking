@@ -2,121 +2,75 @@ package client.student.view;
 
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import server.services.StudentServiceImpl;
-import shared.classes.SessionManager;
-import shared.interfaces.StudentService;
-import java.rmi.RemoteException;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class CreatePaymentWindowView {
-    @FXML private ComboBox<String> modeOfPaymentComboBox;
-    @FXML private TextField amountTextField;
-    @FXML private Button payButton;
-    @FXML private Button cancelButton;
-
-    private String studentId;
-    private StudentService service;
-
-    public void initializeData(String studentId, double currentBalance) {
-        this.studentId = studentId;
-        this.service = new StudentServiceImpl();
-
-        // Populate payment methods
-        modeOfPaymentComboBox.getItems().addAll(
-                "Gcash", "BDO", "Union Bank"
-        );
-    }
+    @FXML
+    private Label acadLevelLabel;
 
     @FXML
-    private void handlePay() {
-        String paymentMethod = modeOfPaymentComboBox.getValue();
-        String amountText = amountTextField.getText();
-
-        // Validate inputs
-        if (paymentMethod == null || paymentMethod.isEmpty()) {
-            showErrorAlert("Error", "Please select a payment method");
-            return;
-        }
-
-        if (amountText.isEmpty()) {
-            showErrorAlert("Error", "Please enter an amount");
-            return;
-        }
-
-        try {
-            double amount = Double.parseDouble(amountText);
-            if (amount <= 0) {
-                showErrorAlert("Error", "Amount must be positive");
-                return;
-            }
-
-            // Process payment
-            service.createPayment(studentId, amount, paymentMethod);
-            boolean success = service.updateStudentBalance(studentId, -amount);
-
-            if (success) {
-                showSuccessAlert("Success", String.format("Payment of ₱%,.2f processed!", amount));
-                closeWindow();
-            } else {
-                showErrorAlert("Error", "Failed to update balance");
-            }
-        } catch (NumberFormatException e) {
-            showErrorAlert("Error", "Invalid amount format");
-        } catch (RemoteException e) {
-            showErrorAlert("Error", "Payment failed: " + e.getMessage());
-        }
-    }
+    private ToggleGroup bankGroup;
 
     @FXML
-    private void handleCancel() {
-        closeWindow();
-    }
+    private RadioButton bdoRadio;
 
-    private void closeWindow() {
-        ((Stage) payButton.getScene().getWindow()).close();
-    }
+    @FXML
+    private Button cancelButton;
 
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+    @FXML
+    private Button payButton;
 
-    private void showSuccessAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+    @FXML
+    private Label dateLabel;
 
-    // Hover effects
+    @FXML
+    private Label durationLabel;
+
+    @FXML
+    private RadioButton gcashRadio;
+
+    @FXML
+    private Label modeLabel;
+
+    @FXML
+    private VBox paymentOptionsVBox;
+
+    @FXML
+    private Label priceLabel;
+
+    @FXML
+    private Label subjectLabel;
+
+    @FXML
+    private Label timeLabel;
+
+    @FXML
+    private Label typeLabel;
+
+    @FXML
+    private RadioButton unionBankRadio;
+
     public void payButtonHovered() {
-        animateButton(payButton, 0.9);
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), payButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
     }
 
     public void payButtonExited() {
-        animateButton(payButton, 1.0);
-    }
-
-    public void cancelButtonHovered() {
-        animateButton(cancelButton, 0.9);
-    }
-
-    public void cancelButtonExited() {
-        animateButton(cancelButton, 1.0);
-    }
-
-    private void animateButton(Button button, double scale) {
-        ScaleTransition st = new ScaleTransition(Duration.millis(200), button);
-        st.setToX(scale);
-        st.setToY(scale);
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), payButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
         st.play();
     }
+
 }
