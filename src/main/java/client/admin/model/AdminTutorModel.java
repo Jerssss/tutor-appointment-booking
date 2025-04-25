@@ -10,7 +10,7 @@ public class AdminTutorModel {
     private final AdminService adminService;
 
     public AdminTutorModel() {
-        this.adminService = AdminClient.getAdminProcessors(); // Get RMI instance
+        this.adminService = AdminClient.getAdminService(); // Get RMI instance
     }
 
     public List<Tutor> fetchTutors() {

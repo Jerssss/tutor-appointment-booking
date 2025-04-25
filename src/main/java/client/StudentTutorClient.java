@@ -53,7 +53,7 @@ public class StudentTutorClient extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            Registry registry = LocateRegistry.getRegistry("30.30.29.129", 1099);
 
             // Initialize all required services
             authService = (AuthService) registry.lookup("authentication");
