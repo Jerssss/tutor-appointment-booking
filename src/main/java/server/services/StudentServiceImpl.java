@@ -26,18 +26,20 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
             throw new RemoteException("Invalid booking status. Must be 'Pending', 'Approved', or 'Cancelled'");
         }
 
+        if (!isValidSessionMode(sessionMode)) {
+            throw new RemoteException("Invalid session mode. Must be 'Face-to-Face' or 'Online'");
+        }
+
         try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
-                     "INSERT INTO booking (studentID, sessionID, sessionMode, sessionPrice, bookingStatus) " +
-                             "VALUES (?, ?, ?, ?, ?)")) {
+             CallableStatement cstmt = conn.prepareCall("{call CreateBooking(?, ?, ?, ?, ?)}")) {
 
-            stmt.setString(1, studentID);
-            stmt.setString(2, sessionID);
-            stmt.setString(3, sessionMode);
-            stmt.setDouble(4, sessionPrice);
-            stmt.setString(5, bookingStatus);
+            cstmt.setString(1, studentID);
+            cstmt.setString(2, sessionID);
+            cstmt.setString(3, sessionMode);
+            cstmt.setDouble(4, sessionPrice);
+            cstmt.setString(5, bookingStatus);
 
-            stmt.executeUpdate();
+            cstmt.executeUpdate();
             return new Booking(studentID, sessionID, sessionMode, bookingStatus, sessionPrice);
 
         } catch (SQLException e) {
@@ -55,23 +57,12 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
 
     @Override
     public List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException {
-        System.out.println("[SERVER] Executing query for studentID: " + studentID);
         List<BookingDetails> bookings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT b.studentID, b.sessionID, b.sessionMode, " +
-                             "b.bookingStatus, b.sessionPrice, ts.sessionDate, " +
-                             "ts.sessionTime, ts.sessionDuration, s.subjectName, " +
-                             "CONCAT(ut.firstName, ' ', ut.lastName) AS tutorName " +
-                             "FROM booking b " +
-                             "JOIN tutorsession ts ON b.sessionID = ts.sessionID " +
-                             "JOIN subject s ON ts.subjectID = s.subjectID " +
-                             "JOIN user ut ON ut.userID = ts.tutorID " +
-                             "WHERE b.studentID = ?"
-             )) {
+             CallableStatement cstmt = conn.prepareCall("{CALL ViewStudentBooking(?)}")) {
 
-            stmt.setInt(1, studentID);
-            ResultSet rs = stmt.executeQuery();
+            cstmt.setInt(1, studentID);
+            ResultSet rs = cstmt.executeQuery();
 
             while (rs.next()) {
                 // Create base Booking object using parent class constructor
@@ -111,27 +102,10 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     @Override
     public List<TutorSession> viewAvailableSessions() throws RemoteException {
         List<TutorSession> sessions = new ArrayList<>();
-        String query = "SELECT \n" +
-                "    ts.sessionID, \n" +
-                "    ts.tutorID, \n" +
-                "    ts.subjectID, \n" +
-                "    ts.sessionStatus, \n" +
-                "    ts.sessionDate, \n" +
-                "    ts.sessionTime, \n" +
-                "    ts.sessionDuration, \n" +
-                "    ts.numberOfStudents, \n" +
-                "    ts.maximumStudents, \n" +
-                "    ts.sessionPrice, \n" +
-                "    ts.sessionMode, \n" +
-                "    s.subjectLevel, \n" +
-                "    s.subjectName \n" +
-                "FROM tutorsession ts \n" +
-                "JOIN subject s ON ts.subjectID = s.subjectID \n" +
-                "WHERE ts.sessionStatus IN ('In Progress', 'Scheduled')";
 
         try (Connection conn = DatabaseConnection.setCon();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions()}");
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 TutorSession session = new TutorSession(
@@ -149,7 +123,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
                         rs.getString("sessionMode")
                 );
 
-                session.setAcademicLevel(rs.getString("subjectLevel"));
+                session.setSubjectLevel(rs.getString("academicLevel"));
                 sessions.add(session);
             }
             return sessions;
@@ -161,28 +135,21 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     @Override
     public Booking modifyBooking(String studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
         try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
-                     "UPDATE booking b " +
-                             "JOIN tutorsession ts ON b.sessionID = ts.sessionID " +
-                             "SET b.sessionMode = ?, b.bookingStatus = ?, b.sessionPrice = ?, ts.sessionDate = ?, ts.sessionTime = ? " +
-                             "WHERE b.studentID = ? AND b.sessionID = ?"
-             )) {
+             CallableStatement cstmt = conn.prepareCall("{call ModifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
 
-            // Set parameters for the update
-            stmt.setString(1, newSessionMode);
-            stmt.setString(2, newBookingStatus);
-            stmt.setDouble(3, newSessionPrice);
-            stmt.setString(4, newSessionDate);
-            stmt.setString(5, newSessionTime);
-            stmt.setString(6, studentID);
-            stmt.setString(7, sessionID);
+            cstmt.setString(1, studentID);
+            cstmt.setString(2, sessionID);
+            cstmt.setString(3, newSessionMode);
+            cstmt.setString(4, newBookingStatus);
+            cstmt.setDouble(5, newSessionPrice);
+            cstmt.setString(6, newSessionDate);
+            cstmt.setString(7, newSessionTime);
 
-            int rowsAffected = stmt.executeUpdate();
+            int rowsAffected = cstmt.executeUpdate();
 
             if (rowsAffected > 0) {
                 return new Booking(studentID, sessionID, newSessionMode, newBookingStatus, newSessionPrice);
             }
-
         } catch (SQLException e) {
             throw new RemoteException("Database error while modifying booking: " + e.getMessage());
         }
