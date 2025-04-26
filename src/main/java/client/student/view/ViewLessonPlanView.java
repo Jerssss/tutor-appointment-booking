@@ -9,13 +9,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import server.services.StudentServiceImpl;
 import shared.classes.LessonPlan;
 import shared.interfaces.StudentService;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,7 +41,11 @@ public class ViewLessonPlanView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeTableColumns();
-        initializeController();
+        try {
+            initializeController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         initializeSearchListener();
     }
 
@@ -59,7 +63,7 @@ public class ViewLessonPlanView implements Initializable {
         collegeTopicsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTopicsCovered()));
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException {
         StudentService service = new StudentServiceImpl(); // Initialize the service
         ViewLessonPlanModel model = new ViewLessonPlanModel(service);
         this.controller = new ViewLessonPlanController(this, model);

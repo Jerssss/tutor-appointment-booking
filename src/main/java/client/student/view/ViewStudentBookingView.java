@@ -19,6 +19,7 @@ import shared.interfaces.StudentService;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class ViewStudentBookingView implements Initializable {
@@ -41,7 +42,12 @@ public class ViewStudentBookingView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle loc) {
         initializeTableColumns();
-        initializeController();
+        try {
+            initializeController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
         initializeSearchListener();
     }
 
@@ -86,7 +92,7 @@ public class ViewStudentBookingView implements Initializable {
         });
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException {
         System.out.println("[CLIENT] Controller initialized!");
         StudentService service = new StudentServiceImpl(); // Initialize the service
         ViewStudentBookingModel model = new ViewStudentBookingModel(service);

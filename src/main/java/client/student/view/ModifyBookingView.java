@@ -24,6 +24,7 @@ import shared.interfaces.StudentService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -50,7 +51,11 @@ public class ModifyBookingView implements Initializable {
         initializeTableColumns();
         initializeRowFactory();
         System.out.println("[CLIENT] Table columns initialized successfully.");
-        initializeController();
+        try {
+            initializeController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("[CLIENT] Controller initialized successfully.");
         initializeSearchListener();
         System.out.println("[CLIENT] Search field initialized successfully.");
@@ -89,7 +94,7 @@ public class ModifyBookingView implements Initializable {
         });
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException {
         String studentID = SessionManager.getCurrentUserId();
         if (studentID == null || studentID.isEmpty()) {
             return;

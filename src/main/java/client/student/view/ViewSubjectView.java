@@ -18,6 +18,7 @@ import shared.classes.Subject;
 import shared.interfaces.StudentService;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -37,7 +38,12 @@ public class ViewSubjectView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeTableColumns();
-        initializeController();
+        try {
+            initializeController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
         initializeSearchListener();
     }
 
@@ -48,7 +54,7 @@ public class ViewSubjectView implements Initializable {
         courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException {
         System.out.println("[CLIENT] Controller initialized!");
         StudentService service = new StudentServiceImpl(); // Initialize the service
         ViewSubjectModel model = new ViewSubjectModel(service);

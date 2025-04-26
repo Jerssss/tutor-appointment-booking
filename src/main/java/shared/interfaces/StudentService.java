@@ -2,10 +2,11 @@ package shared.interfaces;
 
 import shared.classes.*;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface StudentService {
+public interface StudentService extends Remote {
     Booking createBooking(String studentID, String sessionID, String sessionMode, String bookingStatus, double sessionPrice) throws RemoteException;
     List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException;
     List<TutorSession> viewAvailableSessions() throws RemoteException;

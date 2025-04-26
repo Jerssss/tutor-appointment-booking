@@ -1,5 +1,6 @@
 package client.student.model;
 
+import client.StudentTutorClient;
 import shared.classes.Booking;
 import shared.classes.TutorSession;
 import shared.interfaces.StudentService;
@@ -8,7 +9,7 @@ public class ReserveBookingPopUpModel {
     private final StudentService studentService;
 
     public ReserveBookingPopUpModel(StudentService studentService) {
-        this.studentService = studentService;
+        this.studentService = StudentTutorClient.getStudentService();
     }
 
     public Booking createBooking(String studentId, TutorSession session) throws Exception {

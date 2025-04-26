@@ -1,5 +1,6 @@
 package client.student.model;
 
+import client.StudentTutorClient;
 import shared.classes.BookingDetails;
 import shared.interfaces.StudentService;
 
@@ -10,7 +11,7 @@ public class ViewStudentBookingModel {
     private final StudentService studentService;
 
     public ViewStudentBookingModel(StudentService studentService) {
-        this.studentService = studentService;
+        this.studentService = StudentTutorClient.getStudentService();
     }
 
     public List<BookingDetails> getStudentBookings(int studentID) throws RemoteException {

@@ -17,6 +17,7 @@ import shared.classes.SessionManager;
 import shared.interfaces.StudentService;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,7 +42,11 @@ public class ViewPaymentHistoryView implements Initializable {
         initializeTableColumns();
         initializeSearchListener();
         System.out.println("[CLIENT] Payment history view initialized successfully.");
-        initializeController(); // Initialize the controller here
+        try {
+            initializeController(); // Initialize the controller here
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
         // Automatically refresh the table when the view is loaded
         if (controller != null) {
@@ -120,7 +125,7 @@ public class ViewPaymentHistoryView implements Initializable {
         this.controller = controller;
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException {
         String studentID = SessionManager.getCurrentUserId();
         if (studentID == null || studentID.isEmpty()) {
             return;

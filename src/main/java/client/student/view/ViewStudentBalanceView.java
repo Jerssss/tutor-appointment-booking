@@ -23,6 +23,7 @@ import shared.interfaces.StudentService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -49,7 +50,11 @@ public class ViewStudentBalanceView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeTableColumns();
         initializeSearchListener();
-        initializeController();
+        try {
+            initializeController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         if (controller != null) controller.refreshTable();
     }
 
@@ -155,7 +160,7 @@ public class ViewStudentBalanceView implements Initializable {
         this.controller = controller;
     }
 
-    private void initializeController() {
+    private void initializeController() throws RemoteException {
         String studentID = SessionManager.getCurrentUserId();
         if (studentID == null || studentID.isEmpty()) {
             return;

@@ -16,13 +16,11 @@ import java.util.List;
 
 public class TutorServiceImpl extends UnicastRemoteObject implements TutorService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
-    private Connection connection;
     private static Connection con = DatabaseConnection.setCon();
     private static Statement stmt;
 
     public TutorServiceImpl() throws RemoteException {
         super();
-        this.connection = DatabaseConnection.setCon();
     }
 
     public String generateNewLessonPlanID() {
@@ -80,7 +78,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 "LEFT JOIN booking b ON ts.sessionID = b.sessionID"; // Use LEFT JOIN to include all sessions
 
         try {
-            Statement stmt = connection.createStatement();
+            Statement stmt = con.createStatement();
             ResultSet resultSet = stmt.executeQuery(query);
 
             while (resultSet.next()) {
