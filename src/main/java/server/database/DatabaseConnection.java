@@ -22,15 +22,15 @@ public class DatabaseConnection {
             e.printStackTrace();
             handleConnectionFailure();
         } catch (SQLException e) {
-            System.err.println("Failed to establish database connection. Details:");
+            System.out.println("Failed to establish database connection. Details:");
             if (e instanceof com.mysql.cj.jdbc.exceptions.CommunicationsException) {
-                System.err.println("Connection refused. Possible causes:");
-                System.err.println("1. MySQL server is not running");
-                System.err.println("2. Incorrect connection URL or port");
-                System.err.println("3. Firewall blocking the connection");
+                System.out.println("Connection refused. Possible causes:");
+                System.out.println("1. MySQL server is not running");
+                System.out.println("2. Incorrect connection URL or port");
+                System.out.println("3. Firewall blocking the connection");
             } else {
-                System.err.println("SQL Exception: " + e.getMessage());
-                System.err.println("Please check your database credentials and connection URL");
+                System.out.println("SQL Exception: " + e.getMessage());
+                System.out.println("Please check your database credentials and connection URL");
             }
             e.printStackTrace();
             handleConnectionFailure();

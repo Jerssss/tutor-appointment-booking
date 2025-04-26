@@ -81,6 +81,9 @@ public class Server {
     private static void startServer() {
         new Thread(() -> {
             try {
+//                System.setProperty("java.rmi.server.hostname", "192.168.191.231");
+//                  uncomment this when using a different terminal and edit the ip
+
                 // First, check if we can connect to the database
                 Connection dbConnection = DatabaseConnection.setCon();
                 if (dbConnection == null) {
