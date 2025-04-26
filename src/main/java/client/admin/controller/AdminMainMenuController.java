@@ -14,6 +14,7 @@ import shared.interfaces.AdminService;
 import shared.interfaces.AuthService;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class AdminMainMenuController {
     private final AdminMainMenuView view;
@@ -40,9 +41,9 @@ public class AdminMainMenuController {
         this.view.initializeDateTime();
         this.view.setActionStudentButton(event -> handleStudentButton());
         this.view.setActionTutorButton(event -> handleTutorButton());
-        this.view.setActionSessionsButton(event -> handleSessionButton(event));
-        this.view.setActionSubjectButton(event -> handleSubjectButton(event));
-        this.view.setActionLessonPlanButton(event -> handleLessonPlanButton(event));
+        this.view.setActionSessionsButton(event -> handleSessionButton());
+        this.view.setActionSubjectButton(event -> handleSubjectButton());
+        this.view.setActionLessonPlanButton(event -> handleLessonPlanButton());
         this.view.setActionPaymentButton(event -> handlePaymentButton());
 
         this.view.setActionLogoutButton(this::handleLogout);
@@ -54,63 +55,11 @@ public class AdminMainMenuController {
     private void handleTutorButton() {
         System.out.println("Navigating to Tutor...");
     }
-    private void handleSessionButton(ActionEvent event) {
-        redirectToSessions(event);
-    }
-    private void handleSubjectButton(ActionEvent event) {
-        redirectToSubjects(event);
-    }
-    private void handleLessonPlanButton(ActionEvent event) {
-        redirectToSubjects(event);
-    }
+    private void handleSessionButton() {System.out.println("Navigating to SeSSION...");}
+    private void handleSubjectButton() {System.out.println("Navigating to Subject...");}
+    private void handleLessonPlanButton() {System.out.println("Navigating to LessonPlan...");}
     private void handlePaymentButton() {
         System.out.println("Navigating to Payment History...");
-    }
-
-    private void redirectToSessions(ActionEvent event) {
-        try {
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/sessions_pane.fxml"));
-
-            fxmlLoader.setControllerFactory(clazz -> {
-                return new AdminViewSessionController();
-            });
-
-            Parent root = fxmlLoader.load();
-            changeScene(event, root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void redirectToSubjects(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/subject_pane.fxml"));
-
-            fxmlLoader.setControllerFactory(clazz -> {
-                return new AdminViewSubjectController();
-            });
-
-            Parent root = fxmlLoader.load();
-            changeScene(event, root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void redirectToLessonPlans(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/lesson_plan_pane.fxml"));
-
-            fxmlLoader.setControllerFactory(clazz -> {
-                return new AdminViewLessonPlanController();
-            });
-
-            Parent root = fxmlLoader.load();
-            changeScene(event, root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void handleLogout(ActionEvent event){

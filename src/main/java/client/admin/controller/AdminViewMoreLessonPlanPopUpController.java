@@ -16,8 +16,16 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class AdminViewMoreLessonPlanPopUpController {
+    private final AdminService service;
 
-    private final AdminService service = new AdminServiceImpl();
+    {
+        try {
+            service = new AdminServiceImpl();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private AdminViewMoreLessonPlanPopUpModel model;
     private String lessonPlanID;
 
@@ -27,9 +35,10 @@ public class AdminViewMoreLessonPlanPopUpController {
     private Label objectivesLabel;
     @FXML
     private Label topicsLabel;
+
     public void setLessonPlanID(String lessonPlanID) {
         this.lessonPlanID = lessonPlanID;
-        this.model = new AdminViewMoreLessonPlanPopUpModel(service);
+        this.model = new AdminViewMoreLessonPlanPopUpModel();
         setlessonPlanDetails();
     }
 

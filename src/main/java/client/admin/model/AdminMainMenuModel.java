@@ -1,12 +1,13 @@
 package client.admin.model;
 
+import client.AdminClient;
 import shared.interfaces.AdminService;
 
 public class AdminMainMenuModel {
 
     private AdminService adminService;
 
-    public AdminMainMenuModel(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminMainMenuModel() {
+        this.adminService = AdminClient.getAdminProcessors();
     }
 }

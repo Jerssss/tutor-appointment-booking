@@ -46,9 +46,12 @@ public class AdminViewMoreSessionsPopUpController {
     @FXML
     private Label sessionPriceLabel;
 
+    public AdminViewMoreSessionsPopUpController() throws RemoteException {
+    }
+
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
-        this.model = new AdminViewMoreSessionsPopUpModel(service);
+        this.model = new AdminViewMoreSessionsPopUpModel();
         setSessionDetails();
     }
 

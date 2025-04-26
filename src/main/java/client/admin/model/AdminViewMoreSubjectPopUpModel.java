@@ -1,17 +1,15 @@
 package client.admin.model;
 
-import shared.classes.Subject;
+import client.AdminClient;
 import shared.interfaces.AdminService;
-
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class AdminViewMoreSubjectPopUpModel {
     private final AdminService adminService;
 
-    public AdminViewMoreSubjectPopUpModel(AdminService adminService){
-        this.adminService = adminService;
+    public AdminViewMoreSubjectPopUpModel( ){
+        this.adminService = AdminClient.getAdminProcessors();
     }
 
     public List<String> getDetails(String subject) throws RemoteException {

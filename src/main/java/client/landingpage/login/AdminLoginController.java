@@ -80,7 +80,7 @@ public class AdminLoginController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/admin/admin_menu_page.fxml"));
             Parent root = fxmlLoader.load();
             AdminMainMenuView adminMainMenuView = fxmlLoader.getController();
-            new AdminMainMenuController(adminMainMenuView, new AdminMainMenuModel(adminService), loggedInUserName);
+            new AdminMainMenuController(adminMainMenuView, new AdminMainMenuModel(), loggedInUserName);
 
             changeScene(event, root);
         } catch (IOException e) {

@@ -1,5 +1,6 @@
 package client.admin.model;
 
+import client.AdminClient;
 import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
 
@@ -15,8 +16,8 @@ public class AdminAddSessionPopUpModel {
     private final AdminService adminService;
     private static List<LocalTime> availableStartTimes = new ArrayList<>();
 
-    public AdminAddSessionPopUpModel(AdminService adminService){
-        this.adminService = adminService;
+    public AdminAddSessionPopUpModel(){
+        this.adminService = AdminClient.getAdminProcessors();
     }
 
     public List<String> getAllTutorNames() throws RemoteException {

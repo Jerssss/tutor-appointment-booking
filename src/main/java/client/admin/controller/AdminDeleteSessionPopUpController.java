@@ -32,8 +32,8 @@ public class AdminDeleteSessionPopUpController implements Initializable {
     @FXML
     private Button cancelButton;
 
-    public AdminDeleteSessionPopUpController() {
-        this.model = new AdminDeleteSessionPopUpModel(service);
+    public AdminDeleteSessionPopUpController() throws RemoteException {
+        this.model = new AdminDeleteSessionPopUpModel();
     }
 
     @Override

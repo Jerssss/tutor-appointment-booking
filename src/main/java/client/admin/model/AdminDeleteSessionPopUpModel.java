@@ -1,17 +1,17 @@
 package client.admin.model;
 
+import client.AdminClient;
 import shared.interfaces.AdminService;
-
 import java.rmi.RemoteException;
-import java.sql.SQLException;
-import java.util.List;
+
 
 public class AdminDeleteSessionPopUpModel {
     private final AdminService adminService;
 
-    public AdminDeleteSessionPopUpModel(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminDeleteSessionPopUpModel() {
+        this.adminService = AdminClient.getAdminProcessors();
     }
+
     public int deleteSession(String sessionID) throws RemoteException {
         return adminService.deleteSession(sessionID);
     }

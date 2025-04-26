@@ -1,7 +1,7 @@
 package client.admin.model;
 
+import client.AdminClient;
 import shared.classes.LessonPlan;
-import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
 
 import java.rmi.RemoteException;
@@ -13,8 +13,8 @@ import java.util.Map;
 public class AdminViewLessonPlanModel {
     private final AdminService adminService;
 
-    public AdminViewLessonPlanModel(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminViewLessonPlanModel() {
+        this.adminService = AdminClient.getAdminProcessors();
     }
 
 //    public Map<LessonPlan, List<String>> fetchLessonPlan() throws RemoteException {

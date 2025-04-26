@@ -68,8 +68,8 @@ public class AdminViewLessonPlanController {
     @FXML
     private TextField searchReportTextField;
 
-    public AdminViewLessonPlanController() {
-        this.model = new AdminViewLessonPlanModel(service);
+    public AdminViewLessonPlanController() throws RemoteException {
+        this.model = new AdminViewLessonPlanModel();
     }
 
     @FXML

@@ -36,9 +36,10 @@ public class AdminAddSubjectPopUpController implements Initializable {
     @FXML
     private Button addSubjectWindowButton;
 
-    public AdminAddSubjectPopUpController() {
-        this.model = new AdminAddSubjectPopUpModel(service);
+    public AdminAddSubjectPopUpController() throws RemoteException {
+        this.model = new AdminAddSubjectPopUpModel();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

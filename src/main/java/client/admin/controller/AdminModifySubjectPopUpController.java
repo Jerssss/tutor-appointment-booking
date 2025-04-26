@@ -30,8 +30,8 @@ public class AdminModifySubjectPopUpController implements Initializable {
     @FXML
     private Button modifySubjectButton;
 
-    public AdminModifySubjectPopUpController() {
-        this.model = new AdminModifySubjectPopUpModel(service);
+    public AdminModifySubjectPopUpController() throws RemoteException {
+        this.model = new AdminModifySubjectPopUpModel();
     }
 
     @Override

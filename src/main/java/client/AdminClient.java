@@ -83,8 +83,8 @@ public class AdminClient extends Application {
                 AdminLoginModel adminLoginModel = new AdminLoginModel(authService);
                 new AdminLoginController(adminLoginView, adminLoginModel, authService, adminService);
 
-                // Create main menu model (if needed later)
-                new AdminMainMenuModel(adminService);
+                // Create an instance of AdminMainMenuModel
+                AdminMainMenuModel adminMainMenuModel = new AdminMainMenuModel();
             }
 
             // Set the scene

@@ -46,9 +46,8 @@ public class AdminModifySessionPopUpController implements Initializable {
     @FXML
     private Label priceErrorLabel;
 
-
-    public AdminModifySessionPopUpController() {
-        this.model = new AdminModifySessionPopUpModel(service);
+    public AdminModifySessionPopUpController() throws RemoteException {
+        this.model = new AdminModifySessionPopUpModel();
     }
 
     @Override

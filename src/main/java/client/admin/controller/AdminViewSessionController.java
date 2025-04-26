@@ -20,7 +20,6 @@ public class AdminViewSessionController {
     private AdminService service = new AdminServiceImpl();
     private static TutorSession clickedSession;
 
-
     @FXML
     private TableView<TutorSession> viewResTableView;
     @FXML
@@ -50,8 +49,8 @@ public class AdminViewSessionController {
     @FXML
     private TextField searchResTextField;
 
-    public AdminViewSessionController() {
-        this.model = new AdminViewSessionModel(service);
+    public AdminViewSessionController() throws RemoteException {
+        this.model = new AdminViewSessionModel();
     }
 
     @FXML
@@ -82,7 +81,12 @@ public class AdminViewSessionController {
                 viewMoreButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 viewMoreButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController= new AdminViewMoreSessionsPopUpController();
+                    AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController= null;
+                    try {
+                        adminViewMoreSessionsPopUpController = new AdminViewMoreSessionsPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     adminViewMoreSessionsPopUpController.showWindow(clickedSession.getSessionID());
                 });
             }
@@ -105,7 +109,12 @@ public class AdminViewSessionController {
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    AdminModifySessionPopUpController modifySessionController = new AdminModifySessionPopUpController();
+                    AdminModifySessionPopUpController modifySessionController = null;
+                    try {
+                        modifySessionController = new AdminModifySessionPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     modifySessionController.showWindow();
                 });
             }
@@ -131,7 +140,12 @@ public class AdminViewSessionController {
                 deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 deleteButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    AdminDeleteSessionPopUpController deleteSessionPopUpController= new AdminDeleteSessionPopUpController();
+                    AdminDeleteSessionPopUpController deleteSessionPopUpController= null;
+                    try {
+                        deleteSessionPopUpController = new AdminDeleteSessionPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     deleteSessionPopUpController.showWindow();
                 });
             }
@@ -159,7 +173,12 @@ public class AdminViewSessionController {
     }
 
     private void handleAddSession(ActionEvent event){
-        AdminAddSessionPopUpController createSessionController = new AdminAddSessionPopUpController();
+        AdminAddSessionPopUpController createSessionController = null;
+        try {
+            createSessionController = new AdminAddSessionPopUpController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         createSessionController.showWindow();
     }
 

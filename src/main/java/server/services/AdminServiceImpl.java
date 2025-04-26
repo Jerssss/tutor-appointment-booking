@@ -5,21 +5,28 @@ import shared.classes.*;
 import shared.interfaces.AdminService;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-public class AdminServiceImpl implements Remote, AdminService, Serializable {
-    private static final long serialVersionUID = 1L; // Add a serialVersionUID
-    private static Connection con = DatabaseConnection.setCon(); // creates the connection to the database
+public class AdminServiceImpl extends UnicastRemoteObject implements AdminService, Serializable {    private static final long serialVersionUID = 1L; // Add a serialVersionUID
+    protected Connection con;  // creates the connection to the database
     private static String query; // holds the sql query
     private static Statement stmt; // used to execute queries without parameters
     private static CallableStatement callStmt;
     private static PreparedStatement preparedStatement; // prepares and executes parameterized sql queries
     private static ResultSet resultSet; // stores the result returned by executing a query
+
+    public AdminServiceImpl() throws RemoteException {
+        this.con = DatabaseConnection.setCon();
+        if (this.con == null) {
+            throw new RemoteException("Database connection failed: Connection is null");
+        }
+        System.out.println("[SERVER] Successfully connected to the database.");
+    }
 
     public String generateNewUserID() {
         String latestUserID = "SELECT userID FROM user ORDER BY userID DESC LIMIT 1";

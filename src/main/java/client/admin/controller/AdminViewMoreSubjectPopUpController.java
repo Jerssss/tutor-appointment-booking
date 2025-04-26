@@ -34,9 +34,13 @@ public class AdminViewMoreSubjectPopUpController {
     private Label subjectLevelLabel;
     @FXML
     private Label subjectDescriptionLabel;
+
+    public AdminViewMoreSubjectPopUpController() throws RemoteException {
+    }
+
     public void setSubjectID(String subjectID) {
         this.subjectID = subjectID;
-        this.model = new AdminViewMoreSubjectPopUpModel(service);
+        this.model = new AdminViewMoreSubjectPopUpModel();
         setSubjectDetails();
     }
 

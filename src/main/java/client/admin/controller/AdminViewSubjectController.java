@@ -51,8 +51,8 @@ public class AdminViewSubjectController {
     @FXML
     private TextField searchResTextField;
 
-    public AdminViewSubjectController() {
-        this.model = new AdminViewSubjectModel(service);
+    public AdminViewSubjectController() throws RemoteException {
+        this.model = new AdminViewSubjectModel();
     }
 
     @FXML
@@ -81,7 +81,12 @@ public class AdminViewSubjectController {
                 viewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 viewMoreColumnButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
-                    AdminViewMoreSubjectPopUpController viewMoreSubjectModel= new AdminViewMoreSubjectPopUpController();
+                    AdminViewMoreSubjectPopUpController viewMoreSubjectModel= null;
+                    try {
+                        viewMoreSubjectModel = new AdminViewMoreSubjectPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     viewMoreSubjectModel.showWindow(clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1"));
                 });
             }
@@ -105,7 +110,12 @@ public class AdminViewSubjectController {
                 optionButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
-                    AdminModifySubjectPopUpController modifySubjectController= new AdminModifySubjectPopUpController();
+                    AdminModifySubjectPopUpController modifySubjectController= null;
+                    try {
+                        modifySubjectController = new AdminModifySubjectPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     modifySubjectController.showWindow();
                 });
             }
@@ -130,7 +140,12 @@ public class AdminViewSubjectController {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
 
-                    AdminDeleteSubjectPopUpController deleteSubjectPopUpController= new AdminDeleteSubjectPopUpController();
+                    AdminDeleteSubjectPopUpController deleteSubjectPopUpController= null;
+                    try {
+                        deleteSubjectPopUpController = new AdminDeleteSubjectPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     deleteSubjectPopUpController.showWindow(clickedSubject);
                 });
             }
@@ -167,7 +182,12 @@ public class AdminViewSubjectController {
     }
 
     private void handleAddSubject(ActionEvent event){
-        AdminAddSubjectPopUpController createSubjectController = new AdminAddSubjectPopUpController();
+        AdminAddSubjectPopUpController createSubjectController = null;
+        try {
+            createSubjectController = new AdminAddSubjectPopUpController();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         createSubjectController.showWindow();
     }
 

@@ -43,8 +43,8 @@ public class AdminAddSessionPopUpController implements Initializable {
     @FXML private Label maxStudentsErrorLabel;
     @FXML private Label sessionPriceErrorLabel;
 
-    public AdminAddSessionPopUpController() {
-        this.model = new AdminAddSessionPopUpModel(service);
+    public AdminAddSessionPopUpController() throws RemoteException {
+        this.model = new AdminAddSessionPopUpModel();
 //        showWindow();
     }
 
