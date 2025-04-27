@@ -71,7 +71,8 @@ public class AdminDeleteSubjectPopUpController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Deletion Error");
                 alert.setHeaderText("Cannot Delete Subject");
-                alert.setContentText("This subject cannot be deleted because it is associated with session records.");
+                alert.setContentText("This subject cannot be deleted because it is associated with \nsession records." +
+                        " Try setting Subject Visibility to Archived\ninstead.");
                 alert.showAndWait();
             }
             Stage stage = (Stage) confirmButton.getScene().getWindow();

@@ -23,8 +23,9 @@ import java.util.ResourceBundle;
 public class AdminModifySubjectPopUpController implements Initializable {
     private final AdminModifySubjectPopUpModel model;
     private AdminModifySubjectPopUpView view;
-    private final AdminService service = new AdminServiceImpl();
 
+    @FXML
+    private ComboBox<String> subjectVisibilityComboBox;
     @FXML
     private ComboBox<String> academicLevelComboBox;
     @FXML
@@ -37,6 +38,7 @@ public class AdminModifySubjectPopUpController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.view = new AdminModifySubjectPopUpView(
+                subjectVisibilityComboBox,
                 academicLevelComboBox,
                 modifySubjectButton
         );
@@ -47,6 +49,10 @@ public class AdminModifySubjectPopUpController implements Initializable {
             view.setupButtonHoverEffects();
             if (!academicLevelComboBox.getItems().isEmpty()) {
                 academicLevelComboBox.getSelectionModel().select(0);
+            }
+
+            if (!subjectVisibilityComboBox.getItems().isEmpty()) {
+                subjectVisibilityComboBox.getSelectionModel().select(0);
             }
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -65,7 +71,7 @@ public class AdminModifySubjectPopUpController implements Initializable {
     private void handleUpdateSubject(ActionEvent event) {
         try {
             String subjectID = AdminViewSubjectController.getClickedSubject();
-            model.updateSubject(subjectID, view.getSelectedAcademicLevel());
+            model.updateSubject(subjectID, view.getSelectedAcademicLevel(), view.getSelectedSubjectVisibility());
 
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Subject Updated");

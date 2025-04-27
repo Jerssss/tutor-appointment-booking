@@ -1,12 +1,23 @@
 package shared.classes;
 
-public class Subject {
+import java.io.Serializable;
+
+public class Subject implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String subjectID;
     private String subjectName;
     private String subjectDescription;
     private String academicLevel;
+    private String visibility;
 
     // Constructor
+    public Subject(String subjectID, String subjectName, String subjectDescription, String academicLevel, String visibility) {
+        this.subjectID = subjectID;
+        this.subjectName = subjectName;
+        this.subjectDescription = subjectDescription;
+        this.academicLevel = academicLevel;
+        this.visibility = visibility;
+    }
     public Subject(String subjectID, String subjectName, String subjectDescription, String academicLevel) {
         this.subjectID = subjectID;
         this.subjectName = subjectName;
@@ -45,6 +56,13 @@ public class Subject {
 
     public void setAcademicLevel(String academicLevel) {
         this.academicLevel = academicLevel;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 
     // Override toString for easy object representation

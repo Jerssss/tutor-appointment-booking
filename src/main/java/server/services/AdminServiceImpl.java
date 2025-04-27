@@ -230,6 +230,11 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
                                 resultSet.getDate("sessionDate").toLocalDate(),
                                 resultSet.getTime("sessionTime").toLocalTime(),
                                 resultSet.getInt("sessionDuration"),
+                                resultSet.getString("sessionType"),
+                                resultSet.getString("sessionMode"),
+                                resultSet.getInt("numberOfStudents"),
+                                resultSet.getInt("maximumStudents"),
+                                resultSet.getInt("sessionPrice"),
                                 resultSet.getString("academicLevel"),
                                 resultSet.getString("tutorID"),
                                 resultSet.getString("subjectID"),
@@ -239,35 +244,6 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             e.printStackTrace();
         }
         return allSessions;
-    }
-
-    @Override
-    public List<String> viewOtherSessionDetails(String sessionID) throws RemoteException{
-        List<String> otherDetails = new ArrayList<>();
-        query = "SELECT firstName, lastName, subjectName, academicLevel, sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice FROM tutorsession\n" +
-                "INNER JOIN subject USING (subjectID)\n" +
-                "INNER JOIN user ON tutorID = userID\n" +
-                "WHERE sessionID = ?; ";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, sessionID);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                otherDetails.add(resultSet.getString("firstName")+" " + resultSet.getString("lastName"));
-                otherDetails.add(resultSet.getString("subjectName"));
-                otherDetails.add(resultSet.getString("academicLevel"));
-                otherDetails.add(resultSet.getString("sessionType"));
-                otherDetails.add(resultSet.getString("sessionMode"));
-                otherDetails.add(resultSet.getString("numberOfStudents"));
-                otherDetails.add(resultSet.getString("maximumStudents"));
-                otherDetails.add(resultSet.getString("sessionPrice"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return otherDetails;
     }
 
     @Override
@@ -304,21 +280,21 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus, String sessionVisibility) throws RemoteException, SQLException {
+    public void modifySession(TutorSession session) throws RemoteException, SQLException {
         query = "{CALL modifySession(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             con.setAutoCommit(false);
 
             callStmt = con.prepareCall(query);
-            callStmt.setString(1, sessionID);
-            callStmt.setString(2, sessionMode);
-            callStmt.setString(3, sessionType);
-            callStmt.setString(4, numStudents);
-            callStmt.setString(5, maxStudents);
-            callStmt.setString(6, sessionPrice);
-            callStmt.setString(7, sessionStatus);
-            callStmt.setString(8, sessionVisibility);
+            callStmt.setString(1, session.getSessionID());
+            callStmt.setString(2, session.getSessionMode());
+            callStmt.setString(3, session.getSessionType());
+            callStmt.setInt(4, session.getNumberOfStudents());
+            callStmt.setInt(5, session.getMaximumStudents());
+            callStmt.setInt(6, session.getSessionPrice());
+            callStmt.setString(7, session.getSessionStatus());
+            callStmt.setString(8, session.getVisibility());
 
 
             callStmt.executeUpdate();
@@ -350,213 +326,6 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
         return 0;
     }
 
-
-    @Override
-    public TutorSession getEditableDetails(String sessionID) throws RemoteException {
-        TutorSession details = new TutorSession();
-        query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice, sessionStatus, visibility FROM tutorsession\n" +
-                "WHERE sessionID = ? ;";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, sessionID);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                details.setSessionStatus(resultSet.getString("sessionStatus"));
-                details.setSessionType(resultSet.getString("sessionType"));
-                details.setSessionMode(resultSet.getString("sessionMode"));
-                details.setNumberOfStudents(resultSet.getInt("numberOfStudents"));
-                details.setMaximumStudents(resultSet.getInt("maximumStudents"));
-                details.setSessionPrice(resultSet.getInt("sessionPrice"));
-                details.setVisibility(resultSet.getString("visibility"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return details;
-    }
-
-    @Override
-    public List<String> getAllTutorNames() throws RemoteException{
-        List<String> allTutorName = new ArrayList<>();
-        query = "SELECT CONCAT(firstName,' ', lastName) AS names FROM user\n" +
-                "WHERE role = 'tutor';";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                allTutorName.add(resultSet.getString("names"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return allTutorName;
-    }
-
-    @Override
-    public List<String> getAllSubjectNames() throws RemoteException{
-        List<String> allSubjects = new ArrayList<>();
-        query = "SELECT subjectName FROM `subject`;";
-        try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                allSubjects.add(resultSet.getString("subjectName"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return allSubjects;
-    }
-    @Override
-    public List<String> getAllTutorIDs() throws RemoteException{
-        List<String> allTutorID = new ArrayList<>();
-        query = "SELECT userID FROM user WHERE role = 'Tutor'";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                allTutorID.add(resultSet.getString("userID"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return allTutorID;
-    }
-    @Override
-    public List<String> getAllSubjectIDs() throws RemoteException{
-        List<String> allSubjectID = new ArrayList<>();
-        query = "SELECT subjectID FROM subject";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                allSubjectID.add(resultSet.getString("subjectID"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return allSubjectID;
-    }
-    @Override
-    public String getSubjectID(String subjectName) throws RemoteException{
-        String subjectID = "";
-        query = "SELECT subjectID FROM subject WHERE subjectName = ?";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, subjectName);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                subjectID = resultSet.getString("subjectID");
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return subjectID;
-    }
-    @Override
-    public String getSubjectName(String subjectID) throws RemoteException{
-        String subjectName = "";
-        query = "SELECT subjectName FROM subject WHERE subjectID = ?";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, subjectID);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                subjectName = resultSet.getString("subjectName");
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return subjectName;
-    }
-    @Override
-    public String getTutorID(String tutorName) throws RemoteException{
-        String tutorID = "";
-        query = "SELECT userID FROM user WHERE CONCAT(firstName, ' ', lastName) = ?;";
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, tutorName);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                tutorID = resultSet.getString("userID");
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return tutorID;
-    }
-    @Override
-    public String getTutorName(String tutorID) throws RemoteException{
-        String tutorName = "";
-        query = "SELECT CONCAT(firstName,' ', lastName) AS name FROM user WHERE userID = ?;";
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, tutorID);
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                tutorName = resultSet.getString("name");
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return tutorName;
-    }
-
-    @Override
-    public List<String> getAllSessionID() throws RemoteException{
-        List<String> allSessionID = new ArrayList<>();
-        query = "SELECT sessionID FROM `tutorsession`;";
-        try{
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                allSessionID.add(resultSet.getString("sessionID"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return allSessionID;
-    }
-
-    @Override
-    public Map<LocalTime, Integer> getTutorSchedule(String tutorID, String date) throws RemoteException {
-        Map<LocalTime, Integer> scheduleMap = new LinkedHashMap<>();
-        String query = "SELECT sessionTime, sessionDuration FROM tutorsession WHERE tutorID = ? AND sessionDate = ?";
-
-        try {
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, tutorID);
-            preparedStatement.setString(2, date);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                LocalTime sessionTime = resultSet.getTime("sessionTime").toLocalTime();
-                int sessionDuration = resultSet.getInt("sessionDuration");
-                scheduleMap.put(sessionTime, sessionDuration);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return scheduleMap;
-    }
-
     @Override
     public List<Subject> viewSubject() throws RemoteException {
         List<Subject> allSubject = new ArrayList<>();
@@ -567,31 +336,12 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
 
             while (resultSet.next()){
                 allSubject.add(new Subject(resultSet.getString("subjectID"), resultSet.getString("subjectName"),
-                        resultSet.getString("subjectDescription"), resultSet.getString("academicLevel")));
+                        resultSet.getString("subjectDescription"), resultSet.getString("academicLevel"), resultSet.getString("visibility")));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
         return allSubject;
-    }
-    @Override
-    public List<String> viewOtherSubjectDetails(String subjectID) throws RemoteException{
-        List<String> otherDetails = new ArrayList<>();
-        query = "SELECT subjectName, subjectDescription FROM subject WHERE subjectID = ?;";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, subjectID);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                otherDetails.add(resultSet.getString("subjectName"));
-                otherDetails.add(resultSet.getString("subjectDescription"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return otherDetails;
     }
 
     @Override
@@ -620,9 +370,9 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void modifySubject(String subjectID, String academicLevel) throws RemoteException, SQLException {
+    public void modifySubject(String subjectID, String academicLevel, String subjectVisibility) throws RemoteException, SQLException {
         subjectID = subjectID.replaceAll(".*subjectID=(\\d+),.*", "$1");
-        query = "{CALL modifySubject(?,?)}";
+        query = "{CALL modifySubject(?,?,?)}";
 
         try {
             con.setAutoCommit(false);
@@ -630,6 +380,8 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             callStmt = con.prepareCall(query);
             callStmt.setString(1, subjectID);
             callStmt.setString(2, academicLevel);
+            System.out.println("visibility: " + subjectVisibility);
+            callStmt.setString(3, subjectVisibility);
 
             callStmt.executeUpdate();
             con.commit();
@@ -689,28 +441,6 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
         }
 
         return allLessonPlans;
-    }
-
-    @Override
-    public List<String> viewOtherLessonPlanDetails(String lessonPlanID) throws RemoteException{
-        List<String> otherDetails = new ArrayList<>();
-        query = "SELECT subjectName, objectives, topicsCovered FROM lessonplan" +
-                " INNER JOIN subject USING(subjectID) WHERE lessonPlanID = ?;";
-
-        try{
-            preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, lessonPlanID);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                otherDetails.add(resultSet.getString("subjectName"));
-                otherDetails.add(resultSet.getString("objectives"));
-                otherDetails.add(resultSet.getString("topicsCovered"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return otherDetails;
     }
 
     @Override

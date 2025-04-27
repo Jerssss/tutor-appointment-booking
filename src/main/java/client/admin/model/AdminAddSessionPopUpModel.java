@@ -1,7 +1,9 @@
 package client.admin.model;
 
 import client.AdminClient;
+import shared.classes.Tutor;
 import shared.classes.TutorSession;
+import shared.classes.Subject;
 import shared.interfaces.AdminService;
 
 import java.rmi.RemoteException;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,40 +24,103 @@ public class AdminAddSessionPopUpModel {
     }
 
     public List<String> getAllTutorNames() throws RemoteException {
-        return adminService.getAllTutorNames();
+        List<String> tutorNames = new ArrayList<>();
+        List<Tutor> tutors = adminService.viewTutor();
+
+        for (Tutor tutor: tutors){
+            tutorNames.add(tutor.getFirstName()+" "+ tutor.getLastName());
+        }
+
+        return tutorNames;
     }
 
     public List<String> getAllTutorIDs() throws RemoteException{
-        return adminService.getAllTutorIDs();
+        List<String> tutorIDs = new ArrayList<>();
+        List<Tutor> tutors = adminService.viewTutor();
+
+        for (Tutor tutor: tutors){
+            tutorIDs.add(tutor.getUserID());
+        }
+
+        return tutorIDs;
     }
 
     public List<String> getAllSubjectNames() throws RemoteException {
-        return adminService.getAllSubjectNames();
+        List<String> subjectNames = new ArrayList<>();
+        List<Subject> subjects = adminService.viewSubject();
+
+        for (Subject subject : subjects){
+            subjectNames.add(subject.getSubjectName());
+        }
+        return subjectNames;
     }
 
     public List<String> getAllSubjectIDs() throws RemoteException{
-        return adminService.getAllSubjectIDs();
+        List<String> subjectIDs = new ArrayList<>();
+        List<Subject> subjects = adminService.viewSubject();
+
+        for (Subject subject : subjects){
+            subjectIDs.add(subject.getSubjectID());
+        }
+        return subjectIDs;
     }
 
     public String getTutorName(String tutorID) throws RemoteException {
-        return adminService.getTutorName(tutorID);
+        String tutorName = "";
+        List<Tutor> tutors = adminService.viewTutor();
+
+        for (Tutor tutor: tutors){
+            if (tutorID.equals(tutor.getUserID())){
+                tutorName = tutor.getFirstName()+" "+tutor.getLastName();
+            }
+        }
+
+        return tutorName;
     }
 
     public String getTutorID(String tutorName) throws RemoteException {
-        return adminService.getTutorID(tutorName);
+        String tutorID = "";
+        List<Tutor> tutors = adminService.viewTutor();
+
+        for (Tutor tutor: tutors){
+            if (tutorName.equals(tutor.getFirstName()+" "+tutor.getLastName())){
+                tutorID = tutor.getUserID();
+            }
+        }
+
+        return tutorID;
     }
 
     public String getSubjectName(String subjectID) throws RemoteException {
-        return adminService.getSubjectName(subjectID);
+        List<Subject> subjects = adminService.viewSubject();
+        String subjectName = "";
+
+        for(Subject subject : subjects){
+            if (subject.getSubjectID().equals(subjectID)){
+                subjectName = subject.getSubjectID();
+            }
+        }
+        return subjectName;
     }
 
     public String getSubjectID(String subjectName) throws RemoteException {
-        return adminService.getSubjectID(subjectName);
+        List<Subject> subjects = adminService.viewSubject();
+        String subjectID = "";
+
+        for(Subject subject : subjects){
+            if (subject.getSubjectName().equals(subjectName)){
+                subjectID = subject.getSubjectID();
+            }
+        }
+        return subjectID;
     }
 
 
-    public List<String> getAvailableTimeTutor(String tutorName, String date) throws RemoteException {
-        Map<LocalTime, Integer> currentSched = adminService.getTutorSchedule(adminService.getTutorID(tutorName), date);
+    public List<String> getAvailableTimeTutor(String tutorID, String date) throws RemoteException {
+        Map<LocalTime, Integer> currentSched = getTutorSchedule(tutorID, date);
+//                adminService.getTutorSchedule(getTutorID(tutorName), date);
+
+
         availableStartTimes = generateTimeslots();
 
         for (Map.Entry<LocalTime, Integer> entry : currentSched.entrySet()) {
@@ -74,6 +140,17 @@ public class AdminAddSessionPopUpModel {
         }
 
         return times;
+    }
+
+    public Map<LocalTime, Integer> getTutorSchedule(String tutorID, String date) throws RemoteException {
+        Map<LocalTime, Integer> currentSched = new HashMap<>();
+        List<TutorSession> sessions = adminService.viewSession();
+        for (TutorSession session : sessions){
+            if (session.getTutorID().equals(tutorID) && String.valueOf(session.getSessionDate()).equals(date)){
+                currentSched.put(session.getSessionTime(), session.getSessionDuration());
+            }
+        }
+        return currentSched;
     }
 
     public List<String> getAvailableDurations(LocalTime time){
@@ -117,7 +194,11 @@ public class AdminAddSessionPopUpModel {
     }
 
     private String generateSessionID() throws RemoteException {
-        List<String> sessionIDs = adminService.getAllSessionID();
+        List<TutorSession> sessions = adminService.viewSession();
+        List<String> sessionIDs = new ArrayList<>();
+        for (TutorSession session : sessions){
+            sessionIDs.add(session.getSessionID());
+        }
 
         int maxNumber = 0;
 

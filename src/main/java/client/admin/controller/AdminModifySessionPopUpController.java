@@ -11,8 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import server.services.AdminServiceImpl;
-import shared.interfaces.AdminService;
+import shared.classes.TutorSession;
 
 import java.io.IOException;
 import java.net.URL;
@@ -101,6 +100,7 @@ public class AdminModifySessionPopUpController implements Initializable {
 
         boolean hasError = false;
 
+
         String sessionVisibility = view.getSelectedSessionVisibility();
         String sessionStatus = view.getSelectedSessionStatus();
         String sessionType = view.getSelectedSessionType();
@@ -156,7 +156,12 @@ public class AdminModifySessionPopUpController implements Initializable {
 
         try {
             String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
-            model.updateSession(sessionID, sessionMode, sessionType, numStudents, maxStudents, price, sessionStatus, sessionVisibility);
+            TutorSession session = new TutorSession(sessionID, view.getSelectedSessionStatus(),
+                    view.getSelectedSessionMode(), view.getSelectedSessionType(),
+                    Integer.parseInt(numberOfStudentsField.getText()), Integer.parseInt(maxNumberOfStudentsField.getText()),
+                    Double.parseDouble(sessionPriceField.getText()), view.getSelectedSessionVisibility());
+
+            model.updateSession(session);
 
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Session Updated");
@@ -192,7 +197,7 @@ public class AdminModifySessionPopUpController implements Initializable {
 
     private void populateFields() throws RemoteException, SQLException {
         String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
-        var details = model.getEditableDetails(sessionID);
+        TutorSession details = model.getEditableDetails(sessionID);
 
         sessionVisibilityComboBox.setValue(details.getVisibility());
         sessionStatusComboBox.setValue(details.getSessionStatus());

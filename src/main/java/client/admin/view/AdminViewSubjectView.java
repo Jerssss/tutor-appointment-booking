@@ -14,21 +14,23 @@ public class AdminViewSubjectView {
     private final TableView<Subject> viewResTableView;
     private final TableColumn<Subject, String> subjectIdColumn;
     private final TableColumn<Subject, String> subjectNameColumn;
-    private final TableColumn<Subject, String> subjectDescColumn;
     private final TableColumn<Subject, String> academicLevelColumn;
-
-    private final Button addSubjectButton;
-
+    private final TableView<Subject> archivedResTableView;
+    private final TableColumn<Subject, String> archivedSubjectIdColumn;
+    private final TableColumn<Subject, String> archivedSubjectNameColumn;
+    private final TableColumn<Subject, String> archivedAcademicLevelColumn;
 
     public AdminViewSubjectView(TableView<Subject> viewResTableView, TableColumn<Subject, String> subjectIdColumn,
-                                TableColumn<Subject, String> subjectNameColumn, TableColumn<Subject, String> subjectDescColumn,
-                                TableColumn<Subject, String> academicLevelColumn, Button addSubjectButton) {
+                                TableColumn<Subject, String> subjectNameColumn,
+                                TableColumn<Subject, String> academicLevelColumn, TableView<Subject> archivedResTableView, TableColumn<Subject, String> archivedSubjectIdColumn, TableColumn<Subject, String> archivedSubjectNameColumn, TableColumn<Subject, String> archivedAcademicLevelColumn) {
         this.viewResTableView = viewResTableView;
         this.subjectIdColumn = subjectIdColumn;
         this.subjectNameColumn = subjectNameColumn;
-        this.subjectDescColumn = subjectDescColumn;
         this.academicLevelColumn = academicLevelColumn;
-        this.addSubjectButton = addSubjectButton;
+        this.archivedResTableView = archivedResTableView;
+        this.archivedSubjectIdColumn = archivedSubjectIdColumn;
+        this.archivedSubjectNameColumn = archivedSubjectNameColumn;
+        this.archivedAcademicLevelColumn = archivedAcademicLevelColumn;
 
         setupTableColumns();
     }
@@ -36,11 +38,14 @@ public class AdminViewSubjectView {
     public void setupTableColumns() {
         subjectIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
         subjectNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
-//        subjectDescColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
         academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
+        archivedSubjectIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
+        archivedSubjectNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
+        archivedAcademicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
     }
 
-    public void displaySubject(ObservableList<Subject> subjects) {
+    public void displaySubject(ObservableList<Subject> subjects, ObservableList<Subject> archivedSubjects) {
         viewResTableView.setItems(subjects);
+        archivedResTableView.setItems(archivedSubjects);
     }
 }

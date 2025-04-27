@@ -9,24 +9,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.classes.Subject;
 import shared.interfaces.AdminService;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
 public class AdminViewSubjectController {
     private final AdminViewSubjectModel model;
     private AdminViewSubjectView view;
-    private AdminService service = new AdminServiceImpl();
     private static String clickedSubject;
     @FXML
     private TableView<Subject> viewResTableView;
@@ -35,8 +28,6 @@ public class AdminViewSubjectController {
     @FXML
     private TableColumn<Subject, String> subjectNameColumn;
     @FXML
-    private TableColumn<Subject, String> subjectDescColumn;
-    @FXML
     private TableColumn<Subject, String> academicLevelColumn;
     @FXML
     private TableColumn<List<String>, Void> optionColumn;
@@ -44,6 +35,20 @@ public class AdminViewSubjectController {
     private TableColumn<List<String>, Void> viewMoreColumn;
     @FXML
     private TableColumn<List<String>, Void> deleteColumn;
+    @FXML
+    private TableView<Subject> archivedResTableView;
+    @FXML
+    private TableColumn<Subject, String> archivedSubjectIdColumn;
+    @FXML
+    private TableColumn<Subject, String> archivedSubjectNameColumn;
+    @FXML
+    private TableColumn<Subject, String> archivedAcademicLevelColumn;
+    @FXML
+    private TableColumn<List<String>, Void> archivedViewMoreColumn;
+    @FXML
+    private TableColumn<List<String>, Void> archivedOptionColumn;
+    @FXML
+    private TableColumn<List<String>, Void> archivedDeleteColumn;
     @FXML
     private Button addSubjectButton;
     @FXML
@@ -61,9 +66,11 @@ public class AdminViewSubjectController {
                 viewResTableView,
                 subjectIdColumn,
                 subjectNameColumn,
-                subjectDescColumn,
                 academicLevelColumn,
-                addSubjectButton
+                archivedResTableView,
+                archivedSubjectIdColumn,
+                archivedSubjectNameColumn,
+                archivedAcademicLevelColumn
         );
         displaySubjects();
 
@@ -81,7 +88,7 @@ public class AdminViewSubjectController {
                 viewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 viewMoreColumnButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
-                    AdminViewMoreSubjectPopUpController viewMoreSubjectModel= null;
+                    AdminViewMoreSubjectPopUpController viewMoreSubjectModel = null;
                     try {
                         viewMoreSubjectModel = new AdminViewMoreSubjectPopUpController();
                     } catch (RemoteException e) {
@@ -102,6 +109,34 @@ public class AdminViewSubjectController {
             }
         });
 
+        archivedViewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button archivedViewMoreColumnButtonButton = new Button("View More");
+
+            {
+                archivedViewMoreColumnButtonButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                archivedViewMoreColumnButtonButton.setOnAction(event -> {
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreSubjectPopUpController viewMoreSubjectModel = null;
+                    try {
+                        viewMoreSubjectModel = new AdminViewMoreSubjectPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    viewMoreSubjectModel.showWindow(clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1"));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(archivedViewMoreColumnButtonButton);
+                }
+            }
+        });
+
         optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
             private final Button optionButton = new Button("Option");
 
@@ -110,7 +145,36 @@ public class AdminViewSubjectController {
                 optionButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
-                    AdminModifySubjectPopUpController modifySubjectController= null;
+                    AdminModifySubjectPopUpController modifySubjectController = null;
+                    try {
+                        modifySubjectController = new AdminModifySubjectPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    modifySubjectController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(optionButton);
+                }
+            }
+        });
+
+        archivedOptionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button optionButton = new Button("Option");
+
+            {
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
+                    AdminModifySubjectPopUpController modifySubjectController = null;
                     try {
                         modifySubjectController = new AdminModifySubjectPopUpController();
                     } catch (RemoteException e) {
@@ -140,7 +204,38 @@ public class AdminViewSubjectController {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
 
-                    AdminDeleteSubjectPopUpController deleteSubjectPopUpController= null;
+                    AdminDeleteSubjectPopUpController deleteSubjectPopUpController = null;
+                    try {
+                        deleteSubjectPopUpController = new AdminDeleteSubjectPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    deleteSubjectPopUpController.showWindow(clickedSubject);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status))
+                    setGraphic(deleteColumnButton);
+                }
+            }
+        });
+
+        archivedDeleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+            private final Button deleteColumnButton = new Button("Delete");
+
+            {
+                deleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                deleteColumnButton.setOnAction(event -> {
+                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
+                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
+
+                    AdminDeleteSubjectPopUpController deleteSubjectPopUpController = null;
                     try {
                         deleteSubjectPopUpController = new AdminDeleteSubjectPopUpController();
                     } catch (RemoteException e) {
@@ -169,19 +264,23 @@ public class AdminViewSubjectController {
                     viewResTableView,
                     subjectIdColumn,
                     subjectNameColumn,
-                    subjectDescColumn,
                     academicLevelColumn,
-                    addSubjectButton
+                    archivedResTableView,
+                    archivedSubjectIdColumn,
+                    archivedSubjectNameColumn,
+                    archivedAcademicLevelColumn
             );
             List<Subject> subjects = model.displaySubjects();
+            List<Subject> archivedSubjects = model.displayArchivedSubjects();
             ObservableList<Subject> subjectData = FXCollections.observableArrayList(subjects);
-            view.displaySubject(subjectData);
+            ObservableList<Subject> archivedSubjectData = FXCollections.observableArrayList(archivedSubjects);
+            view.displaySubject(subjectData, archivedSubjectData);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void handleAddSubject(ActionEvent event){
+    private void handleAddSubject(ActionEvent event) {
         AdminAddSubjectPopUpController createSubjectController = null;
         try {
             createSubjectController = new AdminAddSubjectPopUpController();
@@ -191,7 +290,7 @@ public class AdminViewSubjectController {
         createSubjectController.showWindow();
     }
 
-    private void handleRefreshSubject(ActionEvent event){
+    private void handleRefreshSubject(ActionEvent event) {
         displaySubjects();
     }
 
@@ -202,6 +301,7 @@ public class AdminViewSubjectController {
             System.err.println("[ERROR] AddSubjectButton is NULL! Check FXML.");
         }
     }
+
     public void setActionRefreshButtonButton(EventHandler<ActionEvent> event) {
         if (refreshButton != null) {
             refreshButton.setOnAction(event);
@@ -210,31 +310,40 @@ public class AdminViewSubjectController {
         }
     }
 
-    public static String getClickedSubject(){
+    public static String getClickedSubject() {
         return clickedSubject;
     }
 
     private void filterSubject(String searchText) {
         try {
-            List<Subject> allSubjects = model.displaySubjects();
+            List<Subject> allSubjects = model.displayAllSubjects();
             ObservableList<Subject> filteredData = FXCollections.observableArrayList();
+            ObservableList<Subject> filteredArchivedData = FXCollections.observableArrayList();
 
             if (searchText == null || searchText.isEmpty()) {
-                filteredData.addAll(allSubjects);
+                for (Subject subject : allSubjects) {
+                    if (subject.getVisibility().equals("Available")) {
+                        filteredData.add(subject);
+                    } else {
+                        filteredArchivedData.add(subject);
+                    }
+                }
             } else {
                 String lowerCaseSearchText = searchText.toLowerCase();
                 for (Subject subject : allSubjects) {
                     boolean match = subject.getSubjectID().toLowerCase().contains(lowerCaseSearchText) || subject.getSubjectName().toLowerCase().contains(lowerCaseSearchText) ||
-                            subject.getSubjectDescription().toLowerCase().contains(lowerCaseSearchText) ||
                             subject.getAcademicLevel().toLowerCase().contains(lowerCaseSearchText);
-
                     if (match) {
-                        filteredData.add(subject);
+                        if (subject.getVisibility().equals("Available")) {
+                            filteredData.add(subject);
+                        } else {
+                            filteredArchivedData.add(subject);
+                        }
                     }
                 }
             }
 
-            view.displaySubject(filteredData);
+            view.displaySubject(filteredData, filteredArchivedData);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
