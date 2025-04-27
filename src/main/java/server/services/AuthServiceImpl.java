@@ -1,5 +1,6 @@
 package server.services;
 
+import server.Server; // ✅ ADD this import
 import server.database.DatabaseConnection;
 import shared.classes.SessionManager;
 import shared.classes.User;
@@ -16,10 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AuthServiceImpl extends UnicastRemoteObject implements AuthService, Serializable {
-    private static final long serialVersionUID = 1L; // Add a serialVersionUID
+    private static final long serialVersionUID = 1L;
 
     private static Connection con = DatabaseConnection.setCon();
-
     private static String query;
     private static PreparedStatement preparedStatement;
     private static ResultSet resultSet;
@@ -41,8 +41,7 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                // Create a new User object based on the retrieved data
-                return new User(
+                User user = new User(
                         resultSet.getString("userID"),
                         resultSet.getString("firstName"),
                         resultSet.getString("lastName"),
@@ -51,6 +50,11 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
                         resultSet.getString("role"),
                         resultSet.getString("password")
                 );
+
+                Server.addActiveClient(userID); // Track active client here
+                System.out.println("[Auth] User logged in and tracked: " + userID);
+
+                return user;
             } else {
                 throw new AccountDoesNotExist("Account Does Not Exist in the DATABASE");
             }
@@ -63,6 +67,8 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
     public User logout() throws RemoteException {
         String userId = SessionManager.getCurrentUserId();
         if (userId != null) {
+            Server.removeActiveClient(userId); // Remove client from active list
+            System.out.println("[Auth] User logged out and removed: " + userId);
             SessionManager.endSession();
         }
         return null;

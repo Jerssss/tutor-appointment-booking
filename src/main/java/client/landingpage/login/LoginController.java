@@ -97,7 +97,6 @@ public class LoginController {
     private void redirectToMainMenu(ActionEvent event, User user) {
         if ("Student".equalsIgnoreCase(user.getRole())) {
             try {
-                System.out.println("[DEBUG] Current user ID: " + SessionManager.getCurrentUserId());
                 // Correct the resource path to point to the resources directory
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/student/student_menu_page.fxml"));
                 Parent root = fxmlLoader.load();

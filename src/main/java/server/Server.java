@@ -18,6 +18,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -28,10 +29,21 @@ public class Server {
     private static Registry registry;
     private static boolean running = false;
 
+
     private static AuthServiceImpl authService;
     private static StudentServiceImpl studentService;
     private static TutorServiceImpl tutorService;
     private static AdminServiceImpl adminService;
+
+    private static final List<String> activeClients = new CopyOnWriteArrayList<>();
+    public static void addActiveClient(String clientId) {
+        activeClients.add(clientId);
+    }
+
+    public static void removeActiveClient(String clientId) {
+        activeClients.remove(clientId);
+    }
+
 
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(1000);
     public static void main(String[] args) {
@@ -42,7 +54,9 @@ public class Server {
         }));
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("WELCOME TO LEARNIFY!!!!!!!!");
+        System.out.println("");
+        System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀\n" +
+                           " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
         System.out.println("Server Commands: [start | stop | exit]");
 
         while (true) {
@@ -190,7 +204,11 @@ public class Server {
             while (running) {
                 try {
                     Thread.sleep(30000);
-                    System.out.println("[Heartbeat] Server is running. Active clients: ");
+                    System.out.println("[Heartbeat] Server is running. Active clients: " + activeClients.size());
+                    if (!activeClients.isEmpty()) {
+                        System.out.println("[Heartbeat] Connected: " + String.join(", ", activeClients));
+                    }
+
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     System.err.println("[Heartbeat] Monitor interrupted.");
