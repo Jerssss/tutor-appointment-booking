@@ -87,7 +87,7 @@ public class StudentTutorClient extends Application {
             primaryStage.setScene(scene);
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
-            primaryStage.setTitle("Lendify - Student & Tutor Portal");
+            primaryStage.setTitle("Learnify - Student & Tutor Portal");
 
             // Load application icon
             try {
@@ -108,6 +108,7 @@ public class StudentTutorClient extends Application {
 
             // Show the landing page
             primaryStage.show();
+            System.out.println("");
             System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀\n" +
                                " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
 
