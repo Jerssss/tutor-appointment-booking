@@ -23,8 +23,6 @@ import shared.interfaces.TutorService;
 
 import java.io.IOException;
 
-
-
 public class LoginController {
     private final LoginView loginView;
     private final LoginModel loginModel;
@@ -41,7 +39,6 @@ public class LoginController {
         this.tutorService = tutorService;
 
         this.loginView.setActionSignInButton(this::handleSignIn);
-        this.loginView.setActionSignUpButton(this::redirectToSignUp);
     }
 
     private void handleSignIn(ActionEvent event) {

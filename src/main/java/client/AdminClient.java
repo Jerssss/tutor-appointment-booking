@@ -39,6 +39,10 @@ public class AdminClient extends Application {
     }
 
     public static void main(String[] args) {
+        System.out.println("");
+        System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀\n" +
+                           " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
+
         System.out.println("=====================================================");
         System.out.println("[Admin Client] Starting client at " + new Date());
         System.out.println("=====================================================");
@@ -83,7 +87,6 @@ public class AdminClient extends Application {
             if (adminLoginView == null) {
                 System.err.println("[ERROR] AdminLoginView is NULL after FXML load!");
             } else {
-                System.out.println("[DEBUG] AdminLoginView controller loaded successfully.");
 
                 // Instantiate model and link with controller
                 AdminLoginModel adminLoginModel = new AdminLoginModel(authService);
@@ -120,7 +123,6 @@ public class AdminClient extends Application {
 
             // Show the login page
             primaryStage.show();
-            System.out.println("[Admin Client] WELCOME TO LEARNIFY ADMIN PORTAL");
 
         } catch (IOException e) {
             System.err.println("[ERROR] Could not load admin_login_page.fxml: " + e.getMessage());

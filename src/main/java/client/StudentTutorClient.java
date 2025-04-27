@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
+import java.util.Date;
 
 
 public class StudentTutorClient extends Application {
@@ -79,7 +79,6 @@ public class StudentTutorClient extends Application {
             if (landingPageView == null) {
                 System.err.println("[ERROR] LandingPageView is NULL after FXML load!");
             } else {
-                System.out.println("[DEBUG] LandingPageView controller loaded successfully."); // Debug log
                 new LandingPageController(landingPageView); // Link the controller to the view
             }
 
@@ -109,7 +108,13 @@ public class StudentTutorClient extends Application {
 
             // Show the landing page
             primaryStage.show();
-            System.out.println("[Client] WELCOME TO LENDIFY");
+            System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀\n" +
+                               " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
+
+            System.out.println("=====================================================");
+            System.out.println("[Admin Client] Starting client at " + new Date());
+            System.out.println("=====================================================");
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("[ERROR] Could not load landing_page.fxml: " + e.getMessage());

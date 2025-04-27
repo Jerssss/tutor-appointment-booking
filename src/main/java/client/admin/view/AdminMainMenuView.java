@@ -210,7 +210,7 @@ public class AdminMainMenuView {
     public void setActionSubjectButton(EventHandler<ActionEvent> event) {
         subjectButton.setOnAction(event1 -> {
             highlightButton(subjectButton);
-            loadView("/fxml/admin/subject_pane.fxml");
+            loadView("src/main/resources/fxml/admin/subject_pane.fxml");
         });
     }
     public void setActionLessonPlanButton(EventHandler<ActionEvent> event) {

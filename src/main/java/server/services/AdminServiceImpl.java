@@ -561,7 +561,6 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     public List<Subject> viewSubject() throws RemoteException {
         List<Subject> allSubject = new ArrayList<>();
         query = "{CALL viewSubject()}";
-
         try{
             callStmt = con.prepareCall(query);
             resultSet = callStmt.executeQuery();
