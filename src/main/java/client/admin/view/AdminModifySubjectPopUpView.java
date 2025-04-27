@@ -9,15 +9,18 @@ import javafx.util.Duration;
 
 
 public class AdminModifySubjectPopUpView {
+    private final ComboBox<String> subjectVisibilityComboBox;
     private final ComboBox<String> academicLevelComboBox;
     private final Button modifySubjectButton;
 
-    public AdminModifySubjectPopUpView(ComboBox<String> academicLevelComboBox, Button modifySubjectButton) {
+    public AdminModifySubjectPopUpView(ComboBox<String> subjectVisibilityComboBox, ComboBox<String> academicLevelComboBox, Button modifySubjectButton) {
+        this.subjectVisibilityComboBox = subjectVisibilityComboBox;
         this.academicLevelComboBox = academicLevelComboBox;
         this.modifySubjectButton = modifySubjectButton;
     }
 
     public void initializeComboBoxes() {
+        subjectVisibilityComboBox.getItems().addAll("Available", "Archived");
         academicLevelComboBox.getItems().addAll("High School", "College");
     }
 
@@ -42,6 +45,10 @@ public class AdminModifySubjectPopUpView {
         st.setToX(1.0);
         st.setToY(1.0);
         st.play();
+    }
+
+    public String getSelectedSubjectVisibility() {
+        return subjectVisibilityComboBox.getValue();
     }
 
     public String getSelectedAcademicLevel() {

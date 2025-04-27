@@ -54,6 +54,30 @@ public class TutorSession implements Serializable {
         this.sessionMode = sessionMode;
         this.visibility = visibility;
     }
+
+    public TutorSession(String sessionID, String sessionStatus,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String sessionType,
+                        String sessionMode, int numberOfStudents,
+                        int maximumStudents, int sessionPrice,
+                        String academicLevel, String tutorID,
+                        String subjectID, String visibility) {
+        this.sessionID = sessionID;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionDuration = sessionDuration;
+        this.sessionType = sessionType;
+        this.sessionMode = sessionMode;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+        this.academicLevel = academicLevel;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+        this.visibility = visibility;
+
+    }
     public TutorSession(String sessionID, int tutorID,
                         String subjectID, String subjectName,
                         String sessionDate, String sessionTime,
@@ -88,6 +112,26 @@ public class TutorSession implements Serializable {
         this.sessionTime = sessionTime;
         this.sessionMode = sessionMode;
         this.sessionType = sessionType;
+        this.sessionDuration = sessionDuration;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+    }
+
+    public TutorSession(String sessionID, String tutorID,
+                        String subjectID, String subjectName,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String sessionStatus,
+                        int numberOfStudents, int maximumStudents,
+                        double sessionPrice, String sessionMode) {
+        this.sessionID = sessionID;
+        this.subjectName = subjectName;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionMode = sessionMode;
         this.sessionDuration = sessionDuration;
         this.numberOfStudents = numberOfStudents;
         this.maximumStudents = maximumStudents;
@@ -134,7 +178,20 @@ public class TutorSession implements Serializable {
         this.sessionPrice = sessionPrice;
     }
 
-    public TutorSession(String sessionID, String s, String subjectID,
+    public TutorSession(String sessionID, String sessionStatus, String sessionMode,
+                        String sessionType, int numberOfStudents,
+                        int maximumStudents, double sessionPrice, String visibility) {
+        this.sessionID = sessionID;
+        this.sessionStatus = sessionStatus;
+        this.sessionMode = sessionMode;
+        this.sessionType = sessionType;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.visibility = visibility;
+        this.sessionPrice = sessionPrice;
+    }
+
+    public TutorSession(String sessionID, String subjectID,
                         String subjectName, LocalDate sessionDate,
                         LocalTime sessionTime, int sessionDuration,
                         String sessionStatus, int numberOfStudents,

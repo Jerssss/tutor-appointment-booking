@@ -27,7 +27,7 @@
                         <Insets top="20" left="20" right="20" bottom="20"/>
                     </padding>
                     <children>
-                        <Label text="Subject Level">
+                        <Label text="Subject Name">
                             <font>
                                 <Font name="System Bold" size="14.0"/>
                             </font>

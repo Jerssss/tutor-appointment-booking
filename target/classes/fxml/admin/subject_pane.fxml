@@ -3,9 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -40,12 +43,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="236.0">
                      <children>
-                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false"  prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
                         </Button>
-                        <Button fx:id="addSubjectButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false"  prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #ffffff; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Subject" textFill="#6f2e2e">
+                        <Button fx:id="addSubjectButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #ffffff; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Subject" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
@@ -56,20 +59,50 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
+
+      <VBox alignment="CENTER" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="viewResTableView" VBox.vgrow="ALWAYS" focusTraversable="false"
-                       prefHeight="472.0" prefWidth="805.0"
-                       style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
-               <columns>
-                  <TableColumn fx:id="subjectIdColumn" prefWidth="115" text="Subject ID" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="subjectNameColumn" prefWidth="270" text="Subject Name" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="academicLevelColumn" prefWidth="140" text="Academic Level" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="viewMoreColumn" prefWidth="80" text="View More" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="optionColumn" prefWidth="110" text="Option" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="deleteColumn" prefWidth="90" text="Delete" style="-fx-alignment: CENTER;" />
-               </columns>
-            </TableView>
+            <TabPane fx:id="subjectsTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab fx:id="availableSubjectsTab" text="Available Subjects">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="viewResTableView" focusTraversable="false" prefHeight="472.0" prefWidth="805.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;">
+                                 <columns>
+                                    <TableColumn fx:id="subjectIdColumn" prefWidth="115" text="Subject ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="subjectNameColumn" prefWidth="270" text="Subject Name" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="academicLevelColumn" prefWidth="140" text="Academic Level" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="viewMoreColumn" prefWidth="80" text="View More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="optionColumn" prefWidth="110" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="deleteColumn" prefWidth="90" text="Delete" style="-fx-alignment: CENTER;" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+
+                  <Tab fx:id="archivedSubjectsTab" text="Archived Subjects">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="archivedResTableView" focusTraversable="false" prefHeight="472.0" prefWidth="805.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;">
+                                 <columns>
+                                    <TableColumn fx:id="archivedSubjectIdColumn" prefWidth="115" text="Subject ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedSubjectNameColumn" prefWidth="270" text="Subject Name" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedAcademicLevelColumn" prefWidth="140" text="Academic Level" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedViewMoreColumn" prefWidth="80" text="View More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedOptionColumn" prefWidth="110" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedDeleteColumn" prefWidth="90" text="Delete" style="-fx-alignment: CENTER;" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
          </children>
       </VBox>
 
