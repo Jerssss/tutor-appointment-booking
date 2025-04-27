@@ -22,6 +22,7 @@ import java.rmi.registry.Registry;
 import java.util.Date;
 
 public class AdminClient extends Application {
+    private static AdminService adminProcessors;
     private Stage primaryStage;
     private static AuthService authService;
     private static AdminService adminService;
@@ -43,6 +44,11 @@ public class AdminClient extends Application {
         System.out.println("=====================================================");
         launch(args);
     }
+
+    public static AdminService getAdminProcessors() {
+        return adminProcessors;
+    }
+
 
     @Override
     public void start(Stage primaryStage) {
