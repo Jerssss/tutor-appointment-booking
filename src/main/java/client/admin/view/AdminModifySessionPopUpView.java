@@ -9,12 +9,14 @@ import javafx.util.Duration;
 
 
 public class AdminModifySessionPopUpView {
+    private final ComboBox<String> sessionVisibilityComboBox;
     private final ComboBox<String> sessionStatusComboBox;
     private final ComboBox<String> sessionTypeComboBox;
     private final ComboBox<String> sessionModeComboBox;
     private final Button modifySessionButton;
 
-    public AdminModifySessionPopUpView(ComboBox<String> sessionStatusComboBox, ComboBox<String> sessionTypeComboBox, ComboBox<String> sessionModeComboBox, Button modifySessionButton) {
+    public AdminModifySessionPopUpView(ComboBox<String> sessionVisibilityComboBox, ComboBox<String> sessionStatusComboBox, ComboBox<String> sessionTypeComboBox, ComboBox<String> sessionModeComboBox, Button modifySessionButton) {
+        this.sessionVisibilityComboBox = sessionVisibilityComboBox;
         this.sessionStatusComboBox = sessionStatusComboBox;
         this.sessionTypeComboBox = sessionTypeComboBox;
         this.sessionModeComboBox = sessionModeComboBox;
@@ -22,6 +24,7 @@ public class AdminModifySessionPopUpView {
     }
 
     public void initializeComboBoxes() {
+        sessionVisibilityComboBox.getItems().addAll("Available", "Archived");
         sessionStatusComboBox.getItems().addAll("Scheduled","In Progress","Completed","Cancelled");
         sessionTypeComboBox.getItems().addAll("Individual", "Group");
         sessionModeComboBox.getItems().addAll("Online", "Face-To-Face");
@@ -49,7 +52,9 @@ public class AdminModifySessionPopUpView {
         st.setToY(1.0);
         st.play();
     }
-
+    public String getSelectedSessionVisibility() {
+        return sessionVisibilityComboBox.getValue();
+    }
     public String getSelectedSessionStatus() {
         return sessionStatusComboBox.getValue();
     }

@@ -12,10 +12,10 @@ public class AdminModifySessionPopUpModel {
     private final AdminService adminService;
 
     public AdminModifySessionPopUpModel() {
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
-    public void updateSession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus) throws RemoteException, SQLException {
-        adminService.modifySession(sessionID, sessionMode, sessionType, numStudents, maxStudents, sessionPrice, sessionStatus);
+    public void updateSession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus, String sessionVisibility) throws RemoteException, SQLException {
+        adminService.modifySession(sessionID, sessionMode, sessionType, numStudents, maxStudents, sessionPrice, sessionStatus, sessionVisibility);
     }
 
     public TutorSession getEditableDetails(String sessionID) throws RemoteException {

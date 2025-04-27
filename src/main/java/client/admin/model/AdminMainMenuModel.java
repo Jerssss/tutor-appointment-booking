@@ -8,6 +8,6 @@ public class AdminMainMenuModel {
     private AdminService adminService;
 
     public AdminMainMenuModel() {
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 }

@@ -9,7 +9,7 @@ public class AdminDeleteSubjectPopUpModel {
     private final AdminService adminService;
 
     public AdminDeleteSubjectPopUpModel() {
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public int deleteSubject(String subjectID) throws RemoteException, SQLIntegrityConstraintViolationException {

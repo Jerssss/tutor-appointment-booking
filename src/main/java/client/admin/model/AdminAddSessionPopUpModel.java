@@ -17,7 +17,7 @@ public class AdminAddSessionPopUpModel {
     private static List<LocalTime> availableStartTimes = new ArrayList<>();
 
     public AdminAddSessionPopUpModel(){
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public List<String> getAllTutorNames() throws RemoteException {

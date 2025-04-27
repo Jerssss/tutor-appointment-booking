@@ -43,6 +43,28 @@ public class AdminViewSessionController {
     @FXML
     private TableColumn<TutorSession, Void> deleteColumn;
     @FXML
+    private TableView<TutorSession> archivedResTableView;
+    @FXML
+    private TableColumn<TutorSession, String> archivedSessionIDColumn;
+    @FXML
+    private TableColumn<TutorSession, String> archivedDateColumn;
+    @FXML
+    private TableColumn<TutorSession, String> archivedTimeColumn;
+    @FXML
+    private TableColumn<TutorSession, String> archivedDurationColumn;
+    @FXML
+    private TableColumn<TutorSession, String> archivedTutorIDColumn;
+    @FXML
+    private TableColumn<TutorSession, String> archivedSubjectColumn;
+    @FXML
+    private TableColumn<TutorSession, String> archivedStatusColumn;
+    @FXML
+    private TableColumn<TutorSession, Void> archivedViewMoreColumn;
+    @FXML
+    private TableColumn<TutorSession, Void> archivedOptionColumn;
+    @FXML
+    private TableColumn<TutorSession, Void> archivedDeleteColumn;
+    @FXML
     private Button addSessionButton;
     @FXML
     private Button refreshButton;
@@ -63,7 +85,18 @@ public class AdminViewSessionController {
                 durationColumn,
                 tutorIDColumn,
                 subjectColumn,
-                statusColumn
+                statusColumn,
+                archivedResTableView,
+                archivedSessionIDColumn,
+                archivedDateColumn,
+                archivedTimeColumn,
+                archivedDurationColumn,
+                archivedTutorIDColumn,
+                archivedSubjectColumn,
+                archivedStatusColumn,
+                archivedViewMoreColumn,
+                archivedOptionColumn,
+                archivedDeleteColumn
         );
         displaySessions();
 
@@ -102,6 +135,34 @@ public class AdminViewSessionController {
             }
         });
 
+        archivedViewMoreColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
+            private final Button archivedViewMoreButton = new Button("View More");
+
+            {
+                archivedViewMoreButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                archivedViewMoreButton.setOnAction(event -> {
+                    clickedSession = getTableView().getItems().get(getIndex());
+                    AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController= null;
+                    try {
+                        adminViewMoreSessionsPopUpController = new AdminViewMoreSessionsPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    adminViewMoreSessionsPopUpController.showWindow(clickedSession.getSessionID());
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(archivedViewMoreButton);
+                }
+            }
+        });
+
         optionColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
             private final Button optionButton = new Button("Option");
 
@@ -129,6 +190,36 @@ public class AdminViewSessionController {
 //                    String status = sessionData.getSessionStatus();
 //                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
+                }
+            }
+        });
+        archivedOptionColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
+            private final Button archivedOptionButton = new Button("Option");
+
+            {
+                archivedOptionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                archivedOptionButton.setOnAction(event -> {
+                    clickedSession = getTableView().getItems().get(getIndex());
+                    AdminModifySessionPopUpController modifySessionController = null;
+                    try {
+                        modifySessionController = new AdminModifySessionPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    modifySessionController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
+//                    String status = sessionData.getSessionStatus();
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
+                    setGraphic(archivedOptionButton);
                 }
             }
         });
@@ -160,13 +251,43 @@ public class AdminViewSessionController {
                 }
             }
         });
+        archivedDeleteColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
+            private final Button archivedDeleteButton = new Button("Delete");
+
+            {
+                archivedDeleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                archivedDeleteButton.setOnAction(event -> {
+                    clickedSession = getTableView().getItems().get(getIndex());
+                    AdminDeleteSessionPopUpController deleteSessionPopUpController= null;
+                    try {
+                        deleteSessionPopUpController = new AdminDeleteSessionPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    deleteSessionPopUpController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(archivedDeleteButton);
+                }
+            }
+        });
         }
+
 
         private void displaySessions() {
         try {
             List<TutorSession> sessions = model.displaySessions();
+            List<TutorSession> archivedSessions = model.displayArchivedSessions();
             ObservableList<TutorSession> sessionData = FXCollections.observableArrayList(sessions);
-            view.displaySession(sessionData);
+            ObservableList<TutorSession> archivedSessionData = FXCollections.observableArrayList(archivedSessions);
+            view.displaySession(sessionData, archivedSessionData);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -208,11 +329,18 @@ public class AdminViewSessionController {
 
     private void filterSessions(String searchText) {
         try {
-            List<TutorSession> allSessions = model.displaySessions();
+            List<TutorSession> allSessions = model.displayAllSessions();
             ObservableList<TutorSession> filteredData = FXCollections.observableArrayList();
+            ObservableList<TutorSession> filteredArchivedData = FXCollections.observableArrayList();
 
             if (searchText == null || searchText.isEmpty()) {
-                filteredData.addAll(allSessions);
+                for (TutorSession session : allSessions){
+                    if (session.getVisibility().equals("Available")){
+                        filteredData.add(session);
+                    } else {
+                        filteredArchivedData.add(session);
+                    }
+                }
             } else {
                 String lowerCaseSearchText = searchText.toLowerCase();
                 for (TutorSession session : allSessions) {
@@ -233,12 +361,15 @@ public class AdminViewSessionController {
                                     (session.getSessionTime() != null && session.getSessionTime().toString().contains(lowerCaseSearchText));
 
                     if (match) {
-                        filteredData.add(session);
+                        if (session.getVisibility().equals("Available")){
+                            filteredData.add(session);
+                        } else {
+                            filteredArchivedData.add(session);
+                        }
                     }
                 }
             }
-
-            view.displaySession(filteredData);
+            view.displaySession(filteredData, filteredArchivedData);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

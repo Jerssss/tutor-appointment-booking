@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TutorSession implements Serializable {
+    private static final long serialVersionUID = 1L;
     // Session and tutor info
     private String sessionID;
     private String tutorID;
@@ -29,7 +30,30 @@ public class TutorSession implements Serializable {
     private String sessionMode;
     private String sessionType;
 
+    //Archiving purposes
+    private String visibility;
+
     // Constructor
+    public TutorSession(String sessionID, int tutorID,
+                        String subjectID, String subjectName,
+                        String sessionDate, String sessionTime,
+                        int sessionDuration, String sessionStatus,
+                        int numberOfStudents, int maximumStudents,
+                        double sessionPrice, String sessionMode, String visibility) {
+        this.sessionID = sessionID;
+        this.tutorID = String.valueOf(tutorID);
+        this.subjectID = subjectID;
+        this.subjectName = subjectName;
+        this.sessionDate = LocalDate.parse(sessionDate);
+        this.sessionTime = LocalTime.parse(sessionTime);
+        this.sessionDuration = sessionDuration;
+        this.sessionStatus = sessionStatus;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+        this.sessionMode = sessionMode;
+        this.visibility = visibility;
+    }
     public TutorSession(String sessionID, int tutorID,
                         String subjectID, String subjectName,
                         String sessionDate, String sessionTime,
@@ -68,6 +92,21 @@ public class TutorSession implements Serializable {
         this.numberOfStudents = numberOfStudents;
         this.maximumStudents = maximumStudents;
         this.sessionPrice = sessionPrice;
+    }
+
+    public TutorSession(String sessionID, String sessionStatus,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String academicLevel,
+                        String tutorID, String subjectID, String visibility) {
+        this.sessionID = sessionID;
+        this.sessionStatus = sessionStatus;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionDuration = sessionDuration;
+        this.academicLevel = academicLevel;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+        this.visibility = visibility;
     }
 
     public TutorSession(String sessionID, String sessionStatus,
@@ -221,6 +260,14 @@ public class TutorSession implements Serializable {
 
     public void setTutorID(String tutorID) {
         this.tutorID = tutorID;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
     }
 
     // String representation

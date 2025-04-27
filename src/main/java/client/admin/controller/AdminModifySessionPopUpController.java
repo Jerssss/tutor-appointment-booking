@@ -23,8 +23,8 @@ import java.util.ResourceBundle;
 public class AdminModifySessionPopUpController implements Initializable {
     private final AdminModifySessionPopUpModel model;
     private AdminModifySessionPopUpView view;
-    private final AdminService service = new AdminServiceImpl();
-
+    @FXML
+    private ComboBox<String> sessionVisibilityComboBox;
     @FXML
     private ComboBox<String> sessionStatusComboBox;
     @FXML
@@ -53,6 +53,7 @@ public class AdminModifySessionPopUpController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.view = new AdminModifySessionPopUpView(
+                sessionVisibilityComboBox,
                 sessionStatusComboBox,
                 sessionTypeComboBox,
                 sessionModeComboBox,
@@ -100,6 +101,7 @@ public class AdminModifySessionPopUpController implements Initializable {
 
         boolean hasError = false;
 
+        String sessionVisibility = view.getSelectedSessionVisibility();
         String sessionStatus = view.getSelectedSessionStatus();
         String sessionType = view.getSelectedSessionType();
         String sessionMode = view.getSelectedSessionMode();
@@ -154,7 +156,7 @@ public class AdminModifySessionPopUpController implements Initializable {
 
         try {
             String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
-            model.updateSession(sessionID, sessionMode, sessionType, numStudents, maxStudents, price, sessionStatus);
+            model.updateSession(sessionID, sessionMode, sessionType, numStudents, maxStudents, price, sessionStatus, sessionVisibility);
 
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Session Updated");
@@ -192,6 +194,7 @@ public class AdminModifySessionPopUpController implements Initializable {
         String sessionID = AdminViewSessionController.getClickedSession().getSessionID();
         var details = model.getEditableDetails(sessionID);
 
+        sessionVisibilityComboBox.setValue(details.getVisibility());
         sessionStatusComboBox.setValue(details.getSessionStatus());
         sessionTypeComboBox.setValue(details.getSessionType());
         sessionModeComboBox.setValue(details.getSessionMode());

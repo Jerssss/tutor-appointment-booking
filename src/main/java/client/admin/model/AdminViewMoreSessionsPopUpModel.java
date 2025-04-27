@@ -9,7 +9,7 @@ public class AdminViewMoreSessionsPopUpModel {
     private final AdminService adminService;
 
     public AdminViewMoreSessionsPopUpModel( ){
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public List<String> getDetails(String sessionID) throws RemoteException {

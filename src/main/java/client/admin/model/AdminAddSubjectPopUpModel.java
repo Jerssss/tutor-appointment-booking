@@ -11,7 +11,7 @@ public class AdminAddSubjectPopUpModel {
     private final AdminService adminService;
 
     public AdminAddSubjectPopUpModel(){
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public void addNewSubject(String subjectID, String subjectName, String subjectDescription, String academicLevel) throws RemoteException, SQLException {

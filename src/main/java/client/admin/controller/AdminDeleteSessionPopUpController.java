@@ -68,7 +68,8 @@ public class AdminDeleteSessionPopUpController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Deletion Error");
                 alert.setHeaderText("Cannot Delete Session");
-                alert.setContentText("This session cannot be deleted because it is associated with booking records.");
+                alert.setContentText("This session cannot be deleted because it is associated with \nbooking records." +
+                        " Try setting Session Visibility to Archived\ninstead.");
                 alert.showAndWait();
             }
             Stage stage = (Stage) confirmButton.getScene().getWindow();

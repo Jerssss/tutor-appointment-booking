@@ -14,7 +14,7 @@ public class AdminViewLessonPlanModel {
     private final AdminService adminService;
 
     public AdminViewLessonPlanModel() {
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
 //    public Map<LessonPlan, List<String>> fetchLessonPlan() throws RemoteException {

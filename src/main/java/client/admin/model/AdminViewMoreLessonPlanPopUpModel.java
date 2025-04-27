@@ -9,7 +9,7 @@ public class AdminViewMoreLessonPlanPopUpModel {
     private final AdminService adminService;
 
     public AdminViewMoreLessonPlanPopUpModel( ){
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
 

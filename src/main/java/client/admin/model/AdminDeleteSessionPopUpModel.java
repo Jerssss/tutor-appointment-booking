@@ -9,7 +9,7 @@ public class AdminDeleteSessionPopUpModel {
     private final AdminService adminService;
 
     public AdminDeleteSessionPopUpModel() {
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public int deleteSession(String sessionID) throws RemoteException {

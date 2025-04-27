@@ -232,7 +232,8 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
                                 resultSet.getInt("sessionDuration"),
                                 resultSet.getString("academicLevel"),
                                 resultSet.getString("tutorID"),
-                                resultSet.getString("subjectID")));
+                                resultSet.getString("subjectID"),
+                                resultSet.getString("visibility")));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -303,8 +304,8 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus) throws RemoteException, SQLException {
-        query = "{CALL modifySession(?, ?, ?, ?, ?, ?, ?)}";
+    public void modifySession(String sessionID, String sessionMode, String sessionType, String numStudents, String maxStudents, String sessionPrice, String sessionStatus, String sessionVisibility) throws RemoteException, SQLException {
+        query = "{CALL modifySession(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             con.setAutoCommit(false);
@@ -317,6 +318,8 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             callStmt.setString(5, maxStudents);
             callStmt.setString(6, sessionPrice);
             callStmt.setString(7, sessionStatus);
+            callStmt.setString(8, sessionVisibility);
+
 
             callStmt.executeUpdate();
             con.commit();
@@ -351,7 +354,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     @Override
     public TutorSession getEditableDetails(String sessionID) throws RemoteException {
         TutorSession details = new TutorSession();
-        query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice, sessionStatus FROM tutorsession\n" +
+        query = "SELECT sessionType, sessionMode, numberOfStudents, maximumStudents, sessionPrice, sessionStatus, visibility FROM tutorsession\n" +
                 "WHERE sessionID = ? ;";
 
         try{
@@ -366,6 +369,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
                 details.setNumberOfStudents(resultSet.getInt("numberOfStudents"));
                 details.setMaximumStudents(resultSet.getInt("maximumStudents"));
                 details.setSessionPrice(resultSet.getInt("sessionPrice"));
+                details.setVisibility(resultSet.getString("visibility"));
             }
         }catch (SQLException e){
             e.printStackTrace();

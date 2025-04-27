@@ -11,7 +11,7 @@ public class AdminViewSubjectModel {
     private final AdminService adminService;
 
     public AdminViewSubjectModel( ){
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public List<Subject> displaySubjects() throws RemoteException {

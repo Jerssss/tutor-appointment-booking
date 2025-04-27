@@ -10,7 +10,7 @@ public class AdminModifySubjectPopUpModel {
     private final AdminService adminService;
 
     public AdminModifySubjectPopUpModel() {
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
     public void updateSubject(String subjectID, String academicLevel) throws RemoteException, SQLException {
         adminService.modifySubject(subjectID, academicLevel);

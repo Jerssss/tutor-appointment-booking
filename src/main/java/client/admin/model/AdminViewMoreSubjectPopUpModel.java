@@ -9,7 +9,7 @@ public class AdminViewMoreSubjectPopUpModel {
     private final AdminService adminService;
 
     public AdminViewMoreSubjectPopUpModel( ){
-        this.adminService = AdminClient.getAdminProcessors();
+        this.adminService = AdminClient.getAdminService();
     }
 
     public List<String> getDetails(String subject) throws RemoteException {
