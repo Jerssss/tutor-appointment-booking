@@ -130,8 +130,8 @@ public class StudentMainMenuView {
     }
     public void setActionCreateBookingButton(EventHandler<ActionEvent> event) {
         createBookingButton.setOnAction(event1 -> {
-            highlightButton(createBookingButton); //highlight the button when clicked
-            loadView("/fxml/student/create_booking_pane.fxml"); //load the view
+            highlightButton(createBookingButton);
+            loadView("/fxml/student/create_booking_pane.fxml");
         });
     }
     public void setActionViewBookingButton(EventHandler<ActionEvent> event) {

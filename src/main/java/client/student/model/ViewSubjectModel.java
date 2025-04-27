@@ -10,7 +10,7 @@ import java.util.List;
 public class ViewSubjectModel {
     private final StudentService studentService;
 
-    public ViewSubjectModel(StudentService service) {
+    public ViewSubjectModel(StudentService studentService) {
         this.studentService = StudentTutorClient.getStudentService();
     }
 

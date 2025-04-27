@@ -26,6 +26,13 @@
             <children>
                 <VBox spacing="8" alignment="CENTER_LEFT">
                     <children>
+                        <Label text="Session Visibility">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="sessionVisibilityComboBox" prefWidth="250.0"/>
+
                         <Label text="Session Status">
                             <font>
                                 <Font name="System Bold" size="12.0"/>

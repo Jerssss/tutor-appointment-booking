@@ -3,15 +3,18 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 <?import javafx.scene.control.ScrollPane?>
+
 <VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" VBox.vgrow="ALWAYS" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.controller.AdminViewSessionController">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
@@ -41,12 +44,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="236.0">
                      <children>
-                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false"  prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
                         </Button>
-                        <Button fx:id="addSessionButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false"  prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #ffffff; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Session" textFill="#6f2e2e">
+                        <Button fx:id="addSessionButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #ffffff; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Session" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
@@ -57,31 +60,58 @@
             </HBox>
          </children>
       </VBox>
+
       <VBox alignment="CENTER" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
-            <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-               <content>
-                  <TableView fx:id="viewResTableView" focusTraversable="false" minHeight="-Infinity" prefWidth="1000.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
-                     <columns>
-                        <TableColumn fx:id="sessionIDColumn" editable="false" prefWidth="70.0" resizable="false" text="Session ID" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="dateColumn" editable="false" prefWidth="110.0" resizable="false" text="Date" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="timeColumn" editable="false" prefWidth="90.0" resizable="false" text="Time" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="durationColumn" editable="false" prefWidth="90.0" resizable="false" text="Duration" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="tutorIDColumn" editable="false" prefWidth="95.0" resizable="false" text="Tutor ID" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="subjectColumn" editable="false" prefWidth="110.0" resizable="false" text="Subject" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="statusColumn" editable="false" prefWidth="90.0" resizable="false" text="Status" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="105.0" resizable="false" text="View More" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="optionColumn" editable="false" prefWidth="80.0" resizable="false" text="Option" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="deleteColumn" editable="false" prefWidth="80.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;" />
-                     </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-               </content>
-            </ScrollPane>
+            <TabPane fx:id="sessionsTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab fx:id="availableSessionsTab" text="Available Sessions">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="viewResTableView" focusTraversable="false" prefHeight="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;">
+                                 <columns>
+                                    <TableColumn fx:id="sessionIDColumn" editable="false" prefWidth="70.0" text="Session ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="dateColumn" editable="false" prefWidth="110.0" text="Date" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="timeColumn" editable="false" prefWidth="90.0" text="Time" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="durationColumn" editable="false" prefWidth="90.0" text="Duration" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="tutorIDColumn" editable="false" prefWidth="95.0" text="Tutor ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="subjectColumn" editable="false" prefWidth="110.0" text="Subject" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="statusColumn" editable="false" prefWidth="90.0" text="Status" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="105.0" text="View More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="80.0" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="80.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
 
-
+                  <Tab fx:id="archivedSessionsTab" text="Archived Sessions">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="archivedResTableView" focusTraversable="false" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;">
+                                 <columns>
+                                    <TableColumn fx:id="archivedSessionIDColumn" editable="false" prefWidth="70.0" text="Session ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedDateColumn" editable="false" prefWidth="110.0" text="Date" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedTimeColumn" editable="false" prefWidth="90.0" text="Time" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedDurationColumn" editable="false" prefWidth="90.0" text="Duration" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedTutorIDColumn" editable="false" prefWidth="95.0" text="Tutor ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedSubjectColumn" editable="false" prefWidth="110.0" text="Subject" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedStatusColumn" editable="false" prefWidth="90.0" text="Status" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedViewMoreColumn" editable="false" prefWidth="105.0" text="View More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedOptionColumn" editable="false" prefWidth="80.0" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedDeleteColumn" editable="false" prefWidth="80.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
          </children>
       </VBox>
    </children>
