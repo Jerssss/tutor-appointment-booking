@@ -223,11 +223,11 @@ public class Server {
     }
 
     private static String getServerIP() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            System.err.println("[Server] Could not get server IP address: " + e.getMessage());
-            return "Unknown";
-        }
-    }
+//        try {
+            return "192.168.191.231";
+//        } catch (UnknownHostException e) {
+//            System.err.println("[Server] Could not get server IP address: " + e.getMessage());
+//            return "Unknown";
+//        }
+   }
 }

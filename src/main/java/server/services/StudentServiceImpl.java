@@ -7,6 +7,7 @@ import shared.interfaces.StudentService;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,8 +16,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentServiceImpl implements Remote, StudentService, Serializable {
+public class StudentServiceImpl extends UnicastRemoteObject implements Remote, StudentService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
+
+    private static Connection conn = DatabaseConnection.setCon();
+
+    public StudentServiceImpl() throws RemoteException {
+        super();
+    }
 
     @Override
     public Booking createBooking(String studentID, String sessionID, String sessionMode, String bookingStatus,
@@ -30,8 +37,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
             throw new RemoteException("Invalid session mode. Must be 'Face-to-Face' or 'Online'");
         }
 
-        try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement cstmt = conn.prepareCall("{call CreateBooking(?, ?, ?, ?, ?)}")) {
+        try (CallableStatement cstmt = conn.prepareCall("{call CreateBooking(?, ?, ?, ?, ?)}")) {
 
             cstmt.setString(1, studentID);
             cstmt.setString(2, sessionID);
@@ -58,8 +64,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     @Override
     public List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException {
         List<BookingDetails> bookings = new ArrayList<>();
-        try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement cstmt = conn.prepareCall("{CALL ViewStudentBooking(?)}")) {
+        try (CallableStatement cstmt = conn.prepareCall("{CALL ViewStudentBooking(?)}")) {
 
             cstmt.setInt(1, studentID);
             ResultSet rs = cstmt.executeQuery();
@@ -103,8 +108,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     public List<TutorSession> viewAvailableSessions() throws RemoteException {
         List<TutorSession> sessions = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions()}");
+        try (CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions()}");
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -134,8 +138,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
 
     @Override
     public Booking modifyBooking(String studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement cstmt = conn.prepareCall("{call ModifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
+        try (CallableStatement cstmt = conn.prepareCall("{call ModifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
 
             cstmt.setString(1, studentID);
             cstmt.setString(2, sessionID);
@@ -158,8 +161,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
 
     @Override
     public boolean cancelBooking(String sessionID) throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
+        try (PreparedStatement stmt = conn.prepareStatement(
                      "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?"
              )) {
             stmt.setString(1, sessionID);
@@ -174,8 +176,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     public List<Subject> viewSubject() throws RemoteException {
         System.out.println("[SERVER] Fetching subjects from database...");
         List<Subject> subjects = new ArrayList<>();
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
+        try (PreparedStatement stmt = conn.prepareStatement(
                      "SELECT * FROM subject"
              )) {
 
@@ -206,8 +207,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     public List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException {
         System.out.println("[SERVER] Fetching high school lesson plans from database...");
         List<LessonPlan> lessonPlans = new ArrayList<>();
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
+        try (PreparedStatement stmt = conn.prepareStatement(
                      "SELECT * FROM lessonplan WHERE subjectID LIKE 'HS%'"
              )) {
 
@@ -238,8 +238,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
     public List<LessonPlan> viewCollegeLessonPlan() throws RemoteException {
         System.out.println("[SERVER] Fetching college lesson plans from database...");
         List<LessonPlan> lessonPlans = new ArrayList<>();
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
+        try (PreparedStatement stmt = conn.prepareStatement(
                      "SELECT * FROM lessonplan WHERE subjectID LIKE 'IT%'"
              )) {
 
@@ -283,8 +282,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
                 "GROUP BY p.paymentID, p.studentID, p.amount, p.paymentDate, p.paymentTime, p.paymentMethod, b.sessionMode, b.bookingStatus " +
                 "ORDER BY p.paymentDate DESC";
 
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, studentID);
             ResultSet rs = stmt.executeQuery();
 
@@ -324,8 +322,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
                 "       JOIN user t ON ts.tutorID = t.userID" +
                 "       WHERE u.userID = ?";
 
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, studentID);
             ResultSet rs = stmt.executeQuery();
 
@@ -411,8 +408,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
 
     @Override
     public boolean updateStudentBalance(String studentId, double amount) throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
+        try (PreparedStatement stmt = conn.prepareStatement(
                      "UPDATE student SET balance = balance + ? WHERE studentID = ?"
              )) {
             stmt.setDouble(1, amount);
@@ -425,8 +421,7 @@ public class StudentServiceImpl implements Remote, StudentService, Serializable 
 
     @Override
     public double getStudentBalance(String studentID) throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
+        try (PreparedStatement stmt = conn.prepareStatement(
                      "SELECT balance FROM student WHERE studentID = ?"
              )) {
             stmt.setString(1, studentID);

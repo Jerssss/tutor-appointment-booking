@@ -21,7 +21,7 @@ public class CreatePaymentWindowView {
     private String studentId;
     private StudentService service;
 
-    public void initializeData(String studentId, double currentBalance) {
+    public void initializeData(String studentId, double currentBalance) throws RemoteException {
         this.studentId = studentId;
         this.service = new StudentServiceImpl();
 
