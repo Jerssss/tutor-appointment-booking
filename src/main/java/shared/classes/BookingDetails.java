@@ -1,6 +1,8 @@
     package shared.classes;
 
-    public class BookingDetails extends Booking {
+    import java.io.Serializable;
+
+    public class BookingDetails extends Booking implements Serializable {
         private String subjectName;
         private String tutorName;
         private String sessionDate;

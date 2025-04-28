@@ -1,6 +1,8 @@
 package shared.classes;
 
-public class Booking {
+import java.io.Serializable;
+
+public class Booking implements Serializable {
     private String studentID;
     private String sessionID;
     private String sessionMode;

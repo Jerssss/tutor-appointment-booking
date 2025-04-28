@@ -1,9 +1,10 @@
 package shared.classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class BalanceDetails extends Student {
+public class BalanceDetails extends Student implements Serializable {
     private LocalDate sessionDate;
     private LocalTime sessionTime;
     private int sessionDuration;
