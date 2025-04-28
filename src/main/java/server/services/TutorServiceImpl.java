@@ -1,16 +1,12 @@
 package server.services;
 
-import shared.classes.Student;
-import shared.classes.TutorSession;
+import shared.classes.*;
 import shared.interfaces.TutorService;
-import shared.classes.LessonPlan;
 import server.database.DatabaseConnection;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,45 +64,48 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
     }
 
     @Override
-    public List<TutorSession> viewSessionList() throws RemoteException {
-        List<TutorSession> tutorsessions = new ArrayList<>();
+    public List<TutorSession> viewSessionList(String tutorID) throws RemoteException {
+        List<TutorSession> tutorSessions = new ArrayList<>();
+        System.out.println("Retrieving sessions for tutor ID: " + tutorID);
+
         String query = "SELECT ts.sessionID, ts.tutorID, ts.subjectID, s.subjectName, ts.sessionStatus, " +
                 "ts.sessionDate, ts.sessionTime, ts.sessionDuration, ts.numberOfStudents, " +
                 "ts.maximumStudents, ts.sessionPrice, b.sessionMode " +
                 "FROM tutorsession ts " +
                 "JOIN subject s ON ts.subjectID = s.subjectID " +
-                "LEFT JOIN booking b ON ts.sessionID = b.sessionID"; // Use LEFT JOIN to include all sessions
+                "LEFT JOIN booking b ON ts.sessionID = b.sessionID " +
+                "WHERE ts.tutorID = ?";
 
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet resultSet = stmt.executeQuery(query);
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, tutorID); // set tutorID
+            ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                String sessionID = resultSet.getString("sessionID");
-                int tutorID = resultSet.getInt("tutorID");
-                String subjectID = resultSet.getString("subjectID");
-                String subjectName = resultSet.getString("subjectName");
-                String sessionStatus = resultSet.getString("sessionStatus");
-                LocalDate sessionDate = LocalDate.parse(resultSet.getDate("sessionDate").toString());
-                LocalTime sessionTime = resultSet.getTime("sessionTime").toLocalTime();
-                int sessionDuration = resultSet.getInt("sessionDuration");
-                int numberOfStudents = resultSet.getInt("numberOfStudents");
-                int maximumStudents = resultSet.getInt("maximumStudents");
-                double sessionPrice = resultSet.getDouble("sessionPrice");
-                String sessionMode = resultSet.getString("sessionMode");
-
-                TutorSession session = new TutorSession(sessionID, String.valueOf(tutorID), subjectID, subjectName,
-                        sessionDate, sessionTime, sessionDuration, sessionStatus, numberOfStudents, maximumStudents, sessionPrice, sessionMode);
-                tutorsessions.add(session);
-                System.out.println(session);
+                // Create TutorSession object and add to the list
+                TutorSession session = new TutorSession(
+                        resultSet.getString("sessionID"),
+                        resultSet.getString("tutorID"),
+                        resultSet.getString("subjectID"),
+                        resultSet.getString("subjectName"),
+                        resultSet.getDate("sessionDate").toLocalDate(),
+                        resultSet.getTime("sessionTime").toLocalTime(),
+                        resultSet.getInt("sessionDuration"),
+                        resultSet.getString("sessionStatus"),
+                        resultSet.getInt("numberOfStudents"),
+                        resultSet.getInt("maximumStudents"),
+                        resultSet.getDouble("sessionPrice"),
+                        resultSet.getString("sessionMode")
+                );
+                tutorSessions.add(session);
+                System.out.println("Retrieved session: " + session);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RemoteException("Error retrieving session list: " + e.getMessage(), e);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return tutorsessions;
+        return tutorSessions;
     }
 
     @Override
@@ -199,4 +198,44 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         }
     }
 
+    @Override
+    public TutorSession getSessionDetails(String sessionID) throws RemoteException {
+        TutorSession session = null;
+        String query = "SELECT ts.sessionID, ts.tutorID, ts.subjectID, s.subjectName, ts.sessionStatus, " +
+                "ts.sessionDate, ts.sessionTime, ts.sessionDuration, ts.numberOfStudents, " +
+                "ts.maximumStudents, ts.sessionPrice, b.sessionMode, ts.sessionType " +
+                "FROM tutorsession ts " +
+                "JOIN subject s ON ts.subjectID = s.subjectID " +
+                "LEFT JOIN booking b ON ts.sessionID = b.sessionID " +
+                "WHERE ts.sessionID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, sessionID);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                session = new TutorSession(
+                        resultSet.getString("sessionID"),
+                        resultSet.getString("tutorID"),
+                        resultSet.getString("subjectID"),
+                        resultSet.getString("subjectName"),
+                        resultSet.getDate("sessionDate").toLocalDate(),
+                        resultSet.getTime("sessionTime").toLocalTime(),
+                        resultSet.getInt("sessionDuration"),
+                        resultSet.getString("sessionStatus"),
+                        resultSet.getInt("numberOfStudents"),
+                        resultSet.getInt("maximumStudents"),
+                        resultSet.getDouble("sessionPrice"),
+                        resultSet.getString("sessionMode"),
+                        resultSet.getString("sessionType")
+                );
+                System.out.println("Retrieved session: " + session);
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while retrieving session details: " + e.getMessage());
+        }
+        return session;
+    }
 }

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TutorSession implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //wag alisin PLEASE
     // Session and tutor info
     private String sessionID;
     private String tutorID;
@@ -32,6 +32,27 @@ public class TutorSession implements Serializable {
 
     //Archiving purposes
     private String visibility;
+
+    public TutorSession(String sessionID, String tutorID,
+                        String subjectID, String subjectName,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String sessionStatus,
+                        int numberOfStudents, int maximumStudents,
+                        double sessionPrice, String sessionMode, String sessionType) {
+        this.sessionID = sessionID;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+        this.subjectName = subjectName;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionDuration = sessionDuration;
+        this.sessionStatus = sessionStatus;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+        this.sessionMode = sessionMode;
+        this.sessionType = sessionType; // Ensure this is a String
+    }
 
     // Constructor
     public TutorSession(String sessionID, int tutorID,

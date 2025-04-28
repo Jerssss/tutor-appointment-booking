@@ -1,15 +1,11 @@
 package client.tutor.controller;
 
-import client.tutor.model.TutorViewSessionListModel;
 import client.tutor.model.TutorViewStudentListPopUpModel;
-import client.tutor.view.TutorViewSessionListView;
 import client.tutor.view.TutorViewStudentListPopUp;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.Student;
-import shared.classes.TutorSession;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

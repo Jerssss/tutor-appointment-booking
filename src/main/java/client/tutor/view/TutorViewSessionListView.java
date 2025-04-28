@@ -2,11 +2,11 @@ package client.tutor.view;
 
 import client.StudentTutorClient;
 import client.tutor.controller.TutorViewSessionListController;
+import client.tutor.model.TutorViewMorePopUpModel;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import java.util.LinkedHashMap;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +16,9 @@ import shared.classes.TutorSession;
 import shared.interfaces.TutorService;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TutorViewSessionListView {
+    @FXML private TableColumn<TutorSession, String> viewMoreColumn;
     @FXML private TableColumn<TutorSession, String> sessionTimeColumn;
     @FXML private TableView<TutorSession> sessionListTableView;
     @FXML private TableColumn<TutorSession, String> sessionNoColumn;
@@ -32,6 +32,7 @@ public class TutorViewSessionListView {
     private TextField searchStudResTextField;
     @FXML
     private Button refreshButton;
+    private TutorViewMorePopUpModel model;
     private TutorViewSessionListController controller;
     private ObservableList<TutorSession> sessionData = FXCollections.observableArrayList();
 
@@ -44,11 +45,14 @@ public class TutorViewSessionListView {
         initializeTableColumns();
         System.out.println("[CLIENT] Table columns initialized successfully.");
         initialController();
+
+        this.model = new TutorViewMorePopUpModel();
+
         try {
             searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 controller.searchSession(newValue);
             });
-            refreshButton.setOnAction(event -> controller.loadSessions());
+            refreshButton.setOnAction(event -> controller.loadSessionData());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -66,6 +70,7 @@ public class TutorViewSessionListView {
             sessionTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionTime().toString())); // String
             durationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSessionDuration()).asObject()); // Integer
             statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionStatus())); // String
+            viewMoreColumn.setCellFactory(column -> createViewMoreButtonCellFactory());
             studentColumn.setCellFactory(column -> createViewButtonCellFactory());
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -124,25 +129,69 @@ public class TutorViewSessionListView {
         }
     }
 
+    public TableCell<TutorSession, String> createViewMoreButtonCellFactory() {
+        return new TableCell<TutorSession, String>() {
+            private final Button viewButton = new Button("View More");
+
+            {
+                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                viewButton.setOnAction(event -> {
+                    TutorSession session = getTableRow().getItem();
+                    if (session != null) {
+                        sessionListTableView.getSelectionModel().select(session);
+                        showViewMorePane(session);
+                    }
+                });
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewButton);
+                }
+            }
+        };
+    }
+
+    public void showViewMorePane(TutorSession session) {
+        System.out.println("[CLIENT] Selected session: " + session);
+
+        if (session != null) {
+            try {
+                // Create a new instance of TutorViewMorePopUp using the constructor that accepts a model
+                TutorViewMorePopUp tutorViewMorePopUp = new TutorViewMorePopUp(model); // Pass the model here
+
+                // Show the pop-up and pass the session ID
+                tutorViewMorePopUp.show(session.getSessionID());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("[CLIENT] Error displaying session details: " + e.getMessage());
+            }
+        } else {
+            System.out.println("[CLIENT] No session selected.");
+        }
+    }
+
 
     public void updateTable(List<TutorSession> sessions) {
-        try {
-            List<TutorSession> uniqueSessions = sessions.stream()
-                    .collect(Collectors.collectingAndThen(
-                            Collectors.toMap(
-                                    TutorSession::getSessionID,
-                                    session -> session,
-                                    (existing, replacement) -> existing,
-                                    LinkedHashMap::new
-                            ),
-                            map -> map.values().stream().toList()
-                    ));
-            sessionData.setAll(uniqueSessions);
+        System.out.println("Updating table with " + (sessions != null ? sessions.size() : 0) + " sessions.");
+        if (sessions != null && !sessions.isEmpty()) {
+            sessionData.setAll(sessions);
             sessionListTableView.setItems(sessionData);
             sessionListTableView.refresh();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            System.out.println("No sessions to display.");
         }
+    }
+
+    public void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public void refreshButtonExited() {

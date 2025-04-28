@@ -6,17 +6,16 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.TutorSession;
+import shared.classes.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class TutorViewSessionListController {
     private final TutorViewSessionListView view;
     private final TutorViewSessionListModel model;
     private ObservableList<TutorSession> sessionData = FXCollections.observableArrayList();
-
 
     public TutorViewSessionListController(TutorViewSessionListView view) {
         this.view = view;
@@ -26,24 +25,17 @@ public class TutorViewSessionListController {
         loadSessionData();
     }
 
-    public void loadSessions() {
-        System.out.println("[CLIENT] loadSessions() method called.");
-
-        List<TutorSession> session = model.fetchSessions();
-
-        if (session != null) {
-            Platform.runLater(() -> {
-                sessionData.setAll(session); // Update observable list
-                view.updateTable(session);
-                System.out.println("[CLIENT] Table updated with " + session.size() + " sessions.");
-            });
-        } else {
-            System.err.println("[ERROR] Failed to load sessions.");
+    public void loadSessionData() {
+        // Get tutor ID from session
+        String tutorID = SessionManager.getCurrentUserId();
+        System.out.println("Current Tutor ID: " + tutorID);
+        if (tutorID == null) {
+            System.err.println("[ERROR] No active session found for tutor.");
+            view.showErrorAlert("Session Error", "No active session found for tutor.");
+            return;
         }
-    }
 
-    private void loadSessionData() {
-        List<TutorSession> sessions = model.getSessionList();
+        List<TutorSession> sessions = model.getSessionList(tutorID);
         if (sessions != null) {
             Platform.runLater(() -> {
                 sessionData.setAll(sessions);
