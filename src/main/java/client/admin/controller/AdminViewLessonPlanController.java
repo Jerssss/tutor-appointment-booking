@@ -28,7 +28,6 @@ import java.util.Map;
 public class AdminViewLessonPlanController {
     private final AdminViewLessonPlanModel model;
     private AdminViewLessonPlanView view;
-    private AdminService service = new AdminServiceImpl();
     private static String clickedLessonPlan;
 
     @FXML

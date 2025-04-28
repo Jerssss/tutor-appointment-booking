@@ -17,7 +17,6 @@ import java.util.List;
 public class AdminViewSessionController {
     private final AdminViewSessionModel model;
     private AdminViewSessionView view;
-    private AdminService Studentservice = new AdminServiceImpl();
     private static TutorSession clickedSession;
 
     @FXML

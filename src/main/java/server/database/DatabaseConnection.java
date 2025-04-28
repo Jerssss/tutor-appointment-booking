@@ -5,18 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL =  "jdbc:mysql://localhost:3306/learnify?user=root&password=";
+    private static Connection connection = null;
+    private static final String URL = "jdbc:mysql://localhost:3306/learnifydb?useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
     public static Connection setCon() {
-        Connection connection = null;
         try {
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database connection established successfully.");
-            return connection;
+            if (connection == null || connection.isClosed()) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                System.out.println("Database connection established successfully.");
+            }
         } catch (ClassNotFoundException e) {
             System.err.println("MySQL JDBC Driver not found. Please ensure the driver is in the classpath.");
             e.printStackTrace();
@@ -39,6 +39,7 @@ public class DatabaseConnection {
     }
 
     private static void handleConnectionFailure() {
-        System.out.println("Database connection failed. Server cannot start without database access.");
+        // you can show an alert popup or log, depending on your UI
+        System.err.println("Handling connection failure...");
     }
 }
