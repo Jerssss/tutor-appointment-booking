@@ -187,7 +187,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getString("subjectID"),
                         rs.getString("subjectName"),
                         rs.getString("subjectDescription"),
-                        rs.getString("subjectLevel")
+                        rs.getString("academicLevel")
                 );
                 subjects.add(subject);
                 System.out.println("[SERVER] Fetched subject: " + subject);
