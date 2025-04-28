@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TutorServiceImpl extends UnicastRemoteObject implements TutorService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
-    private static Connection con = DatabaseConnection.setCon();
+    private static final Connection con = DatabaseConnection.setCon();
     private static Statement stmt;
 
     public TutorServiceImpl() throws RemoteException {

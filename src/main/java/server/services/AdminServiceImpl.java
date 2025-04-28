@@ -12,8 +12,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-public class AdminServiceImpl extends UnicastRemoteObject implements AdminService, Serializable {    private static final long serialVersionUID = 1L; // Add a serialVersionUID
-    protected Connection con;  // creates the connection to the database
+public class AdminServiceImpl extends UnicastRemoteObject implements AdminService, Serializable {
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID
+    private static final Connection con = DatabaseConnection.setCon(); // creates the connection to the database
     private static String query; // holds the sql query
     private static Statement stmt; // used to execute queries without parameters
     private static CallableStatement callStmt;
@@ -21,11 +22,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     private static ResultSet resultSet; // stores the result returned by executing a query
 
     public AdminServiceImpl() throws RemoteException {
-        this.con = DatabaseConnection.setCon();
-        if (this.con == null) {
-            throw new RemoteException("Database connection failed: Connection is null");
-        }
-        System.out.println("[SERVER] Successfully connected to the database.");
+        super();
     }
 
     public String generateNewUserID() {

@@ -19,7 +19,7 @@ import java.util.List;
 public class StudentServiceImpl extends UnicastRemoteObject implements Remote, StudentService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
 
-    private static Connection conn = DatabaseConnection.setCon();
+    private static final Connection conn = DatabaseConnection.setCon();
 
     public StudentServiceImpl() throws RemoteException {
         super();
