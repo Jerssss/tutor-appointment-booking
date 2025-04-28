@@ -27,6 +27,8 @@ public class AdminViewPaymentView {
     @FXML
     private TableColumn<Payment, String> studentIDColumn;
     @FXML
+    private TableColumn<Payment, String> studentNameColumn;
+    @FXML
     private TableColumn<Payment, String> paymentDateColumn;
     @FXML
     private TableColumn<Payment, String> paymentTimeColumn;
@@ -51,6 +53,7 @@ public class AdminViewPaymentView {
     public void initializeTableColumns() {
         invoiceIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaymentID()));
         studentIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudentID()));
+        studentNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStudentName()));
         paymentDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaymentDate().toString()));
         paymentTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPaymentTime())));
         paymentMethodColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPaymentMethod()));

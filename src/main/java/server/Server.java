@@ -224,7 +224,7 @@ public class Server {
 
     private static String getServerIP() {
 //        try {
-            return "192.168.191.231";
+            return "localhost";
 //        } catch (UnknownHostException e) {
 //            System.err.println("[Server] Could not get server IP address: " + e.getMessage());
 //            return "Unknown";

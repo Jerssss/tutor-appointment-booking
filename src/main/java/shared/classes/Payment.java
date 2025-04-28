@@ -8,6 +8,7 @@ import java.time.LocalTime;
 public class Payment implements Serializable {
     private String paymentID;
     private String studentID;
+    private String studentName;
     private LocalDate paymentDate;
     private LocalTime paymentTime;
     private String paymentMethod;
@@ -17,6 +18,16 @@ public class Payment implements Serializable {
     public Payment(String paymentID, String studentID, LocalDate date,  LocalTime time, String paymentMethod, double amount) {
         this.paymentID = paymentID;
         this.studentID = studentID;
+        this.paymentDate = date;
+        this.paymentTime = time;
+        this.paymentMethod = paymentMethod;
+        this.amount = amount;
+    }
+
+    public Payment(String paymentID, String studentID, String studName, LocalDate date,  LocalTime time, String paymentMethod, double amount) {
+        this.paymentID = paymentID;
+        this.studentID = studentID;
+        this.studentName = studName;
         this.paymentDate = date;
         this.paymentTime = time;
         this.paymentMethod = paymentMethod;
@@ -38,6 +49,14 @@ public class Payment implements Serializable {
 
     public void setStudentID(String studentID) {
         this.studentID = studentID;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public LocalDate getPaymentDate() {

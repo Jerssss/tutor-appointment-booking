@@ -26,7 +26,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     public String generateNewUserID() {
-        String latestUserID = "SELECT userID FROM user ORDER BY userID DESC LIMIT 1";
+        String latestUserID = "SELECT MAX(userID) FROM user;";
         try {
             stmt = con.createStatement();
             ResultSet resultSet = stmt.executeQuery(latestUserID);
@@ -444,7 +444,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     public List<Payment> viewPayment() throws RemoteException{
         List<Payment> studentPayments = new ArrayList<>();
 
-        query = "SELECT * FROM payment";
+        query = "{CALL viewPayment()}";
 
         try {
             callStmt = con.prepareCall(query);
@@ -453,12 +453,13 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             while (resultSet.next()) {
                 String paymentID = resultSet.getString(1);
                 String studentID = resultSet.getString(2);
-                double amount = resultSet.getDouble(3);
-                LocalDate date = resultSet.getDate(4).toLocalDate();
-                LocalTime time = resultSet.getTime(5).toLocalTime();
-                String paymentMethod = resultSet.getString(6);
+                String studName = resultSet.getString(3);
+                double amount = resultSet.getDouble(4);
+                LocalDate date = resultSet.getDate(5).toLocalDate();
+                LocalTime time = resultSet.getTime(6).toLocalTime();
+                String paymentMethod = resultSet.getString(7);
 
-                Payment payment = new Payment(paymentID, studentID, date, time, paymentMethod, amount);
+                Payment payment = new Payment(paymentID, studentID, studName, date, time, paymentMethod, amount);
                 studentPayments.add(payment);
             }
         } catch (SQLException e1) {
