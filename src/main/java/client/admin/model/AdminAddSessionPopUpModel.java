@@ -95,9 +95,12 @@ public class AdminAddSessionPopUpModel {
         List<Subject> subjects = adminService.viewSubject();
         String subjectName = "";
 
+        System.out.println("SUBJECT ID: " + subjectID);
         for(Subject subject : subjects){
+            System.out.println("DVSA SUBJECT ID: " + subject.getSubjectID());
+
             if (subject.getSubjectID().equals(subjectID)){
-                subjectName = subject.getSubjectID();
+                subjectName = subject.getSubjectName();
             }
         }
         return subjectName;
