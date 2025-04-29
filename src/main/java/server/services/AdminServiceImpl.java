@@ -411,8 +411,8 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public Map<LessonPlan, String> viewLessonPlan() throws RemoteException {
-        Map<LessonPlan, String> allLessonPlans = new LinkedHashMap<>();
+    public List<LessonPlan> viewLessonPlan() throws RemoteException {
+        List<LessonPlan> allLessonPlans = new ArrayList<>();
 
 //        query = "SELECT lessonPlanID, subjectID, subjectName, academicLevel, objectives, topicsCovered FROM lessonplan " +
 //                "INNER JOIN subject USING(subjectID);";
@@ -426,18 +426,47 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
                 LessonPlan lessonPlan = new LessonPlan(
                         resultSet.getString("lessonPlanID"),
                         resultSet.getString("subjectID"),
+                        resultSet.getString("subjectName"),
+                        resultSet.getString("academicLevel"),
                         resultSet.getString("objectives"),
-                        resultSet.getString("topicsCovered")
+                        resultSet.getString("topicsCovered"),
+                        resultSet.getString("visibility")
                 );
 
-//                allLessonPlans.put(lessonPlan, Arrays.asList(resultSet.getString("subjectName"), resultSet.getString("academicLevel")));
-                allLessonPlans.put(lessonPlan, resultSet.getString("academicLevel"));
+                allLessonPlans.add(lessonPlan);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return allLessonPlans;
+    }
+
+    @Override
+    public void modifyLessonPlan(String lessonPlanID, String visibility) throws RemoteException, SQLException {
+//        subjectID = subjectID.replaceAll(".*subjectID=(\\d+),.*", "$1");
+        query = "{CALL modifyLessonPlan(?,?)}";
+
+        try {
+            con.setAutoCommit(false);
+
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, lessonPlanID);
+            callStmt.setString(2, visibility);
+//            System.out.println("visibility: " + subjectVisibility);
+//            callStmt.setString(3, subjectVisibility);
+
+            callStmt.executeUpdate();
+            con.commit();
+
+        } catch (SQLException e1) {
+            if (con != null) con.rollback();
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true);
+        }
     }
 
     @Override

@@ -25,7 +25,8 @@ public interface AdminService extends Remote {
     void addSubject(Subject subject) throws RemoteException, SQLException;
     void modifySubject(String subjectID, String academicLevel, String subjectVisibility) throws RemoteException, SQLException;
     int deleteSubject(String subjectID) throws RemoteException, SQLIntegrityConstraintViolationException;
-    Map<LessonPlan, String> viewLessonPlan() throws RemoteException;
+    List<LessonPlan> viewLessonPlan() throws RemoteException;
+    void modifyLessonPlan(String lessonPlanID, String visibility) throws RemoteException, SQLException;
     List<Payment> viewPayment() throws RemoteException;
 
 }

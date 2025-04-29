@@ -21,23 +21,28 @@ public class AdminViewLessonPlanModel {
 //        return adminService.viewLessonPlan();
 //    }
 
-    public Map<LessonPlan, String> fetchLessonPlan() throws RemoteException {
-        return adminService.viewLessonPlan();
+    public List<LessonPlan> fetchLessonPlan() throws RemoteException {
+        try {
+            return adminService.viewLessonPlan();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<LessonPlan> getLessonPlanCollege() {
         List<LessonPlan> collegeLessonPlans = new ArrayList<>();
-        Map<LessonPlan, String> allLessonPlans = new HashMap<>();
+        List<LessonPlan> allLessonPlans = new ArrayList<>();
         try {
             allLessonPlans = fetchLessonPlan();
 
         }catch (RemoteException e){
             e.printStackTrace();
         }
-        for (Map.Entry<LessonPlan, String> entry : allLessonPlans.entrySet()) {
+        for (LessonPlan lessonPlan : allLessonPlans) {
 
-            if ("College".equalsIgnoreCase(entry.getValue())) {
-                collegeLessonPlans.add(entry.getKey());
+            if ("College".equalsIgnoreCase(lessonPlan.getAcademicLevel()) && "Available".equalsIgnoreCase(lessonPlan.getVisibility())) {
+                collegeLessonPlans.add(lessonPlan);
             }
         }
 
@@ -46,20 +51,60 @@ public class AdminViewLessonPlanModel {
 
     public List<LessonPlan> getLessonPlanHighSchool() {
         List<LessonPlan> highSchoolLessonPlans = new ArrayList<>();
-        Map<LessonPlan, String> allLessonPlans = new HashMap<>();
+        List<LessonPlan> allLessonPlans = new ArrayList<>();
+
         try {
             allLessonPlans = fetchLessonPlan();
 
         }catch (RemoteException e){
             e.printStackTrace();
         }
-        for (Map.Entry<LessonPlan, String> entry : allLessonPlans.entrySet()) {
+        for (LessonPlan lessonPlan : allLessonPlans) {
 
-            if ("High School".equalsIgnoreCase(entry.getValue())) {
-                highSchoolLessonPlans.add(entry.getKey());
+            if ("High School".equalsIgnoreCase(lessonPlan.getAcademicLevel()) && "Available".equalsIgnoreCase(lessonPlan.getVisibility())) {
+                highSchoolLessonPlans.add(lessonPlan);
             }
         }
 
         return highSchoolLessonPlans;
+    }
+
+    public List<LessonPlan> getArchivedLessonPlanCollege() {
+        List<LessonPlan> collegeArchivedLessonPlans = new ArrayList<>();
+        List<LessonPlan> allLessonPlans = new ArrayList<>();
+        try {
+            allLessonPlans = fetchLessonPlan();
+
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+        for (LessonPlan lessonPlan : allLessonPlans) {
+
+            if ("College".equalsIgnoreCase(lessonPlan.getAcademicLevel()) && "Archived".equalsIgnoreCase(lessonPlan.getVisibility())) {
+                collegeArchivedLessonPlans.add(lessonPlan);
+            }
+        }
+
+        return collegeArchivedLessonPlans;
+    }
+
+    public List<LessonPlan> getArchivedLessonPlanHighSchool() {
+        List<LessonPlan> highSchoolArchivedLessonPlans = new ArrayList<>();
+        List<LessonPlan> allLessonPlans = new ArrayList<>();
+
+        try {
+            allLessonPlans = fetchLessonPlan();
+
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+        for (LessonPlan lessonPlan : allLessonPlans) {
+
+            if ("High School".equalsIgnoreCase(lessonPlan.getAcademicLevel()) && "Archived".equalsIgnoreCase(lessonPlan.getVisibility())) {
+                highSchoolArchivedLessonPlans.add(lessonPlan);
+            }
+        }
+
+        return highSchoolArchivedLessonPlans;
     }
 }

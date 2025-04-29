@@ -16,15 +16,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class AdminViewMoreLessonPlanPopUpController {
-    private final AdminService service;
-
-    {
-        try {
-            service = new AdminServiceImpl();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private AdminViewMoreLessonPlanPopUpModel model;
     private String lessonPlanID;
@@ -46,9 +37,9 @@ public class AdminViewMoreLessonPlanPopUpController {
         try {
             List<String> details = model.getDetails(lessonPlanID);
             if (details.size() >= 2) {
-                subjectNameLabel.setText(details.get(0));
-                objectivesLabel.setText(details.get(1));
-                topicsLabel.setText(details.get(2));
+                objectivesLabel.setText(details.get(0));
+                topicsLabel.setText(details.get(1));
+                subjectNameLabel.setText(details.get(2));
             }
         } catch (RemoteException e) {
             e.printStackTrace();

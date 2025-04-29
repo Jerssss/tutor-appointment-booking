@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.classes.LessonPlan;
+import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
 
 import java.io.IOException;
@@ -36,17 +37,27 @@ public class AdminViewLessonPlanController {
     private TableColumn<LessonPlan, String> highSchoolLessonPlanIDColumn;
     @FXML
     private TableColumn<LessonPlan, String> highSchoolSubjectIDColumn;
-//    @FXML
-//    private TableColumn<LessonPlan, String> highSchoolSubjectNameColumn;
     @FXML
-    private TableColumn<LessonPlan, String> highSchoolObjectivesColumn;
+    private TableColumn<LessonPlan, String> highSchoolSubjectNameColumn;
     @FXML
-    private TableColumn<LessonPlan, String> highSchoolTopicsColumn;
+    private TableColumn<LessonPlan, Void> highSchoolViewMoreColumn;
+    @FXML
+    private TableColumn<LessonPlan, Void> highSchoolOptionColumn;
+
 
     @FXML
-    private TableColumn<List<String>, Void> highSchoolViewMoreColumn;
+    private TableView<LessonPlan> highSchoolArchivedTableView;
     @FXML
-    private TableColumn<List<String>, Void> highSchoolDeleteColumn;
+    private TableColumn<LessonPlan, String> highSchoolArchivedLessonPlanIDColumn;
+    @FXML
+    private TableColumn<LessonPlan, String> highSchoolArchivedSubjectIDColumn;
+    @FXML
+    private TableColumn<LessonPlan, String> highSchoolArchivedSubjectNameColumn;
+    @FXML
+    private TableColumn<LessonPlan, Void> highSchoolArchivedViewMoreColumn;
+    @FXML
+    private TableColumn<LessonPlan, Void> highSchoolArchiveOptionColumn;
+
 
     @FXML
     private TableView<LessonPlan> collegeTableView;
@@ -55,13 +66,25 @@ public class AdminViewLessonPlanController {
     @FXML
     private TableColumn<LessonPlan, String> collegeSubjectIDColumn;
     @FXML
-    private TableColumn<LessonPlan, String> collegeObjectivesColumn;
+    private TableColumn<LessonPlan, String> collegeSubjectNameColumn;
     @FXML
-    private TableColumn<LessonPlan, String> collegeTopicsColumn;
+    private TableColumn<LessonPlan, Void> collegeViewMoreColumn;
     @FXML
-    private TableColumn<List<String>, Void> collegeViewMoreColumn;
+    private TableColumn<LessonPlan, Void> collegeOptionColumn;
+
     @FXML
-    private TableColumn<List<String>, Void> collegeDeleteColumn;
+    private TableView<LessonPlan> collegeArchivedTableView;
+    @FXML
+    private TableColumn<LessonPlan, String> collegeArchivedLessonPlanIDColumn;
+    @FXML
+    private TableColumn<LessonPlan, String> collegeArchivedSubjectIDColumn;
+    @FXML
+    private TableColumn<LessonPlan, String> collegeArchivedSubjectNameColumn;
+    @FXML
+    private TableColumn<LessonPlan, Void> collegeArchivedViewMoreColumn;
+    @FXML
+    private TableColumn<LessonPlan, Void> collegeArchiveOptionColumn;
+
     @FXML
     private Button refreshButton;
     @FXML
@@ -77,27 +100,33 @@ public class AdminViewLessonPlanController {
                 highSchoolTableView,
                 highSchoolLessonPlanIDColumn,
                 highSchoolSubjectIDColumn,
-                highSchoolObjectivesColumn,
-                highSchoolTopicsColumn,
+                highSchoolSubjectNameColumn,
                 collegeTableView,
                 collegeLessonPlanIDColumn,
                 collegeSubjectIDColumn,
-                collegeObjectivesColumn,
-                collegeTopicsColumn
+                collegeSubjectNameColumn,
+                highSchoolArchivedTableView,
+                highSchoolArchivedLessonPlanIDColumn,
+                highSchoolArchivedSubjectIDColumn,
+                highSchoolArchivedSubjectNameColumn,
+                collegeArchivedTableView,
+                collegeArchivedLessonPlanIDColumn,
+                collegeArchivedSubjectIDColumn,
+                collegeArchivedSubjectNameColumn
         );
         displayLessonPlans();
         searchReportTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filterLessonPlans(newValue);
         });
 
-        highSchoolViewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+        highSchoolViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
             private final Button highSchoolViewMoreColumnButton = new Button("View More");
 
             {
                 highSchoolViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 highSchoolViewMoreColumnButton.setOnAction(event -> {
                     clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
-                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController= new AdminViewMoreLessonPlanPopUpController();
+                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
                     viewMoreLessonPlanPopUpController.showWindow(clickedLessonPlan.replaceAll(".*lessonPlanID=([^,]+),.*", "$1"));
                 });
             }
@@ -113,15 +142,20 @@ public class AdminViewLessonPlanController {
             }
         });
 
-        highSchoolDeleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button highSchoolDeleteColumnButton = new Button("Delete");
+        highSchoolOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
+            private final Button optionButton = new Button("Option");
 
             {
-                highSchoolDeleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
-                highSchoolDeleteColumnButton.setOnAction(event -> {
-                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
-//                    AdminViewMoreSubjectPopUpController viewMoreSubjectPopUpController= new AdminViewMoreSubjectPopUpController();
-//                    viewMoreSubjectModel.showWindow(clickedSubject);
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
+                    try {
+                        modifyLessonPlanPopUpController = new AdminModifyLessonPlanPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    modifyLessonPlanPopUpController.showWindow();
                 });
             }
 
@@ -131,19 +165,76 @@ public class AdminViewLessonPlanController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(highSchoolDeleteColumnButton);
+//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
+//                    String status = sessionData.getSessionStatus();
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
+                    setGraphic(optionButton);
                 }
             }
         });
 
-        collegeViewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
+        highSchoolArchivedViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
+            private final Button highSchoolViewMoreColumnButton = new Button("View More");
+
+            {
+                highSchoolViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                highSchoolViewMoreColumnButton.setOnAction(event -> {
+                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
+                    viewMoreLessonPlanPopUpController.showWindow(clickedLessonPlan.replaceAll(".*lessonPlanID=([^,]+),.*", "$1"));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(highSchoolViewMoreColumnButton);
+                }
+            }
+        });
+
+        highSchoolArchiveOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
+            private final Button optionButton = new Button("Option");
+
+            {
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
+                    try {
+                        modifyLessonPlanPopUpController = new AdminModifyLessonPlanPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    modifyLessonPlanPopUpController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
+//                    String status = sessionData.getSessionStatus();
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
+                    setGraphic(optionButton);
+                }
+            }
+        });
+
+        collegeViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
             private final Button collegeViewMoreColumnButton = new Button("View More");
 
             {
                 collegeViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 collegeViewMoreColumnButton.setOnAction(event -> {
                     clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
-                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController= new AdminViewMoreLessonPlanPopUpController();
+                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
                     viewMoreLessonPlanPopUpController.showWindow(clickedLessonPlan.replaceAll(".*lessonPlanID=([^,]+),.*", "$1"));
                 });
             }
@@ -159,24 +250,87 @@ public class AdminViewLessonPlanController {
             }
         });
 
-        collegeDeleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button collegeDeleteColumnButton = new Button("Delete");
+        collegeOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
+            private final Button optionButton = new Button("Option");
 
             {
-                collegeDeleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
-                collegeDeleteColumnButton.setOnAction(event -> {
-                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
-//                    AdminViewMoreSubjectPopUpController viewMoreSubjectPopUpController= new AdminViewMoreSubjectPopUpController();
-//                    viewMoreSubjectModel.showWindow(clickedSubject);
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
+                    try {
+                        modifyLessonPlanPopUpController = new AdminModifyLessonPlanPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    modifyLessonPlanPopUpController.showWindow();
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(collegeDeleteColumnButton);
+//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
+//                    String status = sessionData.getSessionStatus();
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
+                    setGraphic(optionButton);
+                }
+            }
+        });
+
+        collegeArchivedViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
+            private final Button collegeViewMoreColumnButton = new Button("View More");
+
+            {
+                collegeViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                collegeViewMoreColumnButton.setOnAction(event -> {
+                    clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
+                    viewMoreLessonPlanPopUpController.showWindow(clickedLessonPlan.replaceAll(".*lessonPlanID=([^,]+),.*", "$1"));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(collegeViewMoreColumnButton);
+                }
+            }
+        });
+
+        collegeArchiveOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
+            private final Button optionButton = new Button("Option");
+
+            {
+                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                optionButton.setOnAction(event -> {
+                    clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
+                    AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
+                    try {
+                        modifyLessonPlanPopUpController = new AdminModifyLessonPlanPopUpController();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    modifyLessonPlanPopUpController.showWindow();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
+//                    String status = sessionData.getSessionStatus();
+//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
+                    setGraphic(optionButton);
                 }
             }
         });
@@ -185,32 +339,19 @@ public class AdminViewLessonPlanController {
     }
 
     private void displayLessonPlans() {
-        //            List<LessonPlan> allCollegeLessonPlans = new ArrayList<>();
-//            List<String> allCollegeSubjectNames = new ArrayList<>();
-//            List<LessonPlan> allHighSchoolLessonPlans = new ArrayList<>();
-//            List<String> allHighSchoolSubjectNames = new ArrayList<>();
-
-//            for (Map.Entry<LessonPlan, String> entry : collegeLessonPlans.entrySet()) {
-//                allCollegeLessonPlans.add(entry.getKey());
-//                allCollegeSubjectNames.add(entry.getValue());
-//            }
-//            for (Map.Entry<LessonPlan, String> entry : highSchoolLessonPlans.entrySet()) {
-//                allHighSchoolLessonPlans.add(entry.getKey());
-//                allHighSchoolSubjectNames.add(entry.getValue());
-//            }
-
         List<LessonPlan> collegeLessonPlans = model.getLessonPlanCollege();
         List<LessonPlan> highSchoolLessonPlans = model.getLessonPlanHighSchool();
+        List<LessonPlan> collegeArchivedLessonPlans = model.getArchivedLessonPlanCollege();
+        List<LessonPlan> highSchoolArchivedLessonPlans = model.getArchivedLessonPlanHighSchool();
         ObservableList<LessonPlan> allCollegeLessonPlansData = FXCollections.observableArrayList(collegeLessonPlans);
-//            ObservableList<String> allCollegeSubjectNamesData = FXCollections.observableArrayList(allCollegeSubjectNames);
         ObservableList<LessonPlan> allHighSchoolLessonPlansData = FXCollections.observableArrayList(highSchoolLessonPlans);
-//            ObservableList<String> allHighSchoolSubjectNamesData = FXCollections.observableArrayList(allHighSchoolSubjectNames);
-//            view.displayLessonPlan(allCollegeLessonPlansData, allCollegeSubjectNamesData, allHighSchoolLessonPlansData, allHighSchoolSubjectNamesData);
-        view.displayLessonPlan(allCollegeLessonPlansData, allHighSchoolLessonPlansData);
+        ObservableList<LessonPlan> allCollegeArchivedLessonPlansData = FXCollections.observableArrayList(collegeArchivedLessonPlans);
+        ObservableList<LessonPlan> allHighSchoolArchivedLessonPlansData = FXCollections.observableArrayList(highSchoolArchivedLessonPlans);
+        view.displayLessonPlan(allCollegeLessonPlansData, allHighSchoolLessonPlansData, allCollegeArchivedLessonPlansData, allHighSchoolArchivedLessonPlansData);
 
     }
 
-    private void handleRefreshLessonPlan(ActionEvent event){
+    private void handleRefreshLessonPlan(ActionEvent event) {
         displayLessonPlans();
     }
 
@@ -226,12 +367,18 @@ public class AdminViewLessonPlanController {
         try {
             List<LessonPlan> collegePlans = model.getLessonPlanCollege();
             List<LessonPlan> highSchoolPlans = model.getLessonPlanHighSchool();
-
+            List<LessonPlan> collegeArchivedLessonPlans = model.getArchivedLessonPlanCollege();
+            List<LessonPlan> highSchoolArchivedLessonPlans = model.getArchivedLessonPlanHighSchool();
             ObservableList<LessonPlan> filteredCollegePlans = FXCollections.observableArrayList();
             ObservableList<LessonPlan> filteredHighSchoolPlans = FXCollections.observableArrayList();
+            ObservableList<LessonPlan> filteredCollegeArchivedLessonPlansData = FXCollections.observableArrayList();
+            ObservableList<LessonPlan> filteredHighSchoolArchivedLessonPlansData = FXCollections.observableArrayList();
 
             if (searchText == null || searchText.isEmpty()) {
                 filteredCollegePlans.addAll(collegePlans);
+                filteredHighSchoolPlans.addAll(highSchoolPlans);
+                filteredCollegeArchivedLessonPlansData.addAll(collegeArchivedLessonPlans);
+                filteredHighSchoolArchivedLessonPlansData.addAll(highSchoolArchivedLessonPlans);
             } else {
                 String lowerCaseSearchText = searchText.toLowerCase();
                 for (LessonPlan plan : collegePlans) {
@@ -239,21 +386,24 @@ public class AdminViewLessonPlanController {
                         filteredCollegePlans.add(plan);
                     }
                 }
-            }
-
-            if (searchText == null || searchText.isEmpty()) {
-                filteredHighSchoolPlans.addAll(highSchoolPlans);
-            } else {
-                String lowerCaseSearchText = searchText.toLowerCase();
                 for (LessonPlan plan : highSchoolPlans) {
                     if (matchesSearch(plan, lowerCaseSearchText)) {
                         filteredHighSchoolPlans.add(plan);
                     }
                 }
+                for (LessonPlan plan : collegeArchivedLessonPlans) {
+                    if (matchesSearch(plan, lowerCaseSearchText)) {
+                        filteredCollegeArchivedLessonPlansData.add(plan);
+                    }
+                }
+                for (LessonPlan plan : highSchoolArchivedLessonPlans) {
+                    if (matchesSearch(plan, lowerCaseSearchText)) {
+                        filteredHighSchoolArchivedLessonPlansData.add(plan);
+                    }
+                }
             }
 
-
-            view.displayLessonPlan(filteredCollegePlans, filteredHighSchoolPlans);
+            view.displayLessonPlan(filteredCollegePlans, filteredHighSchoolPlans, filteredCollegeArchivedLessonPlansData, filteredHighSchoolArchivedLessonPlansData);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -263,7 +413,14 @@ public class AdminViewLessonPlanController {
     private boolean matchesSearch(LessonPlan plan, String searchText) {
         return plan.getLessonPlanID().toLowerCase().contains(searchText) ||
                 plan.getSubjectID().toLowerCase().contains(searchText) ||
+                plan.getSubjectName().toLowerCase().contains(searchText) ||
                 plan.getObjectives().toLowerCase().contains(searchText) ||
-                plan.getTopicsCovered().toLowerCase().contains(searchText);
+                plan.getTopicsCovered().toLowerCase().contains(searchText) ||
+                plan.getVisibility().toLowerCase().contains(searchText);
+
+    }
+
+    public static String getClickedLessonPlan() {
+        return clickedLessonPlan;
     }
 }

@@ -19,15 +19,15 @@ public class AdminViewMoreLessonPlanPopUpModel {
 
     public List<String> getDetails(String lessonPlanID) throws RemoteException {
         List<String> lessonPlanDetails = new ArrayList<>();
-        Map<LessonPlan, String> lessonPlans = adminService.viewLessonPlan();
+        List<LessonPlan> lessonPlans = adminService.viewLessonPlan();
         List<Subject> subjects = adminService.viewSubject();
 
-        for(Map.Entry<LessonPlan, String> entry : lessonPlans.entrySet()){
-            if (entry.getKey().getLessonPlanID().equals(lessonPlanID)){
-                lessonPlanDetails.add(entry.getKey().getObjectives());
-                lessonPlanDetails.add(entry.getKey().getTopicsCovered());
+        for(LessonPlan lessonPlan : lessonPlans){
+            if (lessonPlan.getLessonPlanID().equals(lessonPlanID)){
+                lessonPlanDetails.add(lessonPlan.getObjectives());
+                lessonPlanDetails.add(lessonPlan.getTopicsCovered());
                 for (Subject subject : subjects){
-                    if (subject.getSubjectID().equals(entry.getKey().getSubjectID())){
+                    if (subject.getSubjectID().equals(lessonPlan.getSubjectID())){
                         lessonPlanDetails.add(subject.getSubjectName());
                     }
                 }

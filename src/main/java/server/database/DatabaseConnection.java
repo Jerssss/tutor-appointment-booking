@@ -14,22 +14,16 @@ public class DatabaseConnection {
 
     public static Connection setCon() {
         try {
-            if (connection == null || connection.isClosed() || !connection.isValid(5)) {
-                closeConnection(); // Ensure old connection is properly closed
-                Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-                // Add connection properties for better resilience
-                Properties props = new Properties();
-                props.setProperty("user", USER);
-                props.setProperty("password", PASSWORD);
-                props.setProperty("autoReconnect", "true");
-                props.setProperty("maxReconnects", "10");
-                props.setProperty("initialTimeout", "5");
+            Properties props = new Properties();
+            props.setProperty("user", USER);
+            props.setProperty("password", PASSWORD);
+            props.setProperty("autoReconnect", "true");
+            props.setProperty("maxReconnects", "10");
+            props.setProperty("initialTimeout", "5");
 
-                connection = DriverManager.getConnection(URL, props);
-                connection.setAutoCommit(true);
-            }
-            return connection;
+            return DriverManager.getConnection(URL, props);
 
         } catch (ClassNotFoundException e) {
             System.err.println("MySQL JDBC Driver not found. Please ensure the driver is in the classpath.");
