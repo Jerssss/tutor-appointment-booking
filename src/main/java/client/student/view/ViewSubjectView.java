@@ -11,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import server.services.StudentServiceImpl;
 import shared.classes.Subject;
@@ -24,13 +23,13 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ViewSubjectView implements Initializable {
-    @FXML private TextField searchResTextField;
+    @FXML private TextField searchBookingTextField;
     @FXML private Button refreshButton;
-    @FXML private TableView<Subject> viewResTableView;
-    @FXML private TableColumn<Subject, String> dateColumn;
-    @FXML private TableColumn<Subject, String> timeColumn;
-    @FXML private TableColumn<Subject, String> durationColumn;
+    @FXML private TableView<Subject> viewBookingTableView;
     @FXML private TableColumn<Subject, String> courseColumn;
+    @FXML private TableColumn<Subject, String> subjectColumn;
+    @FXML private TableColumn<Subject, String> descriptionColumn;
+    @FXML private TableColumn<Subject, String> academicLevelColumn;
 
     private final ObservableList<Subject> allSubjects = FXCollections.observableArrayList();
     private ViewSubjectController controller;
@@ -48,10 +47,10 @@ public class ViewSubjectView implements Initializable {
     }
 
     private void initializeTableColumns() {
-        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
-        timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
-        durationColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
-        courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
+        courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
+        subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
+        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectDescription()));
+        academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
     }
 
     private void initializeController() throws RemoteException {
@@ -65,19 +64,19 @@ public class ViewSubjectView implements Initializable {
     }
 
     public void initializeSearchListener() {
-        searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        searchBookingTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchSubjects(newValue.toLowerCase().trim());
         });
     }
 
     public void searchSubjects(String query) {
-        String searchText = searchResTextField.getText().trim().toLowerCase();
+        String searchText = searchBookingTextField.getText().trim().toLowerCase();
         if (allSubjects.isEmpty()) {
             return;
         }
 
         if (query == null || query.isEmpty()) {
-            viewResTableView.setItems(allSubjects);
+            viewBookingTableView.setItems(allSubjects);
             return;
         }
 
@@ -87,7 +86,7 @@ public class ViewSubjectView implements Initializable {
                         subject.getSubjectDescription().toLowerCase().contains(searchText) ||
                         subject.getAcademicLevel().toLowerCase().contains(searchText))
                 .collect(Collectors.toList());
-        viewResTableView.setItems(FXCollections.observableArrayList(filteredList));
+        viewBookingTableView.setItems(FXCollections.observableArrayList(filteredList));
     }
 
     public void updateTable(List<Subject> subjects) {
@@ -97,10 +96,10 @@ public class ViewSubjectView implements Initializable {
         }
 
         allSubjects.setAll(subjects);
-        viewResTableView.setItems(allSubjects);
-        viewResTableView.refresh();
+        viewBookingTableView.setItems(allSubjects);
+        viewBookingTableView.refresh();
         System.out.println("[CLIENT] Table updated with " + subjects.size() + " subjects.");
-        viewResTableView.requestLayout();
+        viewBookingTableView.requestLayout();
     }
 
     @FXML

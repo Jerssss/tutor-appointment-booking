@@ -32,14 +32,14 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ModifyBookingView implements Initializable {
-    @FXML private TextField searchStudResTextField;
+    @FXML private TextField searchStudBookingTextField;
     @FXML private Button refreshButton;
-    @FXML private TableView<BookingDetails> modResTableView;
-    @FXML private TableColumn<BookingDetails, String> roomNumberColumn;
-    @FXML private TableColumn<BookingDetails, String> terminalIDColumn;
-    @FXML private TableColumn<BookingDetails, String> reservationDateColumn;
-    @FXML private TableColumn<BookingDetails, String> startTimeColumn;
-    @FXML private TableColumn<BookingDetails, String> endTimeColumn;
+    @FXML private TableView<BookingDetails> modBookingTableView;
+    @FXML private TableColumn<BookingDetails, String> courseColumn;
+    @FXML private TableColumn<BookingDetails, String> tutorColumn;
+    @FXML private TableColumn<BookingDetails, String> sessionColumn;
+    @FXML private TableColumn<BookingDetails, String> sessionTimeColumn;
+    @FXML private TableColumn<BookingDetails, String> sessionModeColumn;
     @FXML private TableColumn<BookingDetails, String> editColumn;
     @FXML private TableColumn<BookingDetails, String> cancelColumn;
 
@@ -62,11 +62,11 @@ public class ModifyBookingView implements Initializable {
     }
 
     private void initializeTableColumns() {
-        roomNumberColumn.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
-        terminalIDColumn.setCellValueFactory(new PropertyValueFactory<>("tutorName"));
-        reservationDateColumn.setCellValueFactory(new PropertyValueFactory<>("sessionDate"));
-        startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("sessionTime"));
-        endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("sessionMode"));
+        courseColumn.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
+        tutorColumn.setCellValueFactory(new PropertyValueFactory<>("tutorName"));
+        sessionColumn.setCellValueFactory(new PropertyValueFactory<>("sessionDate"));
+        sessionTimeColumn.setCellValueFactory(new PropertyValueFactory<>("sessionTime"));
+        sessionModeColumn.setCellValueFactory(new PropertyValueFactory<>("sessionMode"));
         editColumn.setCellValueFactory(param -> new SimpleStringProperty(""));
         cancelColumn.setCellValueFactory(param -> new SimpleStringProperty(""));
 
@@ -76,7 +76,7 @@ public class ModifyBookingView implements Initializable {
     }
 
     private void initializeRowFactory() {
-        modResTableView.setRowFactory(tv -> new TableRow<BookingDetails>() {
+        modBookingTableView.setRowFactory(tv -> new TableRow<BookingDetails>() {
             @Override
             protected void updateItem(BookingDetails booking, boolean empty) {
                 super.updateItem(booking, empty);
@@ -108,7 +108,7 @@ public class ModifyBookingView implements Initializable {
     }
 
     public void initializeSearchListener() {
-        searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        searchStudBookingTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchBookings(newValue.toLowerCase().trim());
         });
     }
@@ -119,7 +119,7 @@ public class ModifyBookingView implements Initializable {
         }
 
         if (query == null || query.isEmpty()) {
-            modResTableView.setItems(allBookings);
+            modBookingTableView.setItems(allBookings);
             return;
         }
 
@@ -130,7 +130,7 @@ public class ModifyBookingView implements Initializable {
                         booking.getSessionTime().toLowerCase().contains(query) ||
                         booking.getSessionMode().toLowerCase().contains(query))
                 .collect(Collectors.toList());
-        modResTableView.setItems(FXCollections.observableArrayList(filteredList));
+        modBookingTableView.setItems(FXCollections.observableArrayList(filteredList));
     }
 
     public void updateTable(List<BookingDetails> bookings) {
@@ -139,8 +139,8 @@ public class ModifyBookingView implements Initializable {
         } else {
             System.out.println("[CLIENT] Updating table with " + bookings.size() + " bookings.");
             allBookings.setAll(bookings); // Populate the ObservableList
-            modResTableView.setItems(allBookings);
-            modResTableView.refresh();
+            modBookingTableView.setItems(allBookings);
+            modBookingTableView.refresh();
         }
     }
 

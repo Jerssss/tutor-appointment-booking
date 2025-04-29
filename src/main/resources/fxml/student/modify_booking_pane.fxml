@@ -14,7 +14,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="514.0">
                      <children>
-                        <Label fx:id="modResLabel" text="Modify Booking" textFill="#6f2e2e">
+                        <Label fx:id="modBookingLabel" text="Modify Booking" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="29.0" />
                            </font>
@@ -28,7 +28,7 @@
                      <children>
                         <StackPane alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="187.0">
                            <children>
-                              <TextField fx:id="searchStudResTextField" prefHeight="29.0" prefWidth="195.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
+                              <TextField fx:id="searchStudBookingTextField" prefHeight="29.0" prefWidth="195.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
                            </children>
                         </StackPane>
                      </children>
@@ -48,13 +48,13 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="419.0" prefWidth="805.0">
          <children>
-            <TableView fx:id="modResTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="433.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+            <TableView fx:id="modBookingTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="433.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
-                  <TableColumn fx:id="roomNumberColumn" editable="false" prefWidth="96.0" resizable="false" text="Course" />
-                  <TableColumn fx:id="terminalIDColumn" editable="false" prefWidth="150.0" resizable="false" text="Tutor" />
-                  <TableColumn fx:id="reservationDateColumn" editable="false" prefWidth="127.0" resizable="false" text="Session Date" />
-                  <TableColumn fx:id="startTimeColumn" editable="false" prefWidth="127.0" resizable="false" text="Session Time" />
-                  <TableColumn fx:id="endTimeColumn" editable="false" prefWidth="109.0" resizable="false" text="Session Mode" />
+                  <TableColumn fx:id="courseColumn" editable="false" prefWidth="96.0" resizable="false" text="Course" />
+                  <TableColumn fx:id="tutorColumn" editable="false" prefWidth="150.0" resizable="false" text="Tutor" />
+                  <TableColumn fx:id="sessionColumn" editable="false" prefWidth="127.0" resizable="false" text="Session Date" />
+                  <TableColumn fx:id="sessionTimeColumn" editable="false" prefWidth="127.0" resizable="false" text="Session Time" />
+                  <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="109.0" resizable="false" text="Session Mode" />
                   <TableColumn fx:id="editColumn" editable="false" minWidth="7.0" prefWidth="97.0" resizable="false" text="Edit" />
                   <TableColumn fx:id="cancelColumn" editable="false" minWidth="7.0" prefWidth="94.0" resizable="false" text="Cancel" />
                </columns>

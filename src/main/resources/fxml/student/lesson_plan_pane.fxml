@@ -23,7 +23,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="500.0">
                      <children>
-                        <Label fx:id="reportsLabel" prefHeight="43.0" prefWidth="322.0" text="Lesson Plans" textFill="#6f2e2e">
+                        <Label fx:id="lessonPlanLabel" prefHeight="43.0" prefWidth="322.0" text="Lesson Plans" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="29.0" />
                            </font>
@@ -37,7 +37,7 @@
                      <children>
                         <StackPane alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="231.0">
                            <children>
-                              <TextField fx:id="searchReportTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="29.0" prefWidth="230.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
+                              <TextField fx:id="searchLessonPlanTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="29.0" prefWidth="230.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
                            </children>
                         </StackPane>
                      </children>
@@ -62,13 +62,13 @@
       <!-- Report Tables -->
       <VBox alignment="CENTER" prefHeight="521.0" prefWidth="805.0">
          <children>
-            <TabPane fx:id="reportsTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="lessonPlansTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
                <tabs>
-                  <Tab fx:id="logReportTab" text="High-school">
+                  <Tab fx:id="highSchoolTab" text="High-school">
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="logReportTableView" prefHeight="482.0" prefWidth="805.0">
+                              <TableView fx:id="highSchoolTableView" prefHeight="482.0" prefWidth="805.0">
                                  <columns>
                                     <TableColumn fx:id="highschoolCourseColumn" prefWidth="150.0" text="Course" />
                                     <TableColumn fx:id="highschoolSubjectColumn" prefWidth="169.0" text="Subject" />
@@ -81,11 +81,11 @@
                      </content>
                   </Tab>
 
-                  <Tab fx:id="reservationReportTab" text=" College ">
+                  <Tab fx:id="collegeTab" text=" College ">
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="logReportTableView1" prefHeight="482.0" prefWidth="805.0">
+                              <TableView fx:id="collegeTableView" prefHeight="482.0" prefWidth="805.0">
                                  <columns>
                                     <TableColumn fx:id="collegeCourseColumn" prefWidth="150.0" text="Course" />
                                     <TableColumn fx:id="collegeSubjectColumn" prefWidth="169.0" text="Subject" />

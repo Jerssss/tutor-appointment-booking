@@ -20,15 +20,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewLessonPlanView implements Initializable {
-    @FXML private TextField searchReportTextField;
+    @FXML private TextField searchLessonPlanTextField;
     @FXML private Button refreshButton;
-    @FXML private TableView<LessonPlan> logReportTableView; // High school table
+    @FXML private TableView<LessonPlan> highSchoolTableView; // High school table
     @FXML private TableColumn<LessonPlan, String> highschoolCourseColumn;
     @FXML private TableColumn<LessonPlan, String> highschoolSubjectColumn;
     @FXML private TableColumn<LessonPlan, String> highschoolObjectivesColumn;
     @FXML private TableColumn<LessonPlan, String> highschoolTopicsColumn;
 
-    @FXML private TableView<LessonPlan> logReportTableView1; // College table
+    @FXML private TableView<LessonPlan> collegeTableView; // College table
     @FXML private TableColumn<LessonPlan, String> collegeCourseColumn;
     @FXML private TableColumn<LessonPlan, String> collegeSubjectColumn;
     @FXML private TableColumn<LessonPlan, String> collegeObjectivesColumn;
@@ -77,8 +77,8 @@ public class ViewLessonPlanView implements Initializable {
             System.out.println("[CLIENT] No high school lesson plans to display.");
         } else {
             allHighSchoolLessonPlans.setAll(highSchoolLessonPlans);
-            logReportTableView.setItems(allHighSchoolLessonPlans);
-            logReportTableView.refresh();
+            highSchoolTableView.setItems(allHighSchoolLessonPlans);
+            highSchoolTableView.refresh();
             System.out.println("[CLIENT] High school table updated with " + highSchoolLessonPlans.size() + " lesson plans.");
         }
 
@@ -86,8 +86,8 @@ public class ViewLessonPlanView implements Initializable {
             System.out.println("[CLIENT] No college lesson plans to display.");
         } else {
             allCollegeLessonPlans.setAll(collegeLessonPlans);
-            logReportTableView1.setItems(allCollegeLessonPlans);
-            logReportTableView1.refresh();
+            collegeTableView.setItems(allCollegeLessonPlans);
+            collegeTableView.refresh();
             System.out.println("[CLIENT] College table updated with " + collegeLessonPlans.size() + " lesson plans.");
         }
     }
@@ -100,7 +100,7 @@ public class ViewLessonPlanView implements Initializable {
     }
 
     public void initializeSearchListener() {
-        searchReportTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        searchLessonPlanTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchLessonPlans(newValue);
         });
     }
@@ -123,8 +123,8 @@ public class ViewLessonPlanView implements Initializable {
             }
         }
 
-        logReportTableView.setItems(filteredHighSchool);
-        logReportTableView1.setItems(filteredCollege);
+        highSchoolTableView.setItems(filteredHighSchool);
+        collegeTableView.setItems(filteredCollege);
     }
 
     public void refreshButtonExited() {
