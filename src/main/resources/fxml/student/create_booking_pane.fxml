@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.student.view.CreateBookingView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.student.view.CreateBookingView">
     <children>
         <VBox prefHeight="74.0" prefWidth="805.0">
             <children>
@@ -19,7 +20,7 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="392.0">
                             <children>
-                                <Label fx:id="studResTitleLabel" prefHeight="43.0" prefWidth="402.0" text="Create Booking" textFill="#6f2e2e">
+                                <Label fx:id="studBookingTitleLabel" prefHeight="43.0" prefWidth="402.0" text="Create Booking" textFill="#6f2e2e">
                                     <font>
                                         <Font name="System Bold" size="29.0" />
                                     </font>
@@ -36,7 +37,7 @@
                                         <Insets right="5.0" />
                                     </HBox.margin>
                                 </StackPane>
-                                  <TextField fx:id="searchStudResTextField" prefHeight="30.0" prefWidth="500.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
+                                <TextField fx:id="searchStudBookingTextField" prefHeight="30.0" prefWidth="500.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="74.0" prefWidth="121.0" spacing="10.0">
@@ -63,9 +64,9 @@
                 <TableColumn fx:id="durationColumn" editable="false" prefWidth="73.0" resizable="false" text="Duration" />
                 <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="101.0" resizable="false" text="Academic level " />
                 <TableColumn fx:id="subjectColumn" editable="false" minWidth="2.4000244140625" prefWidth="128.0" resizable="false" text="Subject" />
-            <TableColumn fx:id="typeColumn" editable="false" minWidth="2.4000244140625" prefWidth="70.0" resizable="false" text="Type" />
-            <TableColumn fx:id="modeColumn" editable="false" minWidth="2.4000244140625" prefWidth="79.0" resizable="false" text="Mode" />
-            <TableColumn fx:id="priceColumn" editable="false" minWidth="0.0" prefWidth="73.0" resizable="false" text="Price" />
+                <TableColumn fx:id="typeColumn" editable="false" minWidth="2.4000244140625" prefWidth="70.0" resizable="false" text="Type" />
+                <TableColumn fx:id="modeColumn" editable="false" minWidth="2.4000244140625" prefWidth="79.0" resizable="false" text="Mode" />
+                <TableColumn fx:id="priceColumn" editable="false" minWidth="0.0" prefWidth="73.0" resizable="false" text="Price" />
                 <TableColumn fx:id="reserveColumn" editable="false" prefWidth="120.0" resizable="false" text="Action" />
             </columns>
             <columnResizePolicy>

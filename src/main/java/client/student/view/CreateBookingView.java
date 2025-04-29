@@ -44,8 +44,8 @@ public class CreateBookingView implements Initializable {
     @FXML private TableColumn<TutorSession, String> durationColumn;
     @FXML private Button refreshButton;
     @FXML private TableColumn<TutorSession, Void> reserveColumn;
-    @FXML private TextField searchStudResTextField;
-    @FXML private Label studResTitleLabel;
+    @FXML private TextField searchStudBookingTextField;
+    @FXML private Label studBookingTitleLabel;
     @FXML private TableColumn<TutorSession, String> subjectColumn;
     @FXML private TableColumn<TutorSession, String> timeColumn;
     @FXML private TableColumn<TutorSession, String> typeColumn;
@@ -83,7 +83,7 @@ public class CreateBookingView implements Initializable {
         createReservationTableView.setItems(filteredData);
 
         // active listener naol u know im just rephrasing these commaents
-        searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        searchStudBookingTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(session -> {
                 // if no search query show all
                 if (newValue == null || newValue.isEmpty()) {
@@ -185,6 +185,9 @@ public class CreateBookingView implements Initializable {
 
 
     public void updateTable(List<TutorSession> sessions) {
+        for (TutorSession session : sessions) {
+            System.out.println("Academic Level: " + session.getAcademicLevel()); // Debugging line
+        }
         allBookings.setAll(sessions);
         createReservationTableView.setItems(allBookings);
     }
