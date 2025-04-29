@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentServiceImpl extends UnicastRemoteObject implements Remote, StudentService, Serializable {
-    private static final long serialVersionUID = 1L; // Add a serialVersionUID
-
-    private static final Connection conn = DatabaseConnection.setCon();
+    private static final long serialVersionUID = 1L;
 
     public StudentServiceImpl() throws RemoteException {
         super();
@@ -37,7 +35,8 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throw new RemoteException("Invalid session mode. Must be 'Face-to-Face' or 'Online'");
         }
 
-        try (CallableStatement cstmt = conn.prepareCall("{call CreateBooking(?, ?, ?, ?, ?)}")) {
+        try (Connection conn = DatabaseConnection.setCon();
+             CallableStatement cstmt = conn.prepareCall("{call CreateBooking(?, ?, ?, ?, ?)}")) {
 
             cstmt.setString(1, studentID);
             cstmt.setString(2, sessionID);
@@ -64,13 +63,13 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     @Override
     public List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException {
         List<BookingDetails> bookings = new ArrayList<>();
-        try (CallableStatement cstmt = conn.prepareCall("{CALL ViewStudentBooking(?)}")) {
+        try (Connection conn = DatabaseConnection.setCon();
+             CallableStatement cstmt = conn.prepareCall("{CALL ViewStudentBooking(?)}")) {
 
             cstmt.setInt(1, studentID);
             ResultSet rs = cstmt.executeQuery();
 
             while (rs.next()) {
-                // Create base Booking object using parent class constructor
                 Booking booking = new Booking(
                         rs.getString("studentID"),
                         rs.getString("sessionID"),
@@ -79,7 +78,6 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getDouble("sessionPrice")
                 );
 
-                // Create BookingDetails with extended information
                 BookingDetails details = new BookingDetails(
                         rs.getString("subjectName"),
                         rs.getString("tutorName"),
@@ -88,7 +86,6 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getInt("sessionDuration")
                 );
 
-                // Set the inherited booking fields
                 details.setStudentID(booking.getStudentID());
                 details.setSessionID(booking.getSessionID());
                 details.setSessionMode(booking.getSessionMode());
@@ -108,7 +105,8 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     public List<TutorSession> viewAvailableSessions() throws RemoteException {
         List<TutorSession> sessions = new ArrayList<>();
 
-        try (CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions()}");
+        try (Connection conn = DatabaseConnection.setCon();
+             CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions()}");
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -137,8 +135,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     }
 
     @Override
-    public Booking modifyBooking(String studentID, String sessionID, String newSessionMode, String newBookingStatus, double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
-        try (CallableStatement cstmt = conn.prepareCall("{call ModifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
+    public Booking modifyBooking(String studentID, String sessionID, String newSessionMode, String newBookingStatus,
+                                 double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon();
+             CallableStatement cstmt = conn.prepareCall("{call ModifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
 
             cstmt.setString(1, studentID);
             cstmt.setString(2, sessionID);
@@ -161,12 +161,13 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
     @Override
     public boolean cancelBooking(String sessionID) throws RemoteException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                     "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?"
-             )) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?")) {
+
             stmt.setString(1, sessionID);
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Return true if a booking was cancelled
+            return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RemoteException("Database error while cancelling booking: " + e.getMessage());
         }
@@ -176,9 +177,8 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     public List<Subject> viewSubject() throws RemoteException {
         System.out.println("[SERVER] Fetching subjects from database...");
         List<Subject> subjects = new ArrayList<>();
-        try (PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT * FROM subject"
-             )) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM subject")) {
 
             ResultSet rs = stmt.executeQuery();
 
@@ -207,9 +207,9 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     public List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException {
         System.out.println("[SERVER] Fetching high school lesson plans from database...");
         List<LessonPlan> lessonPlans = new ArrayList<>();
-        try (PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'HS%'"
-             )) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'HS%'")) {
 
             ResultSet rs = stmt.executeQuery();
 
@@ -238,9 +238,9 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     public List<LessonPlan> viewCollegeLessonPlan() throws RemoteException {
         System.out.println("[SERVER] Fetching college lesson plans from database...");
         List<LessonPlan> lessonPlans = new ArrayList<>();
-        try (PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'IT%'"
-             )) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT * FROM lessonplan WHERE subjectID LIKE 'IT%'")) {
 
             ResultSet rs = stmt.executeQuery();
 
@@ -282,7 +282,9 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                 "GROUP BY p.paymentID, p.studentID, p.amount, p.paymentDate, p.paymentTime, p.paymentMethod, b.sessionMode, b.bookingStatus " +
                 "ORDER BY p.paymentDate DESC";
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, studentID);
             ResultSet rs = stmt.executeQuery();
 
@@ -294,10 +296,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getTime("paymentTime").toLocalTime(),
                         rs.getString("paymentMethod"),
                         rs.getDouble("amount"),
-                        rs.getString("paymentID"), // InvoiceID is the same as paymentID
-                        rs.getString("subjectNames"), // Use the concatenated subject names
+                        rs.getString("paymentID"),
+                        rs.getString("subjectNames"),
                         rs.getString("sessionMode"),
-                        rs.getString("bookingStatus") // Retrieve the actual booking status from the database
+                        rs.getString("bookingStatus")
                 );
                 paymentHistory.add(paymentDetails);
             }
@@ -322,7 +324,9 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                 "       JOIN user t ON ts.tutorID = t.userID" +
                 "       WHERE u.userID = ?";
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, studentID);
             ResultSet rs = stmt.executeQuery();
 
@@ -363,7 +367,6 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                 String paymentId = getNextPaymentId(conn);
                 System.out.println("[PAYMENT] Generated payment ID: " + paymentId);
 
-                // Only create the payment record (no balance update)
                 try (PreparedStatement paymentStmt = conn.prepareStatement(
                         "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
                                 "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
@@ -408,9 +411,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
     @Override
     public boolean updateStudentBalance(String studentId, double amount) throws RemoteException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                     "UPDATE student SET balance = balance + ? WHERE studentID = ?"
-             )) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "UPDATE student SET balance = balance + ? WHERE studentID = ?")) {
+
             stmt.setDouble(1, amount);
             stmt.setString(2, studentId);
             return stmt.executeUpdate() > 0;
@@ -421,9 +425,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
     @Override
     public double getStudentBalance(String studentID) throws RemoteException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                     "SELECT balance FROM student WHERE studentID = ?"
-             )) {
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT balance FROM student WHERE studentID = ?")) {
+
             stmt.setString(1, studentID);
             ResultSet rs = stmt.executeQuery();
 
@@ -436,5 +441,4 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throw new RemoteException("Database error while fetching balance: " + e.getMessage());
         }
     }
-
 }

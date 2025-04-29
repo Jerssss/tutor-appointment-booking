@@ -12,11 +12,19 @@ public class DatabaseConnection {
 
     public static Connection setCon() {
         try {
-            if (connection == null || connection.isClosed()) {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("Database connection established successfully.");
+            if (connection != null && !connection.isClosed()) {
+                return connection;
             }
+
+            // Connection is closed or null, create a new one
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Database connection (re)established successfully.");
+
+            // Configure connection to prevent premature closing
+            connection.setAutoCommit(true);
+            return connection;
+
         } catch (ClassNotFoundException e) {
             System.err.println("MySQL JDBC Driver not found. Please ensure the driver is in the classpath.");
             e.printStackTrace();
