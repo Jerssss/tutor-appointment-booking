@@ -13,7 +13,7 @@ public class TutorSession implements Serializable {
     // Subject details
     private String subjectID;
     private String subjectName;
-    private transient String academicLevel;
+    private String academicLevel;
 
     // Session schedule
     private LocalDate sessionDate;
@@ -32,6 +32,29 @@ public class TutorSession implements Serializable {
 
     //Archiving purposes
     private String visibility;
+
+    public TutorSession(String sessionID, String tutorID,
+                        String subjectID, String subjectName,
+                        LocalDate sessionDate, LocalTime sessionTime,
+                        int sessionDuration, String academicLevel,
+                        String sessionStatus, int numberOfStudents,
+                        int maximumStudents, double sessionPrice,
+                        String sessionMode) {
+        this.sessionID = sessionID;
+        this.tutorID = tutorID;
+        this.subjectID = subjectID;
+        this.subjectName = subjectName;
+        this.sessionDate = sessionDate;
+        this.sessionTime = sessionTime;
+        this.sessionDuration = sessionDuration;
+        this.academicLevel = academicLevel; // Ensure this is set
+        this.sessionStatus = sessionStatus;
+        this.numberOfStudents = numberOfStudents;
+        this.maximumStudents = maximumStudents;
+        this.sessionPrice = sessionPrice;
+        this.sessionMode = sessionMode;
+        System.out.println("[SHARED] Creating TutorSession with Academic Level: " + academicLevel);
+    }
 
     public TutorSession(String sessionID, String tutorID,
                         String subjectID, String subjectName,
@@ -229,6 +252,7 @@ public class TutorSession implements Serializable {
         this.sessionPrice = sessionPrice;
         this.sessionMode = sessionMode;
     }
+
 
     public TutorSession() {
     }

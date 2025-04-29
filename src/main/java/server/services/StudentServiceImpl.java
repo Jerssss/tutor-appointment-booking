@@ -115,12 +115,13 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
                 TutorSession session = new TutorSession(
                         rs.getString("sessionID"),
-                        rs.getInt("tutorID"),
+                        rs.getString("tutorID"), // Ensure this is a String
                         rs.getString("subjectID"),
                         rs.getString("subjectName"),
-                        rs.getString("sessionDate"),
-                        rs.getString("sessionTime"),
+                        rs.getDate("sessionDate").toLocalDate(), // Ensure this is LocalDate
+                        rs.getTime("sessionTime").toLocalTime(), // Ensure this is LocalTime
                         rs.getInt("sessionDuration"),
+                        academicLevel, // Pass the academic level directly
                         rs.getString("sessionStatus"),
                         rs.getInt("numberOfStudents"),
                         rs.getInt("maximumStudents"),
@@ -128,7 +129,6 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getString("sessionMode")
                 );
 
-                session.setAcademicLevel(academicLevel);
                 sessions.add(session);
             }
             return sessions;
