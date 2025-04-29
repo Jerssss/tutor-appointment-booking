@@ -17,25 +17,4 @@ public class CreateBookingModel {
         return studentService.viewAvailableSessions();
     }
 
-    public Booking createBooking(String studentId, String sessionId,
-                                 String sessionMode, String status, double price)
-            throws RemoteException {
-        return studentService.createBooking(
-                studentId,
-                sessionId,
-                sessionMode,
-                status,
-                price
-        );
-    }
-
-    public Payment createPayment(String studentId, double amount,
-                                 String paymentMethod) throws RemoteException {
-        return studentService.createPayment(studentId, amount, paymentMethod);
-    }
-
-    public void updateStudentBalance(String studentId, double amount)
-            throws RemoteException {
-        studentService.updateStudentBalance(studentId, amount);
-    }
 }

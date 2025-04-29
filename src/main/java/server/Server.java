@@ -48,10 +48,11 @@ public class Server {
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(1000);
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            if (running) {
-                stopServer();
-            }
+            System.out.println("[Server] Shutdown hook triggered");
+            stopServer();
+            DatabaseConnection.closeConnection();
         }));
+
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("");
@@ -148,8 +149,12 @@ public class Server {
                 System.out.println("[Server] Stopping server...");
 
                 for (String name : registry.list()) {
-                    registry.unbind(name);
-                    System.out.println("[Server] Unbound service: " + name);
+                    try {
+                        registry.unbind(name);
+                        System.out.println("[Server] Unbound service: " + name);
+                    } catch (Exception e) {
+                        System.err.println("[Server ERROR] Failed to unbind " + name + ": " + e.getMessage());
+                    }
                 }
 
                 if (authService != null) {

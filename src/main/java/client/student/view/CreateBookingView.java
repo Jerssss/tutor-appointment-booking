@@ -64,6 +64,13 @@ public class CreateBookingView implements Initializable {
             throw new RuntimeException(e);
         }
         initializeSearchListener();
+        refreshButton.setOnAction(event -> {
+            try {
+                controller.refreshTable(); // Call refreshTable when the button is clicked
+            } catch (RemoteException e) {
+                showErrorAlert("Refresh Error", "Failed to refresh bookings: " + e.getMessage());
+            }
+        });
     }
 
     private void initializeSearchListener() {

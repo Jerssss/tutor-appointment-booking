@@ -42,7 +42,7 @@ public class StudentTutorClient extends Application {
     public static TutorService getTutorService() {
         return tutorService;
     }
-
+    private static Registry registry;
     public static void main(String[] args) {
         launch(args);
     }
@@ -53,7 +53,7 @@ public class StudentTutorClient extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            registry = LocateRegistry.getRegistry("localhost", 1099);
 
             // Initialize all required services
             authService = (AuthService) registry.lookup("authentication");
@@ -128,6 +128,28 @@ public class StudentTutorClient extends Application {
 
 
     private void terminateApplication() {
-        Platform.exit(); // Properly exit the application
+        System.out.println("[INFO] Cleaning up RMI resources before exit...");
+
+        // Clean up RMI references
+        authService = null;
+        studentService = null;
+        tutorService = null;
+
+        // Unbind registry
+        if (registry != null) {
+            try {
+                // clean up local references
+                System.out.println("[INFO] Cleaning up registry reference");
+            } catch (Exception e) {
+                System.err.println("[ERROR] Error cleaning up registry: " + e.getMessage());
+            }
+        }
+
+        // Force garbage collection to help clean up RMI references
+        System.gc();
+
+        System.out.println("[INFO] Terminating the application...");
+        Platform.exit();
+        System.exit(0); // Ensure complete shutdown
     }
 }

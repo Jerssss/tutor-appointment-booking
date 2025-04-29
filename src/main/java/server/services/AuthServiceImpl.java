@@ -30,36 +30,45 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
 
     @Override
     public User login(String userID, String password) throws RemoteException {
-        query = "SELECT userID, firstName, lastName, phoneNumber, email, role, password " +
+        String query = "SELECT userID, firstName, lastName, phoneNumber, email, role, password " +
                 "FROM user WHERE userID = ? AND password = ?";
 
-        try {
-            preparedStatement = con.prepareStatement(query);
+        try (Connection con = DatabaseConnection.setCon();
+             PreparedStatement preparedStatement = con.prepareStatement(query)) {
+
             preparedStatement.setString(1, userID);
             preparedStatement.setString(2, password);
 
-            resultSet = preparedStatement.executeQuery();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    User user = new User(
+                            resultSet.getString("userID"),
+                            resultSet.getString("firstName"),
+                            resultSet.getString("lastName"),
+                            resultSet.getLong("phoneNumber"),
+                            resultSet.getString("email"),
+                            resultSet.getString("role"),
+                            resultSet.getString("password")
+                    );
 
-            if (resultSet.next()) {
-                User user = new User(
-                        resultSet.getString("userID"),
-                        resultSet.getString("firstName"),
-                        resultSet.getString("lastName"),
-                        resultSet.getLong("phoneNumber"),
-                        resultSet.getString("email"),
-                        resultSet.getString("role"),
-                        resultSet.getString("password")
-                );
+                    Server.addActiveClient(userID);
+                    System.out.println("[Auth] User logged in and tracked: " + userID);
 
-                Server.addActiveClient(userID); // Track active client here
-                System.out.println("[Auth] User logged in and tracked: " + userID);
-
-                return user;
-            } else {
-                throw new AccountDoesNotExist("Account Does Not Exist in the DATABASE");
+                    return user;
+                } else {
+                    throw new AccountDoesNotExist("Account Does Not Exist in the DATABASE");
+                }
             }
         } catch (SQLException e) {
-            throw new RemoteException("Database error during login", e);
+            System.err.println("[ERROR] Database error during login: " + e.getMessage());
+            try {
+                // Test if reconnection is possible
+                DatabaseConnection.testConnection();
+                // If successful, retry the operation
+                return login(userID, password);
+            } catch (SQLException ex) {
+                throw new RemoteException("Failed to reconnect to database", ex);
+            }
         }
     }
 

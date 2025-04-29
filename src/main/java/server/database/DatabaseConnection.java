@@ -3,8 +3,10 @@ package server.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseConnection {
+
     private static Connection connection = null;
     private static final String URL = "jdbc:mysql://localhost:3306/learnify?useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
@@ -12,17 +14,21 @@ public class DatabaseConnection {
 
     public static Connection setCon() {
         try {
-            if (connection != null && !connection.isClosed()) {
-                return connection;
+            if (connection == null || connection.isClosed() || !connection.isValid(5)) {
+                closeConnection(); // Ensure old connection is properly closed
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                // Add connection properties for better resilience
+                Properties props = new Properties();
+                props.setProperty("user", USER);
+                props.setProperty("password", PASSWORD);
+                props.setProperty("autoReconnect", "true");
+                props.setProperty("maxReconnects", "10");
+                props.setProperty("initialTimeout", "5");
+
+                connection = DriverManager.getConnection(URL, props);
+                connection.setAutoCommit(true);
             }
-
-            // Connection is closed or null, create a new one
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database connection (re)established successfully.");
-
-            // Configure connection to prevent premature closing
-            connection.setAutoCommit(true);
             return connection;
 
         } catch (ClassNotFoundException e) {
@@ -44,6 +50,24 @@ public class DatabaseConnection {
             handleConnectionFailure();
         }
         return connection;
+    }
+
+
+    public static synchronized void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Database connection closed successfully.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing database connection: " + e.getMessage());
+        } finally {
+            connection = null;
+        }
+    }
+
+    public static synchronized void testConnection() throws SQLException {
+        setCon().createStatement().execute("SELECT 1");
     }
 
     private static void handleConnectionFailure() {

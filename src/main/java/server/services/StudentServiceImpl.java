@@ -110,6 +110,9 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                String academicLevel = rs.getString("academicLevel");
+                System.out.println("Fetched Academic Level: " + academicLevel); // Debugging line
+
                 TutorSession session = new TutorSession(
                         rs.getString("sessionID"),
                         rs.getInt("tutorID"),
@@ -125,7 +128,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getString("sessionMode")
                 );
 
-                session.setAcademicLevel(rs.getString("academicLevel"));
+                session.setAcademicLevel(academicLevel);
                 sessions.add(session);
             }
             return sessions;

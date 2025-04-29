@@ -19,27 +19,4 @@ public class CreateBookingController {
         List<TutorSession> sessions = model.fetchSessions();
         view.updateTable(sessions);
     }
-
-    public Booking createBooking(String studentId, String sessionId,
-                                 String sessionMode, double price)
-            throws RemoteException {
-        return model.createBooking(
-                studentId,
-                sessionId,
-                sessionMode,
-                "Approved",
-                price
-        );
-    }
-
-    public Payment processPayment(String studentId, double amount,
-                                  String paymentMethod) throws RemoteException {
-        // Create payment record
-        Payment payment = model.createPayment(studentId, amount, paymentMethod);
-
-        // Update student balance
-        model.updateStudentBalance(studentId, -amount);
-
-        return payment;
-    }
 }
