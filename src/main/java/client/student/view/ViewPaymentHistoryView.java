@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewPaymentHistoryView implements Initializable {
-    @FXML private TextField searchResTextField;
+    @FXML private TextField searchPaymentTextField;
     @FXML private Button refreshButton;
-    @FXML private TableView<PaymentDetails> viewResTableView;
+    @FXML private TableView<PaymentDetails> viewPaymentTableView;
     @FXML private TableColumn<PaymentDetails, String> invoiceColumn;
     @FXML private TableColumn<PaymentDetails, String> courseSubjectColumn;
     @FXML private TableColumn<PaymentDetails, String> sessionModeColumn;
@@ -66,7 +66,7 @@ public class ViewPaymentHistoryView implements Initializable {
     }
 
     private void initializeSearchListener() {
-        searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        searchPaymentTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchPayments(newValue.toLowerCase().trim());
         });
     }
@@ -77,7 +77,7 @@ public class ViewPaymentHistoryView implements Initializable {
         }
 
         if (query == null || query.isEmpty()) {
-            viewResTableView.setItems(allPayments);
+            viewPaymentTableView.setItems(allPayments);
             return;
         }
 
@@ -88,7 +88,7 @@ public class ViewPaymentHistoryView implements Initializable {
                         payment.getPaymentMethod().toLowerCase().contains(query) ||
                         payment.getStatus().toLowerCase().contains(query))
                 .toList();
-        viewResTableView.setItems(FXCollections.observableArrayList(filteredList));
+        viewPaymentTableView.setItems(FXCollections.observableArrayList(filteredList));
     }
 
     public void updatePaymentHistory(List<PaymentDetails> paymentHistory) {
@@ -97,8 +97,8 @@ public class ViewPaymentHistoryView implements Initializable {
         } else {
             System.out.println("[CLIENT] Updating table with " + paymentHistory.size() + " payments.");
             allPayments.setAll(paymentHistory); // Populate the ObservableList
-            viewResTableView.setItems(allPayments);
-            viewResTableView.refresh();
+            viewPaymentTableView.setItems(allPayments);
+            viewPaymentTableView.refresh();
         }
     }
 
@@ -108,8 +108,8 @@ public class ViewPaymentHistoryView implements Initializable {
         } else {
             System.out.println("[CLIENT] Updating table with " + observablePayments.size() + " payments.");
             allPayments.setAll(observablePayments); // Populate the ObservableList
-            viewResTableView.setItems(allPayments);
-            viewResTableView.refresh();
+            viewPaymentTableView.setItems(allPayments);
+            viewPaymentTableView.refresh();
         }
     }
 

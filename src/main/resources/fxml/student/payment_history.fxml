@@ -13,7 +13,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="513.0">
                      <children>
-                        <Label fx:id="viewResLabel" text="Payment History" textFill="#6f2e2e">
+                        <Label fx:id="viewPaymentHistoryLabel" text="Payment History" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="29.0" />
                            </font>
@@ -27,7 +27,7 @@
                      <children>
                         <StackPane alignment="CENTER_RIGHT" prefHeight="74.0" prefWidth="256.0">
                            <children>
-                              <TextField fx:id="searchResTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="29.0" prefWidth="230.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
+                              <TextField fx:id="searchPaymentTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="29.0" prefWidth="230.0" promptText="Enter keywords..." styleClass="background-pane" stylesheets="@../../css/styles.css" />
                            </children>
                         </StackPane>
                      </children>
@@ -47,7 +47,7 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0">
          <children>
-            <TableView fx:id="viewResTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+            <TableView fx:id="viewPaymentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
                   <TableColumn fx:id="invoiceColumn" editable="false" prefWidth="115.0" resizable="false" text="Invoice ID" />
                   <TableColumn fx:id="courseSubjectColumn" editable="false" prefWidth="115.0" resizable="false" text="Course / Subject" />

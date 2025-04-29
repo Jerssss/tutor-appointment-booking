@@ -176,7 +176,6 @@ public class TutorViewSessionListView {
 
 
     public void updateTable(List<TutorSession> sessions) {
-        System.out.println("Updating table with " + (sessions != null ? sessions.size() : 0) + " sessions.");
         if (sessions != null && !sessions.isEmpty()) {
             sessionData.setAll(sessions);
             sessionListTableView.setItems(sessionData);

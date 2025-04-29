@@ -33,7 +33,7 @@ public class ViewStudentBalanceView implements Initializable {
     @FXML private TextField searchBalTextField;
     @FXML private Button refreshButton;
     @FXML private Button createPaymentButton;
-    @FXML private TableView<BalanceDetails> viewResTableView;
+    @FXML private TableView<BalanceDetails> viewBalanceTableView;
     @FXML private TableColumn<BalanceDetails, String> dateColumn;
     @FXML private TableColumn<BalanceDetails, String> timeColumn;
     @FXML private TableColumn<BalanceDetails, String> durationColumn;
@@ -107,7 +107,7 @@ public class ViewStudentBalanceView implements Initializable {
         }
 
         if (query == null || query.isEmpty()) {
-            viewResTableView.setItems(allBalanceDetails);
+            viewBalanceTableView.setItems(allBalanceDetails);
             return;
         }
 
@@ -117,7 +117,7 @@ public class ViewStudentBalanceView implements Initializable {
                         balance.getTutorName().toLowerCase().contains(query) ||
                         balance.getBookingStatus().toLowerCase().contains(query))
                 .toList();
-        viewResTableView.setItems(FXCollections.observableArrayList(filteredList));
+        viewBalanceTableView.setItems(FXCollections.observableArrayList(filteredList));
     }
 
     public void updateTable(ObservableList<BalanceDetails> balanceDetails) {
@@ -126,8 +126,8 @@ public class ViewStudentBalanceView implements Initializable {
         } else {
             System.out.println("[CLIENT] Updating table with " + balanceDetails.size() + " balance details.");
             allBalanceDetails.setAll(balanceDetails); // Populate the ObservableList
-            viewResTableView.setItems(allBalanceDetails);
-            viewResTableView.refresh();
+            viewBalanceTableView.setItems(allBalanceDetails);
+            viewBalanceTableView.refresh();
         }
     }
 
