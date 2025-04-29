@@ -16,7 +16,7 @@ public class AdminViewMoreSubjectPopUpModel {
 
     public List<String> getDetails(String subjectID) throws RemoteException {
         List<String> subjectDetails = new ArrayList<>();
-        List<Subject> subjects = new ArrayList<>();
+        List<Subject> subjects = adminService.viewSubject();
         for (Subject subject : subjects){
             if (subject.getSubjectID().equals(subjectID)){
                 subjectDetails.add(subject.getSubjectName());
