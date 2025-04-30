@@ -36,7 +36,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
         }
 
         try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement cstmt = conn.prepareCall("{call CreateBooking(?, ?, ?, ?, ?)}")) {
+             CallableStatement cstmt = conn.prepareCall("{CALL createBooking(?, ?, ?, ?, ?)}")) {
 
             cstmt.setString(1, studentID);
             cstmt.setString(2, sessionID);
@@ -64,7 +64,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     public List<BookingDetails> viewStudentBooking(int studentID) throws RemoteException {
         List<BookingDetails> bookings = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement cstmt = conn.prepareCall("{CALL ViewStudentBooking(?)}")) {
+             CallableStatement cstmt = conn.prepareCall("{CALL viewStudentBooking(?)}")) {
 
             cstmt.setInt(1, studentID);
             ResultSet rs = cstmt.executeQuery();
@@ -106,7 +106,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
         List<TutorSession> sessions = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions()}");
+             CallableStatement stmt = conn.prepareCall("{CALL viewAvailableSessions()}");
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -139,7 +139,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     public Booking modifyBooking(String studentID, String sessionID, String newSessionMode, String newBookingStatus,
                                  double newSessionPrice, String newSessionDate, String newSessionTime) throws RemoteException {
         try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement cstmt = conn.prepareCall("{call ModifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
+             CallableStatement cstmt = conn.prepareCall("{CALL modifyBooking(?, ?, ?, ?, ?, ?, ?)}")) {
 
             cstmt.setString(1, studentID);
             cstmt.setString(2, sessionID);
