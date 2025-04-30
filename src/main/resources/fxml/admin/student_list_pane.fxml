@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewStudentView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="850.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewStudentView">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
@@ -54,20 +54,17 @@
          <children>
             <TableView fx:id="studentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>
-                  <TableColumn fx:id="studentIdColumn" editable="false" prefWidth="78.66666412353516" resizable="false" text="Student ID" />
-                  <TableColumn fx:id="firstNameColumn" editable="false" prefWidth="73.66665649414062" resizable="false" text="First Name" />
-                  <TableColumn fx:id="lastNameColumn" editable="false" prefWidth="98.0" resizable="false" text="Last Name" />
-                  <TableColumn fx:id="phoneNoColumn" editable="false" prefWidth="101.33334350585938" resizable="false" text="Phone No." />
-                  <TableColumn fx:id="emailColumn" editable="false" prefWidth="157.33331298828125" resizable="false" text="Email" />
-                  <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="104.00003051757812" resizable="false" text="Level" />
-                  <TableColumn fx:id="balanceColumn" editable="false" minWidth="0.0" prefWidth="67.3333740234375" resizable="false" text="Balance" />
-                  <TableColumn fx:id="optionColumn" editable="false" prefWidth="119.33331298828125" resizable="false" text="Option" />
+                  <TableColumn fx:id="studentIdColumn" editable="false" prefWidth="95.99999237060547" resizable="false" text="Student ID" />
+                  <TableColumn fx:id="firstNameColumn" editable="false" prefWidth="74.66667175292969" resizable="false" text="First Name" />
+                  <TableColumn fx:id="lastNameColumn" editable="false" prefWidth="85.0" resizable="false" text="Last Name" />
+                  <TableColumn fx:id="phoneNoColumn" editable="false" prefWidth="104.33334350585938" resizable="false" text="Phone No." />
+                  <TableColumn fx:id="emailColumn" editable="false" prefWidth="144.33331298828125" resizable="false" text="Email" />
+                  <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="113.66668701171875" resizable="false" text="Level" />
+                  <TableColumn fx:id="balanceColumn" editable="false" minWidth="0.0" prefWidth="106.3333740234375" resizable="false" text="Balance" />
+                  <TableColumn fx:id="optionColumn" editable="false" prefWidth="116.33331298828125" resizable="false" text="Option" />
+                  <TableColumn fx:id="deleteColumn" editable="false" prefWidth="100.0" text="Delete" style="-fx-alignment: CENTER;" />
                </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
             </TableView>
-
          </children>
       </VBox>
    </children>

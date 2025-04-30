@@ -42,4 +42,15 @@ public class AdminStudentModel {
             return false;
         }
     }
+
+    public boolean removeStudent(Student student) {
+        try {
+            adminService.removeStudent(student);
+            System.out.println("Remove student in model is set");
+            return true;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to add student via RMI: " + e.getMessage());
+            return false;
+        }
+    }
 }

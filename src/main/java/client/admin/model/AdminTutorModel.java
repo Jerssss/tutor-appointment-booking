@@ -1,6 +1,7 @@
 package client.admin.model;
 
 import client.AdminClient;
+import shared.classes.Student;
 import shared.classes.Tutor;
 import shared.interfaces.AdminService;
 
@@ -38,6 +39,17 @@ public class AdminTutorModel {
             return true;
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to modify tutor via RMI: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean removeTutor(Tutor tutor) {
+        try {
+            adminService.removeTutor(tutor);
+            System.out.println("Remove student in model is set");
+            return true;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to add student via RMI: " + e.getMessage());
             return false;
         }
     }

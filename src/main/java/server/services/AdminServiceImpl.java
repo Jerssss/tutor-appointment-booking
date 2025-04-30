@@ -132,6 +132,22 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
+    public void removeStudent(Student student) throws RemoteException {
+        query = "{CALL removeStudent(?)}";
+
+        try {
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, student.getUserID());
+            callStmt.executeUpdate();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+    }
+
+
+    @Override
     public List<Tutor> viewTutor() throws RemoteException{
         List<Tutor> tutorList = new ArrayList<>();
 
@@ -210,6 +226,22 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             e2.printStackTrace();
         }
     }
+
+    @Override
+    public void removeTutor(Tutor tutor) throws RemoteException {
+        query = "{CALL removeTutor(?)}";
+
+        try {
+            callStmt = con.prepareCall(query);
+            callStmt.setString(1, tutor.getUserID());
+            callStmt.executeUpdate();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+    }
+
 
     @Override
     public List<TutorSession> viewSession() throws RemoteException{

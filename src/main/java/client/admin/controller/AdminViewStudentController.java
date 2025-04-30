@@ -62,4 +62,9 @@ public class AdminViewStudentController {
 
         view.updateTable(FXCollections.observableArrayList(filteredList));
     }
+
+    public void removeStudent(Student student) {
+        System.out.println("Remove student in controller is set");
+        model.removeStudent(student);
+    }
 }

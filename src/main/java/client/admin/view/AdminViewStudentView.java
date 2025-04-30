@@ -5,8 +5,6 @@ import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,6 +45,8 @@ public class AdminViewStudentView {
     private TableColumn<Student, String> balanceColumn;
     @FXML
     private TableColumn<Student, String> optionColumn;
+    @FXML
+    private TableColumn<Student, String> deleteColumn;
     private AdminViewStudentController controller;
     private ObservableList<Student> studentData = FXCollections.observableArrayList();
 
@@ -71,12 +71,30 @@ public class AdminViewStudentView {
         academicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
         balanceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.format("%.2f", cellData.getValue().getBalance())));
         optionColumn.setCellFactory(column -> createModifyButtonCellFactory());
+        deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
     }
 
     public void initializeController() {
         System.out.println("[CLIENT] Initializing ModifyTerminalStatusController...");
         this.controller = new AdminViewStudentController(this);
         System.out.println("[CLIENT] ModifyTerminalStatusController successfully created.");
+    }
+
+    private void openAddStudentWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_student_window.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Add Student");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Blocks interaction with other windows
+            stage.showAndWait(); // Waits for the window to be closed before resuming
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[CLIENT] Failed to load Add Student window.");
+        }
     }
 
     public TableCell<Student, String> createModifyButtonCellFactory(){
@@ -125,13 +143,43 @@ public class AdminViewStudentView {
         }
     }
 
-    private void openAddStudentWindow() {
+    private TableCell<Student, String> createDeleteButtonCellFactory() {
+        return new TableCell<Student, String>() {
+            private final Button deleteButton = new Button("Remove");
+
+            {
+                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                deleteButton.setOnAction(event -> {
+                    Student student = getTableRow().getItem();
+                    if (student != null) {
+                        showRemovePane(student);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        };
+    }
+
+    private void showRemovePane(Student student) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_student_window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/delete_student.fxml"));
             Parent root = loader.load();
 
+            AdminDeleteStudentPopUpView view = loader.getController();
+            view.setStudent(student);
+            view.setStudentController(this.controller);
+
             Stage stage = new Stage();
-            stage.setTitle("Add Student");
+            stage.setTitle("Remove Student");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL); // Blocks interaction with other windows
             stage.showAndWait(); // Waits for the window to be closed before resuming

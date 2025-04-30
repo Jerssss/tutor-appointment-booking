@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import shared.classes.Student;
 import shared.classes.Tutor;
 
 import java.io.IOException;
@@ -43,6 +44,8 @@ public class AdminViewTutorView {
     private TableColumn<Tutor, String> expertiseColumn;
     @FXML
     private TableColumn<Tutor, String> optionColumn;
+    @FXML
+    private TableColumn<Tutor, String> deleteColumn;
     private AdminViewTutorController controller;
     private ObservableList<Tutor> tutorData = FXCollections.observableArrayList();
 
@@ -66,12 +69,31 @@ public class AdminViewTutorView {
         emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
         expertiseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertise()));
         optionColumn.setCellFactory(column -> createModifyButtonCellFactory());
+        deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
+
     }
 
     public void initializeController() {
         System.out.println("[CLIENT] Initializing ModifyTerminalStatusController...");
         this.controller = new AdminViewTutorController(this);
         System.out.println("[CLIENT] ModifyTerminalStatusController successfully created.");
+    }
+
+    private void openAddTutorWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_tutor_window.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Add Tutor");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Blocks interaction with other windows
+            stage.showAndWait(); // Waits for the window to be closed before resuming
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[CLIENT] Failed to load Add Tutor window.");
+        }
     }
 
     public TableCell<Tutor, String> createModifyButtonCellFactory(){
@@ -120,23 +142,52 @@ public class AdminViewTutorView {
         }
     }
 
-    private void openAddTutorWindow() {
+    private TableCell<Tutor, String> createDeleteButtonCellFactory() {
+        return new TableCell<Tutor, String>() {
+            private final Button deleteButton = new Button("Remove");
+
+            {
+                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                deleteButton.setOnAction(event -> {
+                    Tutor tutor = getTableRow().getItem();
+                    if (tutor != null) {
+                        showRemovePane(tutor);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        };
+    }
+
+    private void showRemovePane(Tutor tutor) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_tutor_window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/delete_tutor.fxml"));
             Parent root = loader.load();
 
+            AdminDeleteTutorPopUpView view = loader.getController();
+            view.setTutor(tutor);
+            view.setTutorController(this.controller);
+
             Stage stage = new Stage();
-            stage.setTitle("Add Tutor");
+            stage.setTitle("Remove Student");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL); // Blocks interaction with other windows
             stage.showAndWait(); // Waits for the window to be closed before resuming
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Add Tutor window.");
+            System.out.println("[CLIENT] Failed to load Add Student window.");
         }
     }
-
 
     public void updateTable(List<Tutor> data) {
         tutorData.setAll(data); // Update dataset
