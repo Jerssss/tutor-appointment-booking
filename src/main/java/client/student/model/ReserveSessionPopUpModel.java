@@ -6,10 +6,10 @@ import shared.classes.Tutor;
 import shared.classes.TutorSession;
 import shared.interfaces.StudentService;
 
-public class ReserveBookingPopUpModel {
+public class ReserveSessionPopUpModel {
     private final StudentService studentService;
 
-    public ReserveBookingPopUpModel(StudentService studentService) {
+    public ReserveSessionPopUpModel(StudentService studentService) {
         this.studentService = StudentTutorClient.getStudentService();
     }
 

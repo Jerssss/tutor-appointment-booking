@@ -1,22 +1,20 @@
 package client.student.view;
 
-import client.student.controller.ReserveBookingPopUpController;
-import client.student.model.ReserveBookingPopUpModel;
+import client.student.controller.ReserveSessionPopUpController;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import shared.classes.Booking;
 import shared.classes.SessionManager;
 import shared.classes.Tutor;
 import shared.classes.TutorSession;
 
-public class ReserveBookingPopUpView {
+public class ReserveSessionPopUpView {
 
     // UI Components
     @FXML private Label acadLevelLabel, dateLabel, durationLabel, modeLabel,
-            priceLabel, subjectLabel, timeLabel, typeLabel, tutorNameLabel, tutorIDLabel;
+            priceLabel, subjectLabel, timeLabel, typeLabel, tutorNameLabel, tutorIDLabel, sessionIDLabel;
     @FXML private Button confirmButton, cancelButton;
 
     // Payment Options
@@ -27,7 +25,7 @@ public class ReserveBookingPopUpView {
     @FXML private TextField amountToPayTextField;
 
     private TutorSession selectedSession;
-    private ReserveBookingPopUpController controller;
+    private ReserveSessionPopUpController controller;
 
     @FXML
     public void initialize() {
@@ -108,6 +106,7 @@ public class ReserveBookingPopUpView {
 
     private void populateSessionDetails() {
         try {
+            sessionIDLabel.setText(selectedSession.getSessionID());
             dateLabel.setText(String.valueOf(selectedSession.getSessionDate()));
             timeLabel.setText(String.valueOf(selectedSession.getSessionTime()));
             durationLabel.setText(selectedSession.getSessionDuration() + " mins");
@@ -156,7 +155,7 @@ public class ReserveBookingPopUpView {
         st.play();
     }
 
-    public void setController(ReserveBookingPopUpController controller) {
+    public void setController(ReserveSessionPopUpController controller) {
         this.controller = controller;
     }
 }

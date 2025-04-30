@@ -1,16 +1,14 @@
 package client.student.controller;
 
-import client.student.model.ReserveBookingPopUpModel;
+import client.student.model.ReserveSessionPopUpModel;
 import shared.classes.Booking;
 import shared.classes.Tutor;
 import shared.classes.TutorSession;
 
-import java.rmi.RemoteException;
+public class ReserveSessionPopUpController {
+    private final ReserveSessionPopUpModel model;
 
-public class ReserveBookingPopUpController {
-    private final ReserveBookingPopUpModel model;
-
-    public ReserveBookingPopUpController(ReserveBookingPopUpModel model) {
+    public ReserveSessionPopUpController(ReserveSessionPopUpModel model) {
         this.model = model;
     }
 

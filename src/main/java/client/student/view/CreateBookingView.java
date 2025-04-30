@@ -1,14 +1,11 @@
 package client.student.view;
 
 import client.student.controller.CreateBookingController;
-import client.student.controller.ReserveBookingPopUpController;
-import client.student.controller.ViewSubjectController;
+import client.student.controller.ReserveSessionPopUpController;
 import client.student.model.CreateBookingModel;
-import client.student.model.ReserveBookingPopUpModel;
-import client.student.model.ViewSubjectModel;
+import client.student.model.ReserveSessionPopUpModel;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,8 +21,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import server.services.StudentServiceImpl;
-import shared.classes.Booking;
-import shared.classes.BookingDetails;
 import shared.classes.SessionManager;
 import shared.classes.TutorSession;
 import shared.interfaces.StudentService;
@@ -218,16 +213,16 @@ public class CreateBookingView implements Initializable {
 
     private void showReservePopUp(TutorSession session) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/reserve_booking_window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/reserve_session_window.fxml"));
             Parent root = loader.load();
 
             // Get the controller instance created by FXMLLoader
-            ReserveBookingPopUpView popupView = loader.getController();
+            ReserveSessionPopUpView popupView = loader.getController();
 
             // Initialize the popup's model and controller
             StudentService studentService = new StudentServiceImpl();
-            ReserveBookingPopUpModel popupModel = new ReserveBookingPopUpModel(studentService);
-            ReserveBookingPopUpController popupController = new ReserveBookingPopUpController(popupModel);
+            ReserveSessionPopUpModel popupModel = new ReserveSessionPopUpModel(studentService);
+            ReserveSessionPopUpController popupController = new ReserveSessionPopUpController(popupModel);
 
             // Set the controller in the view
             popupView.setController(popupController);
@@ -235,7 +230,7 @@ public class CreateBookingView implements Initializable {
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Reserve Booking");
+            stage.setTitle("Reserve Session");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 

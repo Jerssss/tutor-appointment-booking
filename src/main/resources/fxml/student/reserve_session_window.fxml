@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="528.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.student.view.ReserveBookingPopUpView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="528.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.student.view.ReserveSessionPopUpView">
    <center>
       <VBox alignment="CENTER" prefHeight="173.0" prefWidth="330.0" BorderPane.alignment="CENTER">
          <children>
@@ -231,7 +231,12 @@
    <top>
       <HBox alignment="CENTER" prefHeight="47.0" prefWidth="310.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="41.0" prefWidth="255.0" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" text="Reserve Booking" textFill="WHITE">
+            <Label alignment="CENTER" prefHeight="41.0" prefWidth="214.0" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" text="Reserve Session:" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="sessionIDLabel" prefHeight="41.0" prefWidth="85.0" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

@@ -113,7 +113,7 @@ public class StudentTutorClient extends Application {
                                " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
 
             System.out.println("=====================================================");
-            System.out.println("[Admin Client] Starting client at " + new Date());
+            System.out.println("[Client] Starting client at " + new Date());
             System.out.println("=====================================================");
 
         } catch (IOException e) {
