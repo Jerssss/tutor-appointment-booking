@@ -26,15 +26,6 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     @Override
     public Booking createBooking(String studentID, String sessionID, String sessionMode, String bookingStatus,
                                  double sessionPrice) throws RemoteException {
-        // Validate bookingStatus against allowed values
-        if (!isValidBookingStatus(bookingStatus)) {
-            throw new RemoteException("Invalid booking status. Must be 'Pending', 'Approved', or 'Cancelled'");
-        }
-
-        if (!isValidSessionMode(sessionMode)) {
-            throw new RemoteException("Invalid session mode. Must be 'Face-to-Face' or 'Online'");
-        }
-
         try (Connection conn = DatabaseConnection.setCon();
              CallableStatement cstmt = conn.prepareCall("{CALL createBooking(?, ?, ?, ?, ?)}")) {
 
@@ -45,19 +36,22 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             cstmt.setString(5, bookingStatus);
 
             cstmt.executeUpdate();
-            return new Booking(studentID, sessionID, sessionMode, bookingStatus, sessionPrice);
 
+            // Verify booking was actually created
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT * FROM booking WHERE studentID = ? AND sessionID = ?")) {
+                ps.setString(1, studentID);
+                ps.setString(2, sessionID);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    return new Booking(studentID, sessionID, sessionMode, bookingStatus, sessionPrice);
+                }
+                throw new RemoteException("Booking failed - session may be full");
+            }
         } catch (SQLException e) {
             throw new RemoteException("Database error: " + e.getMessage());
         }
-    }
-
-    private boolean isValidBookingStatus(String status) {
-        return "Pending".equals(status) || "Approved".equals(status) || "Cancelled".equals(status);
-    }
-
-    private boolean isValidSessionMode(String mode) {
-        return "Face-to-Face".equals(mode) || "Online".equals(mode);
     }
 
     @Override
@@ -102,15 +96,15 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     }
 
     @Override
-    public List<TutorSession> viewAvailableSessions() throws RemoteException {
+    public List<TutorSession> viewAvailableSessions(String studentID) throws RemoteException {
         List<TutorSession> sessions = new ArrayList<>();
-
         try (Connection conn = DatabaseConnection.setCon();
-             CallableStatement stmt = conn.prepareCall("{CALL viewAvailableSessions()}");
-             ResultSet rs = stmt.executeQuery()) {
+             CallableStatement stmt = conn.prepareCall("{CALL ViewAvailableSessions(?)}")) {
+
+            stmt.setString(1, studentID);
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String academicLevel = rs.getString("academicLevel");
                 TutorSession session = new TutorSession(
                         rs.getString("sessionID"),
                         rs.getString("tutorID"),
@@ -119,20 +113,21 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getDate("sessionDate").toLocalDate(),
                         rs.getTime("sessionTime").toLocalTime(),
                         rs.getInt("sessionDuration"),
-                        academicLevel,
+                        rs.getString("academicLevel"),
                         rs.getString("sessionStatus"),
                         rs.getInt("numberOfStudents"),
                         rs.getInt("maximumStudents"),
                         rs.getDouble("sessionPrice"),
                         rs.getString("sessionMode")
                 );
-
                 sessions.add(session);
             }
-            return sessions;
         } catch (SQLException e) {
+            System.err.println("[SERVER ERROR] Database error: " + e.getMessage());
             throw new RemoteException("Database error: " + e.getMessage());
         }
+        System.out.println("[SERVER] Found " + sessions.size() + " available sessions");
+        return sessions;
     }
 
     @Override

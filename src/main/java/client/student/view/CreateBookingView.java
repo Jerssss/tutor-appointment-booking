@@ -51,6 +51,8 @@ public class CreateBookingView implements Initializable {
     @FXML private TableColumn<TutorSession, String> typeColumn;
     @FXML private TableColumn<TutorSession, String> modeColumn;
     @FXML private TableColumn<TutorSession, String> priceColumn;
+    @FXML private TableColumn<TutorSession, String> enrolledColumn;
+
 
     private final ObservableList<TutorSession> allBookings = FXCollections.observableArrayList();
     private CreateBookingController controller;
@@ -161,6 +163,10 @@ public class CreateBookingView implements Initializable {
                 new SimpleStringProperty(cellData.getValue().getSessionMode()));
         priceColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionPrice())));
+        enrolledColumn.setCellValueFactory(cellData -> {
+            String numberOfStudents = (cellData.getValue().getNumberOfStudents() + " / " + cellData.getValue().getMaximumStudents());
+                    return new SimpleStringProperty(numberOfStudents);
+                });
 
         // Reserve button column setup
         reserveColumn.setCellFactory(param -> new TableCell<>() {
