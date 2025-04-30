@@ -31,9 +31,17 @@ public class TutorModifyLessonPlanPopUp {
 
     public void setLessonPlan(LessonPlan lessonPlan) {
         this.lessonPlan = lessonPlan;
+        populateFields();
     }
 
-    //Validation checks if the objectives filed and topics covered field are empty
+    private void populateFields() {
+        if (lessonPlan != null) {
+            objectivesTextField.setText(lessonPlan.getObjectives());
+            topicsCoveredTextField.setText(lessonPlan.getTopicsCovered());
+        }
+    }
+
+    // Validation checks if the objectives filed and topics covered field are empty
     private void handleSave() {
         String newObjectives = objectivesTextField.getText();
         String newTopicsCovered = topicsCoveredTextField.getText();
