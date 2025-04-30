@@ -42,6 +42,21 @@ public class ReserveBookingPopUpModel {
             throw new Exception("Payment failed: " + e.getMessage());
         }
     }
+    public void processPartialPayment(String studentId, double amountPaid, double sessionPrice, String paymentMethod) throws Exception {
+        try {
+            // Record the payment
+            studentService.createPayment(studentId, amountPaid, paymentMethod);
+
+            // Update the remaining balance if needed
+            double remainingBalance = sessionPrice - amountPaid;
+            if (remainingBalance > 0) {
+                studentService.updateStudentBalance(studentId, remainingBalance);
+            }
+        } catch (Exception e) {
+            throw new Exception("Partial payment failed: " + e.getMessage());
+        }
+    }
+
 
     public void updateStudentBalance(String studentId, double amount) throws Exception {
         try {

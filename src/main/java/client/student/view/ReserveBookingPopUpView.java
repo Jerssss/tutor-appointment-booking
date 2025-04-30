@@ -24,6 +24,8 @@ public class ReserveBookingPopUpView {
     @FXML private ToggleGroup paymentGroup, bankGroup;
     @FXML private VBox paymentOptionsVBox;
 
+    @FXML private TextField amountToPayTextField;
+
     private TutorSession selectedSession;
     private ReserveBookingPopUpController controller;
 
@@ -32,6 +34,13 @@ public class ReserveBookingPopUpView {
         setupPaymentToggleListener();
         gcashRadio.setSelected(true);
         paymentOptionsVBox.setVisible(false);
+
+        // Add listener to validate payment amount
+        amountToPayTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                amountToPayTextField.setText(oldValue);
+            }
+        });
     }
 
     private void setupPaymentToggleListener() {
@@ -44,27 +53,39 @@ public class ReserveBookingPopUpView {
     @FXML
     private void handleConfirmBooking() {
         try {
-
             String studentId = SessionManager.getCurrentUserId();
             if (studentId == null) {
                 throw new Exception("Please login to make reservations");
             }
 
-
             boolean payNow = payNowRadio.isSelected();
             String paymentMethod = payNow ? getSelectedBank() : null;
+            double amountPaid = 0;
+
+            if (payNow) {
+                try {
+                    amountPaid = Double.parseDouble(amountToPayTextField.getText());
+                    if (amountPaid <= 0 || amountPaid > selectedSession.getSessionPrice()) {
+                        throw new Exception("Amount must be between 0 and " + selectedSession.getSessionPrice());
+                    }
+                } catch (NumberFormatException e) {
+                    throw new Exception("Please enter a valid payment amount");
+                }
+            }
 
             controller.processBooking(
                     studentId,
                     selectedSession,
                     payNow,
-                    paymentMethod
+                    paymentMethod,
+                    amountPaid
             );
 
             showAlert("Success", payNow ?
-                    String.format("Payment successful! %.2f via %s",
-                            (double)selectedSession.getSessionPrice(),
-                            paymentMethod) :
+                    String.format("Payment successful! %.2f via %s. Remaining balance: %.2f",
+                            amountPaid,
+                            paymentMethod,
+                            selectedSession.getSessionPrice() - amountPaid) :
                     "Booking reserved. Pay later in your Balance view."
             );
 
