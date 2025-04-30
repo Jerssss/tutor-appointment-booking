@@ -62,7 +62,8 @@
         <TableView fx:id="lessonPlanListTableView" editable="true" focusTraversable="false" minHeight="-Infinity" prefHeight="477.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
             <columns>
                 <TableColumn fx:id="courseColumn" minWidth="60.0" prefWidth="60.0" text="Course" />
-                <TableColumn fx:id="subjectColumn" minWidth="90.0" prefWidth="90.0" text="Subject" />
+                <TableColumn fx:id="subjectIDColumn" minWidth="90.0" prefWidth="187.0" text="Subject No." />
+                <TableColumn fx:id="subjectColumn" minWidth="90.0" prefWidth="143.0" text="Subject" />
                 <TableColumn fx:id="objectivesColumn" prefWidth="180.0" text="Objectives" />
                 <TableColumn fx:id="topicsColumn" minWidth="0.0" prefWidth="161.0" text="Topics" />
                 <TableColumn fx:id="updateColumn" editable="false" prefWidth="90.0" resizable="false" text="Update" />

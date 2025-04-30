@@ -5,17 +5,17 @@ import java.io.Serializable;
 public class LessonPlan implements Serializable {
     private static final long serialVersionUID = 1L;
     private String lessonPlanID;
-    private String subjectID;
+    private String subjectID; // Store subject ID
+    private String subjectName; // Store subject name
     private String academicLevel;
     private String topicsCovered;
-    private String subjectName;
     private String objectives;
     private String visibility;
 
-    // Constructor
-    public LessonPlan() {
+    public LessonPlan(String lessonPlanID, String subjectID, String subjectName, String objectives, String topicsCovered) {
         this.lessonPlanID = lessonPlanID;
-        this.subjectID = subjectID;
+        this.subjectID = subjectID; // Initialize subjectID
+        this.subjectName = subjectName; // Initialize subjectName
         this.objectives = objectives;
         this.topicsCovered = topicsCovered;
     }
@@ -50,9 +50,7 @@ public class LessonPlan implements Serializable {
     public String getTopicsCovered() { return topicsCovered; }
     public void setTopicsCovered(String topicsCovered) { this.topicsCovered = topicsCovered; }
 
-    public String getSubjectName() {
-        return subjectName;
-    }
+    public String getSubjectName() { return subjectName; }
 
     public String getAcademicLevel() {
         return academicLevel;
@@ -68,6 +66,7 @@ public class LessonPlan implements Serializable {
         return "LessonPlan{" +
                 "lessonPlanID=" + lessonPlanID +
                 ", subjectID=" + subjectID +
+                ", subjectName='" + subjectName + '\'' +
                 ", objectives='" + objectives + '\'' +
                 ", topicsCovered='" + topicsCovered + '\'' +
                 '}';

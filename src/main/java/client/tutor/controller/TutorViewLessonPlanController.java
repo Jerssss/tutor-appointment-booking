@@ -15,26 +15,25 @@ public class TutorViewLessonPlanController {
     private final TutorLessonPlanModel model;
     private ObservableList<LessonPlan> lessonPlanData = FXCollections.observableArrayList();
 
-    public TutorViewLessonPlanController(TutorViewLessonPlanView view) {
+    public TutorViewLessonPlanController(TutorViewLessonPlanView view, String tutorID) {
         this.view = view;
         this.model = new TutorLessonPlanModel();
-
-        loadLessonPlans();
+        loadLessonPlans(tutorID);
     }
 
-    public void loadLessonPlans() {
-        System.out.println("[CLIENT] loadStudents() method called.");
+    public void loadLessonPlans(String tutorID) {
+        System.out.println("[CLIENT] loadLessonPlans() method called.");
 
-        List<LessonPlan> lessonPLan = model.fetchLessonPlans();
+        List<LessonPlan> lessonPlans = model.fetchLessonPlansByTutor(tutorID); // Fetch lesson plans for the specific tutor
 
-        if (lessonPLan != null) {
+        if (lessonPlans != null) {
             Platform.runLater(() -> {
-                lessonPlanData.setAll(lessonPLan); // Update observable list
-                view.updateTable(lessonPLan);
-                System.out.println("[CLIENT] Table updated with " + lessonPLan.size() + " terminals.");
+                lessonPlanData.setAll(lessonPlans); // Update observable list
+                view.updateTable(lessonPlans);
+                System.out.println("[CLIENT] Table updated with " + lessonPlans.size() + " lesson plans.");
             });
         } else {
-            System.err.println("[ERROR] Failed to load terminals.");
+            System.err.println("[ERROR] Failed to load lesson plans.");
         }
     }
 
@@ -59,22 +58,6 @@ public class TutorViewLessonPlanController {
                 .collect(Collectors.toList());
 
         view.updateTable(FXCollections.observableArrayList(filteredList));
-    }
-
-    public void loadLessonPlan() {
-        System.out.println("[CLIENT] loadSessions() method called.");
-
-        List<LessonPlan> lessonPlans = model.fetchLessonPlans();
-
-        if (lessonPlans != null) {
-            Platform.runLater(() -> {
-                lessonPlanData.setAll(lessonPlans); // Update observable list
-                view.updateTable(lessonPlans);
-                System.out.println("[CLIENT] Table updated with " + lessonPlans.size() + " sessions.");
-            });
-        } else {
-            System.err.println("[ERROR] Failed to load sessions.");
-        }
     }
 
     public void deleteLessonPlan(LessonPlan lessonPlan) {

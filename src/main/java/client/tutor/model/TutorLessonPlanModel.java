@@ -14,11 +14,11 @@ public class TutorLessonPlanModel {
         this.tutorService = StudentTutorClient.getTutorService();
     }
 
-    public List<LessonPlan> fetchLessonPlans() {
+    public List<LessonPlan> fetchLessonPlansByTutor(String tutorID) {
         try {
-            return tutorService.viewLessonPlan();
+            return tutorService.viewLessonPlanByTutor(tutorID); // Call the new method in the service
         } catch (Exception e) {
-            System.err.println("[ERROR] Failed to fetch lesson plan: " + e.getMessage());
+            System.err.println("[ERROR] Failed to fetch lesson plans for tutor: " + e.getMessage());
             return null;
         }
     }

@@ -43,15 +43,16 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
     @Override
     public void addLessonPlan(LessonPlan newLessonPlan) throws RemoteException, SQLException {
-        String query = "INSERT INTO lessonplan (lessonPlanID, subjectID, objectives, topicsCovered) VALUES (?, ?, ?, ?);";
+        String query = "INSERT INTO lessonplan (lessonPlanID, subjectID, subjectName, objectives, topicsCovered) VALUES (?, ?, ?, ?, ?);";
         try {
             String newLessonPlanID = generateNewLessonPlanID();
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, newLessonPlanID);
             preparedStatement.setString(2, newLessonPlan.getSubjectID());
-            preparedStatement.setString(3, newLessonPlan.getObjectives());
-            preparedStatement.setString(4, newLessonPlan.getTopicsCovered());
+            preparedStatement.setString(3, newLessonPlan.getSubjectName()); // Add subjectName
+            preparedStatement.setString(4, newLessonPlan.getObjectives());
+            preparedStatement.setString(5, newLessonPlan.getTopicsCovered());
             preparedStatement.executeUpdate();
         } catch (SQLException e1) {
             if (con != null) con.rollback(); // Rollback on error
@@ -138,30 +139,42 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
     }
 
     @Override
-    public List<LessonPlan> viewLessonPlan() throws RemoteException{
+    public List<LessonPlan> viewLessonPlanByTutor(String tutorID) throws RemoteException {
         List<LessonPlan> lessonPlanList = new ArrayList<>();
 
-        String query = "SELECT lp.lessonPlanID, s.subjectName, lp.objectives, lp.topicsCovered FROM lessonplan lp " +
-                "NATURAL JOIN subject s";
+        String query = "SELECT lp.lessonPlanID, s.subjectID, s.subjectName, lp.objectives, lp.topicsCovered " +
+                "FROM lessonplan lp " +
+                "JOIN tutorsession ts ON lp.subjectID = ts.subjectID " +
+                "JOIN subject s ON lp.subjectID = s.subjectID " +
+                "WHERE ts.tutorID = ? and lp.visibility = 'Available'";
 
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            ResultSet resultSet = stmt.executeQuery(query);
+            stmt.setString(1, tutorID);
+            ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                String lessonPlanID = resultSet.getString(1);
-                String subjectName = resultSet.getString(2);
-                String objectives = resultSet.getString(3);
-                String topicsCovered = resultSet.getString(4);
+                String lessonPlanID = resultSet.getString("lessonPlanID");
+                String subjectID = resultSet.getString("subjectID");
+                String subjectName = resultSet.getString("subjectName");
+                String objectives = resultSet.getString("objectives");
+                String topicsCovered = resultSet.getString("topicsCovered");
 
-                LessonPlan lessonPlan = new LessonPlan(lessonPlanID, subjectName, objectives, topicsCovered);
+                // Debugging output to check values
+                System.out.println("Lesson Plan ID: " + lessonPlanID);
+                System.out.println("Subject ID: " + subjectID);
+                System.out.println("Subject Name: " + subjectName); // Check this value
+                System.out.println("Objectives: " + objectives);
+                System.out.println("Topics Covered: " + topicsCovered);
+
+                // Create LessonPlan object with subjectID and subjectName
+                LessonPlan lessonPlan = new LessonPlan(lessonPlanID, subjectID, subjectName, objectives, topicsCovered);
                 lessonPlanList.add(lessonPlan);
             }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        } catch (Exception e2) {
-            e2.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RemoteException("Error retrieving lesson plans for tutor: " + e.getMessage());
         }
         return lessonPlanList;
     }

@@ -46,7 +46,7 @@ public class TutorCreateLessonPlanPopUp {
         String objectives = objectivesTextField.getText();
         String topicsCovered = topicsCoveredTextField.getText();
 
-        //Check for empty fields or null combo box selections
+        // Check for empty fields or null combo box selections
         if (acadLvl == null || acadLvl.trim().isEmpty() ||
                 subject == null || subject.trim().isEmpty() ||
                 objectives == null || objectives.trim().isEmpty() ||
@@ -60,7 +60,7 @@ public class TutorCreateLessonPlanPopUp {
         }
 
         // All good, proceed to create and add the lesson plan
-        boolean success = controller.addNewLessonPlan(acadLvl, subject, objectives, topicsCovered);
+        boolean success = controller.addNewLessonPlan(acadLvl, subject, subject, objectives, topicsCovered);
 
         if (!success) {
             JOptionPane.showMessageDialog(null,

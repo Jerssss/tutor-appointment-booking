@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import shared.classes.LessonPlan;
+import shared.classes.SessionManager;
 import shared.classes.Student;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class TutorViewLessonPlanView {
     @FXML private TableView<LessonPlan> lessonPlanListTableView;
     @FXML private TableColumn<LessonPlan, String> courseColumn;
     @FXML private TableColumn<LessonPlan, String> subjectColumn;
+    @FXML private TableColumn<LessonPlan, String> subjectIDColumn;
     @FXML private TableColumn<LessonPlan, String> objectivesColumn;
     @FXML private TableColumn<LessonPlan, String> topicsColumn;
     @FXML private TableColumn<LessonPlan, String> updateColumn;
@@ -40,7 +42,10 @@ public class TutorViewLessonPlanView {
     public void initialize() {
         initializeTableColumns();
         System.out.println("[CLIENT] Table columns initialized successfully.");
-        initializeController();
+
+        String tutorID = getLoggedInTutorID(); // Replace with your method to get the logged-in tutor ID
+        initializeController(tutorID); // Pass the tutor ID to the controller
+
         addLessonPlanButton.setOnAction(event -> openAddLessonPlanWindow());
         try {
             searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -49,21 +54,22 @@ public class TutorViewLessonPlanView {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        refreshButton.setOnAction(event -> controller.loadLessonPlan());
+        refreshButton.setOnAction(event -> controller.loadLessonPlans(tutorID)); // Pass the tutor ID to loadLessonPlans
     }
 
     public void initializeTableColumns() {
         courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLessonPlanID()));
-        subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
+        subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
+        subjectIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
         objectivesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getObjectives()));
         topicsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getTopicsCovered())));
         updateColumn.setCellFactory(column -> createUpdateButtonCellFactory());
         deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
     }
 
-    public void initializeController() {
+    public void initializeController(String tutorID) {
         System.out.println("[CLIENT] Initializing TutorViewLessonPlanController...");
-        this.controller = new TutorViewLessonPlanController(this);
+        this.controller = new TutorViewLessonPlanController(this, tutorID); // Pass the tutor ID
         System.out.println("[CLIENT] TutorViewLessonPlanController successfully created.");
     }
 
@@ -163,6 +169,10 @@ public class TutorViewLessonPlanView {
             e.printStackTrace();
             System.out.println("[CLIENT] Failed to load Add Lesson Plan window.");
         }
+    }
+
+    private String getLoggedInTutorID() {
+        return SessionManager.getCurrentUserId(); // Use the SessionManager to get the current user ID
     }
 
     public void updateTable(List<LessonPlan> data) {

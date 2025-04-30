@@ -58,7 +58,6 @@
          </children>
       </VBox>
 
-      <!-- Report Tables -->
       <VBox alignment="CENTER" prefHeight="521.0" prefWidth="805.0">
          <children>
             <TabPane fx:id="reportsTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
@@ -67,14 +66,13 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="highSchoolTableView" prefHeight="482.0" prefWidth="805.0">
+                              <TableView fx:id="highSchoolTableView" prefHeight="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <columns>
-                                    <TableColumn fx:id="highSchoolLessonPlanIDColumn" prefWidth="130.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="highSchoolSubjectIDColumn" prefWidth="130.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="highSchoolObjectivesColumn" prefWidth="180.0" text="Objectives" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="highSchoolTopicsColumn" prefWidth="145.0" text="Topics" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolLessonPlanIDColumn" prefWidth="110.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolSubjectIDColumn" prefWidth="110.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolSubjectNameColumn" prefWidth="390" text="Subject Name" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="highSchoolViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="View More" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="highSchoolDeleteColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolOptionColumn" prefWidth="110.0" text="Option" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
                            </children>
@@ -86,23 +84,58 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="collegeTableView" prefHeight="482.0" prefWidth="805.0">
+                              <TableView fx:id="collegeTableView" prefHeight="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <columns>
-                                    <TableColumn fx:id="collegeLessonPlanIDColumn" prefWidth="130.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="collegeSubjectIDColumn" prefWidth="130.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="collegeObjectivesColumn" prefWidth="180.0" text="Objectives" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="collegeTopicsColumn" prefWidth="145.0" text="Topics" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeLessonPlanIDColumn" prefWidth="110.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="collegeSubjectIDColumn" prefWidth="110.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeSubjectNameColumn" prefWidth="390" text="Subject Name" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="collegeViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="collegeDeleteColumn" editable="false" prefWidth="110.0" resizable="false" text="Delete" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeOptionColumn" prefWidth="110.0" text="Option" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
 
+                  <Tab fx:id="highSchoolArchivedTab" text="High-school (archived)">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="highSchoolArchivedTableView" prefHeight="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="highSchoolArchivedLessonPlanIDColumn" prefWidth="110.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolArchivedSubjectIDColumn" prefWidth="110.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolArchivedSubjectNameColumn" prefWidth="390" text="Subject Name" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolArchivedViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="View More" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolArchiveOptionColumn" prefWidth="110.0" text="Option" style="-fx-alignment: CENTER;" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+
+                  <Tab fx:id="collegeArchivedTab" text="College (archived)">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="collegeArchivedTableView" prefHeight="482.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="collegeArchivedLessonPlanIDColumn" prefWidth="110.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="collegeArchivedSubjectIDColumn" prefWidth="110.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeArchivedSubjectNameColumn" prefWidth="390" text="Subject Name" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeArchivedViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeArchiveOptionColumn" prefWidth="110.0" text="Option" style="-fx-alignment: CENTER;" />
+                                 </columns>
+                              </TableView>
                            </children>
                         </AnchorPane>
                      </content>
                   </Tab>
                </tabs>
             </TabPane>
+
          </children>
       </VBox>
    </children>
