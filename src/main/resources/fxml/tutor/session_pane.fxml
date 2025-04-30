@@ -52,15 +52,15 @@
         </VBox>
         <TableView fx:id="sessionListTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="477.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
             <columns>
-                <TableColumn fx:id="sessionNoColumn" editable="false" prefWidth="76.0" resizable="false" text="Session No." />
-                <TableColumn fx:id="subjectColumn" editable="false" prefWidth="90.0" resizable="false" text="Subject" />
-                <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="100.0" resizable="false" text="Session Mode" />
-                <TableColumn fx:id="dateColumn" editable="false" prefWidth="96.0" resizable="false" text="Date" />
-                <TableColumn fx:id="sessionTimeColumn" editable="false" prefWidth="89.0" resizable="false" text="Session Time" />
-                <TableColumn fx:id="durationColumn" editable="false" prefWidth="84.0" resizable="false" text="Duration" />
-                <TableColumn fx:id="statusColumn" editable="false" prefWidth="71.0" resizable="false" text="Status" />
-                <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="70.0" style="-fx-alignment: CENTER;" text="View More" />
-                <TableColumn fx:id="studentColumn" editable="false" prefWidth="118.0" resizable="false" text="View Student" />
+                <TableColumn fx:id="sessionNoColumn" editable="false" prefWidth="77.0" resizable="false" text="Session No." />
+                <TableColumn fx:id="subjectColumn" editable="false" prefWidth="79.0" resizable="false" text="Subject" />
+                <TableColumn fx:id="sessionModeColumn" editable="false" prefWidth="92.0" resizable="false" text="Session Mode" />
+                <TableColumn fx:id="dateColumn" editable="false" prefWidth="75.0" resizable="false" text="Date" />
+                <TableColumn fx:id="sessionTimeColumn" editable="false" prefWidth="95.0" resizable="false" text="Session Time" />
+                <TableColumn fx:id="durationColumn" editable="false" resizable="false" text="Duration" />
+                <TableColumn fx:id="statusColumn" editable="false" prefWidth="93.0" resizable="false" text="Status" />
+                <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="92.0" style="-fx-alignment: CENTER;" text="View More" />
+                <TableColumn fx:id="studentColumn" editable="false" prefWidth="120.0" resizable="false" text="View Student" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
