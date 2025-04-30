@@ -57,16 +57,17 @@ public class CreateBookingView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle loc) {
-        initializeTableColumns();
         try {
             initializeController();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        initializeTableColumns();
         initializeSearchListener();
+
         refreshButton.setOnAction(event -> {
             try {
-                controller.refreshTable(); // Call refreshTable when the button is clicked
+                controller.refreshTable();
             } catch (RemoteException e) {
                 showErrorAlert("Refresh Error", "Failed to refresh bookings: " + e.getMessage());
             }
@@ -119,14 +120,19 @@ public class CreateBookingView implements Initializable {
         });
     }
 
-    private void initializeController() throws RemoteException{
+    private void initializeController() throws RemoteException {
         System.out.println("[CLIENT] Controller initialized!");
-        StudentService service = new StudentServiceImpl(); // Initialize the service
-        CreateBookingModel model = new CreateBookingModel(service);
-        this.controller = new CreateBookingController(model, this);
+        try {
+            StudentService service = new StudentServiceImpl(); // Initialize the service
+            CreateBookingModel model = new CreateBookingModel(service);
+            this.controller = new CreateBookingController(model, this);
 
-        // Call refreshTable to fetch and display data
-        controller.refreshTable();
+            // Initial data load
+            controller.refreshTable();
+        } catch (RemoteException e) {
+            showErrorAlert("Connection Error", "Failed to connect to server: " + e.getMessage());
+            throw e;
+        }
     }
 
     private void initializeTableColumns() {
@@ -185,11 +191,12 @@ public class CreateBookingView implements Initializable {
 
 
     public void updateTable(List<TutorSession> sessions) {
-        for (TutorSession session : sessions) {
-            System.out.println("Academic Level: " + session.getAcademicLevel()); // Debugging line
-        }
-        allBookings.setAll(sessions);
-        createReservationTableView.setItems(allBookings);
+        Platform.runLater(() -> {
+            if (createReservationTableView != null) {
+                allBookings.setAll(sessions);
+                createReservationTableView.setItems(allBookings);
+            }
+        });
     }
 
 
@@ -208,13 +215,17 @@ public class CreateBookingView implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/student/reserve_booking_window.fxml"));
             Parent root = loader.load();
 
-            ReserveBookingPopUpView popupController = loader.getController();
-            popupController.setSelectedSession(session);
+            // Get the controller instance created by FXMLLoader
+            ReserveBookingPopUpView popupView = loader.getController();
 
-            // Create the proper controller for the popup
-            ReserveBookingPopUpModel popupModel = new ReserveBookingPopUpModel(new StudentServiceImpl());
-            ReserveBookingPopUpController popupControllerInstance = new ReserveBookingPopUpController(popupModel);
-            popupController.setController(popupControllerInstance);
+            // Initialize the popup's model and controller
+            StudentService studentService = new StudentServiceImpl();
+            ReserveBookingPopUpModel popupModel = new ReserveBookingPopUpModel(studentService);
+            ReserveBookingPopUpController popupController = new ReserveBookingPopUpController(popupModel);
+
+            // Set the controller in the view
+            popupView.setController(popupController);
+            popupView.setSelectedSession(session);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -223,7 +234,11 @@ public class CreateBookingView implements Initializable {
             stage.showAndWait();
 
             // Refresh the table after popup closes
-            controller.refreshTable();
+            if (controller != null) {
+                controller.refreshTable();
+            }
+        } catch (RemoteException e) {
+            showErrorAlert("Error", "Service initialization failed: " + e.getMessage());
         } catch (IOException e) {
             showErrorAlert("Error", "Could not open reserve dialog: " + e.getMessage());
         }

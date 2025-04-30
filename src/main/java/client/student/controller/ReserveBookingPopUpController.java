@@ -2,13 +2,24 @@ package client.student.controller;
 
 import client.student.model.ReserveBookingPopUpModel;
 import shared.classes.Booking;
+import shared.classes.Tutor;
 import shared.classes.TutorSession;
+
+import java.rmi.RemoteException;
 
 public class ReserveBookingPopUpController {
     private final ReserveBookingPopUpModel model;
 
     public ReserveBookingPopUpController(ReserveBookingPopUpModel model) {
         this.model = model;
+    }
+
+    public Tutor getTutorDetails(String tutorId) throws Exception {
+        try {
+            return model.getTutorDetails(tutorId);
+        } catch (Exception e) {
+            throw new Exception("Failed to fetch tutor details: " + e.getMessage());
+        }
     }
 
     public void processBooking(String studentId, TutorSession session,

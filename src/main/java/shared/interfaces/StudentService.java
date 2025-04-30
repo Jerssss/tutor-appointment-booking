@@ -20,4 +20,5 @@ public interface StudentService extends Remote {
     Payment createPayment(String studentId, double amount, String paymentMethod) throws RemoteException;
     boolean updateStudentBalance(String studentId, double amount) throws RemoteException;
     double getStudentBalance(String studentID) throws RemoteException;
+    Tutor getTutorDetails(String tutorId) throws RemoteException;
 }

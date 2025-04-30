@@ -111,17 +111,15 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
             while (rs.next()) {
                 String academicLevel = rs.getString("academicLevel");
-                System.out.println("Fetched Academic Level: " + academicLevel); // Debugging line
-
                 TutorSession session = new TutorSession(
                         rs.getString("sessionID"),
-                        rs.getString("tutorID"), // Ensure this is a String
+                        rs.getString("tutorID"),
                         rs.getString("subjectID"),
                         rs.getString("subjectName"),
-                        rs.getDate("sessionDate").toLocalDate(), // Ensure this is LocalDate
-                        rs.getTime("sessionTime").toLocalTime(), // Ensure this is LocalTime
+                        rs.getDate("sessionDate").toLocalDate(),
+                        rs.getTime("sessionTime").toLocalTime(),
                         rs.getInt("sessionDuration"),
-                        academicLevel, // Pass the academic level directly
+                        academicLevel,
                         rs.getString("sessionStatus"),
                         rs.getInt("numberOfStudents"),
                         rs.getInt("maximumStudents"),
@@ -444,4 +442,35 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throw new RemoteException("Database error while fetching balance: " + e.getMessage());
         }
     }
+    @Override
+    public Tutor getTutorDetails(String tutorId) throws RemoteException {
+        String query = "SELECT u.userID, u.firstName, u.lastName, u.phoneNumber, " +
+                "u.email, u.role, u.password, t.expertise " +
+                "FROM user u JOIN tutor t ON u.userID = t.tutorID " +
+                "WHERE u.userID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, tutorId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Tutor(
+                        rs.getString("userID"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getLong("phoneNumber"),
+                        rs.getString("email"),
+                        rs.getString("role"),
+                        rs.getString("password"),
+                        rs.getString("expertise")
+                );
+            }
+            throw new RemoteException("Tutor not found");
+        } catch (SQLException e) {
+            throw new RemoteException("Database error: " + e.getMessage());
+        }
+    }
+
 }

@@ -47,13 +47,12 @@ public class TutorSession implements Serializable {
         this.sessionDate = sessionDate;
         this.sessionTime = sessionTime;
         this.sessionDuration = sessionDuration;
-        this.academicLevel = academicLevel; // Ensure this is set
+        this.academicLevel = academicLevel;
         this.sessionStatus = sessionStatus;
         this.numberOfStudents = numberOfStudents;
         this.maximumStudents = maximumStudents;
         this.sessionPrice = sessionPrice;
         this.sessionMode = sessionMode;
-        System.out.println("[SHARED] Creating TutorSession with Academic Level: " + academicLevel);
     }
 
     public TutorSession(String sessionID, String tutorID,

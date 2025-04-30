@@ -2,6 +2,7 @@ package client.student.model;
 
 import client.StudentTutorClient;
 import shared.classes.Booking;
+import shared.classes.Tutor;
 import shared.classes.TutorSession;
 import shared.interfaces.StudentService;
 
@@ -10,6 +11,14 @@ public class ReserveBookingPopUpModel {
 
     public ReserveBookingPopUpModel(StudentService studentService) {
         this.studentService = StudentTutorClient.getStudentService();
+    }
+
+    public Tutor getTutorDetails(String tutorId) throws Exception {
+        try {
+            return studentService.getTutorDetails(tutorId);
+        } catch (Exception e) {
+            throw new Exception("Failed to get tutor details: " + e.getMessage());
+        }
     }
 
     public Booking createBooking(String studentId, TutorSession session) throws Exception {
