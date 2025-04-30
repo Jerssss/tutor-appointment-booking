@@ -251,4 +251,36 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         }
         return session;
     }
+
+    @Override
+    public LessonPlan getLessonPlanDetails(String lessonPlanID) throws RemoteException {
+        LessonPlan lessonPlan = null;
+        String query = "SELECT lp.lessonPlanID, lp.subjectID, s.subjectName, lp.objectives, lp.topicsCovered " +
+                "FROM lessonplan lp " +
+                "LEFT JOIN subject s ON lp.subjectID = s.subjectID " +
+                "WHERE lp.lessonPlanID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, lessonPlanID);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                lessonPlan = new LessonPlan(
+                        resultSet.getString("lessonPlanID"),
+                        resultSet.getString("subjectID"),
+                        resultSet.getString("subjectName"),
+                        resultSet.getString("objectives"),
+                        resultSet.getString("topicsCovered")
+                );
+                System.out.println("Retrieved lesson plan: " + lessonPlan);
+            } else {
+                System.out.println("No lesson plan found for ID: " + lessonPlanID);
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while retrieving lesson plan details: " + e.getMessage());
+        }
+        return lessonPlan;
+    }
 }

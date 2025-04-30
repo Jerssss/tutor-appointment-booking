@@ -1,9 +1,7 @@
 package client.tutor.view;
 
-import client.admin.controller.AdminViewStudentController;
-import client.admin.view.AdminModifyStudentPopUp;
 import client.tutor.controller.TutorViewLessonPlanController;
-import client.tutor.controller.TutorViewStudentListPopUpController;
+import client.tutor.model.TutorViewMoreLessonPlanPopUpModel;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -18,12 +16,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import shared.classes.LessonPlan;
 import shared.classes.SessionManager;
-import shared.classes.Student;
 
 import java.io.IOException;
 import java.util.List;
 
 public class TutorViewLessonPlanView {
+    @FXML private TableColumn<LessonPlan, String> viewMoreColumn;
     @FXML private TableView<LessonPlan> lessonPlanListTableView;
     @FXML private TableColumn<LessonPlan, String> courseColumn;
     @FXML private TableColumn<LessonPlan, String> subjectColumn;
@@ -36,6 +34,8 @@ public class TutorViewLessonPlanView {
     @FXML private Button refreshButton;
     @FXML private TextField searchStudResTextField;
     @FXML private Button updateLessonPlanButton;
+
+    private TutorViewMoreLessonPlanPopUpModel model; // Model for the pop-up
     private TutorViewLessonPlanController controller;
     private ObservableList<LessonPlan> lessonPlanData = FXCollections.observableArrayList();
 
@@ -45,6 +45,9 @@ public class TutorViewLessonPlanView {
 
         String tutorID = getLoggedInTutorID(); // Replace with your method to get the logged-in tutor ID
         initializeController(tutorID); // Pass the tutor ID to the controller
+
+        // Initialize the model
+        this.model = new TutorViewMoreLessonPlanPopUpModel(); // Ensure the model is initialized
 
         addLessonPlanButton.setOnAction(event -> openAddLessonPlanWindow());
         try {
@@ -63,6 +66,7 @@ public class TutorViewLessonPlanView {
         subjectIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
         objectivesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getObjectives()));
         topicsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getTopicsCovered())));
+        viewMoreColumn.setCellFactory(column -> createViewMoreButtonCellFactory());
         updateColumn.setCellFactory(column -> createUpdateButtonCellFactory());
         deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
     }
@@ -80,9 +84,9 @@ public class TutorViewLessonPlanView {
             {
                 updateButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 updateButton.setOnAction(event -> {
-                    LessonPlan lessonPLan = getTableRow().getItem();
-                    if (lessonPLan != null) {
-                        showUpdatePane(lessonPLan);
+                    LessonPlan lessonPlan = getTableRow().getItem();
+                    if (lessonPlan != null) {
+                        showUpdatePane(lessonPlan);
                     }
                 });
             }
@@ -97,6 +101,51 @@ public class TutorViewLessonPlanView {
                 }
             }
         };
+    }
+
+    public TableCell<LessonPlan, String> createViewMoreButtonCellFactory() {
+        return new TableCell<LessonPlan , String>() {
+            private final Button viewButton = new Button("View More");
+
+            {
+                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                viewButton.setOnAction(event -> {
+                    LessonPlan lessonPlan = getTableRow().getItem();
+                    if (lessonPlan != null) {
+                        lessonPlanListTableView.getSelectionModel().select(lessonPlan);
+                        showViewMorePane(lessonPlan);
+                    }
+                });
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewButton);
+                }
+            }
+        };
+    }
+
+    public void showViewMorePane(LessonPlan lessonPlan) {
+        System.out.println("[CLIENT] Selected session: " + lessonPlan);
+
+        if (lessonPlan != null) {
+            try {
+                // Create a new instance of TutorViewMorePopUp using the constructor that accepts a model
+                TutorViewMoreLessonPlanPopUp tutorViewMoreLessonPlanPopUp = new TutorViewMoreLessonPlanPopUp(model); // Pass the model here
+
+                // Show the pop-up and pass the session ID
+                tutorViewMoreLessonPlanPopUp.show(lessonPlan.getLessonPlanID());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("[CLIENT] Error displaying session details: " + e.getMessage());
+            }
+        } else {
+            System.out.println("[CLIENT] No session selected.");
+        }
     }
 
     public void showUpdatePane(LessonPlan lessonPlan) {
