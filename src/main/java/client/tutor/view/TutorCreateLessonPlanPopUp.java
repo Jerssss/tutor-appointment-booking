@@ -8,12 +8,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import shared.classes.LessonPlan;
+import shared.classes.SessionManager;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.List;
 
 public class TutorCreateLessonPlanPopUp {
-    @FXML private ComboBox academicLevelComboBox;
-    @FXML private ComboBox subjectComboBox;
+    @FXML private ComboBox<String> academicLevelComboBox;
+    @FXML private ComboBox<String> subjectComboBox;
     @FXML private TextField objectivesTextField;
     @FXML private TextField topicsCoveredTextField;
     @FXML private Button addLessonPlanButton;
@@ -22,16 +26,29 @@ public class TutorCreateLessonPlanPopUp {
     public void initialize() {
         initializeController();
         academicLevelComboBox.getItems().addAll("High School", "College");
-        subjectComboBox.getItems().addAll("IT 324", "IT 323", "IT 322",
-                "IT 313", "IT 312", "IT 311",
-                "IT 213", "IT 212", "IT 211",
-                "IT 123", "IT 122", "IT 121",
-                "IT 113", "IT 112", "IT 111",
-                "HS 119", "HS 118", "HS 117",
-                "HS 116", "HS 115", "HS 114",
-                "HS 113", "HS 112", "HS 111",
-                "222", "123", "1111");
-        addLessonPlanButton.setOnAction(event -> handleSave());
+
+        // Get the logged-in tutor ID from the SessionManager
+        String loggedInTutorID = SessionManager.getCurrentUserId();
+        System.out.println("Logged in Tutor ID: " + loggedInTutorID);
+
+        List<String> subjects = controller.fetchSubjectsByExpertise(loggedInTutorID);
+        System.out.println("Fetched subjects: " + subjects);
+
+        if (subjects != null && !subjects.isEmpty()) {
+            subjectComboBox.getItems().addAll(subjects);
+        } else {
+            System.out.println("No subjects found for the logged-in tutor.");
+        }
+
+        // Set up the action listener for the subjectComboBox
+        subjectComboBox.setOnAction(event -> autofillFields());
+        addLessonPlanButton.setOnAction(event -> {
+            try {
+                handleSave();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void initializeController() {
@@ -40,39 +57,43 @@ public class TutorCreateLessonPlanPopUp {
         System.out.println("[CLIENT] TutorCreateLessonPlanController successfully created.");
     }
 
-    private void handleSave() {
-        String acadLvl = (String) academicLevelComboBox.getValue();
-        String subject = (String) subjectComboBox.getValue();
+    private void autofillFields() {
+        String selectedSubject = subjectComboBox.getValue();
+        if (selectedSubject != null) {
+            // Fetch lesson plan details based on the selected subject
+            LessonPlan lessonPlanDetails = controller.getLessonPlanDetails(selectedSubject);
+            if (lessonPlanDetails != null) {
+                objectivesTextField.setText(lessonPlanDetails.getObjectives());
+                topicsCoveredTextField.setText(lessonPlanDetails.getTopicsCovered());
+            }
+        }
+    }
+
+    private void handleSave() throws RemoteException {
+        String acadLvl = academicLevelComboBox.getValue();
+        String subjectName = subjectComboBox.getValue(); // This is the subject name
         String objectives = objectivesTextField.getText();
         String topicsCovered = topicsCoveredTextField.getText();
 
-        // Check for empty fields or null combo box selections
-        if (acadLvl == null || acadLvl.trim().isEmpty() ||
-                subject == null || subject.trim().isEmpty() ||
-                objectives == null || objectives.trim().isEmpty() ||
-                topicsCovered == null || topicsCovered.trim().isEmpty()) {
-
-            JOptionPane.showMessageDialog(null,
-                    "All fields must be filled in. Please check again.",
-                    "Missing Information",
-                    JOptionPane.WARNING_MESSAGE);
+        if (acadLvl == null || subjectName == null || objectives.isEmpty() || topicsCovered.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All fields must be filled in. Please check again.", "Missing Information", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // All good, proceed to create and add the lesson plan
-        boolean success = controller.addNewLessonPlan(acadLvl, subject, subject, objectives, topicsCovered);
+        // Fetch the subject ID based on the selected subject name
+        String subjectID = String.valueOf(controller .getSubjectIDByName(subjectName));
+        if (subjectID == null) {
+            JOptionPane.showMessageDialog(null, "Subject ID not found for the selected subject.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        // Now pass the correct subjectID to the addNewLessonPlan method
+        boolean success = controller.addNewLessonPlan(acadLvl, subjectID, subjectName, objectives, topicsCovered);
         if (!success) {
-            JOptionPane.showMessageDialog(null,
-                    "Failed to add lesson plan.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Failed to add lesson plan.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null,
-                    "Lesson plan added successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-            closeWindow(); // only close if success
+            JOptionPane.showMessageDialog(null, "Lesson plan added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            closeWindow();
         }
     }
 
