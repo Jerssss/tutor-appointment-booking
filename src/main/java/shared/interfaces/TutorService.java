@@ -21,4 +21,7 @@ public interface TutorService extends Remote {
     void deleteLessonPlan(String lessonPlanID) throws RemoteException;
     TutorSession getSessionDetails(String sessionID) throws RemoteException;
     LessonPlan getLessonPlanDetails(String lessonPlanID) throws RemoteException;
+    List<String> getSubjectsByTutorExpertise(String tutorID) throws RemoteException;
+    LessonPlan getLessonPlanBySubjectID(String subjectID) throws RemoteException;
+    String getSubjectIDByName(String subjectID) throws RemoteException;
 }

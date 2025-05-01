@@ -43,24 +43,50 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
     @Override
     public void addLessonPlan(LessonPlan newLessonPlan) throws RemoteException, SQLException {
-        String query = "INSERT INTO lessonplan (lessonPlanID, subjectID, subjectName, objectives, topicsCovered) VALUES (?, ?, ?, ?, ?);";
+        String subjectName = null;
+        String subjectID = newLessonPlan.getSubjectID();
+
+        // Debugging output
+        System.out.println("Attempting to retrieve subjectName for Subject ID: " + subjectID);
+
+        // First, retrieve the subjectName using a SELECT query
+        String subjectQuery = "SELECT s.subjectName FROM subject s WHERE s.subjectID = ?";
+        try (PreparedStatement subjectStatement = con.prepareStatement(subjectQuery)) {
+            subjectStatement.setString(1, subjectID);
+            ResultSet resultSet = subjectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                subjectName = resultSet.getString("subjectName");
+            } else {
+                throw new SQLException("Subject ID not found: " + subjectID);
+            }
+        }
+
+        // Now, insert the new lesson plan
+        String insertQuery = "INSERT INTO lessonplan (lessonPlanID, subjectID, objectives, topicsCovered) VALUES (?, ?, ?, ?);";
         try {
+            con.setAutoCommit(false); // Disable autocommit
+
             String newLessonPlanID = generateNewLessonPlanID();
 
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, newLessonPlanID);
-            preparedStatement.setString(2, newLessonPlan.getSubjectID());
-            preparedStatement.setString(3, newLessonPlan.getSubjectName()); // Add subjectName
-            preparedStatement.setString(4, newLessonPlan.getObjectives());
-            preparedStatement.setString(5, newLessonPlan.getTopicsCovered());
+            PreparedStatement preparedStatement = con.prepareStatement(insertQuery);
+            preparedStatement.setString(1, newLessonPlanID); // lessonPlanID
+            preparedStatement.setString(2, subjectID);      // subjectID
+            preparedStatement.setString(3, newLessonPlan.getObjectives()); // objectives
+            preparedStatement.setString(4, newLessonPlan.getTopicsCovered()); // topicsCovered
+
             preparedStatement.executeUpdate();
+            con.commit(); // Commit the transaction
         } catch (SQLException e1) {
-            if (con != null) con.rollback(); // Rollback on error
+            if (con != null) {
+                con.rollback(); // Rollback on error
+            }
             e1.printStackTrace();
-        } catch (Exception e2) {
-            e2.printStackTrace();
+            throw new SQLException("Failed to add lesson plan: " + e1.getMessage(), e1); // Rethrow the exception
         } finally {
-            if (con != null) con.setAutoCommit(true);
+            if (con != null) {
+                con.setAutoCommit(true); // Restore autocommit
+            }
         }
     }
 
@@ -283,4 +309,71 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         }
         return lessonPlan;
     }
+
+    @Override
+    public List<String> getSubjectsByTutorExpertise(String tutorID) throws RemoteException {
+        List<String> subjects = new ArrayList<>();
+        String query = "SELECT subjectName FROM subject NATURAL JOIN tutorsession WHERE tutorID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, tutorID);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                subjects.add(resultSet.getString("subjectName"));
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Error retrieving subjects: " + e.getMessage());
+        }
+        return subjects;
+    }
+
+    @Override
+    public LessonPlan getLessonPlanBySubjectID(String subjectID) throws RemoteException {
+        LessonPlan lessonPlan = null;
+        String query = "SELECT lp.lessonPlanID, lp.subjectID, s.subjectName, lp.objectives, lp.topicsCovered " +
+                "FROM lessonplan lp " +
+                "JOIN subject s ON lp.subjectID = s.subjectID " +
+                "WHERE lp.subjectID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, subjectID);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                String lessonPlanID = resultSet.getString("lessonPlanID");
+                String subjectName = resultSet.getString("subjectName");
+                String objectives = resultSet.getString("objectives");
+                String topicsCovered = resultSet.getString("topicsCovered");
+
+                lessonPlan = new LessonPlan(lessonPlanID, subjectID, subjectName, objectives, topicsCovered);
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while retrieving lesson plan details: " + e.getMessage());
+        }
+        return lessonPlan;
+    }
+
+    @Override
+    public String getSubjectIDByName(String subjectName) {
+        String subjectID = null;
+        String query = "SELECT subjectID FROM subject WHERE subjectName = ?";
+
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, subjectName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                subjectID = resultSet.getString("subjectID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions as needed
+        }
+
+        return subjectID; // Returns null if not found
+    }
+
 }

@@ -2,9 +2,9 @@ package client.tutor.model;
 
 import client.StudentTutorClient;
 import shared.classes.LessonPlan;
-import shared.classes.Student;
 import shared.interfaces.TutorService;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class TutorLessonPlanModel {
@@ -16,7 +16,7 @@ public class TutorLessonPlanModel {
 
     public List<LessonPlan> fetchLessonPlansByTutor(String tutorID) {
         try {
-            return tutorService.viewLessonPlanByTutor(tutorID); // Call the new method in the service
+            return tutorService.viewLessonPlanByTutor(tutorID);
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to fetch lesson plans for tutor: " + e.getMessage());
             return null;
@@ -51,5 +51,26 @@ public class TutorLessonPlanModel {
             System.err.println("[ERROR] Failed to delete lesson plan via RMI: " + e.getMessage());
             return false;
         }
+    }
+
+    public List<String> fetchSubjectsByExpertise(String tutorID) {
+        try {
+            return tutorService.getSubjectsByTutorExpertise(tutorID);
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to fetch subjects for tutor: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public LessonPlan getLessonPlanDetails(String subjectID) {
+        try {
+            return tutorService.getLessonPlanBySubjectID(subjectID);
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to fetch lesson plan details: " + e.getMessage());
+            return null;
+        }
+    }
+    public String getSubjectIDByName(String subjectName) throws RemoteException {
+        return tutorService.getSubjectIDByName(subjectName); // Call the service method
     }
 }
