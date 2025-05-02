@@ -5,7 +5,6 @@ import shared.classes.LessonPlan;
 import shared.interfaces.TutorService;
 
 import java.rmi.RemoteException;
-import java.util.Date;
 import java.util.List;
 
 public class TutorLessonPlanModel {
@@ -19,7 +18,16 @@ public class TutorLessonPlanModel {
         try {
             return tutorService.viewLessonPlanByTutor(tutorID);
         } catch (Exception e) {
-            System.err.println("[CLIENT | "+ new Date()+ "] Failed to fetch lesson plans for tutor: " + e.getMessage());
+            System.err.println("[ERROR] Failed to fetch lesson plans for tutor: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<LessonPlan> fetchArchivedLessonPlansByTutor(String tutorID) { // New method for archived lesson plans
+        try {
+            return tutorService.viewArchivedLessonPlansByTutor(tutorID); // Assuming this method exists in the service
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to fetch archived lesson plans for tutor: " + e.getMessage());
             return null;
         }
     }
@@ -29,7 +37,7 @@ public class TutorLessonPlanModel {
             tutorService.addLessonPlan(newLessonPlan);
             return true;
         } catch (Exception e) {
-            System.err.println("[CLIENT | "+ new Date()+ "] Failed to add lesson plan via RMI: " + e.getMessage());
+            System.err.println("[ERROR] Failed to add lesson plan via RMI: " + e.getMessage());
             return false;
         }
     }
@@ -39,7 +47,7 @@ public class TutorLessonPlanModel {
             tutorService.modifyLessonPlan(id, newObjectives, newTopicsCovered);
             return true;
         } catch (Exception e) {
-            System.err.println("[CLIENT | "+ new Date()+ "] Failed to modify objectives via RMI: " + e.getMessage());
+            System.err.println("[ERROR] Failed to modify objectives via RMI: " + e.getMessage());
             return false;
         }
     }
@@ -49,7 +57,7 @@ public class TutorLessonPlanModel {
             tutorService.deleteLessonPlan(lessonPlanID);
             return true;
         } catch (Exception e) {
-            System.err.println("[CLIENT | "+ new Date()+ "] Failed to delete lesson plan via RMI: " + e.getMessage());
+            System.err.println("[ERROR] Failed to delete lesson plan via RMI: " + e.getMessage());
             return false;
         }
     }
@@ -58,7 +66,7 @@ public class TutorLessonPlanModel {
         try {
             return tutorService.getSubjectsByTutorExpertise(tutorID);
         } catch (Exception e) {
-            System.err.println("[CLIENT | "+ new Date()+ "] Failed to fetch subjects for tutor: " + e.getMessage());
+            System.err.println("[ERROR] Failed to fetch subjects for tutor: " + e.getMessage());
             return null;
         }
     }
@@ -67,11 +75,12 @@ public class TutorLessonPlanModel {
         try {
             return tutorService.getLessonPlanBySubjectID(subjectID);
         } catch (Exception e) {
-            System.err.println("[CLIENT | "+ new Date()+ "] Failed to fetch lesson plan details: " + e.getMessage());
+            System.err.println("[ERROR] Failed to fetch lesson plan details: " + e.getMessage());
             return null;
         }
     }
+
     public String getSubjectIDByName(String subjectName) throws RemoteException {
-        return tutorService.getSubjectIDByName(subjectName); // Call the service method
+        return tutorService.getSubjectIDByName(subjectName);
     }
 }
