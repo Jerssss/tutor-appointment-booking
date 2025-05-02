@@ -8,7 +8,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TutorServiceImpl extends UnicastRemoteObject implements TutorService, Serializable {
@@ -48,7 +47,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         String subjectID = newLessonPlan.getSubjectID();
 
         // Debugging output
-        System.out.println("[SERVER | "+ new Date()+ "] Attempting to retrieve subjectName for Subject ID: " + subjectID);
+        System.out.println("Attempting to retrieve subjectName for Subject ID: " + subjectID);
 
         // First, retrieve the subjectName using a SELECT query
         String subjectQuery = "SELECT s.subjectName FROM subject s WHERE s.subjectID = ?";
@@ -94,7 +93,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
     @Override
     public List<TutorSession> viewSessionList(String tutorID) throws RemoteException {
         List<TutorSession> tutorSessions = new ArrayList<>();
-        System.out.println("[SERVER | "+ new Date()+ "] Retrieving sessions for tutor ID: " + tutorID);
+        System.out.println("Retrieving sessions for tutor ID: " + tutorID);
 
         String query = "SELECT ts.sessionID, ts.tutorID, ts.subjectID, s.subjectName, ts.sessionStatus, " +
                 "ts.sessionDate, ts.sessionTime, ts.sessionDuration, ts.numberOfStudents, " +
@@ -127,7 +126,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                         resultSet.getString("sessionMode")
                 );
                 tutorSessions.add(session);
-                System.out.println("[SERVER | "+ new Date()+ "] Retrieved session: " + session);
+                System.out.println("Retrieved session: " + session);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -189,11 +188,11 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 String topicsCovered = resultSet.getString("topicsCovered");
 
                 // Debugging output to check values
-                System.out.println("[SERVER | "+ new Date()+ "] Lesson Plan ID: " + lessonPlanID);
-                System.out.println("[SERVER | "+ new Date()+ "] Subject ID: " + subjectID);
-                System.out.println("[SERVER | "+ new Date()+ "] Subject Name: " + subjectName); // Check this value
-                System.out.println("[SERVER | "+ new Date()+ "] Objectives: " + objectives);
-                System.out.println("[SERVER | "+ new Date()+ "] Topics Covered: " + topicsCovered);
+                System.out.println("Lesson Plan ID: " + lessonPlanID);
+                System.out.println("Subject ID: " + subjectID);
+                System.out.println("Subject Name: " + subjectName); // Check this value
+                System.out.println("Objectives: " + objectives);
+                System.out.println("Topics Covered: " + topicsCovered);
 
                 // Create LessonPlan object with subjectID and subjectName
                 LessonPlan lessonPlan = new LessonPlan(lessonPlanID, subjectID, subjectName, objectives, topicsCovered);
@@ -224,17 +223,22 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
     @Override
     public void deleteLessonPlan(String lessonPlanID) throws RemoteException {
-        String sql = "DELETE FROM lessonplan WHERE lessonPlanID = ?";
+        String sql = "UPDATE lessonplan SET visibility = 'Archived' WHERE lessonPlanID = ?";
 
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, lessonPlanID);
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
 
-            System.out.println("[SERVER | "+ new Date()+ "] Deleted lesson plan with ID: " + lessonPlanID);
+            if (affectedRows > 0) {
+                System.out.println("[SERVER] Marked lesson plan as Archived with ID: " + lessonPlanID);
+            } else {
+                System.out.println("[SERVER] No lesson plan found with ID: " + lessonPlanID);
+            }
+
         } catch (SQLException e) {
-            System.err.println("[SERVER | "+ new Date()+ "] Failed to delete lesson plan: " + e.getMessage());
+            System.err.println("[SERVER ERROR] Failed to archive lesson plan: " + e.getMessage());
         }
     }
 
@@ -301,9 +305,9 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                         resultSet.getString("objectives"),
                         resultSet.getString("topicsCovered")
                 );
-                System.out.println("[SERVER | "+ new Date()+ "] Retrieved lesson plan: " + lessonPlan);
+                System.out.println("Retrieved lesson plan: " + lessonPlan);
             } else {
-                System.out.println("[SERVER | "+ new Date()+ "] No lesson plan found for ID: " + lessonPlanID);
+                System.out.println("No lesson plan found for ID: " + lessonPlanID);
             }
         } catch (SQLException e) {
             throw new RemoteException("Database error while retrieving lesson plan details: " + e.getMessage());
@@ -377,4 +381,37 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         return subjectID; // Returns null if not found
     }
 
+    @Override
+    public List<LessonPlan> viewArchivedLessonPlansByTutor(String tutorID) throws RemoteException {
+        List<LessonPlan> archivedLessonPlanList = new ArrayList<>();
+
+        String query = "SELECT lp.lessonPlanID, s.subjectID, s.subjectName, lp.objectives, lp.topicsCovered " +
+                "FROM lessonplan lp " +
+                "JOIN tutorsession ts ON lp.subjectID = ts.subjectID " +
+                "JOIN subject s ON lp.subjectID = s.subjectID " +
+                "WHERE ts.tutorID = ? AND lp.visibility = 'Archived'"; // Assuming 'visibility' indicates archived status
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, tutorID);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                String lessonPlanID = resultSet.getString("lessonPlanID");
+                String subjectID = resultSet.getString("subjectID");
+                String subjectName = resultSet.getString("subjectName");
+                String objectives = resultSet.getString("objectives");
+                String topicsCovered = resultSet.getString("topicsCovered");
+
+                // Create LessonPlan object with subjectID and subjectName
+                LessonPlan lessonPlan = new LessonPlan(lessonPlanID, subjectID, subjectName, objectives, topicsCovered);
+                archivedLessonPlanList.add(lessonPlan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RemoteException("Error retrieving archived lesson plans for tutor: " + e.getMessage());
+        }
+        return archivedLessonPlanList;
+    }
 }
