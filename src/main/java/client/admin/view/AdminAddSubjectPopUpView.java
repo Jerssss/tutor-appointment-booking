@@ -61,7 +61,7 @@ public class AdminAddSubjectPopUpView {
                 container.getChildren().add(errorLabel);
             }
         } else {
-            System.out.println("[DEBUG] TextField is not inside a VBox!");
+            System.out.println("[ERROR] TextField is not inside a VBox!");
         }
     }
 

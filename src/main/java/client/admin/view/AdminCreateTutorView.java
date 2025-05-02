@@ -9,6 +9,7 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdminCreateTutorView {
@@ -53,9 +54,9 @@ public class AdminCreateTutorView {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing AdminCreateTutorController...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Initializing AdminCreateTutorController...");
         this.controller = new AdminCreateTutorController();
-        System.out.println("[CLIENT] AdminCreateTutorController successfully created.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] AdminCreateTutorController successfully created.");
     }
 
     private void handleSave() {

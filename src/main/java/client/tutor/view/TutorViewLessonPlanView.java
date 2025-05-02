@@ -18,6 +18,7 @@ import shared.classes.LessonPlan;
 import shared.classes.SessionManager;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class TutorViewLessonPlanView {
@@ -41,7 +42,7 @@ public class TutorViewLessonPlanView {
 
     public void initialize() {
         initializeTableColumns();
-        System.out.println("[CLIENT] Table columns initialized successfully.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Table columns initialized successfully.");
 
         String tutorID = getLoggedInTutorID(); // Replace with your method to get the logged-in tutor ID
         initializeController(tutorID); // Pass the tutor ID to the controller
@@ -72,9 +73,9 @@ public class TutorViewLessonPlanView {
     }
 
     public void initializeController(String tutorID) {
-        System.out.println("[CLIENT] Initializing TutorViewLessonPlanController...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Initializing TutorViewLessonPlanController...");
         this.controller = new TutorViewLessonPlanController(this, tutorID); // Pass the tutor ID
-        System.out.println("[CLIENT] TutorViewLessonPlanController successfully created.");
+        System.out.println("[CLIENT | "+ new Date()+ "] TutorViewLessonPlanController successfully created.");
     }
 
     public TableCell<LessonPlan, String> createUpdateButtonCellFactory(){
@@ -130,7 +131,7 @@ public class TutorViewLessonPlanView {
     }
 
     public void showViewMorePane(LessonPlan lessonPlan) {
-        System.out.println("[CLIENT] Selected session: " + lessonPlan);
+        System.out.println("[CLIENT | "+ new Date()+ "] Selected session: " + lessonPlan);
 
         if (lessonPlan != null) {
             try {
@@ -141,10 +142,10 @@ public class TutorViewLessonPlanView {
                 tutorViewMoreLessonPlanPopUp.show(lessonPlan.getLessonPlanID());
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("[CLIENT] Error displaying session details: " + e.getMessage());
+                System.out.println("[CLIENT | "+ new Date()+ "] Error displaying session details: " + e.getMessage());
             }
         } else {
-            System.out.println("[CLIENT] No session selected.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No session selected.");
         }
     }
 
@@ -164,7 +165,7 @@ public class TutorViewLessonPlanView {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Update Lesson plan window.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Failed to load Update Lesson plan window.");
         }
     }
 
@@ -216,7 +217,7 @@ public class TutorViewLessonPlanView {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Add Lesson Plan window.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Failed to load Add Lesson Plan window.");
         }
     }
 

@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import shared.classes.Student;
 import shared.classes.Tutor;
 
+import java.util.Date;
+
 public class AdminDeleteStudentPopUpView {
     @FXML
     private Button confirmButton;
@@ -29,7 +31,7 @@ public class AdminDeleteStudentPopUpView {
 
     public void setStudent(Student student) {
         this.student = student;
-        System.out.println("Student to remove is set");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Student to remove is set");
     }
 
     private void confirmChanges() {

@@ -7,6 +7,7 @@ import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdminViewMoreSessionsPopUpModel {
@@ -37,7 +38,7 @@ public class AdminViewMoreSessionsPopUpModel {
                     }
                 }
 
-                System.out.println("TYPE: " + session.getSessionType() );
+                System.out.println("[ADMIN CLIENT | "+ new Date()+ "]TYPE: " + session.getSessionType() );
                 sessionDetails.add(session.getSessionType());
                 sessionDetails.add(session.getSessionMode());
                 sessionDetails.add(String.valueOf(session.getNumberOfStudents()));

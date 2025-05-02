@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -122,9 +123,9 @@ public class ViewStudentBalanceView implements Initializable {
 
     public void updateTable(ObservableList<BalanceDetails> balanceDetails) {
         if (balanceDetails == null || balanceDetails.isEmpty()) {
-            System.out.println("[CLIENT] No balance details to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No balance details to display.");
         } else {
-            System.out.println("[CLIENT] Updating table with " + balanceDetails.size() + " balance details.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Updating table with " + balanceDetails.size() + " balance details.");
             allBalanceDetails.setAll(balanceDetails); // Populate the ObservableList
             viewBalanceTableView.setItems(allBalanceDetails);
             viewBalanceTableView.refresh();
@@ -175,7 +176,7 @@ public class ViewStudentBalanceView implements Initializable {
 
     @FXML
     private void handleRefresh() {
-        System.out.println("[CLIENT] Refresh button clicked.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Refresh button clicked.");
         if (controller != null) {
             controller.refreshTable();
         }

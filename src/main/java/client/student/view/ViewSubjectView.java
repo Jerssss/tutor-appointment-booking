@@ -18,6 +18,7 @@ import shared.interfaces.StudentService;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public class ViewSubjectView implements Initializable {
     }
 
     private void initializeController() throws RemoteException {
-        System.out.println("[CLIENT] Controller initialized!");
+        System.out.println("[CLIENT | "+ new Date()+ "] Controller initialized!");
         StudentService service = new StudentServiceImpl(); // Initialize the service
         ViewSubjectModel model = new ViewSubjectModel(service);
         this.controller = new ViewSubjectController(this, model);
@@ -91,20 +92,20 @@ public class ViewSubjectView implements Initializable {
 
     public void updateTable(List<Subject> subjects) {
         if (subjects == null || subjects.isEmpty()) {
-            System.out.println("[CLIENT] No data to display in TableView.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No data to display in TableView.");
             return;
         }
 
         allSubjects.setAll(subjects);
         viewBookingTableView.setItems(allSubjects);
         viewBookingTableView.refresh();
-        System.out.println("[CLIENT] Table updated with " + subjects.size() + " subjects.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Table updated with " + subjects.size() + " subjects.");
         viewBookingTableView.requestLayout();
     }
 
     @FXML
     private void handleRefresh() {
-        System.out.println("[CLIENT] Refresh button clicked.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Refresh button clicked.");
         if (controller != null) {
             controller.refreshTable();
         }

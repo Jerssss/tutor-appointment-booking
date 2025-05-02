@@ -20,6 +20,7 @@ import shared.interfaces.AuthService;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Date;
 
 
 public class AdminLoginController {
@@ -54,7 +55,7 @@ public class AdminLoginController {
             try {
                 User user = AdminClient.getAuthService().login(userID, password);
                 if (user != null && "Admin".equalsIgnoreCase(user.getRole())) {
-                    System.out.println("[INFO] Login successful for user: " + user.getUserID());
+                    System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Login successful for user: " + user.getUserID());
                     adminLoginView.setPromptLabel("Login successful!");
                     adminLoginView.setPromptLabelVisible(true);
 

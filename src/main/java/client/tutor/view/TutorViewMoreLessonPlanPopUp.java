@@ -13,6 +13,7 @@ import shared.classes.LessonPlan;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TutorViewMoreLessonPlanPopUp {
@@ -63,7 +64,7 @@ public class TutorViewMoreLessonPlanPopUp {
                 LessonPlan lessonPlan = model.fetchLessonPlanDetails(lessonPlanID); // Fetch lesson plan details from the model
                 view.updateLessonPlanDetails(lessonPlan); // Update the view with lesson plan details
             } else {
-                System.out.println("[CLIENT] Model is not initialized.");
+                System.out.println("[CLIENT | "+ new Date()+ "] Model is not initialized.");
             }
 
             // Create a new Stage for the pop-up
@@ -73,10 +74,10 @@ public class TutorViewMoreLessonPlanPopUp {
             stage.showAndWait(); // Show the pop-up and wait for it to close
         } catch (RemoteException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Error fetching lesson plan details: " + e.getMessage());
+            System.out.println("[CLIENT | "+ new Date()+ "] Error fetching lesson plan details: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load View More window.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Failed to load View More window.");
         }
     }
 
@@ -89,11 +90,11 @@ public class TutorViewMoreLessonPlanPopUp {
                 objectivesLabel.setText(lessonPlan.getObjectives());
                 topicsLabel.setText(lessonPlan.getTopicsCovered());
             } else {
-                System.out.println("[CLIENT] Lesson Plan is null.");
+                System.out.println("[CLIENT | "+ new Date()+ "] Lesson Plan is null.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Error updating lesson plan details: " + e.getMessage());
+            System.out.println("[CLIENT | "+ new Date()+ "] Error updating lesson plan details: " + e.getMessage());
         }
     }
 }

@@ -20,6 +20,7 @@ import shared.interfaces.StudentService;
 import java.io.Serializable;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class ViewStudentBookingView implements Initializable {
@@ -93,7 +94,7 @@ public class ViewStudentBookingView implements Initializable {
     }
 
     private void initializeController() throws RemoteException {
-        System.out.println("[CLIENT] Controller initialized!");
+        System.out.println("[CLIENT | "+ new Date()+ "] Controller initialized!");
         StudentService service = new StudentServiceImpl(); // Initialize the service
         ViewStudentBookingModel model = new ViewStudentBookingModel(service);
         this.controller = new ViewStudentBookingController(model, this);

@@ -22,6 +22,7 @@ import shared.interfaces.TutorService;
 import javax.swing.*;
 import java.beans.EventHandler;
 import java.io.IOException;
+import java.util.Date;
 
 public class StudentMainMenuController {
     private final StudentMainMenuView view;
@@ -53,31 +54,31 @@ public class StudentMainMenuController {
 
     }
     private void handleCreateReservation() {
-        System.out.println("Navigating to Create Reservation");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to Create Reservation");
     }
 
     private void handleViewReservation() {
-        System.out.println("Navigating to View Reservation");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to View Reservation");
     }
 
     private void handleModifyReservation() {
-        System.out.println("Navigating to Modify Reservation");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to Modify Reservation");
     }
 
     private void handleSubjectsOffered() {
-        System.out.println("Navigating to Subjects Offered");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to Subjects Offered");
     }
 
     private void handleLessonPlan() {
-        System.out.println("Navigating to Lesson Plan");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to Lesson Plan");
     }
 
     private void handlePaymentHistory() {
-        System.out.println("Navigating to Payment History");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to Payment History");
     }
 
     private void handleBalance() {
-        System.out.println("Navigating to Balance");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to Balance");
     }
 
 
@@ -88,7 +89,7 @@ public class StudentMainMenuController {
 
             LoginView loginView = loader.getController();
             if (loginView == null) {
-                System.err.println("[CLIENT] LoginView is NULL after loading FXML!");
+                System.err.println("[CLIENT | "+ new Date()+ "] LoginView is NULL after loading FXML!");
                 return;
             }
 

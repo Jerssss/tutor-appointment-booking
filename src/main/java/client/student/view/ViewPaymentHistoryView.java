@@ -18,6 +18,7 @@ import shared.interfaces.StudentService;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,7 +42,7 @@ public class ViewPaymentHistoryView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeTableColumns();
         initializeSearchListener();
-        System.out.println("[CLIENT] Payment history view initialized successfully.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Payment history view initialized successfully.");
         try {
             initializeController(); // Initialize the controller here
         } catch (RemoteException e) {
@@ -93,9 +94,9 @@ public class ViewPaymentHistoryView implements Initializable {
 
     public void updatePaymentHistory(List<PaymentDetails> paymentHistory) {
         if (paymentHistory == null || paymentHistory.isEmpty()) {
-            System.out.println("[CLIENT] No payment history to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No payment history to display.");
         } else {
-            System.out.println("[CLIENT] Updating table with " + paymentHistory.size() + " payments.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Updating table with " + paymentHistory.size() + " payments.");
             allPayments.setAll(paymentHistory); // Populate the ObservableList
             viewPaymentTableView.setItems(allPayments);
             viewPaymentTableView.refresh();
@@ -104,9 +105,9 @@ public class ViewPaymentHistoryView implements Initializable {
 
     public void updateTable(ObservableList<PaymentDetails> observablePayments) {
         if (observablePayments == null || observablePayments.isEmpty()) {
-            System.out.println("[CLIENT] No payments to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No payments to display.");
         } else {
-            System.out.println("[CLIENT] Updating table with " + observablePayments.size() + " payments.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Updating table with " + observablePayments.size() + " payments.");
             allPayments.setAll(observablePayments); // Populate the ObservableList
             viewPaymentTableView.setItems(allPayments);
             viewPaymentTableView.refresh();
@@ -140,7 +141,7 @@ public class ViewPaymentHistoryView implements Initializable {
 
     @FXML
     private void handleRefresh() {
-        System.out.println("[CLIENT] Refresh button clicked.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Refresh button clicked.");
         if (controller != null) {
             controller.refreshTable();
         }

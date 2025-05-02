@@ -5,6 +5,7 @@ import client.student.view.ViewLessonPlanView;
 import shared.classes.LessonPlan;
 
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class ViewLessonPlanController {
@@ -17,14 +18,14 @@ public class ViewLessonPlanController {
     }
 
     public void refreshTable() {
-        System.out.println("[CLIENT] Refreshing lesson plans table...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Refreshing lesson plans table...");
         try {
             // Fetch high school lesson plans from the model
             List<LessonPlan> highSchoolLessonPlans = model.fetchHighSchoolLessonPlans();
             // Fetch college lesson plans from the model
             List<LessonPlan> collegeLessonPlans = model.fetchCollegeLessonPlans();
-            System.out.println("[CLIENT] Fetched " + highSchoolLessonPlans.size() + " high school lesson plans.");
-            System.out.println("[CLIENT] Fetched " + collegeLessonPlans.size() + " college lesson plans.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Fetched " + highSchoolLessonPlans.size() + " high school lesson plans.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Fetched " + collegeLessonPlans.size() + " college lesson plans.");
             // Update the view with the fetched lesson plans
             view.updateTable(highSchoolLessonPlans, collegeLessonPlans);
         } catch (RemoteException e) {

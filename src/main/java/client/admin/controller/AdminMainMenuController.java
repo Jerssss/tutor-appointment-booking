@@ -15,6 +15,7 @@ import shared.interfaces.AuthService;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Date;
 
 public class AdminMainMenuController {
     private final AdminMainMenuView view;
@@ -50,16 +51,16 @@ public class AdminMainMenuController {
 
     }
     private void handleStudentButton() {
-        System.out.println("Navigating to Student...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Navigating to Student...");
     }
     private void handleTutorButton() {
-        System.out.println("Navigating to Tutor...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Navigating to Tutor...");
     }
-    private void handleSessionButton() {System.out.println("Navigating to SeSSION...");}
-    private void handleSubjectButton() {System.out.println("Navigating to Subject...");}
-    private void handleLessonPlanButton() {System.out.println("Navigating to LessonPlan...");}
+    private void handleSessionButton() {System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Navigating to Session...");}
+    private void handleSubjectButton() {System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Navigating to Subject...");}
+    private void handleLessonPlanButton() {System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Navigating to LessonPlan...");}
     private void handlePaymentButton() {
-        System.out.println("Navigating to Payment History...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Navigating to Payment History...");
     }
 
     private void handleLogout(ActionEvent event){
@@ -80,7 +81,7 @@ public class AdminMainMenuController {
                 // Change to the login scene
                 changeScene(event, root);
 
-                System.out.println("[INFO] Logged out and returned to Admin Login Page.");
+                System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Logged out and returned to Admin Login Page.");
             } catch (IOException e) {
                 System.err.println("[ERROR] Failed to load admin_login_page.fxml: " + e.getMessage());
                 e.printStackTrace();

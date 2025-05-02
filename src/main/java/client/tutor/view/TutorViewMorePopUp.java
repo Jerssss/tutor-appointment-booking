@@ -13,6 +13,7 @@ import shared.classes.TutorSession;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TutorViewMorePopUp {
@@ -80,16 +81,16 @@ public class TutorViewMorePopUp {
             stage.showAndWait(); // Show the pop-up and wait for it to close
         } catch (RemoteException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Error fetching session details: " + e.getMessage());
+            System.out.println("[CLIENT | "+ new Date()+ "] Error fetching session details: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load View More window.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Failed to load View More window.");
         }
     }
 
     public void updateSessionDetails(TutorSession session) {
-        System.out.println("sessionNoLabel: " + sessionNoLabel);
-        System.out.println("sessionPriceLabel: " + sessionPriceLabel);
+        System.out.println("[CLIENT | "+ new Date()+ "] sessionNoLabel: " + sessionNoLabel);
+        System.out.println("[CLIENT | "+ new Date()+ "] sessionPriceLabel: " + sessionPriceLabel);
         try {
             if (session != null) {
                 List<String> details = new ArrayList<>();
@@ -118,7 +119,7 @@ public class TutorViewMorePopUp {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Error updating session details: " + e.getMessage());
+            System.out.println("[CLIENT | "+ new Date()+ "] Error updating session details: " + e.getMessage());
         }
     }
 }

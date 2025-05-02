@@ -13,6 +13,7 @@ import shared.classes.SessionManager;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class TutorCreateLessonPlanPopUp {
@@ -29,15 +30,15 @@ public class TutorCreateLessonPlanPopUp {
 
         // Get the logged-in tutor ID from the SessionManager
         String loggedInTutorID = SessionManager.getCurrentUserId();
-        System.out.println("Logged in Tutor ID: " + loggedInTutorID);
+        System.out.println("[CLIENT | "+ new Date()+ "] Logged in Tutor ID: " + loggedInTutorID);
 
         List<String> subjects = controller.fetchSubjectsByExpertise(loggedInTutorID);
-        System.out.println("Fetched subjects: " + subjects);
+        System.out.println("[CLIENT | "+ new Date()+ "] Fetched subjects: " + subjects);
 
         if (subjects != null && !subjects.isEmpty()) {
             subjectComboBox.getItems().addAll(subjects);
         } else {
-            System.out.println("No subjects found for the logged-in tutor.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No subjects found for the logged-in tutor.");
         }
 
         // Set up the action listener for the subjectComboBox
@@ -52,9 +53,9 @@ public class TutorCreateLessonPlanPopUp {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing TutorCreateLessonPlanController...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Initializing TutorCreateLessonPlanController...");
         this.controller = new TutorCreateLessonPlanController();
-        System.out.println("[CLIENT] TutorCreateLessonPlanController successfully created.");
+        System.out.println("[CLIENT | "+ new Date()+ "] TutorCreateLessonPlanController successfully created.");
     }
 
     private void autofillFields() {

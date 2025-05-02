@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import shared.classes.Payment;
 
+import java.util.Date;
 import java.util.List;
 
 public class AdminViewPaymentView {
@@ -41,7 +42,7 @@ public class AdminViewPaymentView {
 
     public void initialize() {
         initializeTableColumns();
-        System.out.println("[CLIENT] Table columns initialized successfully.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Table columns initialized successfully.");
         initializeController();
 
         searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -61,9 +62,9 @@ public class AdminViewPaymentView {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing AdminViewPaymentController...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Initializing AdminViewPaymentController...");
         this.controller = new AdminViewPaymentController(this);
-        System.out.println("[CLIENT] AdminViewPaymentController successfully created.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] AdminViewPaymentController successfully created.");
     }
 
     public void updateTable(List<Payment> data) {

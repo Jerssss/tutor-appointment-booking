@@ -6,6 +6,8 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.Student;
+
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +57,7 @@ public class TutorViewStudentListPopUpController {
     }
 
     public void loadStudents(String sessionID) {
-        System.out.println("[CLIENT] loadSessions() method called.");
+        System.out.println("[CLIENT | "+ new Date()+ "] loadSessions() method called.");
 
         List<Student> students = model.fetchStudents(sessionID);
 
@@ -63,7 +65,7 @@ public class TutorViewStudentListPopUpController {
             Platform.runLater(() -> {
                 studentData.setAll(students); // Update observable list
                 view.updateTable(students);
-                System.out.println("[CLIENT] Table updated with " + students.size() + " sessions.");
+                System.out.println("[CLIENT | "+ new Date()+ "] Table updated with " + students.size() + " sessions.");
             });
         } else {
             System.err.println("[ERROR] Failed to load sessions.");

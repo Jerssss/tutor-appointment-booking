@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import shared.classes.LessonPlan;
 
 import javax.swing.*;
+import java.util.Date;
 
 public class TutorModifyLessonPlanPopUp {
     @FXML private TextField objectivesTextField;
@@ -24,9 +25,9 @@ public class TutorModifyLessonPlanPopUp {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing TutorModifyLessonPlanController...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Initializing TutorModifyLessonPlanController...");
         this.controller = new TutorModifyLessonPlanController();
-        System.out.println("[CLIENT] TutorModifyLessonPlanController successfully created.");
+        System.out.println("[CLIENT | "+ new Date()+ "] TutorModifyLessonPlanController successfully created.");
     }
 
     public void setLessonPlan(LessonPlan lessonPlan) {

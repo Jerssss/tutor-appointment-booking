@@ -22,6 +22,7 @@ import shared.interfaces.StudentService;
 import shared.interfaces.TutorService;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class LoginController {
     private final LoginView loginView;
@@ -60,7 +61,7 @@ public class LoginController {
 
         try {
             User user = authService.login(userID, password);
-            System.out.println("[INFO] Login successful for user: " + user.getUserID());
+            System.out.println("[CLIENT | "+ new Date()+ "] Login successful for user: " + user.getUserID());
 
             if ("Student".equalsIgnoreCase(selectedUserType)) {
                 if (!"Student".equalsIgnoreCase(user.getRole())) {

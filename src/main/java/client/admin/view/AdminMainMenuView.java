@@ -21,6 +21,7 @@ import java.rmi.registry.Registry;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -131,7 +132,7 @@ public class AdminMainMenuView {
      */
     private void loadView(String fxmlFile) {
         try {
-            System.out.println("[SERVER] Loading FXML: " + fxmlFile);
+            System.out.println("[SERVER | "+ new Date()+ "] Loading FXML: " + fxmlFile);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
             if (fxmlLoader.getLocation() == null) {
                 throw new IllegalStateException("FXML file not found: " + fxmlFile);

@@ -15,6 +15,7 @@ import shared.classes.Student;
 import shared.classes.TutorSession;
 import shared.interfaces.TutorService;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class TutorViewSessionListView {
@@ -43,7 +44,7 @@ public class TutorViewSessionListView {
     @FXML
     public void initialize() {
         initializeTableColumns();
-        System.out.println("[CLIENT] Table columns initialized successfully.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Table columns initialized successfully.");
         initialController();
 
         this.model = new TutorViewMorePopUpModel();
@@ -109,7 +110,7 @@ public class TutorViewSessionListView {
 
     public void showViewStudentPane() {
         TutorSession session = sessionListTableView.getSelectionModel().getSelectedItem();
-        System.out.println("[CLIENT] Selected session: " + session);
+        System.out.println("[CLIENT | "+ new Date()+ "] Selected session: " + session);
 
         if (session != null) {
             try {
@@ -122,10 +123,10 @@ public class TutorViewSessionListView {
                 studentListPopUp.show(session.getSessionID());
             } catch (RemoteException e) {
                 e.printStackTrace();
-                System.out.println("[CLIENT] Error retrieving students: " + e.getMessage());
+                System.out.println("[CLIENT | "+ new Date()+ "] Error retrieving students: " + e.getMessage());
             }
         } else {
-            System.out.println("[CLIENT] No session selected.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No session selected.");
         }
     }
 
@@ -156,7 +157,7 @@ public class TutorViewSessionListView {
     }
 
     public void showViewMorePane(TutorSession session) {
-        System.out.println("[CLIENT] Selected session: " + session);
+        System.out.println("[CLIENT | "+ new Date()+ "] Selected session: " + session);
 
         if (session != null) {
             try {
@@ -167,10 +168,10 @@ public class TutorViewSessionListView {
                 tutorViewMorePopUp.show(session.getSessionID());
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("[CLIENT] Error displaying session details: " + e.getMessage());
+                System.out.println("[CLIENT | "+ new Date()+ "] Error displaying session details: " + e.getMessage());
             }
         } else {
-            System.out.println("[CLIENT] No session selected.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No session selected.");
         }
     }
 
@@ -181,7 +182,7 @@ public class TutorViewSessionListView {
             sessionListTableView.setItems(sessionData);
             sessionListTableView.refresh();
         } else {
-            System.out.println("No sessions to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No sessions to display.");
         }
     }
 

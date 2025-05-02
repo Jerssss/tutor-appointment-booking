@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.Student;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class AdminViewStudentController {
     }
 
     public void loadStudents() {
-        System.out.println("[CLIENT] loadStudents() method called.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] loadStudents() method called.");
 
         List<Student> students = model.fetchStudents();
 
@@ -30,7 +31,7 @@ public class AdminViewStudentController {
             Platform.runLater(() -> {
                 studentData.setAll(students); // Update observable list
                 view.updateTable(students);
-                System.out.println("[CLIENT] Table updated with " + students.size() + " terminals.");
+                System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Table updated with " + students.size() + " terminals.");
             });
         } else {
             System.err.println("[ERROR] Failed to load terminals.");
@@ -64,7 +65,7 @@ public class AdminViewStudentController {
     }
 
     public void removeStudent(Student student) {
-        System.out.println("Remove student in controller is set");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Remove student in controller is set");
         model.removeStudent(student);
     }
 }

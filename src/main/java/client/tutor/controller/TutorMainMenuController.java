@@ -21,6 +21,7 @@ import shared.interfaces.TutorService;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Date;
 
 public class TutorMainMenuController {
     private final TutorMainMenuView view;
@@ -42,11 +43,11 @@ public class TutorMainMenuController {
 
     }
     private void handleViewSessions() {
-        System.out.println("Navigating to View Sessions...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to View Sessions...");
     }
 
     private void handleViewLessonPlan() {
-        System.out.println("Navigating to View Lesson Plan...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Navigating to View Lesson Plan...");
     }
 
 
@@ -57,7 +58,7 @@ public class TutorMainMenuController {
 
             LoginView loginView = loader.getController();
             if (loginView == null) {
-                System.err.println("[CLIENT] LoginView is NULL after loading FXML!");
+                System.err.println("[CLIENT | "+ new Date()+ "] LoginView is NULL after loading FXML!");
                 return;
             }
 

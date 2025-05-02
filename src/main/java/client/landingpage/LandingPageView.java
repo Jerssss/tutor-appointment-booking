@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.util.Duration;
 
+import java.util.Date;
+
 
 public class LandingPageView {
 
@@ -28,7 +30,7 @@ public class LandingPageView {
         if (landingPageLogInButton != null) {
             landingPageLogInButton.setOnAction(event);
         } else {
-            System.out.println("landingPageLogInButton");
+            System.out.println("[CLIENT | "+ new Date()+ "] landingPageLogInButton");
         }
     }
 

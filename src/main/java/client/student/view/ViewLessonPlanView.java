@@ -16,6 +16,7 @@ import shared.interfaces.StudentService;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -74,21 +75,21 @@ public class ViewLessonPlanView implements Initializable {
 
     public void updateTable(List<LessonPlan> highSchoolLessonPlans, List<LessonPlan> collegeLessonPlans) {
         if (highSchoolLessonPlans == null || highSchoolLessonPlans.isEmpty()) {
-            System.out.println("[CLIENT] No high school lesson plans to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No high school lesson plans to display.");
         } else {
             allHighSchoolLessonPlans.setAll(highSchoolLessonPlans);
             highSchoolTableView.setItems(allHighSchoolLessonPlans);
             highSchoolTableView.refresh();
-            System.out.println("[CLIENT] High school table updated with " + highSchoolLessonPlans.size() + " lesson plans.");
+            System.out.println("[CLIENT | "+ new Date()+ "] High school table updated with " + highSchoolLessonPlans.size() + " lesson plans.");
         }
 
         if (collegeLessonPlans == null || collegeLessonPlans.isEmpty()) {
-            System.out.println("[CLIENT] No college lesson plans to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No college lesson plans to display.");
         } else {
             allCollegeLessonPlans.setAll(collegeLessonPlans);
             collegeTableView.setItems(allCollegeLessonPlans);
             collegeTableView.refresh();
-            System.out.println("[CLIENT] College table updated with " + collegeLessonPlans.size() + " lesson plans.");
+            System.out.println("[CLIENT | "+ new Date()+ "] College table updated with " + collegeLessonPlans.size() + " lesson plans.");
         }
     }
 

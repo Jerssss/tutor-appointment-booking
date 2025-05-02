@@ -27,6 +27,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -50,15 +51,15 @@ public class ModifyBookingView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeTableColumns();
         initializeRowFactory();
-        System.out.println("[CLIENT] Table columns initialized successfully.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Table columns initialized successfully.");
         try {
             initializeController();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("[CLIENT] Controller initialized successfully.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Controller initialized successfully.");
         initializeSearchListener();
-        System.out.println("[CLIENT] Search field initialized successfully.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Search field initialized successfully.");
     }
 
     private void initializeTableColumns() {
@@ -135,9 +136,9 @@ public class ModifyBookingView implements Initializable {
 
     public void updateTable(List<BookingDetails> bookings) {
         if (bookings == null || bookings.isEmpty()) {
-            System.out.println("[CLIENT] No bookings to display.");
+            System.out.println("[CLIENT | "+ new Date()+ "] No bookings to display.");
         } else {
-            System.out.println("[CLIENT] Updating table with " + bookings.size() + " bookings.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Updating table with " + bookings.size() + " bookings.");
             allBookings.setAll(bookings); // Populate the ObservableList
             modBookingTableView.setItems(allBookings);
             modBookingTableView.refresh();
@@ -147,7 +148,7 @@ public class ModifyBookingView implements Initializable {
 
     @FXML
     private void handleRefresh() {
-        System.out.println("[CLIENT] Refresh button clicked.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Refresh button clicked.");
         if (controller != null) {
             controller.refreshTable();
         }
@@ -181,7 +182,7 @@ public class ModifyBookingView implements Initializable {
             private final Button editButton = new Button("Edit");
 
             {
-                editButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                editButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 editButton.setOnAction(event -> {
                     BookingDetails booking = getTableRow().getItem();
                     if (booking != null && "Approved".equals(booking.getBookingStatus()) && !isPastSession(booking.getSessionDate(), booking.getSessionTime())) {
@@ -211,7 +212,7 @@ public class ModifyBookingView implements Initializable {
             private final Button cancelButton = new Button("Cancel");
 
             {
-                cancelButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;");
+                cancelButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
                 cancelButton.setOnAction(event -> {
                     BookingDetails booking = getTableRow().getItem();
                     if (booking != null && "Approved".equals(booking.getBookingStatus()) && !isPastSession(booking.getSessionDate(), booking.getSessionTime())) {

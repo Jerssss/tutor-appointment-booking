@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import shared.classes.Tutor;
 
 import javax.swing.*;
+import java.util.Date;
 
 public class AdminModifyTutorPopUp {
     @FXML
@@ -28,9 +29,9 @@ public class AdminModifyTutorPopUp {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing AdminModifyTutorPopUpController...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Initializing AdminModifyTutorPopUpController...");
         this.controller = new AdminModifyTutorPopUpController();
-        System.out.println("[CLIENT] AdminModifyTutorPopUpController successfully created.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] AdminModifyTutorPopUpController successfully created.");
     }
 
     public void setTutor(Tutor tutor) {

@@ -5,6 +5,7 @@ import shared.classes.Student;
 import shared.classes.Tutor;
 import shared.interfaces.AdminService;
 
+import java.util.Date;
 import java.util.List;
 
 public class AdminTutorModel {
@@ -46,7 +47,7 @@ public class AdminTutorModel {
     public boolean removeTutor(Tutor tutor) {
         try {
             adminService.removeTutor(tutor);
-            System.out.println("Remove student in model is set");
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Remove student in model is set");
             return true;
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to add student via RMI: " + e.getMessage());

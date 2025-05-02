@@ -18,6 +18,7 @@ import shared.interfaces.TutorService;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Date;
 
 
 public class LandingPageController {
@@ -25,7 +26,7 @@ public class LandingPageController {
 
     public LandingPageController(LandingPageView view) {
         if (view == null) {
-            System.err.println("[CLIENT] LandingPageView is NULL! Button handlers will not be assigned.");
+            System.err.println("[CLIENT | "+ new Date()+ "] LandingPageView is NULL! Button handlers will not be assigned.");
             return;
         }
 
@@ -40,7 +41,7 @@ public class LandingPageController {
 
             LoginView loginView = loader.getController();
             if (loginView == null) {
-                System.err.println("[CLIENT] LoginView is NULL after loading FXML!");
+                System.err.println("[CLIENT | "+ new Date()+ "] LoginView is NULL after loading FXML!");
                 return;
             }
 

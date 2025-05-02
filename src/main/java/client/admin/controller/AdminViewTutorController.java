@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.Tutor;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class AdminViewTutorController {
     }
 
     public void loadTutors() {
-        System.out.println("[CLIENT] loadTutors() method called.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] loadTutors() method called.");
 
         List<Tutor> tutors = model.fetchTutors();
 
@@ -30,7 +31,7 @@ public class AdminViewTutorController {
             Platform.runLater(() -> {
                 tutorData.setAll(tutors); // Update observable list
                 view.updateTable(tutors);
-                System.out.println("[CLIENT] Table updated with " + tutors.size() + " terminals.");
+                System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Table updated with " + tutors.size() + " terminals.");
             });
         } else {
             System.err.println("[ERROR] Failed to load tutor.");

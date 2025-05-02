@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.LessonPlan;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class TutorViewLessonPlanController {
     }
 
     public void loadLessonPlans(String tutorID) {
-        System.out.println("[CLIENT] loadLessonPlans() method called.");
+        System.out.println("[CLIENT | "+ new Date()+ "] loadLessonPlans() method called.");
 
         List<LessonPlan> lessonPlans = model.fetchLessonPlansByTutor(tutorID); // Fetch lesson plans for the specific tutor
 
@@ -30,7 +31,7 @@ public class TutorViewLessonPlanController {
             Platform.runLater(() -> {
                 lessonPlanData.setAll(lessonPlans); // Update observable list
                 view.updateTable(lessonPlans);
-                System.out.println("[CLIENT] Table updated with " + lessonPlans.size() + " lesson plans.");
+                System.out.println("[CLIENT | "+ new Date()+ "] Table updated with " + lessonPlans.size() + " lesson plans.");
             });
         } else {
             System.err.println("[ERROR] Failed to load lesson plans.");
@@ -62,18 +63,18 @@ public class TutorViewLessonPlanController {
 
     public void deleteLessonPlan(LessonPlan lessonPlan) {
         if (lessonPlan == null) {
-            System.err.println("[WARN] No lesson plan selected for deletion.");
+            System.err.println("[CLIENT | "+ new Date()+ "] No lesson plan selected for deletion.");
             return;
         }
 
         boolean success = model.deleteLessonPlan(lessonPlan.getLessonPlanID());
 
         if (success) {
-            System.out.println("[CLIENT] Deleted lesson plan: " + lessonPlan.getLessonPlanID());
+            System.out.println("[CLIENT | "+ new Date()+ "] Deleted lesson plan: " + lessonPlan.getLessonPlanID());
             lessonPlanData.remove(lessonPlan);
             view.updateTable(lessonPlanData);
         } else {
-            System.err.println("[CLIENT ERROR] Could not delete lesson plan.");
+            System.err.println("[CLIENT | "+ new Date()+ "] Could not delete lesson plan.");
         }
     }
 }

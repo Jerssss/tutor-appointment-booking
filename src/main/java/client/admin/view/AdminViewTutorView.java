@@ -19,6 +19,7 @@ import shared.classes.Student;
 import shared.classes.Tutor;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class AdminViewTutorView {
@@ -51,7 +52,7 @@ public class AdminViewTutorView {
 
     public void initialize() {
         initializeTableColumns();
-        System.out.println("[CLIENT] Table columns initialized successfully.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Table columns initialized successfully.");
         initializeController();
 
         searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -74,9 +75,9 @@ public class AdminViewTutorView {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT] Initializing ModifyTerminalStatusController...");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Initializing ModifyTerminalStatusController...");
         this.controller = new AdminViewTutorController(this);
-        System.out.println("[CLIENT] ModifyTerminalStatusController successfully created.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] ModifyTerminalStatusController successfully created.");
     }
 
     private void openAddTutorWindow() {
@@ -92,7 +93,7 @@ public class AdminViewTutorView {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Add Tutor window.");
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Failed to load Add Tutor window.");
         }
     }
 
@@ -138,7 +139,7 @@ public class AdminViewTutorView {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Add Tutor window.");
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Failed to load Add Tutor window.");
         }
     }
 
@@ -185,7 +186,7 @@ public class AdminViewTutorView {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Add Student window.");
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Failed to load Add Student window.");
         }
     }
 
@@ -194,7 +195,7 @@ public class AdminViewTutorView {
         tutorTableView.setItems(null); // Force reset
         tutorTableView.setItems(tutorData); // Reload table data
         tutorTableView.refresh(); // Force UI refresh
-        System.out.println("[CLIENT(Admin)] Tutor data updated. New table size: " + tutorData.size());
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Tutor data updated. New table size: " + tutorData.size());
     }
 
     public void addTutorButtonExited() {

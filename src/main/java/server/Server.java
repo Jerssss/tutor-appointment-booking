@@ -18,6 +18,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -48,7 +49,7 @@ public class Server {
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(1000);
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("[Server] Shutdown hook triggered");
+            System.out.println("[SERVER | "+ new Date()+ "] Shutdown hook triggered");
             stopServer();
             DatabaseConnection.closeConnection();
         }));
@@ -58,7 +59,7 @@ public class Server {
         System.out.println("");
         System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀\n" +
                            " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
-        System.out.println("Server Commands: [start | stop | exit]");
+        System.out.println("[SERVER | "+ new Date()+ "] Server Commands: [start | stop | exit]");
 
         while (true) {
             System.out.print("> ");
@@ -69,7 +70,7 @@ public class Server {
                     if (!running) {
                         startServer();
                     } else {
-                        System.out.println("[Server] Already running.");
+                        System.out.println("[SERVER | "+ new Date()+ "] Already running.");
                     }
                     break;
 
@@ -77,18 +78,18 @@ public class Server {
                     if (running) {
                         stopServer();
                     } else {
-                        System.out.println("[Server] Not running.");
+                        System.out.println("[SERVER | "+ new Date()+ "] Not running.");
                     }
                     break;
 
                 case "exit":
                     stopServer();
-                    System.out.println("[Server] Shutting down.");
+                    System.out.println("[SERVER | "+ new Date()+ "] Shutting down.");
                     System.exit(0);
                     break;
 
                 default:
-                    System.out.println("Invalid command. Use: [start | stop | exit]");
+                    System.out.println("[SERVER | "+ new Date()+ "] Invalid command. Use: [start | stop | exit]");
             }
         }
     }
@@ -102,7 +103,7 @@ public class Server {
                 // First, check if we can connect to the database
                 Connection dbConnection = DatabaseConnection.setCon();
                 if (dbConnection == null) {
-                    System.err.println("[Server] Could not establish database connection. Server cannot start.");
+                    System.err.println("[SERVER | "+ new Date()+ "] Could not establish database connection. Server cannot start.");
                     return;
                 }
 
@@ -121,22 +122,22 @@ public class Server {
                 running = true;
                 String serverIP = getServerIP();
                 System.out.println("=====================================================");
-                System.out.println("[Server] RMI Server started successfully on port " + PORT);
-                System.out.println("[Server] Server IP Address: " + serverIP);
-                System.out.println("[Server] Available RMI Services: " + String.join(", ", registry.list()));
+                System.out.println("[SERVER | "+ new Date()+ "] RMI Server started successfully on port " + PORT);
+                System.out.println("[SERVER | "+ new Date()+ "] Server IP Address: " + serverIP);
+                System.out.println("[SERVER | "+ new Date()+ "] Available RMI Services: " + String.join(", ", registry.list()));
                 System.out.println("=====================================================");
 
                 startHeartbeatMonitor();
 
             } catch (RemoteException | AlreadyBoundException e) {
-                System.err.println("[Server ERROR] " + e.getMessage());
+                System.err.println("[SERVER | "+ new Date()+ "] " + e.getMessage());
                 handleServerStartupFailure();
             }
         }).start();
     }
 
     private static void handleServerStartupFailure() {
-        System.out.println("[Server] Server failed to start. Please check the logs for more details.");
+        System.out.println("[SERVER | "+ new Date()+ "] Server failed to start. Please check the logs for more details.");
         // Additional handling could include:
         // - Notifying administrators
         // - Logging the failure
@@ -146,36 +147,36 @@ public class Server {
     private static void stopServer() {
         if (registry != null) {
             try {
-                System.out.println("[Server] Stopping server...");
+                System.out.println("[SERVER | "+ new Date()+ "] Stopping server...");
 
                 for (String name : registry.list()) {
                     try {
                         registry.unbind(name);
-                        System.out.println("[Server] Unbound service: " + name);
+                        System.out.println("[SERVER | "+ new Date()+ "] Unbound service: " + name);
                     } catch (Exception e) {
-                        System.err.println("[Server ERROR] Failed to unbind " + name + ": " + e.getMessage());
+                        System.err.println("[SERVER | "+ new Date()+ "] Failed to unbind " + name + ": " + e.getMessage());
                     }
                 }
 
                 if (authService != null) {
                     java.rmi.server.UnicastRemoteObject.unexportObject(authService, true);
-                    System.out.println("[Server] Unexported authService.");
+                    System.out.println("[SERVER | "+ new Date()+ "] Unexported authService.");
                 }
                 if (studentService != null) {
                     java.rmi.server.UnicastRemoteObject.unexportObject(studentService, true);
-                    System.out.println("[Server] Unexported studentService.");
+                    System.out.println("[SERVER | "+ new Date()+ "] Unexported studentService.");
                 }
                 if (tutorService != null) {
                     java.rmi.server.UnicastRemoteObject.unexportObject(tutorService, true);
-                    System.out.println("[Server] Unexported tutorService.");
+                    System.out.println("[SERVER | "+ new Date()+ "] Unexported tutorService.");
                 }
                 if (adminService != null) {
                     java.rmi.server.UnicastRemoteObject.unexportObject(adminService, true);
-                    System.out.println("[Server] Unexported adminService.");
+                    System.out.println("[SERVER | "+ new Date()+ "] Unexported adminService.");
                 }
 
                 java.rmi.server.UnicastRemoteObject.unexportObject(registry, true);
-                System.out.println("[Server] Unexported RMI registry.");
+                System.out.println("[SERVER | "+ new Date()+ "] Unexported RMI registry.");
 
                 threadPool.shutdownNow();
 
@@ -187,18 +188,18 @@ public class Server {
                 running = false;
 
                 System.gc();
-                System.out.println("[Server] Server stopped.");
+                System.out.println("[SERVER | "+ new Date()+ "] Server stopped.");
             } catch (Exception e) {
-                System.err.println("[Server ERROR] Could not stop: " + e.getMessage());
+                System.err.println("[SERVER | "+ new Date()+ "] Could not stop: " + e.getMessage());
                 handleServerShutdownFailure();
             }
         } else {
-            System.out.println("[Server] Server is already stopped.");
+            System.out.println("[SERVER | "+ new Date()+ "] Server is already stopped.");
         }
     }
 
     private static void handleServerShutdownFailure() {
-        System.out.println("[Server] Error during server shutdown. Resources may not have been properly released.");
+        System.out.println("[SERVER | "+ new Date()+ "] Error during server shutdown. Resources may not have been properly released.");
         // Additional handling could include:
         // - Forcing resource cleanup
         // - Logging the failure
@@ -209,14 +210,14 @@ public class Server {
             while (running) {
                 try {
                     Thread.sleep(30000);
-                    System.out.println("[Heartbeat] Server is running. Active clients: " + activeClients.size());
+                    System.out.println("[Heartbeat SERVER | "+ new Date()+ "] Server is running. Active clients: " + activeClients.size());
                     if (!activeClients.isEmpty()) {
-                        System.out.println("[Heartbeat] Connected: " + String.join(", ", activeClients));
+                        System.out.println("[Heartbeat SERVER | "+ new Date()+ "] Connected: " + String.join(", ", activeClients));
                     }
 
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    System.err.println("[Heartbeat] Monitor interrupted.");
+                    System.err.println("[Heartbeat SERVER | "+ new Date()+ "] Monitor interrupted.");
                     handleHeartbeatMonitorInterrupt();
                 }
             }
@@ -224,7 +225,7 @@ public class Server {
     }
 
     private static void handleHeartbeatMonitorInterrupt() {
-        System.out.println("[Heartbeat] Monitor stopped due to interruption.");
+        System.out.println("[Heartbeat SERVER | "+ new Date()+ "] Monitor stopped due to interruption.");
     }
 
     private static String getServerIP() {

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AdminModifyLessonPlanPopUpController implements Initializable {
@@ -63,7 +64,7 @@ public class AdminModifyLessonPlanPopUpController implements Initializable {
     private void handleUpdateSubject(ActionEvent event) {
         try {
             String lessonPlanID = AdminViewLessonPlanController.getClickedLessonPlan().replaceAll(".*lessonPlanID=([^,]+),.*", "$1");
-            System.out.println("LESSON PLAN: " +  lessonPlanID);
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "]LESSON PLAN: " +  lessonPlanID);
             model.updateLessonPlan(lessonPlanID, view.getSelectedLessonPlanVisibility());
 
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);

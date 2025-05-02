@@ -28,6 +28,7 @@ import shared.interfaces.StudentService;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -118,7 +119,7 @@ public class CreateBookingView implements Initializable {
     }
 
     private void initializeController() throws RemoteException {
-        System.out.println("[CLIENT] Controller initialized!");
+        System.out.println("[CLIENT | "+ new Date()+ "] Controller initialized!");
         try {
             StudentService service = new StudentServiceImpl(); // Initialize the service
             CreateBookingModel model = new CreateBookingModel(service);

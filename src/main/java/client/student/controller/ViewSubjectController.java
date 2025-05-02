@@ -5,6 +5,7 @@ import client.student.view.ViewSubjectView;
 import shared.classes.Subject;
 
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class ViewSubjectController {
@@ -17,11 +18,11 @@ public class ViewSubjectController {
     }
 
     public void refreshTable() {
-        System.out.println("[CLIENT] Refreshing table...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Refreshing table...");
         try {
             // Fetch subjects from the model
             List<Subject> subjects = model.fetchSubjects();
-            System.out.println("[CLIENT] Fetched " + subjects.size() + " subjects.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Fetched " + subjects.size() + " subjects.");
             // Update the view with the fetched subjects
             view.updateTable(subjects);
         } catch (RemoteException e) {

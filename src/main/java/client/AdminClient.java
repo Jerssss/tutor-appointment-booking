@@ -27,7 +27,7 @@ public class AdminClient extends Application {
     private static AuthService authService;
     private static AdminService adminService;
 
-    private static final String SERVER_IP = "localhost"; // Default IP
+    private static final String SERVER_IP = "10.135.136.76"; // Default IP
     private static final int PORT = 1099;
 
     public static AuthService getAuthService() {
@@ -117,7 +117,7 @@ public class AdminClient extends Application {
 
             // Handle window close event
             primaryStage.setOnCloseRequest(event -> {
-                System.out.println("[INFO] Close request received. Terminating the application...");
+                System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Close request received. Terminating the application...");
                 terminateApplication();
             });
 

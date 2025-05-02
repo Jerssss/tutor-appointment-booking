@@ -5,6 +5,8 @@ import shared.classes.Booking;
 import shared.classes.Tutor;
 import shared.classes.TutorSession;
 
+import java.util.Date;
+
 public class ReserveSessionPopUpController {
     private final ReserveSessionPopUpModel model;
 
@@ -35,18 +37,18 @@ public class ReserveSessionPopUpController {
                         session.getSessionPrice(),
                         paymentMethod
                 );
-                System.out.println("Payment succeeded");
+                System.out.println("[CLIENT | "+ new Date()+ "] Payment succeeded");
             } catch (Exception e) {
-                System.out.println("Payment failed: " + e.getMessage());
+                System.out.println("[CLIENT | "+ new Date()+ "] Payment failed: " + e.getMessage());
                 throw e;
             }
         } else {
-            System.out.println("Updating balance for later payment");
+            System.out.println("[CLIENT | "+ new Date()+ "] Updating balance for later payment");
             try {
                 model.updateStudentBalance(studentId, session.getSessionPrice());
-                System.out.println("Balance updated for later payment");
+                System.out.println("[CLIENT | "+ new Date()+ "] Balance updated for later payment");
             } catch (Exception e) {
-                System.out.println("Balance update failed: " + e.getMessage());
+                System.out.println("[CLIENT | "+ new Date()+ "] Balance update failed: " + e.getMessage());
                 throw e;
             }
         }

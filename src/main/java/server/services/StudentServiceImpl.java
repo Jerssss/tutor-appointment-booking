@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StudentServiceImpl extends UnicastRemoteObject implements Remote, StudentService, Serializable {
@@ -123,10 +124,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                 sessions.add(session);
             }
         } catch (SQLException e) {
-            System.err.println("[SERVER ERROR] Database error: " + e.getMessage());
+            System.err.println("[SERVER | "+ new Date()+ "] Database error: " + e.getMessage());
             throw new RemoteException("Database error: " + e.getMessage());
         }
-        System.out.println("[SERVER] Found " + sessions.size() + " available sessions");
+        System.out.println("[SERVER | "+ new Date()+ "] Found " + sessions.size() + " available sessions");
         return sessions;
     }
 
@@ -171,7 +172,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
     @Override
     public List<Subject> viewSubject() throws RemoteException {
-        System.out.println("[SERVER] Fetching subjects from database...");
+        System.out.println("[SERVER | "+ new Date()+ "] Fetching subjects from database...");
         List<Subject> subjects = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM subject")) {
@@ -186,11 +187,11 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getString("academicLevel")
                 );
                 subjects.add(subject);
-                System.out.println("[SERVER] Fetched subject: " + subject);
+                System.out.println("[SERVER | "+ new Date()+ "] Fetched subject: " + subject);
             }
 
             if (subjects.isEmpty()) {
-                System.out.println("[SERVER] No subjects found in the database.");
+                System.out.println("[SERVER | "+ new Date()+ "] No subjects found in the database.");
             }
 
         } catch (SQLException e) {
@@ -201,7 +202,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
     @Override
     public List<LessonPlan> viewHighSchoolLessonPlan() throws RemoteException {
-        System.out.println("[SERVER] Fetching high school lesson plans from database...");
+        System.out.println("[SERVER | "+ new Date()+ "] Fetching high school lesson plans from database...");
         List<LessonPlan> lessonPlans = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
@@ -217,11 +218,11 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getString("topicsCovered")
                 );
                 lessonPlans.add(lessonPlan);
-                System.out.println("[SERVER] Fetched high school lesson plan: " + lessonPlan);
+                System.out.println("[SERVER | "+ new Date()+ "] Fetched high school lesson plan: " + lessonPlan);
             }
 
             if (lessonPlans.isEmpty()) {
-                System.out.println("[SERVER] No high school lesson plans found in the database.");
+                System.out.println("[SERVER | "+ new Date()+ "] No high school lesson plans found in the database.");
             }
 
         } catch (SQLException e) {
@@ -232,7 +233,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
     @Override
     public List<LessonPlan> viewCollegeLessonPlan() throws RemoteException {
-        System.out.println("[SERVER] Fetching college lesson plans from database...");
+        System.out.println("[SERVER | "+ new Date()+ "] Fetching college lesson plans from database...");
         List<LessonPlan> lessonPlans = new ArrayList<>();
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(
@@ -248,11 +249,11 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                         rs.getString("topicsCovered")
                 );
                 lessonPlans.add(lessonPlan);
-                System.out.println("[SERVER] Fetched college lesson plan: " + lessonPlan);
+                System.out.println("[SERVER | "+ new Date()+ "] Fetched college lesson plan: " + lessonPlan);
             }
 
             if (lessonPlans.isEmpty()) {
-                System.out.println("[SERVER] No college lesson plans found in the database.");
+                System.out.println("[SERVER | "+ new Date()+ "] No college lesson plans found in the database.");
             }
 
         } catch (SQLException e) {
@@ -264,7 +265,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     @Override
     public List<PaymentDetails> viewPaymentHistory(String studentID) throws RemoteException {
         List<PaymentDetails> paymentHistory = new ArrayList<>();
-        System.out.println("[SERVER] Executing SQL query for student ID: " + studentID);
+        System.out.println("[SERVER | "+ new Date()+ "] Executing SQL query for student ID: " + studentID);
 
         String query = "SELECT p.paymentID, p.studentID, p.amount, p.paymentDate, p.paymentTime, " +
                 "    p.paymentMethod, b.sessionMode, " +
@@ -299,7 +300,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                 );
                 paymentHistory.add(paymentDetails);
             }
-            System.out.println("[SERVER] Retrieved payment history size: " + paymentHistory.size());
+            System.out.println("[SERVER | "+ new Date()+ "] Retrieved payment history size: " + paymentHistory.size());
         } catch (SQLException e) {
             throw new RemoteException("Database error while fetching payment history: " + e.getMessage());
         }
@@ -361,7 +362,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
             try {
                 String paymentId = getNextPaymentId(conn);
-                System.out.println("[PAYMENT] Generated payment ID: " + paymentId);
+                System.out.println("[SERVER | "+ new Date()+ "] Generated payment ID: " + paymentId);
 
                 try (PreparedStatement paymentStmt = conn.prepareStatement(
                         "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
@@ -379,8 +380,8 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
 
             } catch (SQLException e) {
                 conn.rollback();
-                System.err.println("[ERROR] Transaction rolled back: " + e.getMessage());
-                throw new RemoteException("Payment failed: " + e.getMessage());
+                System.err.println("[SERVER | "+ new Date()+ "] Transaction rolled back: " + e.getMessage());
+                throw new RemoteException("[SERVER | "+ new Date()+ "] Payment failed: " + e.getMessage());
             } finally {
                 conn.setAutoCommit(true);
             }

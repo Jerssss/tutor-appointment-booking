@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.util.Duration;
 import shared.classes.SessionManager;
 
+import java.util.Date;
+
 import static java.awt.SystemColor.text;
 
 
@@ -86,7 +88,7 @@ public class LoginView {
         if (logInPageLogInButton != null) {
             logInPageLogInButton.setOnAction(event);
         } else {
-            System.out.println("logInPageLogInButton");
+            System.out.println("[CLIENT | "+ new Date()+ "] logInPageLogInButton");
         }
     }
 

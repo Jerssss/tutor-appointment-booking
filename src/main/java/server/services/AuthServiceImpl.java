@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class AuthServiceImpl extends UnicastRemoteObject implements AuthService, Serializable {
     private static final long serialVersionUID = 1L;
@@ -77,7 +78,7 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService,
         String userId = SessionManager.getCurrentUserId();
         if (userId != null) {
             Server.removeActiveClient(userId); // Remove client from active list
-            System.out.println("[Auth] User logged out and removed: " + userId);
+            System.out.println("[SERVER | "+ new Date()+ "] User logged out and removed: " + userId);
             SessionManager.endSession();
         }
         return null;

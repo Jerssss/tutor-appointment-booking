@@ -5,6 +5,7 @@ import shared.classes.LessonPlan;
 import shared.interfaces.TutorService;
 
 import java.rmi.RemoteException;
+import java.util.Date;
 
 public class TutorViewMoreLessonPlanPopUpModel {
     private final TutorService tutorService;
@@ -16,9 +17,9 @@ public class TutorViewMoreLessonPlanPopUpModel {
     public LessonPlan fetchLessonPlanDetails(String lessonPlanID) throws RemoteException {
         LessonPlan lessonPlan = tutorService.getLessonPlanDetails(lessonPlanID);
         if (lessonPlan != null) {
-            System.out.println("Fetched Lesson Plan: " + lessonPlan);
+            System.out.println("[CLIENT | "+ new Date()+ "] Fetched Lesson Plan: " + lessonPlan);
         } else {
-            System.out.println("No Lesson Plan found for ID: " + lessonPlanID);
+            System.out.println("[CLIENT | "+ new Date()+ "] No Lesson Plan found for ID: " + lessonPlanID);
         }
         return lessonPlan;
     }

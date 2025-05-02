@@ -8,6 +8,7 @@ import shared.classes.PaymentDetails;
 import shared.classes.SessionManager;
 
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class ViewPaymentHistoryController {
@@ -24,7 +25,7 @@ public class ViewPaymentHistoryController {
         try {
             // Get student ID from session
             String studentIdStr = SessionManager.getCurrentUserId();
-            System.out.println("[CLIENT] Fetching payment history for student ID: " + studentIdStr);
+            System.out.println("[CLIENT | "+ new Date()+ "] Fetching payment history for student ID: " + studentIdStr);
             if (studentIdStr == null) {
                 view.showErrorAlert("Session Error", "No active session found");
                 return;

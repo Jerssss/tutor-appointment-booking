@@ -10,10 +10,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AdminAddSessionPopUpModel {
     private final AdminService adminService;
@@ -95,9 +92,9 @@ public class AdminAddSessionPopUpModel {
         List<Subject> subjects = adminService.viewSubject();
         String subjectName = "";
 
-        System.out.println("SUBJECT ID: " + subjectID);
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]SUBJECT ID: " + subjectID);
         for(Subject subject : subjects){
-            System.out.println("DVSA SUBJECT ID: " + subject.getSubjectID());
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "]DVSA SUBJECT ID: " + subject.getSubjectID());
 
             if (subject.getSubjectID().equals(subjectID)){
                 subjectName = subject.getSubjectName();

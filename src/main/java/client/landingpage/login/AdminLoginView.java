@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
+import java.util.Date;
+
 public class AdminLoginView {
     @FXML
     private Button logInPageLogInButton; // Button for logging in
@@ -26,7 +28,7 @@ public class AdminLoginView {
         if (logInPageLogInButton != null) {
             logInPageLogInButton.setOnAction(event);
         } else {
-            System.err.println("[ERROR] logInPageLogInButton is NULL! Check FXML.");
+            System.err.println("[ADMIN CLIENT | "+ new Date()+ "] logInPageLogInButton is NULL! Check FXML.");
         }
     }
 

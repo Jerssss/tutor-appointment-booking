@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shared.classes.Payment;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class AdminViewPaymentController {
     }
 
     public void loadPayments() {
-        System.out.println("[CLIENT] loadPayments() method called.");
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] loadPayments() method called.");
 
         List<Payment> payments = model.fetchPayments();
 
@@ -30,7 +31,7 @@ public class AdminViewPaymentController {
             Platform.runLater(() -> {
                 paymentData.setAll(payments); // Update observable list
                 view.updateTable(payments);
-                System.out.println("[CLIENT] Table updated with " + payments.size() + " terminals.");
+                System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Table updated with " + payments.size() + " terminals.");
             });
         } else {
             System.err.println("[ERROR] Failed to load payment.");

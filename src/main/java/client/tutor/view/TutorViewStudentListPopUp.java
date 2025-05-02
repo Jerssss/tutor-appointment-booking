@@ -22,6 +22,7 @@ import shared.interfaces.TutorService;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class TutorViewStudentListPopUp {
@@ -43,9 +44,9 @@ public class TutorViewStudentListPopUp {
     }
 
     public void initializeController(String sessionID) {
-        System.out.println("[CLIENT] Initializing TutorViewStudentListPopUpController...");
+        System.out.println("[CLIENT | "+ new Date()+ "] Initializing TutorViewStudentListPopUpController...");
         this.controller = new TutorViewStudentListPopUpController(this, sessionID);
-        System.out.println("[CLIENT] TutorViewStudentListPopUpController successfully created.");
+        System.out.println("[CLIENT | "+ new Date()+ "] TutorViewStudentListPopUpController successfully created.");
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.controller.searchStudents(newValue);
@@ -69,7 +70,7 @@ public class TutorViewStudentListPopUp {
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load View Student window.");
+            System.out.println("[CLIENT | "+ new Date()+ "] Failed to load View Student window.");
         }
     }
 
@@ -115,7 +116,7 @@ public class TutorViewStudentListPopUp {
             return tutorService.getStudentsBySession(sessionID);
         } catch (RemoteException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to retrieve students for session ID: " + sessionID);
+            System.out.println("[CLIENT | "+ new Date()+ "] Failed to retrieve students for session ID: " + sessionID);
             return Collections.emptyList();
         }
     }

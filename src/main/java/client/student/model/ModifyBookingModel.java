@@ -6,6 +6,7 @@ import shared.classes.BookingDetails;
 import shared.interfaces.StudentService;
 
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 public class ModifyBookingModel {
@@ -17,9 +18,9 @@ public class ModifyBookingModel {
 
 
     public List<BookingDetails> fetchBookings(int studentID) throws RemoteException {
-        System.out.println("[CLIENT] Fetching bookings for studentID: " + studentID);
+        System.out.println("[CLIENT | "+ new Date()+ "] Fetching bookings for studentID: " + studentID);
         List<BookingDetails> bookings = studentService.viewStudentBooking(studentID);
-        System.out.println("[CLIENT] Fetched " + bookings.size() + " bookings.");
+        System.out.println("[CLIENT | "+ new Date()+ "] Fetched " + bookings.size() + " bookings.");
         return bookings;
     }
 
