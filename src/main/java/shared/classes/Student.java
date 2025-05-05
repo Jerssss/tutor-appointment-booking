@@ -6,8 +6,9 @@ public class Student extends User implements Serializable {
     private double balance;
     private String academicLevel;
 
-    public Student(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String password, double balance, String academicLevel) {
-        super(userID, firstName, lastName, phoneNumber, email, role, password);
+    // used for storing the students from the database
+    public Student(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String password, double balance, String academicLevel, String visibility) {
+        super(userID, firstName, lastName, phoneNumber, email, role, password, visibility);
         this.balance = balance;
         this.academicLevel = academicLevel;
     }
@@ -56,8 +57,9 @@ public class Student extends User implements Serializable {
                 ", phoneNumber='" + getPhoneNumber() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", role='" + getRole() + '\'' +
-                ", balance=" + balance +
+                ", balance=" + balance + '\'' +
                 ", academicLevel='" + academicLevel + '\'' +
+                ", visibility='" + getVisibility() + '\'' +
                 '}';
     }
 }

@@ -15,23 +15,42 @@ public class AdminViewStudentController {
     private final AdminViewStudentView view;
     private final AdminStudentModel model;
     private ObservableList<Student> studentData = FXCollections.observableArrayList();
+    private ObservableList<Student> archivedStudentData = FXCollections.observableArrayList();
+
     public AdminViewStudentController(AdminViewStudentView view) {
         this.view = view;
         this.model = new AdminStudentModel();
 
         loadStudents();
+        loadArchivedStudents();
     }
 
     public void loadStudents() {
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "] loadStudents() method called.");
 
-        List<Student> students = model.fetchStudents();
+        List<Student> students = model.loadStudents();
 
         if (students != null) {
             Platform.runLater(() -> {
                 studentData.setAll(students); // Update observable list
                 view.updateTable(students);
                 System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Table updated with " + students.size() + " terminals.");
+            });
+        } else {
+            System.err.println("[ERROR] Failed to load students.");
+        }
+    }
+
+    public void loadArchivedStudents() {
+        System.out.println("[CLIENT] loadStudents() method called.");
+
+        List<Student> students = model.loadArchivedStudents();
+
+        if (students != null) {
+            Platform.runLater(() -> {
+                archivedStudentData.setAll(students); // Update observable list
+                view.updateArchiveTable(students);
+                System.out.println("[CLIENT] Table updated with " + students.size() + " terminals.");
             });
         } else {
             System.err.println("[ERROR] Failed to load terminals.");

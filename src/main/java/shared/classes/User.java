@@ -12,6 +12,7 @@ public class User implements Serializable {
     private String email;
     private String role;
     private String password;
+    private String visibility;
 
     // Constructor
     public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String pass) {
@@ -22,6 +23,17 @@ public class User implements Serializable {
         this.email = email;
         this.role = role;
         this.password = pass;
+    }
+
+    public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String pass, String visibility) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.role = role;
+        this.password = pass;
+        this.visibility = visibility;
     }
 
     public User(String userID, String firstName, String lastName, long phoneNumber, String email, String role) {
@@ -102,6 +114,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getVisibility() {
+        return visibility;
     }
 
     // Override toString for easy object representation

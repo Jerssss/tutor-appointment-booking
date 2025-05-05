@@ -48,8 +48,28 @@ public class AdminViewStudentView {
     private TableColumn<Student, String> optionColumn;
     @FXML
     private TableColumn<Student, String> deleteColumn;
+    @FXML
+    private TableView<Student> archivedStudentTableView;
+    @FXML
+    private TableColumn<Student, String> arStudentIdColumn;
+    @FXML
+    private TableColumn<Student, String> arFirstNameColumn;
+    @FXML
+    private TableColumn<Student, String> arLastNameColumn;
+    @FXML
+    private TableColumn<Student, String> arPhoneNoColumn;
+    @FXML
+    private TableColumn<Student, String> arEmailColumn;
+    @FXML
+    private TableColumn<Student, String> arAcademicLevelColumn;
+    @FXML
+    private TableColumn<Student, String> arBalanceColumn;
+    @FXML
+    private TableColumn<Student, String> arDeleteColumn;
+
     private AdminViewStudentController controller;
     private ObservableList<Student> studentData = FXCollections.observableArrayList();
+    private ObservableList<Student> archivedStudentData = FXCollections.observableArrayList();
 
     public void initialize() {
         initializeTableColumns();
@@ -59,7 +79,11 @@ public class AdminViewStudentView {
         searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             controller.searchStudents(newValue);
         });
-        refreshButton.setOnAction(event -> controller.loadStudents());
+        refreshButton.setOnAction(event -> {
+            controller.loadStudents();
+            controller.loadArchivedStudents();
+        });
+
         addStudentButton.setOnAction(event -> openAddStudentWindow());
     }
 
@@ -73,6 +97,19 @@ public class AdminViewStudentView {
         balanceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.format("%.2f", cellData.getValue().getBalance())));
         optionColumn.setCellFactory(column -> createModifyButtonCellFactory());
         deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
+        arStudentIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserID()));
+        arFirstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
+        arLastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
+        arPhoneNoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPhoneNumber())));
+        arEmailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+        arAcademicLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAcademicLevel()));
+        arBalanceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.format("%.2f", cellData.getValue().getBalance())));
+        arDeleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
+    }
+
+    public void displaySession(ObservableList<Student> students, ObservableList<Student> archivedStudents) {
+        studentTableView.setItems(students);
+        archivedStudentTableView.setItems(archivedStudents);
     }
 
     public void initializeController() {
@@ -199,6 +236,16 @@ public class AdminViewStudentView {
         studentTableView.refresh(); // Force UI refresh
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Student data updated. New table size: " + studentData.size());
     }
+
+    public void updateArchiveTable(List<Student> data) {
+        archivedStudentData.setAll(data); // Update dataset
+        archivedStudentTableView.setItems(null); // Force reset
+        archivedStudentTableView.setItems(archivedStudentData); // Reload table data
+        archivedStudentTableView.refresh(); // Force UI refresh
+        System.out.println("[CLIENT(Admin)] Archived student data updated. New table size: " + archivedStudentData.size());
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Student data updated. New table size: " + studentData.size());
+    }
+
 
     public void addStudentButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), addStudentButton);

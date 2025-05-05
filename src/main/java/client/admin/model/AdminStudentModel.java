@@ -4,6 +4,7 @@ import shared.classes.Student;
 import shared.interfaces.AdminService;
 import client.AdminClient;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,39 @@ public class AdminStudentModel {
             return null;
         }
     }
+
+    public List<Student> loadStudents() {
+        try {
+            List<Student> temp = adminService.viewStudent();
+            List<Student> students = new ArrayList<>();
+            for (Student s: temp) {
+                if (s.getVisibility().equals("Available")) {
+                    students.add(s);
+                }
+            }
+            return students;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to fetch students: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Student> loadArchivedStudents() {
+        try {
+            List<Student> temp = adminService.viewStudent();
+            List<Student> students = new ArrayList<>();
+            for (Student s: temp) {
+                if (s.getVisibility().equals("Archived")) {
+                    students.add(s);
+                }
+            }
+            return students;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to fetch students: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     public boolean addNewStudent(Student newStudent) {
         try {

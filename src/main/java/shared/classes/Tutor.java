@@ -6,6 +6,11 @@ public class Tutor extends User implements Serializable {
     private static final long serialVersionUID = 1L;
     private String expertise;
 
+    public Tutor(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String password, String expertise, String visibility) {
+        super(userID, firstName, lastName, phoneNumber, email, role, password, visibility);
+        this.expertise = expertise;
+    }
+
     public Tutor(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String password, String expertise) {
         super(userID, firstName, lastName, phoneNumber, email, role, password);
         this.expertise = expertise;

@@ -32,7 +32,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             ResultSet resultSet = stmt.executeQuery(latestUserID);
 
             if (resultSet.next()) {
-                latestUserID = resultSet.getString("userID");
+                latestUserID = resultSet.getString(1);
             } else {
                 latestUserID = "2210001"; // Default if no records exist
             }
@@ -72,8 +72,9 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
                 String password = resultSet.getString(7);
                 double balance = resultSet.getDouble(8);
                 String academicLevel = resultSet.getString(9);
+                String visibility = resultSet.getString(10);
 
-                Student student = new Student(studentID, firstName, lastName, phoneNumber, email, role, password, balance, academicLevel);
+                Student student = new Student(studentID, firstName, lastName, phoneNumber, email, role, password, balance, academicLevel, visibility);
                 studentList.add(student);
             }
         } catch (SQLException e1) {
