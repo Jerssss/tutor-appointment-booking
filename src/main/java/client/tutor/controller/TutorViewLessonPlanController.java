@@ -76,6 +76,7 @@ public class TutorViewLessonPlanController {
                 .filter(lessonPlan ->
                         lessonPlan.getLessonPlanID().toLowerCase().contains(lowerCaseQuery) ||
                                 lessonPlan.getSubjectID().toLowerCase().contains(lowerCaseQuery) ||
+                                lessonPlan.getSubjectName().toLowerCase().contains(lowerCaseQuery) ||
                                 lessonPlan.getObjectives().toLowerCase().contains(lowerCaseQuery) ||
                                 lessonPlan.getTopicsCovered().toLowerCase().contains(lowerCaseQuery)
                 )
