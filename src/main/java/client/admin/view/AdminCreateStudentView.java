@@ -54,7 +54,11 @@ public class AdminCreateStudentView {
         });
 
         academicLevelComboBox.getItems().addAll("High School", "College");
-        academicLevelComboBox.setPromptText("Select Academic Level");
+        firstNameTextField.setPromptText("e.g John");
+        lastNameTextField.setPromptText("e.g Doe");
+        phoneNumberTextField.setPromptText("e.g 01234567890");
+        emailTextField.setPromptText("e.g johndoe@gmail.com");
+        academicLevelComboBox.setPromptText("-- Select Academic Level --");
         addStudentButton.setOnAction(event -> handleSave());
     }
 

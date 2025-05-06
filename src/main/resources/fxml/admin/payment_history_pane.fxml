@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewPaymentView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" VBox.vgrow="ALWAYS" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewPaymentView">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
@@ -45,7 +45,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0">
+      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
             <TableView fx:id="paymentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>

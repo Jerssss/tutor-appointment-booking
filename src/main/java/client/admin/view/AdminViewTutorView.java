@@ -47,8 +47,26 @@ public class AdminViewTutorView {
     private TableColumn<Tutor, String> optionColumn;
     @FXML
     private TableColumn<Tutor, String> deleteColumn;
+    @FXML
+    private TableView<Tutor> archivedTutorTableView;
+    @FXML
+    private TableColumn<Tutor, String> arTutorIdColumn;
+    @FXML
+    private TableColumn<Tutor, String> arFirstNameColumn;
+    @FXML
+    private TableColumn<Tutor, String> arLastNameColumn;
+    @FXML
+    private TableColumn<Tutor, String> arPhoneNoColumn;
+    @FXML
+    private TableColumn<Tutor, String> arEmailColumn;
+    @FXML
+    private TableColumn<Tutor, String> arExpertiseColumn;
+    @FXML
+    private TableColumn<Tutor, String> arDeleteColumn;
+
     private AdminViewTutorController controller;
     private ObservableList<Tutor> tutorData = FXCollections.observableArrayList();
+    private ObservableList<Tutor> archivedTutorData = FXCollections.observableArrayList();
 
     public void initialize() {
         initializeTableColumns();
@@ -58,7 +76,10 @@ public class AdminViewTutorView {
         searchResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             controller.searchTutors(newValue);
         });
-        refreshButton.setOnAction(event -> controller.loadTutors());
+        refreshButton.setOnAction(event -> {
+            controller.loadTutors();
+            controller.loadArchivedTutors();
+        });
         addTutorButton.setOnAction(event -> openAddTutorWindow());
     }
 
@@ -71,7 +92,13 @@ public class AdminViewTutorView {
         expertiseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertise()));
         optionColumn.setCellFactory(column -> createModifyButtonCellFactory());
         deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
-
+        arTutorIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserID()));
+        arFirstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
+        arLastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
+        arPhoneNoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPhoneNumber())));
+        arEmailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+        arExpertiseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExpertise()));
+        arDeleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
     }
 
     public void initializeController() {
@@ -196,6 +223,14 @@ public class AdminViewTutorView {
         tutorTableView.setItems(tutorData); // Reload table data
         tutorTableView.refresh(); // Force UI refresh
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Tutor data updated. New table size: " + tutorData.size());
+    }
+
+    public void updateArchiveTable(List<Tutor> data) {
+        archivedTutorData.setAll(data); // Update dataset
+        archivedTutorTableView.setItems(null); // Force reset
+        archivedTutorTableView.setItems(archivedTutorData); // Reload table data
+        archivedTutorTableView.refresh(); // Force UI refresh
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Archived tutor data updated. New table size: " + archivedTutorData.size());
     }
 
     public void addTutorButtonExited() {

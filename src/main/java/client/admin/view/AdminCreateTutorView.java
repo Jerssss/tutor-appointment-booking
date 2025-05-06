@@ -50,6 +50,10 @@ public class AdminCreateTutorView {
             }
         });
 
+        firstNameTextField.setPromptText("e.g John");
+        lastNameTextField.setPromptText("e.g Doe");
+        phoneNumberTextField.setPromptText("e.g 01234567890");
+        emailTextField.setPromptText("e.g johndoe@gmail.com");
         addTutorButton.setOnAction(event -> handleSave());
     }
 

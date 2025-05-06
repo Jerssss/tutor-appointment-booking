@@ -167,8 +167,9 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
                 String role = resultSet.getString(6);
                 String pass = resultSet.getString(7);
                 String expertise = resultSet.getString(8);
+                String visibility = resultSet.getString(9);
 
-                Tutor tutor = new Tutor(tutorID, firstName, lastName, phoneNumber, email, role, pass, expertise);
+                Tutor tutor = new Tutor(tutorID, firstName, lastName, phoneNumber, email, role, pass, expertise, visibility);
                 tutorList.add(tutor);
             }
         } catch (SQLException e1) {

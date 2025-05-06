@@ -42,7 +42,7 @@ public class AdminViewStudentController {
     }
 
     public void loadArchivedStudents() {
-        System.out.println("[CLIENT] loadStudents() method called.");
+        System.out.println("[CLIENT] loadArchivedStudents() method called.");
 
         List<Student> students = model.loadArchivedStudents();
 

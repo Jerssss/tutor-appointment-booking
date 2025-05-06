@@ -107,11 +107,6 @@ public class AdminViewStudentView {
         arDeleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
     }
 
-    public void displaySession(ObservableList<Student> students, ObservableList<Student> archivedStudents) {
-        studentTableView.setItems(students);
-        archivedStudentTableView.setItems(archivedStudents);
-    }
-
     public void initializeController() {
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Initializing ModifyTerminalStatusController...");
         this.controller = new AdminViewStudentController(this);
@@ -242,8 +237,7 @@ public class AdminViewStudentView {
         archivedStudentTableView.setItems(null); // Force reset
         archivedStudentTableView.setItems(archivedStudentData); // Reload table data
         archivedStudentTableView.refresh(); // Force UI refresh
-        System.out.println("[CLIENT(Admin)] Archived student data updated. New table size: " + archivedStudentData.size());
-        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Student data updated. New table size: " + studentData.size());
+        System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Archive student data updated. New table size: " + archivedStudentData.size());
     }
 
 

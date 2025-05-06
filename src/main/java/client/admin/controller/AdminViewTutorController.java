@@ -5,6 +5,7 @@ import client.admin.view.AdminViewTutorView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import shared.classes.Student;
 import shared.classes.Tutor;
 
 import java.util.Date;
@@ -15,17 +16,20 @@ public class AdminViewTutorController {
     private final AdminViewTutorView view;
     private final AdminTutorModel model;
     private ObservableList<Tutor> tutorData = FXCollections.observableArrayList();
+    private ObservableList<Tutor> archivedTutorData = FXCollections.observableArrayList();
+
     public AdminViewTutorController(AdminViewTutorView view) {
         this.view = view;
         this.model = new AdminTutorModel();
 
         loadTutors();
+        loadArchivedTutors();
     }
 
     public void loadTutors() {
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "] loadTutors() method called.");
 
-        List<Tutor> tutors = model.fetchTutors();
+        List<Tutor> tutors = model.loadTutors();
 
         if (tutors != null) {
             Platform.runLater(() -> {
@@ -35,6 +39,22 @@ public class AdminViewTutorController {
             });
         } else {
             System.err.println("[ERROR] Failed to load tutor.");
+        }
+    }
+
+    public void loadArchivedTutors() {
+        System.out.println("[CLIENT] loadArchivedTutor() method called.");
+
+        List<Tutor> tutors = model.loadArchivedTutors();
+
+        if (tutors != null) {
+            Platform.runLater(() -> {
+                archivedTutorData.setAll(tutors); // Update observable list
+                view.updateArchiveTable(tutors);
+                System.out.println("[CLIENT] Table updated with " + tutors.size() + " terminals.");
+            });
+        } else {
+            System.err.println("[ERROR] Failed to load terminals.");
         }
     }
 
