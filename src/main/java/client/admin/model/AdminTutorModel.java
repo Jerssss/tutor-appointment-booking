@@ -57,6 +57,15 @@ public class AdminTutorModel {
         }
     }
 
+    public List<String> expertiseList() {
+        try {
+            return adminService.viewExpertise();
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to fetch archived tutors: " + e.getMessage());
+            return null;
+        }
+    }
+
     public boolean addNewTutor(Tutor newTutor) {
         try {
             adminService.addTutor(newTutor);

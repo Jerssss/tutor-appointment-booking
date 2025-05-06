@@ -22,7 +22,7 @@ public class AdminCreateTutorView {
     @FXML
     private TextField emailTextField;
     @FXML
-    private TextField expertiseTextField;
+    private ComboBox expertiseComboBox;
     @FXML
     private Button addTutorButton;
     private AdminCreateTutorController controller;
@@ -54,6 +54,8 @@ public class AdminCreateTutorView {
         lastNameTextField.setPromptText("e.g Doe");
         phoneNumberTextField.setPromptText("e.g 01234567890");
         emailTextField.setPromptText("e.g johndoe@gmail.com");
+        expertiseComboBox.setPromptText("-- Select Expertise --");
+        expertiseComboBox.getItems().addAll(controller.viewExpertise());
         addTutorButton.setOnAction(event -> handleSave());
     }
 
@@ -68,7 +70,7 @@ public class AdminCreateTutorView {
         String lname = lastNameTextField.getText();
         String phoneNumberStr = phoneNumberTextField.getText();
         String email = emailTextField.getText();
-        String expertise = expertiseTextField.getText();
+        String expertise = (String) expertiseComboBox.getValue();
 
         StringBuilder errors = new StringBuilder();
         List<Control> invalidFields = new ArrayList<>();

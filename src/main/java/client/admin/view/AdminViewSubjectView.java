@@ -2,13 +2,9 @@ package client.admin.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import shared.classes.Subject;
-
-import java.util.List;
 
 public class AdminViewSubjectView {
     private final TableView<Subject> viewResTableView;

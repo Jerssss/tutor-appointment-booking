@@ -4,6 +4,7 @@ import server.database.DatabaseConnection;
 import shared.classes.*;
 import shared.interfaces.AdminService;
 
+import javax.xml.transform.Result;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -147,7 +148,6 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
         }
     }
 
-
     @Override
     public List<Tutor> viewTutor() throws RemoteException{
         List<Tutor> tutorList = new ArrayList<>();
@@ -211,6 +211,28 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
         } finally {
             if (con != null) con.setAutoCommit(true); // Reset autocommit
         }
+    }
+
+    @Override
+    public List<String> viewExpertise() throws RemoteException{
+        query = "{CALL viewExpertise()}";
+        List<String> expertiseList = new ArrayList<>();
+
+        try {
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
+
+            while (resultSet.next()) {
+                expertiseList.add(resultSet.getString(1));
+            }
+
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+
+        return expertiseList;
     }
 
     @Override
