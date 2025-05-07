@@ -16,7 +16,9 @@ import shared.classes.TutorSession;
 import shared.interfaces.TutorService;
 import java.rmi.RemoteException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TutorViewSessionListView {
     @FXML private TableColumn<TutorSession, String> viewMoreColumn;
@@ -29,10 +31,9 @@ public class TutorViewSessionListView {
     @FXML private TableColumn<TutorSession, Integer> durationColumn;
     @FXML private TableColumn<TutorSession, String> statusColumn;
     @FXML private TableColumn<TutorSession, String> studentColumn;
-    @FXML
-    private TextField searchStudResTextField;
-    @FXML
-    private Button refreshButton;
+    @FXML private TextField searchStudResTextField;
+    @FXML private Button refreshButton;
+
     private TutorViewMorePopUpModel model;
     private TutorViewSessionListController controller;
     private ObservableList<TutorSession> sessionData = FXCollections.observableArrayList();
@@ -65,12 +66,12 @@ public class TutorViewSessionListView {
     private void initializeTableColumns() {
         try {
             sessionNoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionID()));
-            subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName())); // String
+            subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
             sessionModeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionMode()));
-            dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionDate().toString())); // String
-            sessionTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionTime().toString())); // String
-            durationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSessionDuration()).asObject()); // Integer
-            statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionStatus())); // String
+            dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionDate().toString()));
+            sessionTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionTime().toString()));
+            durationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSessionDuration()).asObject());
+            statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionStatus()));
             viewMoreColumn.setCellFactory(column -> createViewMoreButtonCellFactory());
             studentColumn.setCellFactory(column -> createViewButtonCellFactory());
         } catch (NullPointerException e) {
@@ -96,6 +97,7 @@ public class TutorViewSessionListView {
                     }
                 });
             }
+
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -144,6 +146,7 @@ public class TutorViewSessionListView {
                     }
                 });
             }
+
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
@@ -175,10 +178,15 @@ public class TutorViewSessionListView {
         }
     }
 
-
     public void updateTable(List<TutorSession> sessions) {
         if (sessions != null && !sessions.isEmpty()) {
-            sessionData.setAll(sessions);
+            // Remove duplicates from the sessions list
+            Set<String> sessionIDs = new HashSet<>();
+            List<TutorSession> uniqueSessions = sessions.stream()
+                    .filter(session -> sessionIDs.add(session.getSessionID())) // Keep unique session IDs
+                    .toList();
+
+            sessionData.setAll(uniqueSessions);
             sessionListTableView.setItems(sessionData);
             sessionListTableView.refresh();
         } else {
