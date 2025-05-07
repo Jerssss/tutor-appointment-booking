@@ -19,6 +19,7 @@ import shared.classes.SessionManager;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TutorViewLessonPlanView {
     @FXML private TableColumn<LessonPlan, String> viewMoreColumn;
@@ -185,57 +186,6 @@ public class TutorViewLessonPlanView {
         };
     }
 
-    public TableCell<LessonPlan, String> createArchivedUpdateButtonCellFactory() {
-        return new TableCell<LessonPlan, String>() {
-            private final Button updateButton = new Button("Update");
-
-            {
-                updateButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
-                updateButton.setOnAction(event -> {
-                    LessonPlan lessonPlan = getTableRow().getItem();
-                    if (lessonPlan != null) {
-                        showUpdatePane(lessonPlan);
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(updateButton);
-                }
-            }
-        };
-    }
-
-    public TableCell<LessonPlan, String> createArchivedDeleteButtonCellFactory() {
-        return new TableCell<LessonPlan, String>() {
-            private final Button deleteButton = new Button("Delete");
-
-            {
-                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
-                deleteButton.setOnAction(event -> {
-                    LessonPlan lessonPlan = getTableRow().getItem();
-                    if (lessonPlan != null) {
-                        boolean confirmed = showConfirmationDialog ("Are you sure you want to delete this archived lesson plan?");
-                        if (confirmed) {
-                            controller.deleteLessonPlan(lessonPlan);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : deleteButton);
-            }
-        };
-    }
-
     public TableCell<LessonPlan, String> createDeleteButtonCellFactory() {
         return new TableCell<LessonPlan, String>() {
             private final Button deleteButton = new Button("Delete");
@@ -319,18 +269,46 @@ public class TutorViewLessonPlanView {
     }
 
     public void updateTable(List<LessonPlan> data) {
-        lessonPlanData.setAll(data);
-        lessonPlanListTableView.setItems(null);
+        // Remove duplicates based on lessonPlanID or any other unique field.
+        ObservableList<LessonPlan> uniqueLessonPlans = FXCollections.observableArrayList();
+
+        for (LessonPlan lessonPlan : data) {
+            // Check if the lessonPlan is already in the list.
+            boolean isDuplicate = false;
+            for (LessonPlan existingLessonPlan : uniqueLessonPlans) {
+                if (existingLessonPlan.getLessonPlanID().equals(lessonPlan.getLessonPlanID())) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            // Only add if it's not a duplicate.
+            if (!isDuplicate) {
+                uniqueLessonPlans.add(lessonPlan);
+            }
+        }
+
+        // Update the table with unique lesson plans.
+        lessonPlanData.setAll(uniqueLessonPlans);
         lessonPlanListTableView.setItems(lessonPlanData);
         lessonPlanListTableView.refresh();
     }
 
     public void updateArchivedTable(List<LessonPlan> archivedData) {
-        archivedLessonPlanData.setAll(archivedData);
+        // Remove duplicates before updating
+        archivedLessonPlanData.setAll(removeDuplicates(archivedData));
         archivedLessonPlanListTableView.setItems(null);
         archivedLessonPlanListTableView.setItems(archivedLessonPlanData);
         archivedLessonPlanListTableView.refresh();
     }
+
+    // Helper method to remove duplicates from a list based on LessonPlan ID
+    private List<LessonPlan> removeDuplicates(List<LessonPlan> data) {
+        return data.stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 
     private boolean showConfirmationDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
