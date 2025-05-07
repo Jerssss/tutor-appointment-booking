@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewPaymentView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="805.0" VBox.vgrow="ALWAYS" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewPaymentView">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="805.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="513.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="338.0">
                      <children>
                         <Label fx:id="viewResLabel" text="Payment History" textFill="#6f2e2e">
                            <font>
@@ -32,9 +32,14 @@
                         </StackPane>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="56.0" prefWidth="76.0">
+                  <HBox alignment="CENTER" prefHeight="56.0" prefWidth="236.0">
                      <children>
-                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" prefHeight="26.0" prefWidth="69.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                        <Button fx:id="refreshButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#refreshButtonHovered" onMouseExited="#refreshButtonExited" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #6F2E2E; -fx-border-color: #ffffff; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Refresh" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="addPaymentButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseEntered="#addPaymentButtonHovered" onMouseExited="#addPaymentButtonExited" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #ffffff; -fx-border-color: #6F2E2E; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Add Payment" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="11.0" />
                            </font>
@@ -45,7 +50,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0">
+      <VBox alignment="CENTER" prefHeight="484.0" prefWidth="805.0" VBox.vgrow="ALWAYS">
          <children>
             <TableView fx:id="paymentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
                <columns>

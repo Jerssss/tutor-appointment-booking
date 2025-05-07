@@ -357,50 +357,61 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     @Override
     public Payment createPayment(String studentId, double amount, String paymentMethod)
             throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon()) {
-            conn.setAutoCommit(false);
 
-            try {
-                String paymentId = getNextPaymentId(conn);
-                System.out.println("[SERVER | "+ new Date()+ "] Generated payment ID: " + paymentId);
-
-                try (PreparedStatement paymentStmt = conn.prepareStatement(
-                        "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
-                                "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
-                    paymentStmt.setString(1, paymentId);
-                    paymentStmt.setString(2, studentId);
-                    paymentStmt.setDouble(3, amount);
-                    paymentStmt.setString(4, paymentMethod);
-                    paymentStmt.executeUpdate();
-                }
-
-                conn.commit();
-                return new Payment(paymentId, studentId, LocalDate.now(),
-                        LocalTime.now(), paymentMethod, amount);
-
-            } catch (SQLException e) {
-                conn.rollback();
-                System.err.println("[SERVER | "+ new Date()+ "] Transaction rolled back: " + e.getMessage());
-                throw new RemoteException("[SERVER | "+ new Date()+ "] Payment failed: " + e.getMessage());
-            } finally {
-                conn.setAutoCommit(true);
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.setCon();
+            if (conn == null) {
+                throw new RemoteException("Database connection failed");
             }
+
+            conn.setAutoCommit(false);
+            String paymentId = getNextPaymentId(conn);
+
+            try (PreparedStatement paymentStmt = conn.prepareStatement(
+                    "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
+                            "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
+
+                paymentStmt.setString(1, paymentId);
+                paymentStmt.setString(2, studentId);
+                paymentStmt.setDouble(3, amount);
+                paymentStmt.setString(4, paymentMethod);
+                paymentStmt.executeUpdate();
+            }
+
+            conn.commit();
+            return new Payment(paymentId, studentId, LocalDate.now(),
+                    LocalTime.now(), paymentMethod, amount);
+
         } catch (SQLException e) {
-            throw new RemoteException("Database connection error: " + e.getMessage());
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException ex) {
+                // Log rollback error
+            }
+            throw new RemoteException("Payment failed: " + e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                // Log connection close error
+            }
         }
     }
 
     private String getNextPaymentId(Connection conn) throws SQLException {
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(
-                     "SELECT MAX(paymentID) FROM payment FOR UPDATE")) {
+                     "SELECT MAX(paymentID) FROM payment")) {
 
             if (rs.next()) {
                 String maxId = rs.getString(1);
-                if (maxId != null) {
-                    int num = Integer.parseInt(maxId.substring(1)) + 1;
-                    return "P" + String.format("%03d", num);
-                }
+                return maxId != null ?
+                        "P" + String.format("%03d", Integer.parseInt(maxId.substring(1)) + 1)
+                        : "P001";
             }
             return "P001";
         }
