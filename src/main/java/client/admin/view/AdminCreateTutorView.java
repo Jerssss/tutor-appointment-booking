@@ -2,15 +2,17 @@ package client.admin.view;
 
 import client.admin.controller.AdminCreateTutorController;
 import javafx.animation.ScaleTransition;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class AdminCreateTutorView {
     @FXML
@@ -22,10 +24,12 @@ public class AdminCreateTutorView {
     @FXML
     private TextField emailTextField;
     @FXML
-    private ComboBox expertiseComboBox;
+    private ListView<String> expertiseListView;
     @FXML
     private Button addTutorButton;
     private AdminCreateTutorController controller;
+    private final List<String> selectedExpertises = new ArrayList<>();
+    private final Map<String, BooleanProperty> expertiseSelectionMap = new HashMap<>();
     private final int MAX_PHONENUM_LENGTH = 11;
     public void initialize() {
         initializeController();
@@ -50,12 +54,27 @@ public class AdminCreateTutorView {
             }
         });
 
+
+        expertiseListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        List<String> allExpertise = controller.viewExpertise();
+        expertiseListView.setItems(FXCollections.observableArrayList(allExpertise));
+
+        for (String item : allExpertise) {
+            expertiseSelectionMap.put(item, new SimpleBooleanProperty(false));
+            expertiseSelectionMap.get(item).addListener((obs, wasSelected, isNowSelected) -> {
+                if (isNowSelected) {
+                    selectedExpertises.add(item);
+                } else {
+                    selectedExpertises.remove(item);
+                }
+            });
+        }
+        expertiseListView.setCellFactory(CheckBoxListCell.forListView(item -> expertiseSelectionMap.get(item)));
+
         firstNameTextField.setPromptText("e.g John");
         lastNameTextField.setPromptText("e.g Doe");
         phoneNumberTextField.setPromptText("e.g 01234567890");
         emailTextField.setPromptText("e.g johndoe@gmail.com");
-        expertiseComboBox.setPromptText("-- Select Expertise --");
-        expertiseComboBox.getItems().addAll(controller.viewExpertise());
         addTutorButton.setOnAction(event -> handleSave());
     }
 
@@ -66,11 +85,20 @@ public class AdminCreateTutorView {
     }
 
     private void handleSave() {
+        selectedExpertises.clear();
+        expertiseSelectionMap.forEach((item, selected) -> {
+            if (selected.get()) {
+                selectedExpertises.add(item);
+            }
+        });
+
         String fname = firstNameTextField.getText();
         String lname = lastNameTextField.getText();
         String phoneNumberStr = phoneNumberTextField.getText();
         String email = emailTextField.getText();
-        String expertise = (String) expertiseComboBox.getValue();
+        String expertise = String.join(",", selectedExpertises);
+        System.out.println(expertise);
+
 
         StringBuilder errors = new StringBuilder();
         List<Control> invalidFields = new ArrayList<>();
