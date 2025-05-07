@@ -46,4 +46,14 @@ public class AdminPaymentModel {
             return Collections.emptyList();
         }
     }
+
+    public boolean addNewPayment(Payment newPayment) {
+        try {
+            adminService.createPayment(newPayment);
+            return true;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to create payment via RMI: " + e.getMessage());
+            return false;
+        }
+    }
 }

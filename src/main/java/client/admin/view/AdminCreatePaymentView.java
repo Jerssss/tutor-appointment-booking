@@ -10,9 +10,13 @@ import javafx.util.Duration;
 import server.services.StudentServiceImpl;
 import shared.classes.SessionManager;
 import shared.interfaces.StudentService;
+
+import javax.swing.*;
 import java.rmi.RemoteException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AdminCreatePaymentView {
@@ -45,39 +49,107 @@ public class AdminCreatePaymentView {
 
     @FXML
     private void handlePay() {
-
+        String studentID = studentIdComboBox.getValue();
         String paymentMethod = modeOfPaymentComboBox.getValue();
-        String amountText = amountTextField.getText();
+        String amountStr = amountTextField.getText();
 
-        // Validate inputs
-        if (paymentMethod == null || paymentMethod.isEmpty()) {
-            showErrorAlert("Error", "Please select a payment method");
-            return;
+        StringBuilder errors = new StringBuilder();
+        List<Control> invalidFields = new ArrayList<>();
+
+        // Call validateFields method for checking empty fields
+        validateStudentId(studentID, errors, invalidFields);
+        validatePaymentMethod(paymentMethod, errors, invalidFields);
+        int amount = validateAmount(amountStr, errors, invalidFields);
+
+        if (amount == -1 || !errors.isEmpty()) {
+            showAlert("Validation Error", errors.toString(), invalidFields);
+            return;  // Stop further processing if there are validation errors
         }
 
-        if (amountText.isEmpty()) {
-            showErrorAlert("Error", "Please enter an amount");
-            return;
+
+        // Pass data to the controller to save it in the database
+        boolean success = controller.addNewPayment(studentID, paymentMethod, amount);
+
+        if (!success) {
+            JOptionPane.showMessageDialog(null,
+                    "Failed to add student                                 .",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Student added successfully                                 .",
+                    "Error",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        closeWindow();
+
+    }
+
+    private void validateStudentId(String studID, StringBuilder errors, List<Control> invalidFields) {
+        if (studID == null || studID.trim().isEmpty()) {
+            errors.append("• Student is required.\n");
+            invalidFields.add(studentIdComboBox);
+        }
+    }
+
+    private void validatePaymentMethod(String pMethod, StringBuilder errors, List<Control> invalidFields) {
+        if (pMethod == null || pMethod.trim().isEmpty()) {
+            errors.append("• Mode of Payment is required.\n");
+            invalidFields.add(modeOfPaymentComboBox);
+        }
+    }
+
+    private int validateAmount(String amt, StringBuilder errors, List<Control> invalidFields) {
+        // Check if the phone number is empty
+        if (amt == null || amt.trim().isEmpty()) {
+            errors.append("• Phone number is required.\n");
+            invalidFields.add(amountTextField);
+            return -1; // Return -1 to indicate an invalid phone number
         }
 
         try {
-            double amount = Double.parseDouble(amountText);
+            // Try to parse the phone number as a long
+            int amount = Integer.parseInt(amt);
+
+            // Check if the parsed phone number is a valid positive number
             if (amount <= 0) {
-                showErrorAlert("Error", "Amount must be positive");
-                return;
+                errors.append("• Phone number must be a valid positive number.\n");
+                invalidFields.add(amountTextField);
+                return -1; // Return -1 to indicate an invalid phone number
             }
 
-            // Process payment
-            boolean success = true;
-
-            if (success) {
-                showSuccessAlert("Success", String.format("Payment of ₱%,.2f processed!", amount));
-                closeWindow();
-            } else {
-                showErrorAlert("Error", "Failed to update balance");
-            }
+            return amount;  // Return the valid phone number
         } catch (NumberFormatException e) {
-            showErrorAlert("Error", "Invalid amount format");
+            // Handle case when the input cannot be parsed as a long
+            errors.append("• Phone number must be a valid number.\n");
+            invalidFields.add(amountTextField);
+            return -1; // Return -1 to indicate an invalid phone number
+        }
+    }
+
+    private void showAlert(String title, String message, List<Control> invalidFields) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+
+        for (Control field : invalidFields) {
+            if (field instanceof TextField textField) {
+                textField.setStyle("-fx-background-color: red;");
+                textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (!newValue.trim().isEmpty()) {
+                        textField.setStyle("");
+                    }
+                });
+            } else if (field instanceof ComboBox<?> comboBox) {
+                comboBox.setStyle("-fx-background-color: #EBC7C7;");
+                comboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        comboBox.setStyle("");
+                    }
+                });
+            }
         }
     }
 
