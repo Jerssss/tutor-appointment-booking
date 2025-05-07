@@ -6,13 +6,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import shared.classes.Payment;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +27,8 @@ public class AdminViewPaymentView {
     private TextField searchResTextField;
     @FXML
     private Button refreshButton;
+    @FXML
+    private Button addPaymentButton;
     @FXML
     private TableView<Payment> paymentTableView;
     @FXML
@@ -49,6 +57,7 @@ public class AdminViewPaymentView {
             controller.searchPayment(newValue);
         });
         refreshButton.setOnAction(event -> controller.loadPayments());
+        addPaymentButton.setOnAction(event -> openAddPaymentWindow());
     }
 
     public void initializeTableColumns() {
@@ -67,12 +76,47 @@ public class AdminViewPaymentView {
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "] AdminViewPaymentController successfully created.");
     }
 
+    private void openAddPaymentWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/add_new_payment_window.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Add Payment");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Blocks interaction with other windows
+            stage.showAndWait(); // Waits for the window to be closed before resuming
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[ADMIN CLIENT | "+ new Date()+ "] Failed to load Add Payment window.");
+        }
+    }
+
     public void updateTable(List<Payment> data) {
         paymentData.setAll(data); // Update dataset
         paymentTableView.setItems(null); // Force reset
         paymentTableView.setItems(paymentData); // Reload table data
         paymentTableView.refresh(); // Force UI refresh
         System.out.println("[CLIENT(Admin)] Payment data updated. New table size: " + paymentData.size());
+    }
+
+    public void addPaymentButtonExited() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), addPaymentButton);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
+    }
+
+    public void addPaymentButtonHovered() {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), addPaymentButton);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setCycleCount(1);
+        st.setAutoReverse(false);
+        st.play();
     }
 
     public void refreshButtonExited() {

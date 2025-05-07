@@ -12,6 +12,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.Date;
 
 public class AdminServiceImpl extends UnicastRemoteObject implements AdminService, Serializable {
     private static final long serialVersionUID = 1L; // Add a serialVersionUID
@@ -553,5 +554,73 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             e2.printStackTrace();
         }
         return studentPayments;
+    }
+
+    @Override
+    public void createPayment(Payment payment) throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon()) {
+            conn.setAutoCommit(false);
+
+            try {
+                String paymentId = getNextPaymentId(conn);
+                System.out.println("[SERVER | "+ new Date()+ "] Generated payment ID: " + paymentId);
+
+                try (PreparedStatement paymentStmt = conn.prepareStatement(
+                        "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
+                                "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
+                    paymentStmt.setString(1, paymentId);
+                    paymentStmt.setString(2, payment.getStudentID());
+                    paymentStmt.setDouble(3, payment.getAmount());
+                    paymentStmt.setString(4, payment.getPaymentMethod());
+                    paymentStmt.executeUpdate();
+                }
+
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                System.err.println("[SERVER | "+ new Date()+ "] Transaction rolled back: " + e.getMessage());
+                throw new RemoteException("[SERVER | "+ new Date()+ "] Payment failed: " + e.getMessage());
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database connection error: " + e.getMessage());
+        }
+    }
+
+    private String getNextPaymentId(Connection conn) throws SQLException {
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(
+                     "SELECT MAX(paymentID) FROM payment FOR UPDATE")) {
+
+            if (rs.next()) {
+                String maxId = rs.getString(1);
+                if (maxId != null) {
+                    int num = Integer.parseInt(maxId.substring(1)) + 1;
+                    return "P" + String.format("%03d", num);
+                }
+            }
+            return "P001";
+        }
+    }
+
+    public List<String> getStudentList() throws RemoteException {
+        query = "SELECT DISTINCT studentID FROM student;";
+        List<String> students = new ArrayList<>();
+
+        try {
+
+            stmt = con.createStatement();
+            resultSet = stmt.executeQuery(query);
+
+            while (resultSet.next()) {
+                students.add(resultSet.getString(1));
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+        return students;
     }
 }

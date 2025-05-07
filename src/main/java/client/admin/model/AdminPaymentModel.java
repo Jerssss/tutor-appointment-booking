@@ -31,4 +31,19 @@ public class AdminPaymentModel {
             return Collections.emptyList();
         }
     }
+
+    public List<String> getStudentList(){
+        try {
+            if (adminService != null) {
+                return adminService.getStudentList();
+            } else {
+                System.err.println("[ERROR] Cannot fetch student list. AdminService is null.");
+                return Collections.emptyList();
+            }
+        } catch (Exception e) {
+            System.err.println("[ERROR] Exception while fetching payments: " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 }

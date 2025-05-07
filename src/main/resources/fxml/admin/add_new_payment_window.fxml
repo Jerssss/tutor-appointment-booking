@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="249.0" prefWidth="330.0" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminCreatePaymentView">
+    <center>
+        <VBox prefHeight="164.0" prefWidth="266.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="130.0" prefWidth="310.0">
+                    <children>
+                        <HBox prefHeight="58.0" prefWidth="310.0">
+                            <children>
+                                <VBox prefHeight="43.0" prefWidth="282.0">
+                                    <children>
+                                        <Label prefHeight="21.0" prefWidth="101.0" text="Student ID">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <ComboBox fx:id="studentIdComboBox" prefHeight="26.0" prefWidth="281.0" promptText="-- Select Student ID --" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="58.0" prefWidth="310.0">
+                            <children>
+                                <VBox prefHeight="43.0" prefWidth="282.0">
+                                    <children>
+                                        <Label prefHeight="21.0" prefWidth="101.0" text="Mode of Payment">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <ComboBox fx:id="modeOfPaymentComboBox" prefHeight="26.0" prefWidth="281.0" promptText="Mode" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="43.0" prefWidth="246.0">
+                            <children>
+                                <VBox prefHeight="50.0" prefWidth="257.0">
+                                    <children>
+                                        <Label prefHeight="17.0" prefWidth="50.0" text="Amount">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <TextField fx:id="amountTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="280.0" promptText="Amount to Pay" stylesheets="@../../css/styles.css">
+                                            <styleClass>
+                                                <String fx:value="background-pane" />
+                                                <String fx:value="text-field2" />
+                                            </styleClass>
+                                        </TextField>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="20.0" top="20.0" />
+                    </VBox.margin>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+    <top>
+        <HBox alignment="CENTER" prefHeight="47.0" prefWidth="310.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" prefHeight="41.0" prefWidth="255.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Create Payment" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="67.0" prefWidth="266.0" spacing="5.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" onMouseEntered="#cancelButtonHovered" onMouseExited="#cancelButtonExited" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: transparent; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Cancel">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="payButton" mnemonicParsing="false" onAction="#handlePay" onMouseEntered="#payButtonHovered" onMouseExited="#payButtonExited" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #ffffff; -fx-border-color: #6f2e2e; -fx-border-radius: 30px; -fx-background-radius: 30px;" text="Pay" textFill="#6f2e2e">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -34,6 +34,13 @@ public class Payment implements Serializable {
         this.amount = amount;
     }
 
+    public Payment(String paymentID, String studentID, String paymentMethod, double amount) {
+        this.paymentID = paymentID;
+        this.studentID = studentID;
+        this.paymentMethod = paymentMethod;
+        this.amount = amount;
+    }
+
     // Getters and Setters
     public String getPaymentID() {
         return paymentID;
