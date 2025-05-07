@@ -102,7 +102,7 @@ public class AdminCreatePaymentView {
     private int validateAmount(String amt, StringBuilder errors, List<Control> invalidFields) {
         // Check if the phone number is empty
         if (amt == null || amt.trim().isEmpty()) {
-            errors.append("• Phone number is required.\n");
+            errors.append("• Amount is required.\n");
             invalidFields.add(amountTextField);
             return -1; // Return -1 to indicate an invalid phone number
         }
@@ -113,7 +113,7 @@ public class AdminCreatePaymentView {
 
             // Check if the parsed phone number is a valid positive number
             if (amount <= 0) {
-                errors.append("• Phone number must be a valid positive number.\n");
+                errors.append("• Amount must be a valid positive number.\n");
                 invalidFields.add(amountTextField);
                 return -1; // Return -1 to indicate an invalid phone number
             }
@@ -121,7 +121,7 @@ public class AdminCreatePaymentView {
             return amount;  // Return the valid phone number
         } catch (NumberFormatException e) {
             // Handle case when the input cannot be parsed as a long
-            errors.append("• Phone number must be a valid number.\n");
+            errors.append("• Amount must be a valid number.\n");
             invalidFields.add(amountTextField);
             return -1; // Return -1 to indicate an invalid phone number
         }

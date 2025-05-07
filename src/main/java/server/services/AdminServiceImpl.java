@@ -182,7 +182,43 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void addTutor(Tutor newTutor) throws RemoteException, SQLException {
+    public void addTutor(Tutor newTutor) throws  RemoteException, SQLException {
+        String query1 = "INSERT INTO user (userID, firstName, lastName, phoneNumber, email, role, password) " +
+                "  VALUES (?, ?, ?, ?, ?, ?, ?); ";
+        String query2 = "  INSERT INTO tutor (tutorID, expertise) " +
+                "  VALUES (?, ?);";
+        try {
+            con.setAutoCommit(false); // creates a transaction for grouped query
+
+            String newUserID = generateNewUserID();
+            String newUserPassword = generateNewUserPassword(newTutor);
+
+            PreparedStatement preparedStatement1 = con.prepareStatement(query1);
+            preparedStatement1.setString(1, newUserID);
+            preparedStatement1.setString(2, newTutor.getFirstName());
+            preparedStatement1.setString(3, newTutor.getLastName());
+            preparedStatement1.setLong(4, newTutor.getPhoneNumber());
+            preparedStatement1.setString(5, newTutor.getEmail());
+            preparedStatement1.setString(6, newTutor.getRole());
+            preparedStatement1.setString(7, newUserPassword);
+            preparedStatement1.executeUpdate();
+
+            PreparedStatement preparedStatement2 = con.prepareStatement(query2);
+            preparedStatement2.setString(1, newUserID);
+            preparedStatement2.setString(2, newTutor.getExpertise());
+            preparedStatement2.executeUpdate();
+
+            con.commit();
+        } catch (SQLException e1) {
+            if (con != null) con.rollback(); // Rollback on error
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true); // Reset autocommit
+        }
+    }
+    public void addTutors(Tutor newTutor) throws RemoteException, SQLException {
         query = "{CALL addTutor(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {

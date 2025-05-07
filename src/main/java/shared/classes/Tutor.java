@@ -1,9 +1,11 @@
 package shared.classes;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Tutor extends User implements Serializable {
     private static final long serialVersionUID = 1L;
+    private List<String> expertises;
     private String expertise;
 
     public Tutor(String userID, String firstName, String lastName, long phoneNumber, String email, String role, String password, String expertise, String visibility) {
