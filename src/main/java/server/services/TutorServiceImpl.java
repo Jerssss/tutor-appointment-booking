@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TutorServiceImpl extends UnicastRemoteObject implements TutorService, Serializable {
@@ -317,22 +318,49 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
     @Override
     public List<String> getSubjectsByTutorExpertise(String tutorID) throws RemoteException {
-        List<String> subjects = new ArrayList<>();
-        String query = "SELECT subjectName FROM subject NATURAL JOIN tutorsession WHERE tutorID = ?";
+        String query = "SELECT expertise FROM tutor WHERE tutorID = ?;";
+        String expertise = "";
+        List<String> expertiseList = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, tutorID);
             ResultSet resultSet = stmt.executeQuery();
 
-            while (resultSet.next()) {
-                subjects.add(resultSet.getString("subjectName"));
+            if (resultSet.next()) {
+                expertise = resultSet.getString(1);
             }
+
+            expertiseList = (Arrays.asList(expertise.split(",")));
+            for (String s: expertiseList) {
+                System.out.println(s);
+            }
+
         } catch (SQLException e) {
-            throw new RemoteException("Error retrieving subjects: " + e.getMessage());
+            throw new RemoteException("Database error while retrieving session details: " + e.getMessage());
         }
-        return subjects;
+        return expertiseList;
     }
+
+//    @Override
+//    public List<String> getSubjectsByTutorExpertise(String tutorID) throws RemoteException {
+//        List<String> subjects = new ArrayList<>();
+//        String query = "SELECT subjectName FROM subject NATURAL JOIN tutorsession WHERE tutorID = ?";
+//
+//        try (Connection conn = DatabaseConnection.setCon();
+//             PreparedStatement stmt = conn.prepareStatement(query)) {
+//            stmt.setString(1, tutorID);
+//            ResultSet resultSet = stmt.executeQuery();
+//
+//            while (resultSet.next()) {
+//                subjects.add(resultSet.getString("subjectName"));
+//            }
+//        } catch (SQLException e) {
+//            throw new RemoteException("Error retrieving subjects: " + e.getMessage());
+//        }
+//        return subjects;
+//    }
 
     @Override
     public LessonPlan getLessonPlanBySubjectID(String subjectID) throws RemoteException {

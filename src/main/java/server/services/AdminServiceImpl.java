@@ -28,24 +28,31 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     public String generateNewUserID() {
-        String latestUserID = "SELECT MAX(userID) FROM user;";
-        try {
-            stmt = con.createStatement();
-            ResultSet resultSet = stmt.executeQuery(latestUserID);
+        String latestUserID = null;
+        query = "{CALL getMaxUserID(?)}";
 
-            if (resultSet.next()) {
-                latestUserID = resultSet.getString(1);
+        try {
+            callStmt = con.prepareCall(query);
+            callStmt.registerOutParameter(1, Types.VARCHAR);
+            callStmt.execute();
+
+            latestUserID = callStmt.getString(1);
+
+            if (latestUserID == null) {
+                latestUserID = "2210001"; // Default base ID
             } else {
-                latestUserID = "2210001"; // Default if no records exist
+                int userID = Integer.parseInt(latestUserID) + 1;
+                latestUserID = String.valueOf(userID);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
 
-        int userID = Integer.parseInt(latestUserID) + 1;
-        String newUserID = String.valueOf(userID);
-        return newUserID;
+        return latestUserID;
     }
+
 
     public String generateNewUserPassword(User newUser) {
         String userID = generateNewUserID();
@@ -89,13 +96,13 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
 
     @Override
     public void addStudent(Student newStudent) throws RemoteException, SQLException {
-        query = "{CALL addStudent(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String addQuery = "{CALL addStudent(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         try {
             con.setAutoCommit(false);
             String newUserID = generateNewUserID();
             String newUserPassword = generateNewUserPassword(newStudent);
 
-            callStmt = con.prepareCall(query);
+            callStmt = con.prepareCall(addQuery);
 
             callStmt.setString(1, newUserID);
             callStmt.setString(2, newStudent.getFirstName());
@@ -182,44 +189,8 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void addTutor(Tutor newTutor) throws  RemoteException, SQLException {
-        String query1 = "INSERT INTO user (userID, firstName, lastName, phoneNumber, email, role, password) " +
-                "  VALUES (?, ?, ?, ?, ?, ?, ?); ";
-        String query2 = "  INSERT INTO tutor (tutorID, expertise) " +
-                "  VALUES (?, ?);";
-        try {
-            con.setAutoCommit(false); // creates a transaction for grouped query
-
-            String newUserID = generateNewUserID();
-            String newUserPassword = generateNewUserPassword(newTutor);
-
-            PreparedStatement preparedStatement1 = con.prepareStatement(query1);
-            preparedStatement1.setString(1, newUserID);
-            preparedStatement1.setString(2, newTutor.getFirstName());
-            preparedStatement1.setString(3, newTutor.getLastName());
-            preparedStatement1.setLong(4, newTutor.getPhoneNumber());
-            preparedStatement1.setString(5, newTutor.getEmail());
-            preparedStatement1.setString(6, newTutor.getRole());
-            preparedStatement1.setString(7, newUserPassword);
-            preparedStatement1.executeUpdate();
-
-            PreparedStatement preparedStatement2 = con.prepareStatement(query2);
-            preparedStatement2.setString(1, newUserID);
-            preparedStatement2.setString(2, newTutor.getExpertise());
-            preparedStatement2.executeUpdate();
-
-            con.commit();
-        } catch (SQLException e1) {
-            if (con != null) con.rollback(); // Rollback on error
-            e1.printStackTrace();
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        } finally {
-            if (con != null) con.setAutoCommit(true); // Reset autocommit
-        }
-    }
-    public void addTutors(Tutor newTutor) throws RemoteException, SQLException {
-        query = "{CALL addTutor(?, ?, ?, ?, ?, ?, ?, ?)}";
+    public void addTutor(Tutor newTutor) throws RemoteException, SQLException {
+        String addQuery = "{CALL addTutor(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             con.setAutoCommit(false); // creates a transaction for grouped query
@@ -227,7 +198,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             String newUserID = generateNewUserID();
             String newUserPassword = generateNewUserPassword(newTutor);
 
-            callStmt = con.prepareCall(query);
+            callStmt = con.prepareCall(addQuery);
 
             callStmt.setString(1, newUserID);
             callStmt.setString(2, newTutor.getFirstName());
@@ -593,61 +564,37 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void createPayment(Payment payment) throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon()) {
-            conn.setAutoCommit(false);
+    public void createPayment(Payment payment) throws RemoteException, SQLException {
+        try {
+            con.setAutoCommit(false); // Start transaction
 
-            try {
-                String paymentId = getNextPaymentId(conn);
-                System.out.println("[SERVER | "+ new Date()+ "] Generated payment ID: " + paymentId);
+            callStmt = con.prepareCall("{CALL createPayment(?, ?, ?)}");
+            callStmt.setString(1, payment.getStudentID());
+            callStmt.setDouble(2, payment.getAmount());
+            callStmt.setString(3, payment.getPaymentMethod());
 
-                try (PreparedStatement paymentStmt = conn.prepareStatement(
-                        "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
-                                "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
-                    paymentStmt.setString(1, paymentId);
-                    paymentStmt.setString(2, payment.getStudentID());
-                    paymentStmt.setDouble(3, payment.getAmount());
-                    paymentStmt.setString(4, payment.getPaymentMethod());
-                    paymentStmt.executeUpdate();
-                }
+            callStmt.execute();
+            con.commit(); // Commit if successful
 
-                conn.commit();
-            } catch (SQLException e) {
-                conn.rollback();
-                System.err.println("[SERVER | "+ new Date()+ "] Transaction rolled back: " + e.getMessage());
-                throw new RemoteException("[SERVER | "+ new Date()+ "] Payment failed: " + e.getMessage());
-            } finally {
-                conn.setAutoCommit(true);
-            }
-        } catch (SQLException e) {
-            throw new RemoteException("Database connection error: " + e.getMessage());
+            System.out.println("[SERVER | " + new Date() + "] Payment successfully created.");
+        } catch (SQLException e1) {
+            if (con != null) con.rollback(); // Rollback on error
+            e1.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        } finally {
+            if (con != null) con.setAutoCommit(true); // Reset autocommit
         }
     }
 
-    private String getNextPaymentId(Connection conn) throws SQLException {
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(
-                     "SELECT MAX(paymentID) FROM payment FOR UPDATE")) {
-
-            if (rs.next()) {
-                String maxId = rs.getString(1);
-                if (maxId != null) {
-                    int num = Integer.parseInt(maxId.substring(1)) + 1;
-                    return "P" + String.format("%03d", num);
-                }
-            }
-            return "P001";
-        }
-    }
-
+    @Override
     public List<String> getStudentList() throws RemoteException {
-        query = "SELECT DISTINCT studentID FROM student;";
+        query = "{CALL viewStudentWithBalance}";
         List<String> students = new ArrayList<>();
 
         try {
-
-            stmt = con.createStatement();
-            resultSet = stmt.executeQuery(query);
+            callStmt = con.prepareCall(query);
+            resultSet = callStmt.executeQuery();
 
             while (resultSet.next()) {
                 students.add(resultSet.getString(1));

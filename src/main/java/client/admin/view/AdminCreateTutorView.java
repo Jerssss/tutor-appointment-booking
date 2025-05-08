@@ -126,7 +126,7 @@ public class AdminCreateTutorView {
         } else {
             JOptionPane.showMessageDialog(null,
                     "Tutor added successfully                                 .",
-                    "Error",
+                    "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         }
         closeWindow();
