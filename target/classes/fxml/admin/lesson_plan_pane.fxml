@@ -107,8 +107,8 @@
                                     <TableColumn fx:id="highSchoolArchivedLessonPlanIDColumn" prefWidth="110.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="highSchoolArchivedSubjectIDColumn" prefWidth="110.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="highSchoolArchivedSubjectNameColumn" prefWidth="390" text="Subject Name" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="highSchoolArchivedViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="View More" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="highSchoolArchiveOptionColumn" prefWidth="110.0" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="highSchoolArchivedViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="More" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="highSchoolArchiveOptionColumn" prefWidth="110.0" text="Edit" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
                            </children>
@@ -125,8 +125,8 @@
                                     <TableColumn fx:id="collegeArchivedLessonPlanIDColumn" prefWidth="110.0" text="Lesson Plan ID" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="collegeArchivedSubjectIDColumn" prefWidth="110.0" text="Subject ID" style="-fx-alignment: CENTER;"/>
                                     <TableColumn fx:id="collegeArchivedSubjectNameColumn" prefWidth="390" text="Subject Name" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="collegeArchivedViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="Update" style="-fx-alignment: CENTER;"/>
-                                    <TableColumn fx:id="collegeArchiveOptionColumn" prefWidth="110.0" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="collegeArchivedViewMoreColumn" editable="false" prefWidth="110.0" resizable="false" text="More" style="-fx-alignment: CENTER;"/>
+                                    <TableColumn fx:id="collegeArchiveOptionColumn" prefWidth="110.0" text="Edit" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
                            </children>

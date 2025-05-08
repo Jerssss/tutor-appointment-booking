@@ -78,9 +78,9 @@
                                     <TableColumn fx:id="tutorIDColumn" editable="false" prefWidth="95.0" text="Tutor ID" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="subjectColumn" editable="false" prefWidth="110.0" text="Subject" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="statusColumn" editable="false" prefWidth="90.0" text="Status" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="105.0" text="View More" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="80.0" text="Option" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="80.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="viewMoreColumn" editable="false" prefWidth="60.0" text="More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="60.0" text="Edit" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="60.0" text="Delete" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
                            </children>
@@ -101,9 +101,9 @@
                                     <TableColumn fx:id="archivedTutorIDColumn" editable="false" prefWidth="95.0" text="Tutor ID" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="archivedSubjectColumn" editable="false" prefWidth="110.0" text="Subject" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="archivedStatusColumn" editable="false" prefWidth="90.0" text="Status" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="archivedViewMoreColumn" editable="false" prefWidth="105.0" text="View More" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="archivedOptionColumn" editable="false" prefWidth="80.0" text="Option" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="archivedDeleteColumn" editable="false" prefWidth="80.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedViewMoreColumn" editable="false" prefWidth="60.0" text="More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedOptionColumn" editable="false" prefWidth="60.0" text="Edit" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedDeleteColumn" editable="false" prefWidth="60.0" text="Delete" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
                            </children>
