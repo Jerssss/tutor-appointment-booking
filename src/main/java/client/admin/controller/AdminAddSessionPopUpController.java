@@ -87,10 +87,11 @@ public class AdminAddSessionPopUpController implements Initializable {
 
     private void initializeData() throws RemoteException {
         List<String> tutorNames = model.getAllTutorNames();
-        List<String> subjectNames = model.getAllSubjectNames();
+//        List<String> subjectNames = model.getAllSubjectNames();
         List<String> tutorIDs = model.getAllTutorIDs();
-        List<String> subjectIDs = model.getAllSubjectIDs();
-        view.initializeComboBoxes(tutorNames, tutorIDs, subjectIDs, subjectNames);
+//        List<String> subjectIDs = model.getAllSubjectIDs();
+//        view.initializeComboBoxes(tutorNames, tutorIDs, subjectIDs, subjectNames);
+        view.initializeComboBoxes(tutorNames, tutorIDs);
     }
 
     private void setupEventHandlers() {
@@ -138,6 +139,10 @@ public class AdminAddSessionPopUpController implements Initializable {
             try {
                 String tutorName = model.getTutorName(tutorID);
                 tutorNameComboBox.setValue(tutorName);
+                List<String> subjectNames = model.getAllSubjectNames(tutorID);
+                view.updateSubjectName(subjectNames);
+                List<String> subjectID = model.getAllSubjectIDs(tutorID);
+                view.updateSubjectID(subjectID);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -150,6 +155,10 @@ public class AdminAddSessionPopUpController implements Initializable {
             try {
                 String tutorID = model.getTutorID(tutorName);
                 tutorIDComboBox.setValue(tutorID);
+                List<String> subjectNames = model.getAllSubjectNames(tutorID);
+                view.updateSubjectName(subjectNames);
+                List<String> subjectID = model.getAllSubjectIDs(tutorID);
+                view.updateSubjectID(subjectID);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

@@ -42,23 +42,31 @@ public class AdminAddSessionPopUpModel {
         return tutorIDs;
     }
 
-    public List<String> getAllSubjectNames() throws RemoteException {
-        List<String> subjectNames = new ArrayList<>();
-        List<Subject> subjects = adminService.viewSubject();
+    public List<String> getAllSubjectNames(String tutorID) throws RemoteException {
+        List<Tutor> tutors = adminService.viewTutor();
 
-        for (Subject subject : subjects){
-            subjectNames.add(subject.getSubjectName());
+        for (Tutor tutor : tutors){
+            if (tutor.getUserID().equals(tutorID)){
+                String[] wordsArray = tutor.getExpertise().split(",");
+                return new ArrayList<>(Arrays.asList(wordsArray));
+            }
         }
-        return subjectNames;
+        return null;
     }
 
-    public List<String> getAllSubjectIDs() throws RemoteException{
+    public List<String> getAllSubjectIDs(String tutorID) throws RemoteException{
         List<String> subjectIDs = new ArrayList<>();
+        List<String> subjectNames = getAllSubjectNames(tutorID);
         List<Subject> subjects = adminService.viewSubject();
 
-        for (Subject subject : subjects){
-            subjectIDs.add(subject.getSubjectID());
+        for (String string: subjectNames){
+            for (Subject subject : subjects){
+                if (subject.getSubjectName().equals(string)){
+                    subjectIDs.add(subject.getSubjectID());
+                }
+            }
         }
+
         return subjectIDs;
     }
 
