@@ -14,6 +14,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
 import shared.classes.LessonPlan;
@@ -120,10 +122,22 @@ public class AdminViewLessonPlanController {
         });
 
         highSchoolViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button highSchoolViewMoreColumnButton = new Button("View More");
+            private final Button highSchoolViewMoreColumnButton = new Button();
 
             {
-                highSchoolViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                highSchoolViewMoreColumnButton.setGraphic(imageView);
+
+                highSchoolViewMoreColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 highSchoolViewMoreColumnButton.setOnAction(event -> {
                     clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
@@ -143,10 +157,21 @@ public class AdminViewLessonPlanController {
         });
 
         highSchoolOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
-                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
                 optionButton.setOnAction(event -> {
                     clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
@@ -165,19 +190,28 @@ public class AdminViewLessonPlanController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
-//                    String status = sessionData.getSessionStatus();
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
                 }
             }
         });
 
         highSchoolArchivedViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button highSchoolViewMoreColumnButton = new Button("View More");
+            private final Button highSchoolViewMoreColumnButton = new Button();
 
             {
-                highSchoolViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                highSchoolViewMoreColumnButton.setGraphic(imageView);
+
+                highSchoolViewMoreColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 highSchoolViewMoreColumnButton.setOnAction(event -> {
                     clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
@@ -197,10 +231,22 @@ public class AdminViewLessonPlanController {
         });
 
         highSchoolArchiveOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
-                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 optionButton.setOnAction(event -> {
                     clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
@@ -219,19 +265,29 @@ public class AdminViewLessonPlanController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
-//                    String status = sessionData.getSessionStatus();
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
                 }
             }
         });
 
         collegeViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button collegeViewMoreColumnButton = new Button("View More");
+            private final Button collegeViewMoreColumnButton = new Button();
 
             {
-                collegeViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                collegeViewMoreColumnButton.setGraphic(imageView);
+
+                collegeViewMoreColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
+
                 collegeViewMoreColumnButton.setOnAction(event -> {
                     clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
@@ -251,10 +307,22 @@ public class AdminViewLessonPlanController {
         });
 
         collegeOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
-                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 optionButton.setOnAction(event -> {
                     clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;
@@ -273,19 +341,28 @@ public class AdminViewLessonPlanController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
-//                    String status = sessionData.getSessionStatus();
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
                 }
             }
         });
 
         collegeArchivedViewMoreColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button collegeViewMoreColumnButton = new Button("View More");
+            private final Button collegeViewMoreColumnButton = new Button();
 
             {
-                collegeViewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                collegeViewMoreColumnButton.setGraphic(imageView);
+
+                collegeViewMoreColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 collegeViewMoreColumnButton.setOnAction(event -> {
                     clickedLessonPlan = String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminViewMoreLessonPlanPopUpController viewMoreLessonPlanPopUpController = new AdminViewMoreLessonPlanPopUpController();
@@ -305,10 +382,22 @@ public class AdminViewLessonPlanController {
         });
 
         collegeArchiveOptionColumn.setCellFactory(col -> new TableCell<LessonPlan, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
-                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 optionButton.setOnAction(event -> {
                     clickedLessonPlan =  String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminModifyLessonPlanPopUpController modifyLessonPlanPopUpController = null;

@@ -73,8 +73,8 @@
                                     <TableColumn fx:id="subjectIdColumn" prefWidth="115" text="Subject ID" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="subjectNameColumn" prefWidth="270" text="Subject Name" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="academicLevelColumn" prefWidth="140" text="Academic Level" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="viewMoreColumn" prefWidth="80" text="View More" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="optionColumn" prefWidth="110" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="viewMoreColumn" prefWidth="80" text="More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="optionColumn" prefWidth="110" text="Edit" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="deleteColumn" prefWidth="90" text="Delete" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>
@@ -92,8 +92,8 @@
                                     <TableColumn fx:id="archivedSubjectIdColumn" prefWidth="115" text="Subject ID" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="archivedSubjectNameColumn" prefWidth="270" text="Subject Name" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="archivedAcademicLevelColumn" prefWidth="140" text="Academic Level" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="archivedViewMoreColumn" prefWidth="80" text="View More" style="-fx-alignment: CENTER;" />
-                                    <TableColumn fx:id="archivedOptionColumn" prefWidth="110" text="Option" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedViewMoreColumn" prefWidth="80" text="More" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="archivedOptionColumn" prefWidth="110" text="Edit" style="-fx-alignment: CENTER;" />
                                     <TableColumn fx:id="archivedDeleteColumn" prefWidth="90" text="Delete" style="-fx-alignment: CENTER;" />
                                  </columns>
                               </TableView>

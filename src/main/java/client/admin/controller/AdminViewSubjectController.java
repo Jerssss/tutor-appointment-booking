@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import server.services.AdminServiceImpl;
 import shared.classes.Subject;
 import shared.interfaces.AdminService;
@@ -82,10 +84,22 @@ public class AdminViewSubjectController {
         });
 
         viewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button viewMoreColumnButton = new Button("View More");
+            private final Button viewMoreColumnButton = new Button();
 
             {
-                viewMoreColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                viewMoreColumnButton.setGraphic(imageView);
+
+                viewMoreColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 viewMoreColumnButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminViewMoreSubjectPopUpController viewMoreSubjectModel = null;
@@ -110,10 +124,22 @@ public class AdminViewSubjectController {
         });
 
         archivedViewMoreColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button archivedViewMoreColumnButtonButton = new Button("View More");
+            private final Button archivedViewMoreColumnButtonButton = new Button();
 
             {
-                archivedViewMoreColumnButtonButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                archivedViewMoreColumnButtonButton.setGraphic(imageView);
+
+                archivedViewMoreColumnButtonButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 archivedViewMoreColumnButtonButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     AdminViewMoreSubjectPopUpController viewMoreSubjectModel = null;
@@ -138,9 +164,22 @@ public class AdminViewSubjectController {
         });
 
         optionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
@@ -167,9 +206,23 @@ public class AdminViewSubjectController {
         });
 
         archivedOptionColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
+
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
                 optionButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
@@ -196,10 +249,23 @@ public class AdminViewSubjectController {
         });
 
         deleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button deleteColumnButton = new Button("Delete");
+            private final Button deleteColumnButton = new Button();
 
             {
-                deleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+
+                Image image = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                deleteColumnButton.setGraphic(imageView);
+
+                deleteColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 deleteColumnButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
@@ -220,17 +286,28 @@ public class AdminViewSubjectController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status))
                     setGraphic(deleteColumnButton);
                 }
             }
         });
 
         archivedDeleteColumn.setCellFactory(col -> new TableCell<List<String>, Void>() {
-            private final Button deleteColumnButton = new Button("Delete");
+            private final Button deleteColumnButton = new Button();
 
             {
-                deleteColumnButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                deleteColumnButton.setGraphic(imageView);
+
+                deleteColumnButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 deleteColumnButton.setOnAction(event -> {
                     clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
                     clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
@@ -251,7 +328,6 @@ public class AdminViewSubjectController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status))
                     setGraphic(deleteColumnButton);
                 }
             }

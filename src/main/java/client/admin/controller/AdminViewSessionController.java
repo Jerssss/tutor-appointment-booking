@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import server.services.AdminServiceImpl;
 import shared.classes.TutorSession;
 import shared.interfaces.AdminService;
@@ -107,13 +109,25 @@ public class AdminViewSessionController {
         });
 
         viewMoreColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
-            private final Button viewMoreButton = new Button("View More");
+            private final Button viewMoreButton = new Button();
 
             {
-                viewMoreButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                viewMoreButton.setGraphic(imageView);
+
+                viewMoreButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 viewMoreButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
-                    AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController= null;
+                    AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController = null;
                     try {
                         adminViewMoreSessionsPopUpController = new AdminViewMoreSessionsPopUpController();
                     } catch (RemoteException e) {
@@ -134,11 +148,26 @@ public class AdminViewSessionController {
             }
         });
 
+
+
         archivedViewMoreColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
-            private final Button archivedViewMoreButton = new Button("View More");
+            private final Button archivedViewMoreButton = new Button();
 
             {
-                archivedViewMoreButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                archivedViewMoreButton.setGraphic(imageView);
+
+                archivedViewMoreButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
+
                 archivedViewMoreButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
                     AdminViewMoreSessionsPopUpController adminViewMoreSessionsPopUpController= null;
@@ -163,10 +192,22 @@ public class AdminViewSessionController {
         });
 
         optionColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
-            private final Button optionButton = new Button("Option");
+            private final Button optionButton = new Button();
 
             {
-                optionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                optionButton.setGraphic(imageView);
+
+                optionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 optionButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
                     AdminModifySessionPopUpController modifySessionController = null;
@@ -185,18 +226,27 @@ public class AdminViewSessionController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
-//                    String status = sessionData.getSessionStatus();
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(optionButton);
                 }
             }
         });
         archivedOptionColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
-            private final Button archivedOptionButton = new Button("Option");
+            private final Button archivedOptionButton = new Button();
 
             {
-                archivedOptionButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                archivedOptionButton.setGraphic(imageView);
+
+                archivedOptionButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 archivedOptionButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
                     AdminModifySessionPopUpController modifySessionController = null;
@@ -215,19 +265,28 @@ public class AdminViewSessionController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    TutorSession sessionData = getTableView().getItems().get(getIndex());
-//                    String status = sessionData.getSessionStatus();
-//                    optionButton.setDisable("Completed".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status));
                     setGraphic(archivedOptionButton);
                 }
             }
         });
 
         deleteColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
-            private final Button deleteButton = new Button("Delete");
+            private final Button deleteButton = new Button();
 
             {
-                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                deleteButton.setGraphic(imageView);
+
+                deleteButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 deleteButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
                     AdminDeleteSessionPopUpController deleteSessionPopUpController= null;
@@ -251,10 +310,22 @@ public class AdminViewSessionController {
             }
         });
         archivedDeleteColumn.setCellFactory(col -> new TableCell<TutorSession, Void>() {
-            private final Button archivedDeleteButton = new Button("Delete");
+            private final Button archivedDeleteButton = new Button();
 
             {
-                archivedDeleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15;");
+                Image image = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                archivedDeleteButton.setGraphic(imageView);
+
+                archivedDeleteButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
                 archivedDeleteButton.setOnAction(event -> {
                     clickedSession = getTableView().getItems().get(getIndex());
                     AdminDeleteSessionPopUpController deleteSessionPopUpController= null;
