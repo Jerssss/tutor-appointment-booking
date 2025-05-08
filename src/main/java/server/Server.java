@@ -1,19 +1,14 @@
 package server;
 
 import server.database.DatabaseConnection;
+import server.ippicker.IPPickerApp;
 import server.services.AdminServiceImpl;
 import server.services.AuthServiceImpl;
 import server.services.StudentServiceImpl;
 import server.services.TutorServiceImpl;
-import shared.interfaces.AdminService;
-import shared.interfaces.AuthService;
-import shared.interfaces.StudentService;
-import shared.interfaces.TutorService;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import javafx.application.Application;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
@@ -24,6 +19,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -101,89 +97,18 @@ public class Server {
     }
 
     private static String showIPSelectionDialog() {
-        JFrame frame = new JFrame("Select Server IP");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(350, 200);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        IPPickerApp.latch = new CountDownLatch(1);
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.WEST;
+        new Thread(() -> Application.launch(IPPickerApp.class)).start();
 
-        // Predefined IPs
-        String[] predefinedIPs = {"localhost", "192.168.1.100", "192.168.191.231", "192.168.191.115"};
-        JComboBox<String> ipComboBox = new JComboBox<>(predefinedIPs);
-        ipComboBox.setSelectedItem("localhost");
-        ipComboBox.setPreferredSize(new Dimension(200, 25));
-
-        JTextField customIPField = new JTextField();
-        customIPField.setPreferredSize(new Dimension(200, 25));
-
-        JButton confirmButton = new JButton("Confirm");
-        confirmButton.setPreferredSize(new Dimension(100, 30));
-
-        // Disable dropdown when typing in text field
-        customIPField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String text = customIPField.getText().trim();
-                ipComboBox.setEnabled(text.isEmpty());
-            }
-        });
-
-        // Select IP Label and ComboBox
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(new JLabel("Select IP:"), gbc);
-
-        gbc.gridx = 1;
-        panel.add(ipComboBox, gbc);
-
-        // Enter Custom IP Label and TextField
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(new JLabel("Enter IP:"), gbc);
-
-        gbc.gridx = 1;
-        panel.add(customIPField, gbc);
-
-        // Confirm Button
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(confirmButton, gbc);
-
-        final String[] selectedIP = {null};
-
-        confirmButton.addActionListener(e -> {
-            String customIP = customIPField.getText().trim();
-            if (!customIP.isEmpty()) {
-                selectedIP[0] = customIP;
-            } else {
-                selectedIP[0] = (String) ipComboBox.getSelectedItem();
-            }
-            frame.dispose();
-        });
-
-        frame.add(panel);
-        frame.setVisible(true);
-
-        // Wait for dialog to close
         try {
-            while (frame.isVisible()) {
-                Thread.sleep(100);
-            }
+            IPPickerApp.latch.await(); // wait for selection
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return null;
         }
 
-        return selectedIP[0];
+        return IPPickerApp.selectedIP;
     }
 
     private static void startServer() {
