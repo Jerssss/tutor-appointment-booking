@@ -51,11 +51,9 @@ public class AdminAddSessionPopUpView {
         this.maxStudentsTextField = maxStudentsTextField;
     }
 
-    public void initializeComboBoxes(List<String> tutorNames, List<String> tutorIDs, List<String> subjectIDs, List<String> subjectNames) {
+    public void initializeComboBoxes(List<String> tutorNames, List<String> tutorIDs) {
         tutorNameComboBox.getItems().addAll(tutorNames);
         tutorIDComboBox.getItems().addAll(tutorIDs);
-        subjectIdComboBox.getItems().addAll(subjectIDs);
-        subjectNameComboBox.getItems().addAll(subjectNames);
         sessionModeComboBox.getItems().addAll("Online", "Face-to-Face");
         sessionTypeComboBox.getItems().addAll("Individual", "Group");
     }
@@ -190,5 +188,15 @@ public class AdminAddSessionPopUpView {
     public void updateDurations(List<String> durations) {
         durationComboBox.getItems().clear();
         durationComboBox.getItems().addAll(durations);
+    }
+
+    public void updateSubjectName(List<String> subjects){
+        subjectNameComboBox.getItems().clear();
+        subjectNameComboBox.getItems().addAll(subjects);
+    }
+
+    public void updateSubjectID(List<String> subjects){
+        subjectIdComboBox.getItems().clear();
+        subjectIdComboBox.getItems().addAll(subjects);
     }
 }
