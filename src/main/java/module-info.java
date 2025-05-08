@@ -11,6 +11,7 @@ module Learnify {
 
     exports shared.interfaces;
     exports client;
+    exports client.admin to javafx.graphics;
     exports server;
     exports server.ippicker;
     exports client.landingpage;
@@ -20,10 +21,10 @@ module Learnify {
     opens server.ippicker to javafx.fxml;
     opens client.landingpage to javafx.fxml;
     opens client.landingpage.login to javafx.fxml;
+    opens client.admin to javafx.fxml;
     opens client.admin.view to javafx.fxml;
     opens client.admin.controller to javafx.fxml;
     opens client.student.view to javafx.fxml;
     opens client.tutor.view to javafx.fxml;
     opens shared.classes to javafx.base;
-
 }

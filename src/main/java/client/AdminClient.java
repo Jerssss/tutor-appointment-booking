@@ -1,9 +1,11 @@
 package client;
 
+import client.admin.AdminIPPickerController;
 import client.admin.model.AdminMainMenuModel;
 import client.landingpage.login.AdminLoginController;
 import client.landingpage.login.AdminLoginModel;
 import client.landingpage.login.AdminLoginView;
+import client.admin.AdminIPPickerApp;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +16,6 @@ import javafx.stage.Stage;
 import shared.interfaces.AdminService;
 import shared.interfaces.AuthService;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -44,134 +42,71 @@ public class AdminClient extends Application {
 
     public static void main(String[] args) {
         System.out.println("");
-        System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀\n" +
-                " ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ \n");
+        System.out.println(" █   █ ██▀ █   ▄▀▀ ▄▀▄ █▄ ▄█ ██▀   ▀█▀ ▄▀▄   █   ██▀ ▄▀▄ █▀▄ █▄ █ █ █▀ ▀▄▀");
+        System.out.println(" ▀▄▀▄▀ █▄▄ █▄▄ ▀▄▄ ▀▄▀ █ ▀ █ █▄▄    █  ▀▄▀   █▄▄ █▄▄ █▀█ █▀▄ █ ▀█ █ █▀  █ ");
 
         System.out.println("=====================================================");
         System.out.println("[Admin Client] Starting client at " + new Date());
         System.out.println("=====================================================");
 
-        // Show IP selection dialog before launching JavaFX
-        SERVER_IP = showIPSelectionDialog();
-        if (SERVER_IP == null) {
-            System.out.println("[Admin Client] IP selection cancelled. Exiting.");
-            System.exit(1);
-        }
-
         launch(args);
-    }
-
-    public static AdminService getAdminProcessors() {
+    }public static AdminService getAdminProcessors() {
         return adminProcessors;
-    }
-
-    private static String showIPSelectionDialog() {
-        JFrame frame = new JFrame("Select Server IP");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(350, 200);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.WEST;
-
-        // Predefined IPs
-        String[] predefinedIPs = {"localhost", "192.168.1.100", "192.168.191.115"};
-        JComboBox<String> ipComboBox = new JComboBox<>(predefinedIPs);
-        ipComboBox.setSelectedItem("localhost");
-        ipComboBox.setPreferredSize(new Dimension(200, 25));
-
-        JTextField customIPField = new JTextField();
-        customIPField.setPreferredSize(new Dimension(200, 25));
-
-        JButton confirmButton = new JButton("Confirm");
-        confirmButton.setPreferredSize(new Dimension(100, 30));
-
-        // Disable dropdown when typing in text field
-        customIPField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String text = customIPField.getText().trim();
-                ipComboBox.setEnabled(text.isEmpty());
-            }
-        });
-
-        // Select IP Label and ComboBox
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(new JLabel("Select IP:"), gbc);
-
-        gbc.gridx = 1;
-        panel.add(ipComboBox, gbc);
-
-        // Enter Custom IP Label and TextField
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(new JLabel("Enter IP:"), gbc);
-
-        gbc.gridx = 1;
-        panel.add(customIPField, gbc);
-
-        // Confirm Button
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(confirmButton, gbc);
-
-        final String[] selectedIP = {null};
-
-        confirmButton.addActionListener(e -> {
-            String customIP = customIPField.getText().trim();
-            if (!customIP.isEmpty()) {
-                selectedIP[0] = customIP;
-            } else {
-                selectedIP[0] = (String) ipComboBox.getSelectedItem();
-            }
-            frame.dispose();
-        });
-
-        frame.add(panel);
-        frame.setVisible(true);
-
-        // Wait for dialog to close
-        try {
-            while (frame.isVisible()) {
-                Thread.sleep(100);
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return null;
-        }
-
-        return selectedIP[0];
     }
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        try {
-            Registry registry = LocateRegistry.getRegistry(SERVER_IP, PORT);
 
-            // Initialize all required services
+        try {
+            String selectedIP = showIPSelectionDialog();
+            if (selectedIP == null) {
+                System.out.println("[Admin Client] IP selection cancelled. Exiting.");
+                Platform.exit();
+                return;
+            }
+
+            SERVER_IP = selectedIP;
+
+            Registry registry = LocateRegistry.getRegistry(SERVER_IP, PORT);
             authService = (AuthService) registry.lookup("authentication");
             adminService = (AdminService) registry.lookup("admin_services");
 
-            if (authService == null || adminService == null) {
-                throw new Exception("One or more services are null after lookup.");
-            }
-
             loadAdminLoginPageUI();
+
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to connect to the server: " + e.getMessage());
             e.printStackTrace();
             Platform.exit();
         }
     }
+
+    private static String showIPSelectionDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader(AdminClient.class.getResource("/fxml/ippicker/admin_ip_picker.fxml"));
+            Parent root = loader.load();
+            AdminIPPickerController controller = loader.getController();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Select Server IP");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+
+            dialogStage.setOnHidden(event -> {
+                if (controller.getSelectedIP() == null) {
+                    Platform.exit();
+                }
+            });
+
+            dialogStage.showAndWait();
+            return controller.getSelectedIP();
+
+        } catch (IOException e) {
+            System.err.println("[ERROR] Failed to load IP Picker: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     private void loadAdminLoginPageUI() {
         try {
