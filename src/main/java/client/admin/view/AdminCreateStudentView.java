@@ -102,7 +102,7 @@ public class AdminCreateStudentView {
         } else {
             JOptionPane.showMessageDialog(null,
                     "Student added successfully                                 .",
-                    "Error",
+                    "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         }
         closeWindow();

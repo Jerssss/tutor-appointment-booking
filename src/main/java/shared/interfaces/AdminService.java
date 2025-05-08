@@ -31,7 +31,7 @@ public interface AdminService extends Remote {
     List<LessonPlan> viewLessonPlan() throws RemoteException;
     void modifyLessonPlan(String lessonPlanID, String visibility) throws RemoteException, SQLException;
     List<Payment> viewPayment() throws RemoteException;
-    void createPayment(Payment payment) throws RemoteException;
+    void createPayment(Payment payment) throws RemoteException, SQLException;
     List<String> getStudentList() throws RemoteException;
 
 }
