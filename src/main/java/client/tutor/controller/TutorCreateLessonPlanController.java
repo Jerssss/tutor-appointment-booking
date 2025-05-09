@@ -13,8 +13,9 @@ public class TutorCreateLessonPlanController {
         this.model = new TutorLessonPlanModel();
     }
 
-    public boolean addNewLessonPlan(String lessonPlanID, String subjectID, String subjectName, String objectives, String topicsCovered) {
-        LessonPlan newLessonPlan = new LessonPlan(lessonPlanID, subjectID, subjectName, objectives, topicsCovered);
+    public boolean addNewLessonPlan(String academicLevel, String subjectID, String subjectName, String objectives, String topicsCovered) {
+        String lessonPlanID = "TEMP_" + System.currentTimeMillis();
+        LessonPlan newLessonPlan = new LessonPlan(lessonPlanID, subjectID, subjectName, academicLevel, objectives, topicsCovered, "Available");
         return model.addNewLessonPlan(newLessonPlan);
     }
 
@@ -27,6 +28,6 @@ public class TutorCreateLessonPlanController {
     }
 
     public String getSubjectIDByName(String subjectName) throws RemoteException {
-        return model.getSubjectIDByName(subjectName); // Call the model method
+        return model.getSubjectIDByName(subjectName);
     }
 }

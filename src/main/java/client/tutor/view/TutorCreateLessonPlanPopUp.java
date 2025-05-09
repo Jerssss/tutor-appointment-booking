@@ -1,6 +1,7 @@
 package client.tutor.view;
 
 import client.tutor.controller.TutorCreateLessonPlanController;
+import client.tutor.controller.TutorViewLessonPlanController;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,25 +24,28 @@ public class TutorCreateLessonPlanPopUp {
     @FXML private TextField topicsCoveredTextField;
     @FXML private Button addLessonPlanButton;
     private TutorCreateLessonPlanController controller;
+    private TutorViewLessonPlanController parentController;
+
+    public void setParentController(TutorViewLessonPlanController parentController) {
+        this.parentController = parentController;
+    }
 
     public void initialize() {
         initializeController();
         academicLevelComboBox.getItems().addAll("High School", "College");
 
-        // Get the logged-in tutor ID from the SessionManager
         String loggedInTutorID = SessionManager.getCurrentUserId();
-        System.out.println("[CLIENT | "+ new Date()+ "] Logged in Tutor ID: " + loggedInTutorID);
+        System.out.println("[CLIENT | " + new Date() + "] Logged in Tutor ID: " + loggedInTutorID);
 
         List<String> subjects = controller.fetchSubjectsByExpertise(loggedInTutorID);
-        System.out.println("[CLIENT | "+ new Date()+ "] Fetched subjects: " + subjects);
+        System.out.println("[CLIENT | " + new Date() + "] Fetched subjects: " + subjects);
 
         if (subjects != null && !subjects.isEmpty()) {
             subjectComboBox.getItems().addAll(subjects);
         } else {
-            System.out.println("[CLIENT | "+ new Date()+ "] No subjects found for the logged-in tutor.");
+            System.out.println("[CLIENT | " + new Date() + "] No subjects found for the logged-in tutor.");
         }
 
-        // Set up the action listener for the subjectComboBox
         subjectComboBox.setOnAction(event -> autofillFields());
         addLessonPlanButton.setOnAction(event -> {
             try {
@@ -53,26 +57,28 @@ public class TutorCreateLessonPlanPopUp {
     }
 
     public void initializeController() {
-        System.out.println("[CLIENT | "+ new Date()+ "] Initializing TutorCreateLessonPlanController...");
+        System.out.println("[CLIENT | " + new Date() + "] Initializing TutorCreateLessonPlanController...");
         this.controller = new TutorCreateLessonPlanController();
-        System.out.println("[CLIENT | "+ new Date()+ "] TutorCreateLessonPlanController successfully created.");
+        System.out.println("[CLIENT | " + new Date() + "] TutorCreateLessonPlanController successfully created.");
     }
 
     private void autofillFields() {
         String selectedSubject = subjectComboBox.getValue();
         if (selectedSubject != null) {
-            // Fetch lesson plan details based on the selected subject
             LessonPlan lessonPlanDetails = controller.getLessonPlanDetails(selectedSubject);
             if (lessonPlanDetails != null) {
                 objectivesTextField.setText(lessonPlanDetails.getObjectives());
                 topicsCoveredTextField.setText(lessonPlanDetails.getTopicsCovered());
+            } else {
+                objectivesTextField.clear();
+                topicsCoveredTextField.clear();
             }
         }
     }
 
     private void handleSave() throws RemoteException {
         String acadLvl = academicLevelComboBox.getValue();
-        String subjectName = subjectComboBox.getValue(); // This is the subject name
+        String subjectName = subjectComboBox.getValue();
         String objectives = objectivesTextField.getText();
         String topicsCovered = topicsCoveredTextField.getText();
 
@@ -81,20 +87,28 @@ public class TutorCreateLessonPlanPopUp {
             return;
         }
 
-        // Fetch the subject ID based on the selected subject name
-        String subjectID = String.valueOf(controller .getSubjectIDByName(subjectName));
+        String subjectID = controller.getSubjectIDByName(subjectName);
         if (subjectID == null) {
             JOptionPane.showMessageDialog(null, "Subject ID not found for the selected subject.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Now pass the correct subjectID to the addNewLessonPlan method
         boolean success = controller.addNewLessonPlan(acadLvl, subjectID, subjectName, objectives, topicsCovered);
         if (!success) {
             JOptionPane.showMessageDialog(null, "Failed to add lesson plan.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Lesson plan added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            refreshLessonPlanTable();
             closeWindow();
+        }
+    }
+
+    private void refreshLessonPlanTable() {
+        System.out.println("[CLIENT | " + new Date() + "] Triggering lesson plan table refresh...");
+        if (parentController != null) {
+            parentController.refreshTables();
+        } else {
+            System.err.println("[CLIENT] Parent controller not set, cannot refresh table.");
         }
     }
 
