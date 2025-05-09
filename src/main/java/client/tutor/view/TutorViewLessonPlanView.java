@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -50,72 +52,75 @@ public class TutorViewLessonPlanView {
     private TutorViewMoreLessonPlanPopUpModel model; // Model for the pop-up
     private TutorViewLessonPlanController controller;
     private ObservableList<LessonPlan> lessonPlanData = FXCollections.observableArrayList();
-    private ObservableList<LessonPlan> archivedLessonPlanData = FXCollections.observableArrayList(); // For archived lesson plans
+    private ObservableList<LessonPlan> archivedLessonPlanData = FXCollections.observableArrayList();
 
     public void initialize() {
         initializeTableColumns();
-        initializeArchivedTableColumns(); // Initialize archived table columns
+        initializeArchivedTableColumns();
         System.out.println("[CLIENT] Table columns initialized successfully.");
 
-        String tutorID = getLoggedInTutorID(); // Replace with your method to get the logged-in tutor ID
-        initializeController(tutorID); // Pass the tutor ID to the controller
+        String tutorID = getLoggedInTutorID();
+        initializeController(tutorID);
 
-        // Initialize the model
-        this.model = new TutorViewMoreLessonPlanPopUpModel(); // Ensure the model is initialized
+        this.model = new TutorViewMoreLessonPlanPopUpModel();
 
         addLessonPlanButton.setOnAction(event -> openAddLessonPlanWindow());
         try {
-            searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                controller.searchLessonPlan(newValue);
+            searchStudResTextField.textProperty().addListener((obs, old, nw) -> {
+                controller.searchLessonPlan(nw);
             });
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        refreshButton.setOnAction(event -> controller.loadLessonPlans(tutorID)); // Pass the tutor ID to loadLessonPlans
+        refreshButton.setOnAction(event -> controller.loadLessonPlans(tutorID));
     }
 
     public void initializeTableColumns() {
-        courseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLessonPlanID()));
-        subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
-        subjectIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
-        objectivesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getObjectives()));
-        topicsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getTopicsCovered())));
-        viewMoreColumn.setCellFactory(column -> createViewMoreButtonCellFactory());
-        updateColumn.setCellFactory(column -> createUpdateButtonCellFactory());
-        deleteColumn.setCellFactory(column -> createDeleteButtonCellFactory());
+        courseColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getLessonPlanID()));
+        subjectColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSubjectName()));
+        subjectIDColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSubjectID()));
+        objectivesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getObjectives()));
+        topicsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTopicsCovered())));
+        viewMoreColumn.setCellFactory(col -> createViewMoreButtonCellFactory());
+        updateColumn.setCellFactory(col -> createUpdateButtonCellFactory());
+        deleteColumn.setCellFactory(col -> createDeleteButtonCellFactory());
     }
 
     public void initializeArchivedTableColumns() {
-        archivedCourseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLessonPlanID()));
-        archivedSubjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
-        archivedSubjectIDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectID()));
-        archivedObjectivesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getObjectives()));
-        archivedTopicsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getTopicsCovered())));
-
-        // Only set View More button cell factory for Archived tab
-        archivedViewMoreColumn.setCellFactory(column -> createArchivedViewMoreButtonCellFactory());
-
-        // Do NOT set cell factories for archivedUpdateColumn and archivedDeleteColumn
+        archivedCourseColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getLessonPlanID()));
+        archivedSubjectColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSubjectName()));
+        archivedSubjectIDColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSubjectID()));
+        archivedObjectivesColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getObjectives()));
+        archivedTopicsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTopicsCovered())));
+        archivedViewMoreColumn.setCellFactory(col -> createArchivedViewMoreButtonCellFactory());
         archivedUpdateColumn.setVisible(false);
         archivedDeleteColumn.setVisible(false);
     }
 
-    public void initializeController(String tutorID) {
-        System.out.println("[CLIENT] Initializing TutorViewLessonPlanController...");
-        this.controller = new TutorViewLessonPlanController(this, tutorID); // Pass the tutor ID
-        System.out.println("[CLIENT] TutorViewLessonPlanController successfully created.");
-    }
-
-    public TableCell<LessonPlan, String> createUpdateButtonCellFactory() {
+    private TableCell<LessonPlan, String> createArchivedViewMoreButtonCellFactory() {
         return new TableCell<LessonPlan, String>() {
-            private final Button updateButton = new Button("Update");
-
+            private final Button viewButton = new Button();
             {
-                updateButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
-                updateButton.setOnAction(event -> {
-                    LessonPlan lessonPlan = getTableRow().getItem();
-                    if (lessonPlan != null) {
-                        showUpdatePane(lessonPlan);
+                // load the same ViewMoreIcon.png
+                Image img = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                viewButton.setGraphic(iv);
+
+                // match your existing styling
+                viewButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+
+                viewButton.setOnAction(event -> {
+                    LessonPlan lp = getTableRow().getItem();
+                    if (lp != null) {
+                        // select and open the same detail pane
+                        archivedLessonPlanListTableView.getSelectionModel().select(lp);
+                        showViewMorePane(lp);
                     }
                 });
             }
@@ -123,88 +128,92 @@ public class TutorViewLessonPlanView {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(updateButton);
-                }
+                setGraphic(empty ? null : viewButton);
             }
         };
+    }
+
+
+    public void initializeController(String tutorID) {
+        System.out.println("[CLIENT] Initializing TutorViewLessonPlanController...");
+        this.controller = new TutorViewLessonPlanController(this, tutorID);
+        System.out.println("[CLIENT] TutorViewLessonPlanController successfully created.");
     }
 
     public TableCell<LessonPlan, String> createViewMoreButtonCellFactory() {
         return new TableCell<LessonPlan, String>() {
-            private final Button viewButton = new Button("View More");
-
+            private final Button viewButton = new Button();
             {
-                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                Image img = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                viewButton.setGraphic(iv);
+                viewButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
                 viewButton.setOnAction(event -> {
-                    LessonPlan lessonPlan = getTableRow().getItem();
-                    if (lessonPlan != null) {
-                        lessonPlanListTableView.getSelectionModel().select(lessonPlan);
-                        showViewMorePane(lessonPlan);
-                    }
+                    LessonPlan lp = getTableRow().getItem();
+                    if (lp != null) showViewMorePane(lp);
                 });
             }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
+            @Override protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(viewButton);
-                }
+                setGraphic(empty ? null : viewButton);
             }
         };
     }
 
-    public TableCell<LessonPlan, String> createArchivedViewMoreButtonCellFactory() {
+    public TableCell<LessonPlan, String> createUpdateButtonCellFactory() {
         return new TableCell<LessonPlan, String>() {
-            private final Button viewButton = new Button("View More");
-
+            private final Button updateButton = new Button();
             {
-                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
-                viewButton.setOnAction(event -> {
-                    LessonPlan lessonPlan = getTableRow().getItem();
-                    if (lessonPlan != null) {
-                        archivedLessonPlanListTableView.getSelectionModel().select(lessonPlan);
-                        showViewMorePane(lessonPlan);
-                    }
+                Image img = new Image(getClass().getResourceAsStream("/images/client/EditIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                updateButton.setGraphic(iv);
+                updateButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+                updateButton.setOnAction(event -> {
+                    LessonPlan lp = getTableRow().getItem();
+                    if (lp != null) showUpdatePane(lp);
                 });
             }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
+            @Override protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(viewButton);
-                }
+                setGraphic(empty ? null : updateButton);
             }
         };
     }
 
     public TableCell<LessonPlan, String> createDeleteButtonCellFactory() {
         return new TableCell<LessonPlan, String>() {
-            private final Button deleteButton = new Button("Delete");
-
+            private final Button deleteButton = new Button();
             {
-                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                Image img = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                deleteButton.setGraphic(iv);
+                deleteButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
                 deleteButton.setOnAction(event -> {
-                    LessonPlan lessonPlan = getTableRow().getItem();
-                    if (lessonPlan != null) {
-                        boolean confirmed = showConfirmationDialog("Are you sure you want to delete this lesson plan?");
-                        if (confirmed) {
-                            controller.deleteLessonPlan(lessonPlan);
-                        }
+                    LessonPlan lp = getTableRow().getItem();
+                    if (lp != null && showConfirmationDialog("Are you sure you want to delete this lesson plan?")) {
+                        controller.deleteLessonPlan(lp);
                     }
                 });
             }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
+            @Override protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 setGraphic(empty ? null : deleteButton);
             }
@@ -213,17 +222,14 @@ public class TutorViewLessonPlanView {
 
     public void showViewMorePane(LessonPlan lessonPlan) {
         System.out.println("[CLIENT] Selected lesson plan: " + lessonPlan);
-
         if (lessonPlan != null) {
             try {
-                TutorViewMoreLessonPlanPopUp tutorViewMoreLessonPlanPopUp = new TutorViewMoreLessonPlanPopUp(model);
-                tutorViewMoreLessonPlanPopUp.show(lessonPlan.getLessonPlanID());
+                TutorViewMoreLessonPlanPopUp popUp = new TutorViewMoreLessonPlanPopUp(model);
+                popUp.show(lessonPlan.getLessonPlanID());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("[CLIENT] Error displaying lesson plan details: " + e.getMessage());
             }
-        } else {
-            System.out.println("[CLIENT] No lesson plan selected.");
         }
     }
 
@@ -231,19 +237,16 @@ public class TutorViewLessonPlanView {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tutor/modify_lesson_plan_window.fxml"));
             Parent root = loader.load();
-
             TutorModifyLessonPlanPopUp view = loader.getController();
             view.setLessonPlan(lessonPlan);
-
             Stage stage = new Stage();
             stage.setTitle("Update Lesson Plan");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("[CLIENT] Failed to load Update Lesson Plan window.");
+            System.out.println("[CLIENT] Failed to load UpdateLessonPlan window.");
         }
     }
 
@@ -251,13 +254,11 @@ public class TutorViewLessonPlanView {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tutor/add_new_lesson_plan_window.fxml"));
             Parent root = loader.load();
-
             Stage stage = new Stage();
             stage.setTitle("Add Lesson Plan");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("[CLIENT] Failed to load Add Lesson Plan window.");
@@ -269,91 +270,51 @@ public class TutorViewLessonPlanView {
     }
 
     public void updateTable(List<LessonPlan> data) {
-        // Remove duplicates based on lessonPlanID or any other unique field.
-        ObservableList<LessonPlan> uniqueLessonPlans = FXCollections.observableArrayList();
-
-        for (LessonPlan lessonPlan : data) {
-            // Check if the lessonPlan is already in the list.
-            boolean isDuplicate = false;
-            for (LessonPlan existingLessonPlan : uniqueLessonPlans) {
-                if (existingLessonPlan.getLessonPlanID().equals(lessonPlan.getLessonPlanID())) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
-
-            // Only add if it's not a duplicate.
-            if (!isDuplicate) {
-                uniqueLessonPlans.add(lessonPlan);
-            }
+        ObservableList<LessonPlan> unique = FXCollections.observableArrayList();
+        for (LessonPlan lp : data) {
+            boolean dup = unique.stream()
+                    .anyMatch(e -> e.getLessonPlanID().equals(lp.getLessonPlanID()));
+            if (!dup) unique.add(lp);
         }
-
-        // Update the table with unique lesson plans.
-        lessonPlanData.setAll(uniqueLessonPlans);
+        lessonPlanData.setAll(unique);
         lessonPlanListTableView.setItems(lessonPlanData);
         lessonPlanListTableView.refresh();
     }
 
     public void updateArchivedTable(List<LessonPlan> archivedData) {
-        // Remove duplicates before updating
         archivedLessonPlanData.setAll(removeDuplicates(archivedData));
-        archivedLessonPlanListTableView.setItems(null);
         archivedLessonPlanListTableView.setItems(archivedLessonPlanData);
         archivedLessonPlanListTableView.refresh();
     }
 
-    // Helper method to remove duplicates from a list based on LessonPlan ID
     private List<LessonPlan> removeDuplicates(List<LessonPlan> data) {
-        return data.stream()
-                .distinct()
-                .collect(Collectors.toList());
+        return data.stream().distinct().collect(Collectors.toList());
     }
-
 
     private boolean showConfirmationDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Confirmation");
         alert.setHeaderText(null);
         alert.setContentText(message);
-
         ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
         return result == ButtonType.OK;
     }
 
-    // Scale transition methods for buttons
+    // Scale transition methods
     public void addLessonPlanButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), addLessonPlanButton);
-        st.setToX(1.0);
-        st.setToY(1.0);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
-        st.play();
+        st.setToX(1.0); st.setToY(1.0); st.play();
     }
-
     public void addLessonPlanButtonHovered() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), addLessonPlanButton);
-        st.setToX(0.9);
-        st.setToY(0.9);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
-        st.play();
+        st.setToX(0.9); st.setToY(0.9); st.play();
     }
-
     public void refreshButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
-        st.setToX(1.0);
-        st.setToY(1.0);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
-        st.play();
+        st.setToX(1.0); st.setToY(1.0); st.play();
     }
-
     public void refreshButtonHovered() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
-        st.setToX(0.9);
-        st.setToY(0.9);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
-        st.play();
+        st.setToX(0.9); st.setToY(0.9); st.play();
     }
 }

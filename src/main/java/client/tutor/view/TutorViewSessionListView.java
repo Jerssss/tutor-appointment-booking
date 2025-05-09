@@ -10,10 +10,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import shared.classes.Student;
 import shared.classes.TutorSession;
 import shared.interfaces.TutorService;
+
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,10 +41,6 @@ public class TutorViewSessionListView {
     private TutorViewSessionListController controller;
     private ObservableList<TutorSession> sessionData = FXCollections.observableArrayList();
 
-    /**
-     * Initializes the view by setting up the table columns.
-     * This runs automatically when the FXML file is loaded.
-     */
     @FXML
     public void initialize() {
         initializeTableColumns();
@@ -51,8 +50,8 @@ public class TutorViewSessionListView {
         this.model = new TutorViewMorePopUpModel();
 
         try {
-            searchStudResTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                controller.searchSession(newValue);
+            searchStudResTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+                controller.searchSession(newVal);
             });
             refreshButton.setOnAction(event -> controller.loadSessionData());
         } catch (NullPointerException e) {
@@ -60,20 +59,18 @@ public class TutorViewSessionListView {
         }
     }
 
-    /**
-     * Initializes the table columns and sets up how data should be displayed.
-     */
     private void initializeTableColumns() {
         try {
-            sessionNoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionID()));
-            subjectColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectName()));
-            sessionModeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionMode()));
-            dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionDate().toString()));
-            sessionTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionTime().toString()));
-            durationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSessionDuration()).asObject());
-            statusColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSessionStatus()));
-            viewMoreColumn.setCellFactory(column -> createViewMoreButtonCellFactory());
-            studentColumn.setCellFactory(column -> createViewButtonCellFactory());
+            sessionNoColumn.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getSessionID()));
+            subjectColumn.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getSubjectName()));
+            sessionModeColumn.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getSessionMode()));
+            dateColumn.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getSessionDate().toString()));
+            sessionTimeColumn.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getSessionTime().toString()));
+            durationColumn.setCellValueFactory(cd -> new SimpleIntegerProperty(cd.getValue().getSessionDuration()).asObject());
+            statusColumn.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getSessionStatus()));
+
+            viewMoreColumn.setCellFactory(col -> createViewMoreButtonCellFactory());
+            studentColumn.setCellFactory(col -> createViewButtonCellFactory());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -83,12 +80,50 @@ public class TutorViewSessionListView {
         this.controller = new TutorViewSessionListController(this);
     }
 
-    public TableCell<TutorSession, String> createViewButtonCellFactory() {
-        return new TableCell<TutorSession, String>() {
-            private final Button viewButton = new Button("View Students");
-
+    public TableCell<TutorSession, String> createViewMoreButtonCellFactory() {
+        return new TableCell<>() {
+            private final Button viewButton = new Button();
             {
-                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                Image img = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                viewButton.setGraphic(iv);
+                viewButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
+                viewButton.setOnAction(event -> {
+                    TutorSession session = getTableRow().getItem();
+                    if (session != null) {
+                        sessionListTableView.getSelectionModel().select(session);
+                        showViewMorePane(session);
+                    }
+                });
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : viewButton);
+            }
+        };
+    }
+
+    public TableCell<TutorSession, String> createViewButtonCellFactory() {
+        return new TableCell<>() {
+            private final Button viewButton = new Button();
+            {
+                Image img = new Image(getClass().getResourceAsStream("/images/client/ViewMoreIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                viewButton.setGraphic(iv);
+                viewButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
                 viewButton.setOnAction(event -> {
                     TutorSession session = getTableRow().getItem();
                     if (session != null) {
@@ -97,15 +132,10 @@ public class TutorViewSessionListView {
                     }
                 });
             }
-
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(viewButton);
-                }
+                setGraphic(empty ? null : viewButton);
             }
         };
     }
@@ -120,7 +150,6 @@ public class TutorViewSessionListView {
                 List<Student> students = tutorService.getStudentsBySession(session.getSessionID());
 
                 TutorViewStudentListPopUp studentListPopUp = new TutorViewStudentListPopUp();
-
                 studentListPopUp.setStudents(students);
                 studentListPopUp.show(session.getSessionID());
             } catch (RemoteException e) {
@@ -132,43 +161,13 @@ public class TutorViewSessionListView {
         }
     }
 
-    public TableCell<TutorSession, String> createViewMoreButtonCellFactory() {
-        return new TableCell<TutorSession, String>() {
-            private final Button viewButton = new Button("View More");
-
-            {
-                viewButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
-                viewButton.setOnAction(event -> {
-                    TutorSession session = getTableRow().getItem();
-                    if (session != null) {
-                        sessionListTableView.getSelectionModel().select(session);
-                        showViewMorePane(session);
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(viewButton);
-                }
-            }
-        };
-    }
-
     public void showViewMorePane(TutorSession session) {
         System.out.println("[CLIENT | "+ new Date()+ "] Selected session: " + session);
 
         if (session != null) {
             try {
-                // Create a new instance of TutorViewMorePopUp using the constructor that accepts a model
-                TutorViewMorePopUp tutorViewMorePopUp = new TutorViewMorePopUp(model); // Pass the model here
-
-                // Show the pop-up and pass the session ID
-                tutorViewMorePopUp.show(session.getSessionID());
+                TutorViewMorePopUp popUp = new TutorViewMorePopUp(model);
+                popUp.show(session.getSessionID());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("[CLIENT | "+ new Date()+ "] Error displaying session details: " + e.getMessage());
@@ -180,13 +179,12 @@ public class TutorViewSessionListView {
 
     public void updateTable(List<TutorSession> sessions) {
         if (sessions != null && !sessions.isEmpty()) {
-            // Remove duplicates from the sessions list
-            Set<String> sessionIDs = new HashSet<>();
-            List<TutorSession> uniqueSessions = sessions.stream()
-                    .filter(session -> sessionIDs.add(session.getSessionID())) // Keep unique session IDs
+            Set<String> ids = new HashSet<>();
+            List<TutorSession> unique = sessions.stream()
+                    .filter(s -> ids.add(s.getSessionID()))
                     .toList();
 
-            sessionData.setAll(uniqueSessions);
+            sessionData.setAll(unique);
             sessionListTableView.setItems(sessionData);
             sessionListTableView.refresh();
         } else {
@@ -206,8 +204,6 @@ public class TutorViewSessionListView {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
         st.setToX(1.0);
         st.setToY(1.0);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
         st.play();
     }
 
@@ -215,8 +211,6 @@ public class TutorViewSessionListView {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), refreshButton);
         st.setToX(0.9);
         st.setToY(0.9);
-        st.setCycleCount(1);
-        st.setAutoReverse(false);
         st.play();
     }
 }
