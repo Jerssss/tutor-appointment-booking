@@ -8,7 +8,7 @@ public class AdminModifyTutorPopUpController {
         this.model = new AdminTutorModel();
     }
 
-    public boolean modifyTutor(String id, String newPassword) {
-        return model.modifyTutorPassword(id, newPassword);
+    public boolean modifyTutor(String id, String newPassword, String visibility) {
+        return model.modifyTutorPassword(id, newPassword, visibility);
     }
 }

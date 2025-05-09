@@ -3,6 +3,7 @@ package client.admin.view;
 import client.admin.controller.AdminModifyTutorPopUpController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -20,11 +21,18 @@ public class AdminModifyTutorPopUp {
     private TextField passwordTextField;
     @FXML
     private Button saveChangesButton;
+
+    @FXML
+    private ComboBox<String> tutorVisibilityComboBox;
+
+
     private Tutor tutor;
     private AdminModifyTutorPopUpController controller;
 
     public void initialize() {
         initializeController();
+        tutorVisibilityComboBox.getItems().addAll("Available", "Archived");
+        tutorVisibilityComboBox.setValue("Available");
         saveChangesButton.setOnAction(event -> handleSave());
     }
 
@@ -44,17 +52,29 @@ public class AdminModifyTutorPopUp {
     }
 
     private void handleSave() {
-        String newPass = passwordTextField.getText();
+        String newPass = "";
+        if (passwordTextField.getText() == null || passwordTextField.getText().isEmpty()) {
+            newPass = oldPassLabel.getText();
+        } else {
+            newPass = passwordTextField.getText();
+        }
 
-        if (tutor == null || newPass == null || newPass.isEmpty()) {
+
+        if (tutor == null) {
             JOptionPane.showMessageDialog(null,
                     "Invalid input. Please check the form.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+
+
+
+        System.out.println("newPass: " + newPass);
         String id = tutor.getUserID();
-        boolean success = controller.modifyTutor(id, newPass);
+        String visibility = getSelectedAvailability();
+        boolean success = controller.modifyTutor(id, newPass, visibility);
 
         if (!success) {
             JOptionPane.showMessageDialog(null,
@@ -73,5 +93,9 @@ public class AdminModifyTutorPopUp {
     private void closeWindow() {
         Stage stage = (Stage) saveChangesButton.getScene().getWindow();
         stage.close();
+    }
+
+    public String getSelectedAvailability(){
+        return tutorVisibilityComboBox.getValue();
     }
 }

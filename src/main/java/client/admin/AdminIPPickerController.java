@@ -20,7 +20,7 @@ public class AdminIPPickerController {
     @FXML
     private void initialize() {
         // Initialize ComboBox with predefined IPs
-        ipComboBox.getItems().addAll("localhost", "192.168.1.100", "192.168.191.115");
+        ipComboBox.getItems().addAll("localhost", "192.168.1.100", "192.168.191.115" , "10.135.136.76");
         ipComboBox.setValue("localhost");
 
         // Disable ComboBox when TextField is not empty

@@ -76,9 +76,9 @@ public class AdminTutorModel {
         }
     }
 
-    public boolean modifyTutorPassword(String id, String newPassword) {
+    public boolean modifyTutorPassword(String id, String newPassword, String visibility) {
         try {
-            adminService.modifyTutor(id, newPassword);
+            adminService.modifyTutor(id, newPassword, visibility);
             return true;
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to modify tutor via RMI: " + e.getMessage());

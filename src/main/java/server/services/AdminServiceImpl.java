@@ -244,13 +244,14 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void modifyTutor(String tutorID, String newPassword) throws RemoteException {
-        query = "{CALL modifyTutor(?, ?)}";
+    public void modifyTutor(String tutorID, String newPassword, String visibility) throws RemoteException {
+        query = "{CALL modifyTutor(?, ?, ?)}";
 
         try {
             callStmt = con.prepareCall(query);
             callStmt.setString(1, tutorID);
             callStmt.setString(2, newPassword);
+            callStmt.setString(3, visibility);
             callStmt.executeUpdate();
         } catch (SQLException e1) {
             e1.printStackTrace();
