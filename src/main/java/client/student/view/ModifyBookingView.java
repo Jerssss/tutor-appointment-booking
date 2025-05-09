@@ -211,7 +211,7 @@ public class ModifyBookingView implements Initializable {
         return col -> new TableCell<>() {
             private final Button cancelButton = new Button();
             {
-                Image img = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                Image img = new Image(getClass().getResourceAsStream("/images/client/RemoveIcon.png"));
                 ImageView iv = new ImageView(img);
                 iv.setFitWidth(16);
                 iv.setFitHeight(16);

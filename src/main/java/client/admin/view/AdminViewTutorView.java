@@ -18,6 +18,13 @@ import javafx.util.Duration;
 import shared.classes.Student;
 import shared.classes.Tutor;
 
+import javafx.scene.control.TableCell;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import shared.classes.Tutor;
+
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -124,12 +131,21 @@ public class AdminViewTutorView {
         }
     }
 
-    public TableCell<Tutor, String> createModifyButtonCellFactory(){
+    public TableCell<Tutor, String> createModifyButtonCellFactory() {
         return new TableCell<Tutor, String>() {
-            private final Button modifyButton = new Button("Change Pass");
+            private final Button modifyButton = new Button();
 
             {
-                modifyButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white; -fx-background-radius: 15");
+                Image img = new Image(getClass().getResourceAsStream("/images/client/ChangePasswordIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                modifyButton.setGraphic(iv);
+                modifyButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
                 modifyButton.setOnAction(event -> {
                     Tutor tutor = getTableRow().getItem();
                     if (tutor != null) {
@@ -141,14 +157,11 @@ public class AdminViewTutorView {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(modifyButton);
-                }
+                setGraphic(empty ? null : modifyButton);
             }
         };
     }
+
 
     public void showModifyPane(Tutor tutor) {
         try {
@@ -172,10 +185,19 @@ public class AdminViewTutorView {
 
     private TableCell<Tutor, String> createDeleteButtonCellFactory() {
         return new TableCell<Tutor, String>() {
-            private final Button deleteButton = new Button("Remove");
+            private final Button deleteButton = new Button();
 
             {
-                deleteButton.setStyle("-fx-background-color: #6F2E2E; -fx-text-fill: white;-fx-background-radius: 15");
+                Image img = new Image(getClass().getResourceAsStream("/images/client/DeleteIcon.png"));
+                ImageView iv = new ImageView(img);
+                iv.setFitWidth(16);
+                iv.setFitHeight(16);
+                deleteButton.setGraphic(iv);
+                deleteButton.setStyle(
+                        "-fx-background-color: #6F2E2E; " +
+                                "-fx-background-radius: 10; " +
+                                "-fx-cursor: hand;"
+                );
                 deleteButton.setOnAction(event -> {
                     Tutor tutor = getTableRow().getItem();
                     if (tutor != null) {
@@ -187,14 +209,11 @@ public class AdminViewTutorView {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(deleteButton);
-                }
+                setGraphic(empty ? null : deleteButton);
             }
         };
     }
+
 
     private void showRemovePane(Tutor tutor) {
         try {

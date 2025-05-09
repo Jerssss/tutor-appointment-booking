@@ -122,7 +122,7 @@
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label text="Server Status: " textFill="#808080">
+                              <Label text="Status: " textFill="#808080">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
