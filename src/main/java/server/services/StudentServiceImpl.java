@@ -359,6 +359,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throws RemoteException {
 
         Connection conn = null;
+        CallableStatement callableStmt = null;
         try {
             conn = DatabaseConnection.setCon();
             if (conn == null) {
@@ -368,14 +369,16 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             conn.setAutoCommit(false);
             String paymentId = getNextPaymentId(conn);
 
-            try (PreparedStatement paymentStmt = conn.prepareStatement(
-                    "CALL createPayment(?, ?, ?)")) {
-
-//                paymentStmt.setString(1, paymentId);
-                paymentStmt.setString(1, studentId);
-                paymentStmt.setDouble(2, amount);
-                paymentStmt.setString(3, paymentMethod);
-                paymentStmt.executeUpdate();
+            try {
+                callableStmt = conn.prepareCall("{call createPayment(?, ?, ?)}");
+                callableStmt.setString(1, studentId);
+                callableStmt.setDouble(2, amount);
+                callableStmt.setString(3, paymentMethod);
+                callableStmt.executeUpdate();
+            } finally {
+                if (callableStmt != null) {
+                    callableStmt.close();
+                }
             }
 
             conn.commit();
