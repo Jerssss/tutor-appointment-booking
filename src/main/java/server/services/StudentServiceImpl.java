@@ -369,13 +369,12 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             String paymentId = getNextPaymentId(conn);
 
             try (PreparedStatement paymentStmt = conn.prepareStatement(
-                    "INSERT INTO payment (paymentID, studentID, amount, paymentDate, paymentTime, paymentMethod) " +
-                            "VALUES (?, ?, ?, CURDATE(), CURTIME(), ?)")) {
+                    "CALL createPayment(?, ?, ?)")) {
 
-                paymentStmt.setString(1, paymentId);
-                paymentStmt.setString(2, studentId);
-                paymentStmt.setDouble(3, amount);
-                paymentStmt.setString(4, paymentMethod);
+//                paymentStmt.setString(1, paymentId);
+                paymentStmt.setString(1, studentId);
+                paymentStmt.setDouble(2, amount);
+                paymentStmt.setString(3, paymentMethod);
                 paymentStmt.executeUpdate();
             }
 
