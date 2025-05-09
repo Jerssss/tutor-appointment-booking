@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="850.0" VBox.vgrow="ALWAYS" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewStudentView">
+<VBox fx:id="centerPane" prefHeight="573.0" prefWidth="850.0" styleClass="background-pane" stylesheets="@../../css/styles.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.admin.view.AdminViewStudentView">
    <children>
       <VBox alignment="CENTER" prefHeight="62.0" prefWidth="805.0">
          <children>
@@ -58,17 +58,17 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="studentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+                              <TableView fx:id="studentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <columns>
                                     <TableColumn fx:id="studentIdColumn" editable="false" prefWidth="95.99999237060547" resizable="false" text="Student ID" />
                                     <TableColumn fx:id="firstNameColumn" editable="false" prefWidth="74.66667175292969" resizable="false" text="First Name" />
                                     <TableColumn fx:id="lastNameColumn" editable="false" prefWidth="85.0" resizable="false" text="Last Name" />
-                                    <TableColumn fx:id="phoneNoColumn" editable="false" prefWidth="104.33334350585938" resizable="false" text="Phone No." />
-                                    <TableColumn fx:id="emailColumn" editable="false" prefWidth="144.33331298828125" resizable="false" text="Email" />
-                                    <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="113.66668701171875" resizable="false" text="Level" />
-                                    <TableColumn fx:id="balanceColumn" editable="false" minWidth="0.0" prefWidth="106.3333740234375" resizable="false" text="Balance" />
-                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="116.33331298828125" resizable="false" text="Option" />
-                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="100.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="phoneNoColumn" editable="false" prefWidth="99.0" resizable="false" text="Phone No." />
+                                    <TableColumn fx:id="emailColumn" editable="false" prefWidth="143.0" resizable="false" text="Email" />
+                                    <TableColumn fx:id="academicLevelColumn" editable="false" prefWidth="94.0" resizable="false" text="Level" />
+                                    <TableColumn fx:id="balanceColumn" editable="false" minWidth="0.0" prefWidth="87.0" resizable="false" text="Balance" />
+                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="72.0" resizable="false" style="-fx-alignment: CENTER;" text="Option" />
+                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="76.0" style="-fx-alignment: CENTER;" text="Delete" />
                                  </columns>
                               </TableView>
                            </children>
@@ -79,7 +79,7 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="archivedStudentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+                              <TableView fx:id="archivedStudentTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <columns>
                                     <TableColumn fx:id="arStudentIdColumn" editable="false" prefWidth="95.99999237060547" resizable="false" text="Student ID" />
                                     <TableColumn fx:id="arFirstNameColumn" editable="false" prefWidth="74.66667175292969" resizable="false" text="First Name" />
@@ -88,7 +88,7 @@
                                     <TableColumn fx:id="arEmailColumn" editable="false" prefWidth="144.33331298828125" resizable="false" text="Email" />
                                     <TableColumn fx:id="arAcademicLevelColumn" editable="false" prefWidth="113.66668701171875" resizable="false" text="Level" />
                                     <TableColumn fx:id="arBalanceColumn" editable="false" minWidth="0.0" prefWidth="106.3333740234375" resizable="false" text="Balance" />
-                                    <TableColumn fx:id="arDeleteColumn" editable="false" prefWidth="100.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="arDeleteColumn" editable="false" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Delete" />
                                  </columns>
                               </TableView>
                            </children>

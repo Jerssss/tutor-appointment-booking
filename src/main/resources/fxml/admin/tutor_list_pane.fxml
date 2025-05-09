@@ -58,16 +58,16 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="tutorTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" stylesheets="@../../css/tablestyles.css">
+                              <TableView fx:id="tutorTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <columns>
                                     <TableColumn fx:id="tutorIdColumn" editable="false" prefWidth="95.99999237060547" resizable="false" text="Tutor ID" />
                                     <TableColumn fx:id="firstNameColumn" editable="false" prefWidth="74.66667175292969" resizable="false" text="First Name" />
                                     <TableColumn fx:id="lastNameColumn" editable="false" prefWidth="85.0" resizable="false" text="Last Name" />
-                                    <TableColumn fx:id="phoneNoColumn" editable="false" prefWidth="104.33334350585938" resizable="false" text="Phone No." />
-                                    <TableColumn fx:id="emailColumn" editable="false" prefWidth="144.33331298828125" resizable="false" text="Email" />
-                                    <TableColumn fx:id="expertiseColumn" editable="false" prefWidth="219.66665649414062" resizable="false" text="Expertise" />
-                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="116.33331298828125" resizable="false" text="Option" />
-                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="100.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="phoneNoColumn" editable="false" prefWidth="97.0" resizable="false" text="Phone No." />
+                                    <TableColumn fx:id="emailColumn" editable="false" prefWidth="141.0" resizable="false" text="Email" />
+                                    <TableColumn fx:id="expertiseColumn" editable="false" prefWidth="216.0" resizable="false" text="Expertise" />
+                                    <TableColumn fx:id="optionColumn" editable="false" prefWidth="63.0" resizable="false" text="Option" />
+                                    <TableColumn fx:id="deleteColumn" editable="false" prefWidth="60.0" style="-fx-alignment: CENTER;" text="Delete" />
                                  </columns>
                               </TableView>
                            </children>
@@ -78,7 +78,7 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <TableView fx:id="archivedTutorTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css">
+                              <TableView fx:id="archivedTutorTableView" focusTraversable="false" minHeight="-Infinity" prefHeight="472.0" prefWidth="805.0" style="-fx-font-size: 13;" stylesheets="@../../css/tablestyles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <columns>
                                     <TableColumn fx:id="arTutorIdColumn" editable="false" prefWidth="115.0" resizable="false" text="Tutor ID" />
                                     <TableColumn fx:id="arFirstNameColumn" editable="false" prefWidth="115.0" resizable="false" text="First Name" />
@@ -86,7 +86,7 @@
                                     <TableColumn fx:id="arPhoneNoColumn" editable="false" prefWidth="115.0" resizable="false" text="Phone No." />
                                     <TableColumn fx:id="arEmailColumn" editable="false" prefWidth="115.0" resizable="false" text="Email" />
                                     <TableColumn fx:id="arExpertiseColumn" editable="false" prefWidth="115.0" resizable="false" text="Expertise" />
-                                    <TableColumn fx:id="arDeleteColumn" editable="false" prefWidth="115.0" text="Delete" style="-fx-alignment: CENTER;" />
+                                    <TableColumn fx:id="arDeleteColumn" editable="false" prefWidth="115.0" style="-fx-alignment: CENTER;" text="Delete" />
                                  </columns>
                               </TableView>
                            </children>

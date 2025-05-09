@@ -1,12 +1,11 @@
 package client.admin.view;
 
 import client.admin.controller.AdminViewStudentController;
-import client.admin.controller.AdminViewTutorController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import shared.classes.Student;
-import shared.classes.Tutor;
 
 import java.util.Date;
 
@@ -15,8 +14,9 @@ public class AdminDeleteStudentPopUpView {
     private Button confirmButton;
     @FXML
     private Button cancelButton;
+    @FXML
+    private Label messageLabel; // Add reference to the message label
     private Student student;
-
     private AdminViewStudentController studentController;
 
     @FXML
@@ -31,7 +31,13 @@ public class AdminDeleteStudentPopUpView {
 
     public void setStudent(Student student) {
         this.student = student;
-        System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Student to remove is set");
+        System.out.println("[ADMIN CLIENT | " + new Date() + "] Student to remove is set");
+        // Update the message based on balance
+        if (student.getBalance() > 0) {
+            messageLabel.setText("This student still has a remaining balance. Are you sure you want to delete this student?");
+        } else {
+            messageLabel.setText("Are you sure you want to delete this student?");
+        }
     }
 
     private void confirmChanges() {
