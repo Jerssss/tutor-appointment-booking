@@ -14,15 +14,16 @@ public class TutorViewLessonPlanController {
     private final TutorViewLessonPlanView view;
     private final TutorLessonPlanModel model;
     private ObservableList<LessonPlan> lessonPlanData = FXCollections.observableArrayList();
-    private ObservableList <LessonPlan> archivedLessonPlanData = FXCollections.observableArrayList(); // For archived lesson plans
+    private ObservableList<LessonPlan> archivedLessonPlanData = FXCollections.observableArrayList();
     private final String tutorID;
 
     public TutorViewLessonPlanController(TutorViewLessonPlanView view, String tutorID) {
         this.view = view;
         this.model = new TutorLessonPlanModel();
         this.tutorID = tutorID;
+        System.out.println("[CLIENT] Initializing TutorViewLessonPlanController for tutorID: " + tutorID);
         loadLessonPlans(tutorID);
-        loadArchivedLessonPlans(tutorID); // Load archived lesson plans
+        loadArchivedLessonPlans(tutorID);
     }
 
     public String getLoggedInTutorID() {
@@ -30,8 +31,7 @@ public class TutorViewLessonPlanController {
     }
 
     public void loadLessonPlans(String tutorID) {
-        System.out.println("[CLIENT] loadLessonPlans() method called.");
-
+        System.out.println("[CLIENT] loadLessonPlans() called for tutorID: " + tutorID);
         List<LessonPlan> lessonPlans = model.fetchLessonPlansByTutor(tutorID);
 
         if (lessonPlans != null) {
@@ -41,14 +41,17 @@ public class TutorViewLessonPlanController {
                 System.out.println("[CLIENT] Table updated with " + lessonPlans.size() + " lesson plans.");
             });
         } else {
-            System.err.println("[ERROR] Failed to load lesson plans.");
+            System.err.println("[CLIENT] Failed to load lesson plans for tutorID: " + tutorID);
+            Platform.runLater(() -> {
+                lessonPlanData.clear();
+                view.updateTable(lessonPlanData);
+            });
         }
     }
 
     public void loadArchivedLessonPlans(String tutorID) {
-        System.out.println("[CLIENT] loadArchivedLessonPlans() method called.");
-
-        List<LessonPlan> archivedLessonPlans = model.fetchArchivedLessonPlansByTutor(tutorID); // Fetch archived lesson plans
+        System.out.println("[CLIENT] loadArchivedLessonPlans() called for tutorID: " + tutorID);
+        List<LessonPlan> archivedLessonPlans = model.fetchArchivedLessonPlansByTutor(tutorID);
 
         if (archivedLessonPlans != null) {
             Platform.runLater(() -> {
@@ -57,12 +60,24 @@ public class TutorViewLessonPlanController {
                 System.out.println("[CLIENT] Archived table updated with " + archivedLessonPlans.size() + " archived lesson plans.");
             });
         } else {
-            System.err.println("[ERROR] Failed to load archived lesson plans.");
+            System.err.println("[CLIENT] Failed to load archived lesson plans for tutorID: " + tutorID);
+            Platform.runLater(() -> {
+                archivedLessonPlanData.clear();
+                view.updateArchivedTable(archivedLessonPlanData);
+            });
         }
     }
 
+    public void refreshTables() {
+        System.out.println("[CLIENT] refreshTables() called for tutorID: " + tutorID);
+        loadLessonPlans(tutorID);
+        loadArchivedLessonPlans(tutorID);
+    }
+
     public void searchLessonPlan(String query) {
+        System.out.println("[CLIENT] Searching lesson plans with query: " + query);
         if (lessonPlanData.isEmpty()) {
+            view.updateTable(lessonPlanData);
             return;
         }
 
@@ -87,7 +102,7 @@ public class TutorViewLessonPlanController {
 
     public void deleteLessonPlan(LessonPlan lessonPlan) {
         if (lessonPlan == null) {
-            System.err.println("[WARN] No lesson plan selected for deletion.");
+            System.err.println("[CLIENT] No lesson plan selected for deletion.");
             return;
         }
 
@@ -95,15 +110,13 @@ public class TutorViewLessonPlanController {
 
         if (success) {
             System.out.println("[CLIENT] Archived lesson plan: " + lessonPlan.getLessonPlanID());
-
-            // Remove from active list and refresh table
-            lessonPlanData.remove(lessonPlan);
-            view.updateTable(lessonPlanData);
-
-            // Also refresh archived table to reflect new entry
-            loadArchivedLessonPlans(getLoggedInTutorID());
+            Platform.runLater(() -> {
+                lessonPlanData.remove(lessonPlan);
+                view.updateTable(lessonPlanData);
+                loadArchivedLessonPlans(tutorID); // Refresh archived table
+            });
         } else {
-            System.err.println("[CLIENT ERROR] Could not mark lesson plan as archived.");
+            System.err.println("[CLIENT] Could not mark lesson plan as archived: " + lessonPlan.getLessonPlanID());
         }
     }
 }

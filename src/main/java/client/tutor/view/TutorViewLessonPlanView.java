@@ -300,6 +300,8 @@ public class TutorViewLessonPlanView {
         return result == ButtonType.OK;
     }
 
+
+
     // Scale transition methods
     public void addLessonPlanButtonExited() {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), addLessonPlanButton);
