@@ -14,12 +14,12 @@ public interface AdminService extends Remote {
     List<Student> viewStudent() throws RemoteException;
     void addStudent(Student newStudent) throws RemoteException, SQLException;
     void modifyStudent(String studentID, String newPassword) throws RemoteException;
-    void removeStudent(Student student) throws RemoteException;
+    void removeStudent(Student student) throws RemoteException,  SQLIntegrityConstraintViolationException;
     List<Tutor> viewTutor() throws RemoteException;
     void addTutor(Tutor newTutor) throws RemoteException, SQLException;
     List<String> viewExpertise() throws RemoteException;
     void modifyTutor(String tutorID, String newPassword, String visibility) throws RemoteException;
-    void removeTutor(Tutor tutor) throws RemoteException;
+    void removeTutor(Tutor tutor) throws RemoteException,  SQLIntegrityConstraintViolationException;
     List<TutorSession> viewSession() throws RemoteException;
     void addSession(TutorSession session) throws RemoteException, SQLException;
     void modifySession(TutorSession session) throws RemoteException, SQLException;

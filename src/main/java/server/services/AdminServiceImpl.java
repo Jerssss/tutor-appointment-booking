@@ -142,13 +142,15 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void removeStudent(Student student) throws RemoteException {
+    public void removeStudent(Student student) throws RemoteException,  SQLIntegrityConstraintViolationException {
         query = "{CALL removeStudent(?)}";
 
         try {
             callStmt = con.prepareCall(query);
             callStmt.setString(1, student.getUserID());
             callStmt.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e){
+            throw new SQLIntegrityConstraintViolationException();
         } catch (SQLException e1) {
             e1.printStackTrace();
         } catch (Exception e2) {
@@ -261,13 +263,15 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public void removeTutor(Tutor tutor) throws RemoteException {
+    public void removeTutor(Tutor tutor) throws RemoteException, SQLIntegrityConstraintViolationException {
         query = "{CALL removeTutor(?)}";
 
         try {
             callStmt = con.prepareCall(query);
             callStmt.setString(1, tutor.getUserID());
             callStmt.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e){
+            throw new SQLIntegrityConstraintViolationException();
         } catch (SQLException e1) {
             e1.printStackTrace();
         } catch (Exception e2) {

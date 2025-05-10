@@ -83,7 +83,7 @@ public class AdminViewTutorController {
         view.updateTable(FXCollections.observableArrayList(filteredList));
     }
 
-    public void removeTutor(Tutor tutor) {
-        model.removeTutor(tutor);
+    public boolean removeTutor(Tutor tutor) {
+        return model.removeTutor(tutor);
     }
 }

@@ -2,6 +2,7 @@ package client.admin.view;
 
 import client.admin.controller.AdminViewStudentController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -41,11 +42,23 @@ public class AdminDeleteStudentPopUpView {
     }
 
     private void confirmChanges() {
-        // Close confirmation window
         closeWindow();
-        // Call the save logic in AdminViewStudentController if it's set
         if (studentController != null) {
-            studentController.removeStudent(student);
+            if (studentController.removeStudent(student)){
+                System.out.println("DJSABJDSBAJBDSA");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Deletion Successful");
+                alert.setHeaderText("Student successfully Deleted.");
+                alert.setContentText("The student was deleted.");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Deletion Error");
+                alert.setHeaderText("Cannot Delete Student");
+                alert.setContentText("This student cannot be deleted because it is associated with \nbooking records." +
+                        " Try setting Student Visibility to Archived\ninstead.");
+                alert.showAndWait();
+            }
         }
     }
 

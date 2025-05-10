@@ -5,6 +5,7 @@ import shared.classes.Student;
 import shared.classes.Tutor;
 import shared.interfaces.AdminService;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,6 +92,8 @@ public class AdminTutorModel {
             adminService.removeTutor(tutor);
             System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Remove student in model is set");
             return true;
+        } catch ( SQLIntegrityConstraintViolationException e){
+            return false;
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to add student via RMI: " + e.getMessage());
             return false;
