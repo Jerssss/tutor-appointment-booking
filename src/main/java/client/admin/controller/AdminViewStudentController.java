@@ -5,6 +5,7 @@ import client.admin.view.AdminViewStudentView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import shared.classes.Student;
 
 import java.util.Date;
@@ -83,8 +84,13 @@ public class AdminViewStudentController {
         view.updateTable(FXCollections.observableArrayList(filteredList));
     }
 
-    public void removeStudent(Student student) {
+    public boolean removeStudent(Student student) {
         System.out.println("[ADMIN CLIENT | "+ new Date()+ "]Remove student in controller is set");
-        model.removeStudent(student);
+        try {
+            return model.removeStudent(student);
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
     }
 }
