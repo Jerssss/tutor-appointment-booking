@@ -1,4 +1,4 @@
-package client.studenttutor;
+package client.landingpage;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,7 +20,7 @@ public class StudentTutorIPPickerController {
     @FXML
     private void initialize() {
         // Initialize ComboBox with predefined IPs
-        ipComboBox.getItems().addAll("localhost", "192.168.1.100", "192.168.191.115");
+        ipComboBox.getItems().addAll("localhost", "192.168.1.100", "192.168.191.231");
         ipComboBox.setValue("localhost");
 
         // Disable ComboBox when TextField is not empty

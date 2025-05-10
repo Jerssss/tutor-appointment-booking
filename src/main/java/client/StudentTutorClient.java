@@ -2,7 +2,7 @@ package client;
 
 import client.landingpage.LandingPageController;
 import client.landingpage.LandingPageView;
-import client.studenttutor.StudentTutorIPPickerController;
+import client.landingpage.StudentTutorIPPickerController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

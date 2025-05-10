@@ -1,4 +1,4 @@
-package client.studenttutor;
+package client.landingpage;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +22,7 @@ public class StudentTutorIPPickerApp extends Application {
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
         Parent root = loader.load();
 
-        client.studenttutor.StudentTutorIPPickerController controller = loader.getController();
+        client.landingpage.StudentTutorIPPickerController controller = loader.getController();
 
         stage.setTitle("Select Student & Tutor Client IP");
         stage.setScene(new Scene(root, 350, 250));

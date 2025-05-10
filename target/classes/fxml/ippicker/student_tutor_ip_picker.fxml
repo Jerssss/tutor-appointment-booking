@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefWidth="350" prefHeight="250" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.studenttutor.StudentTutorIPPickerController">
+<BorderPane prefWidth="350" prefHeight="250" styleClass="background-pane" stylesheets="@../../css/styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.landingpage.StudentTutorIPPickerController">
     <top>
         <HBox prefHeight="50.0" style="-fx-background-color: #6F2E2E;" alignment="CENTER">
             <children>
