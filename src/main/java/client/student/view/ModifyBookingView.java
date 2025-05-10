@@ -24,6 +24,7 @@ import shared.classes.SessionManager;
 import server.services.StudentServiceImpl;
 import shared.interfaces.StudentService;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -275,6 +276,15 @@ public class ModifyBookingView implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void showSuccessAlert(String message) {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(null,
+                    message,
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
     }
 
     public void setController(ModifyBookingController controller) {

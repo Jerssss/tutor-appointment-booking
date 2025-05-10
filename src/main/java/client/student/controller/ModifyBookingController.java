@@ -70,6 +70,7 @@ public class ModifyBookingController {
             boolean success = model.cancelBooking(sessionID);
             if (success) {
                 System.out.println("[CLIENT | "+ new Date()+ "] Booking cancelled successfully.");
+                view.showSuccessAlert("Operation successful and booking has been cancelled");
                 refreshTable(); // Refresh the table to reflect the cancellation
             } else {
                 view.showErrorAlert("Cancellation Failed", "Failed to cancel the booking.");
