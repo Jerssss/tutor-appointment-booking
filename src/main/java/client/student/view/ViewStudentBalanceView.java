@@ -6,6 +6,7 @@ import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -70,6 +71,61 @@ public class ViewStudentBalanceView implements Initializable {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("bookingStatus"));
     }
 
+    private void initializeSearchListener() {
+        // Create a FilteredList wrapping the allBalanceDetails ObservableList
+        FilteredList<BalanceDetails> filteredData = new FilteredList<>(allBalanceDetails, p -> true);
+
+        // Set the FilteredList as the items for the TableView
+        viewBalanceTableView.setItems(filteredData);
+
+        // Add a listener to the search TextField
+        searchBalTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(balance -> {
+                // If the search field is empty or null, show all balance details
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    return true;
+                }
+
+                // Convert search input to lowercase for case-insensitive search
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+
+                // Check if any balance attributes match the search query
+                try {
+                    if (balance.getCourseName() != null &&
+                            balance.getCourseName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches course name
+                    }
+                    if (balance.getSessionMode() != null &&
+                            balance.getSessionMode().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches session mode
+                    }
+                    if (balance.getTutorName() != null &&
+                            balance.getTutorName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches tutor name
+                    }
+                    if (balance.getBookingStatus() != null &&
+                            balance.getBookingStatus().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches booking status
+                    }
+                    if (balance.getSessionDate() != null &&
+                            balance.getSessionDate().toString().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches date
+                    }
+                    if (balance.getSessionTime() != null &&
+                            balance.getSessionTime().toString().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches time
+                    }
+                } catch (Exception e) {
+                    // Log any errors and skip this balance detail
+                    System.err.println("Error processing balance detail: " + e.getMessage());
+                    return false;
+                }
+
+                return false; // No matches found
+            });
+        });
+    }
+
     @FXML
     private void handleCreatePayment() {
         try {
@@ -95,43 +151,16 @@ public class ViewStudentBalanceView implements Initializable {
         }
     }
 
-
-    private void initializeSearchListener() {
-        searchBalTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchBalanceDetails(newValue.toLowerCase().trim());
-        });
-    }
-
-    public void searchBalanceDetails(String query) {
-        if (allBalanceDetails.isEmpty()) {
-            return;
-        }
-
-        if (query == null || query.isEmpty()) {
-            viewBalanceTableView.setItems(allBalanceDetails);
-            return;
-        }
-
-        List<BalanceDetails> filteredList = allBalanceDetails.stream()
-                .filter(balance -> balance.getCourseName().toLowerCase().contains(query) ||
-                        balance.getSessionMode().toLowerCase().contains(query) ||
-                        balance.getTutorName().toLowerCase().contains(query) ||
-                        balance.getBookingStatus().toLowerCase().contains(query))
-                .toList();
-        viewBalanceTableView.setItems(FXCollections.observableArrayList(filteredList));
-    }
-
     public void updateTable(ObservableList<BalanceDetails> balanceDetails) {
         if (balanceDetails == null || balanceDetails.isEmpty()) {
-            System.out.println("[CLIENT | "+ new Date()+ "] No balance details to display.");
+            System.out.println("[CLIENT | " + new Date() + "] No balance details to display.");
+            allBalanceDetails.clear();
         } else {
-            System.out.println("[CLIENT | "+ new Date()+ "] Updating table with " + balanceDetails.size() + " balance details.");
+            System.out.println("[CLIENT | " + new Date() + "] Updating table with " + balanceDetails.size() + " balance details.");
             allBalanceDetails.setAll(balanceDetails); // Populate the ObservableList
-            viewBalanceTableView.setItems(allBalanceDetails);
-            viewBalanceTableView.refresh();
         }
+        viewBalanceTableView.refresh();
     }
-
 
     public void updateBalanceDisplay(double balance) {
         // Create Philippine Peso formatter
@@ -164,6 +193,7 @@ public class ViewStudentBalanceView implements Initializable {
     private void initializeController() throws RemoteException {
         String studentID = SessionManager.getCurrentUserId();
         if (studentID == null || studentID.isEmpty()) {
+            System.out.println("[CLIENT | " + new Date() + "] No student ID found, skipping controller initialization.");
             return;
         }
         StudentService service = new StudentServiceImpl();
@@ -176,7 +206,7 @@ public class ViewStudentBalanceView implements Initializable {
 
     @FXML
     private void handleRefresh() {
-        System.out.println("[CLIENT | "+ new Date()+ "] Refresh button clicked.");
+        System.out.println("[CLIENT | " + new Date() + "] Refresh button clicked.");
         if (controller != null) {
             controller.refreshTable();
         }
@@ -217,5 +247,4 @@ public class ViewStudentBalanceView implements Initializable {
         st.setAutoReverse(false);
         st.play();
     }
-
 }

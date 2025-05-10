@@ -53,6 +53,7 @@ public class AdminViewPaymentController {
                 .filter(payment ->
                         payment.getPaymentID().toLowerCase().contains(lowerCaseQuery) ||
                                 payment.getStudentID().toLowerCase().contains(lowerCaseQuery) ||
+                                payment.getStudentName().toLowerCase().contains(lowerCaseQuery) ||
                                 payment.getPaymentDate().toString().contains(lowerCaseQuery) ||
                                 String.valueOf(payment.getPaymentTime()).toLowerCase().contains(lowerCaseQuery) ||
                                 payment.getPaymentMethod().toLowerCase().contains(lowerCaseQuery) ||

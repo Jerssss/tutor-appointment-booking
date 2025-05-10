@@ -54,7 +54,7 @@
          <children>
             <TabPane fx:id="sessionsTabPane" stylesheets="@../../css/tablestyles.css" tabClosingPolicy="UNAVAILABLE">
                <tabs>
-                  <Tab fx:id="availableTutorTab" text="Active Students">
+                  <Tab fx:id="availableTutorTab" text="Active Tutor">
                      <content>
                         <AnchorPane>
                            <children>
@@ -74,7 +74,7 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab fx:id="archivedTutorTab" text="Archived Students">
+                  <Tab fx:id="archivedTutorTab" text="Archived Tutor">
                      <content>
                         <AnchorPane>
                            <children>
