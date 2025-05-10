@@ -7,11 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import shared.classes.BookingDetails;
-import shared.classes.TutorSession;
 
+import javax.swing.JOptionPane;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -127,8 +128,16 @@ public class UpdateBookingPopUp {
                     selectedBooking.getBookingStatus(),
                     selectedBooking.getSessionPrice()
             );
+            // Show JOptionPane on success
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null,
+                        "Operation successful and edit pane has been closed",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            });
+            // Close the dialog
+            Stage stage = (Stage) updateBookingButton.getScene().getWindow();
+            stage.close();
         }
     }
-
-
 }
