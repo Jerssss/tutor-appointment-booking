@@ -1,5 +1,6 @@
 package client.student.view;
 
+import client.StudentTutorClient;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -23,7 +24,7 @@ public class CreatePaymentWindowView {
 
     public void initializeData(String studentId, double currentBalance) throws RemoteException {
         this.studentId = studentId;
-        this.service = new StudentServiceImpl();
+        this.service = StudentTutorClient.getStudentService();
 
         // Populate payment methods
         modeOfPaymentComboBox.getItems().addAll(
