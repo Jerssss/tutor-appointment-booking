@@ -49,7 +49,6 @@ public class CreateBookingView implements Initializable {
     @FXML private TableColumn<TutorSession, String> priceColumn;
     @FXML private TableColumn<TutorSession, String> enrolledColumn;
 
-
     private final ObservableList<TutorSession> allBookings = FXCollections.observableArrayList();
     private CreateBookingController controller;
 
@@ -73,46 +72,56 @@ public class CreateBookingView implements Initializable {
     }
 
     private void initializeSearchListener() {
-        // store filtered results
-        FilteredList<TutorSession> filteredData = new FilteredList<>(
-                createReservationTableView.getItems(), p -> true
-        );
+        // Create a FilteredList wrapping the allBookings ObservableList
+        FilteredList<TutorSession> filteredData = new FilteredList<>(allBookings, p -> true);
 
-        // replace curretn table content with search queries
+        // Set the FilteredList as the items for the TableView
         createReservationTableView.setItems(filteredData);
 
-        // active listener naol u know im just rephrasing these commaents
+        // Add a listener to the search TextField
         searchStudBookingTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(session -> {
-                // if no search query show all
-                if (newValue == null || newValue.isEmpty()) {
+                // If the search field is empty or null, show all sessions
+                if (newValue == null || newValue.trim().isEmpty()) {
                     return true;
                 }
 
-                // search input is converted to lowercase
-                String lowerCaseFilter = newValue.toLowerCase();
+                // Convert search input to lowercase for case-insensitive search
+                String lowerCaseFilter = newValue.toLowerCase().trim();
 
-                // check attributes if matches to the search query
-                if (session.getSubjectName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Matches subject name
+                // Check if any session attributes match the search query
+                try {
+                    if (session.getSubjectName() != null &&
+                            session.getSubjectName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches subject name
+                    }
+                    if (session.getAcademicLevel() != null &&
+                            session.getAcademicLevel().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches academic level
+                    }
+                    if (session.getSessionDate() != null &&
+                            session.getSessionDate().toString().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches date
+                    }
+                    if (session.getSessionTime() != null &&
+                            session.getSessionTime().toString().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches time
+                    }
+                    if (session.getSessionMode() != null &&
+                            session.getSessionMode().toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches mode (Online/Face-to-Face)
+                    }
+                    // Check session type (Solo/Group)
+                    String type = session.getMaximumStudents() == 1 ? "solo" : "group";
+                    if (type.toLowerCase().contains(lowerCaseFilter)) {
+                        return true; // Matches type
+                    }
+                } catch (Exception e) {
+                    // Log any errors and skip this session
+                    System.err.println("Error processing session: " + e.getMessage());
+                    return false;
                 }
-                if (session.getAcademicLevel().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Matches academic level
-                }
-                if (String.valueOf(session.getSessionDate()).toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Matches date
-                }
-                if (String.valueOf(session.getSessionTime()).toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Matches time
-                }
-                if (session.getSessionMode().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Matches mode (Online/Face-to-Face)
-                }
-                // Check session type (Solo/Group)
-                String type = session.getMaximumStudents() == 1 ? "solo" : "group";
-                if (type.contains(lowerCaseFilter)) {
-                    return true;
-                }
+
                 return false; // No matches found
             });
         });
@@ -161,8 +170,8 @@ public class CreateBookingView implements Initializable {
                 new SimpleStringProperty(String.valueOf(cellData.getValue().getSessionPrice())));
         enrolledColumn.setCellValueFactory(cellData -> {
             String numberOfStudents = (cellData.getValue().getNumberOfStudents() + " / " + cellData.getValue().getMaximumStudents());
-                    return new SimpleStringProperty(numberOfStudents);
-                });
+            return new SimpleStringProperty(numberOfStudents);
+        });
 
         // Reserve button column setup
         reserveColumn.setCellFactory(param -> new TableCell<>() {
@@ -191,16 +200,13 @@ public class CreateBookingView implements Initializable {
         });
     }
 
-
     public void updateTable(List<TutorSession> sessions) {
         Platform.runLater(() -> {
             if (createReservationTableView != null) {
                 allBookings.setAll(sessions);
-                createReservationTableView.setItems(allBookings);
             }
         });
     }
-
 
     private void handleReserveAction(TutorSession session) throws Exception {
         // Verify active session
@@ -209,7 +215,6 @@ public class CreateBookingView implements Initializable {
             throw new Exception("Please login to make reservations");
         }
         showReservePopUp(session);
-
     }
 
     private void showReservePopUp(TutorSession session) {
@@ -280,5 +285,4 @@ public class CreateBookingView implements Initializable {
         st.setToY(0.9);
         st.play();
     }
-
 }
