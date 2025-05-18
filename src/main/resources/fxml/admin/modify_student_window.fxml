@@ -63,8 +63,17 @@
                                  </styleClass>
                               </TextField>
                            </children>
+
+                           <Label text="Student Visibility">
+                              <font>
+                                 <Font name="System Bold" size="12.0"/>
+                              </font>
+                           </Label>
+                           <ComboBox fx:id="studentVisibilityComboBox" prefWidth="300.0" promptText="Select Student Availability"/>
                         </VBox>
                      </children>
+
+
                   </HBox>
                </children>
                <VBox.margin>

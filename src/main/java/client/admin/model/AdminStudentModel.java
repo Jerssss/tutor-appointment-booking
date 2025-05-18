@@ -69,9 +69,9 @@ public class AdminStudentModel {
         }
     }
 
-    public boolean modifyStudentPassword(String id, String newPassword) {
+    public boolean modifyStudentPassword(String id, String newPassword, String visibility) {
         try {
-            adminService.modifyStudent(id, newPassword);
+            adminService.modifyStudent(id, newPassword, visibility);
             return true;
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to modify student via RMI: " + e.getMessage());

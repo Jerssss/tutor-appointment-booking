@@ -25,7 +25,9 @@ public class AdminAddSessionPopUpModel {
         List<Tutor> tutors = adminService.viewTutor();
 
         for (Tutor tutor: tutors){
-            tutorNames.add(tutor.getFirstName()+" "+ tutor.getLastName());
+            if (tutor.getVisibility().equals("Available")) {
+                tutorNames.add(tutor.getFirstName() + " " + tutor.getLastName());
+            }
         }
 
         return tutorNames;
@@ -36,7 +38,9 @@ public class AdminAddSessionPopUpModel {
         List<Tutor> tutors = adminService.viewTutor();
 
         for (Tutor tutor: tutors){
-            tutorIDs.add(tutor.getUserID());
+            if (tutor.getVisibility().equals("Available")) {
+                tutorIDs.add(tutor.getUserID());
+            }
         }
 
         return tutorIDs;

@@ -71,6 +71,7 @@ public class AdminViewStudentView {
     private TableColumn<Student, String> arBalanceColumn;
     @FXML
     private TableColumn<Student, String> arDeleteColumn;
+    
 
     private AdminViewStudentController controller;
     private ObservableList<Student> studentData = FXCollections.observableArrayList();

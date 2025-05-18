@@ -3,6 +3,7 @@ package client.admin.view;
 import client.admin.controller.AdminModifyStudentPopUpController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -20,11 +21,16 @@ public class AdminModifyStudentPopUp {
     private TextField passwordTextField;
     @FXML
     private Button saveChangesButton;
+    @FXML
+    private ComboBox<String> studentVisibilityComboBox;
+
     private Student student;
     private AdminModifyStudentPopUpController controller;
 
     public void initialize() {
         initializeController();
+        studentVisibilityComboBox.getItems().addAll("Available", "Archived");
+        studentVisibilityComboBox.setValue("Available");
         saveChangesButton.setOnAction(event -> handleSave());
     }
 
@@ -54,7 +60,9 @@ public class AdminModifyStudentPopUp {
             return;
         }
         String id = student.getUserID();
-        boolean success = controller.modifyStudent(id, newPass);
+
+        String visibility = getSelectedAvailability();
+        boolean success = controller.modifyStudent(id, newPass, visibility);
 
         if (!success) {
             JOptionPane.showMessageDialog(null,
@@ -73,5 +81,9 @@ public class AdminModifyStudentPopUp {
     private void closeWindow() {
         Stage stage = (Stage) saveChangesButton.getScene().getWindow();
         stage.close();
+    }
+
+    public String getSelectedAvailability(){
+        return studentVisibilityComboBox.getValue();
     }
 }

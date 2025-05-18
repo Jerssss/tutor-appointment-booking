@@ -8,7 +8,7 @@ public class AdminModifyStudentPopUpController {
         this.model = new AdminStudentModel();
     }
 
-    public boolean modifyStudent(String id, String newPassword) {
-        return model.modifyStudentPassword(id, newPassword);
+    public boolean modifyStudent(String id, String newPassword, String visibility) {
+        return model.modifyStudentPassword(id, newPassword, visibility);
     }
 }
