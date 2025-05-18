@@ -22,7 +22,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
     public String generateNewLessonPlanID() throws SQLException {
         String query = "SELECT lessonPlanID FROM lessonplan ORDER BY lessonPlanID DESC LIMIT 1";
-        String latestLessonPlanID = "LP0"; // Default if no records exist
+        String latestLessonPlanID = "LP0";
 
         try (Statement stmt = con.createStatement();
              ResultSet resultSet = stmt.executeQuery(query)) {
@@ -30,7 +30,6 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 latestLessonPlanID = resultSet.getString("lessonPlanID");
             }
         }
-        // Extract numeric part and increment
         String numericPart = latestLessonPlanID.replaceAll("[^0-9]", "");
         int nextID = Integer.parseInt(numericPart) + 1;
         return "LP" + nextID;
@@ -41,7 +40,6 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
         String subjectID = newLessonPlan.getSubjectID();
         String subjectName = null;
 
-        // Validate subjectID exists
         String subjectQuery = "SELECT subjectName FROM subject WHERE subjectID = ?";
         try (PreparedStatement subjectStmt = con.prepareStatement(subjectQuery)) {
             subjectStmt.setString(1, subjectID);
@@ -53,10 +51,9 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
             }
         }
 
-        // Insert lesson plan
         String insertQuery = "INSERT INTO lessonplan (lessonPlanID, subjectID, objectives, topicsCovered, visibility) VALUES (?, ?, ?, ?, ?)";
         try {
-            con.setAutoCommit(false); // Start transaction
+            con.setAutoCommit(false);
             String newLessonPlanID = generateNewLessonPlanID();
 
             try (PreparedStatement preparedStmt = con.prepareStatement(insertQuery)) {
@@ -64,17 +61,17 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 preparedStmt.setString(2, subjectID);
                 preparedStmt.setString(3, newLessonPlan.getObjectives());
                 preparedStmt.setString(4, newLessonPlan.getTopicsCovered());
-                preparedStmt.setString(5, "Available"); // Default visibility
+                preparedStmt.setString(5, "Available");
                 preparedStmt.executeUpdate();
             }
-            con.commit(); // Commit transaction
+            con.commit();
             System.out.println("[SERVER] Successfully added lesson plan with ID: " + newLessonPlanID);
         } catch (SQLException e) {
-            con.rollback(); // Rollback on error
+            con.rollback();
             System.err.println("[SERVER ERROR] Failed to add lesson plan: " + e.getMessage());
             throw new SQLException("Failed to add lesson plan: " + e.getMessage(), e);
         } finally {
-            con.setAutoCommit(true); // Restore autocommit
+            con.setAutoCommit(true);
         }
     }
 
@@ -288,18 +285,22 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
             if (rs.next()) {
                 String expertise = rs.getString("expertise");
+                System.out.println("[SERVER] Expertise for tutor " + tutorID + ": " + expertise);
                 if (expertise != null && !expertise.trim().isEmpty()) {
-                    // Split comma-separated expertise values and trim whitespace
                     subjects = Arrays.asList(expertise.split("\\s*,\\s*"));
+                } else {
+                    System.out.println("[SERVER] No expertise found for tutor " + tutorID);
                 }
+            } else {
+                System.out.println("[SERVER] No tutor found with ID " + tutorID);
             }
         } catch (SQLException e) {
+            System.err.println("[SERVER ERROR] Error retrieving tutor expertise: " + e.getMessage());
             throw new RemoteException("Error retrieving tutor expertise: " + e.getMessage(), e);
         }
 
-        // Map expertise to subject names
         List<String> subjectNames = new ArrayList<>();
-        String subjectQuery = "SELECT subjectName FROM subject WHERE subjectName = ?";
+        String subjectQuery = "SELECT subjectName FROM subject WHERE subjectName = ? AND visibility = 'Available'";
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(subjectQuery)) {
             for (String expertise : subjects) {
@@ -307,9 +308,12 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     subjectNames.add(rs.getString("subjectName"));
+                } else {
+                    System.out.println("[SERVER] No subject found for expertise: " + expertise);
                 }
             }
         } catch (SQLException e) {
+            System.err.println("[SERVER ERROR] Error mapping expertise to subjects: " + e.getMessage());
             throw new RemoteException("Error mapping expertise to subjects: " + e.getMessage(), e);
         }
 
@@ -346,7 +350,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
 
     @Override
     public String getSubjectIDByName(String subjectName) throws RemoteException {
-        String query = "SELECT subjectID FROM subject WHERE subjectName = ?";
+        String query = "SELECT subjectID FROM subject WHERE subjectName = ? AND visibility = 'Available'";
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, subjectName);
@@ -389,5 +393,27 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
             throw new RemoteException("Error retrieving archived lesson plans: " + e.getMessage(), e);
         }
         return archivedLessonPlanList;
+    }
+
+    @Override
+    public String getAcademicLevelBySubjectName(String subjectName) throws RemoteException {
+        String query = "SELECT academicLevel FROM subject WHERE subjectName = ? AND visibility = 'Available'";
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, subjectName);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String academicLevel = rs.getString("academicLevel");
+                System.out.println("[SERVER] Academic level for subject " + subjectName + ": " + academicLevel);
+                return academicLevel;
+            } else {
+                System.out.println("[SERVER] No subject found for name: " + subjectName);
+            }
+        } catch (SQLException e) {
+            System.err.println("[SERVER ERROR] Error retrieving academic level for subject: " + subjectName + ": " + e.getMessage());
+            throw new RemoteException("Error retrieving academic level for subject: " + subjectName, e);
+        }
+        return null;
     }
 }

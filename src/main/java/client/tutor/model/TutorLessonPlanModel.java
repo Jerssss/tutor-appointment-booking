@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class TutorLessonPlanModel {
-    private TutorService tutorService;
+    private final TutorService tutorService;
 
     public TutorLessonPlanModel() {
         this.tutorService = StudentTutorClient.getTutorService();
@@ -23,9 +23,9 @@ public class TutorLessonPlanModel {
         }
     }
 
-    public List<LessonPlan> fetchArchivedLessonPlansByTutor(String tutorID) { // New method for archived lesson plans
+    public List<LessonPlan> fetchArchivedLessonPlansByTutor(String tutorID) {
         try {
-            return tutorService.viewArchivedLessonPlansByTutor(tutorID); // Assuming this method exists in the service
+            return tutorService.viewArchivedLessonPlansByTutor(tutorID);
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to fetch archived lesson plans for tutor: " + e.getMessage());
             return null;
@@ -82,5 +82,9 @@ public class TutorLessonPlanModel {
 
     public String getSubjectIDByName(String subjectName) throws RemoteException {
         return tutorService.getSubjectIDByName(subjectName);
+    }
+
+    public String getAcademicLevelBySubjectName(String subjectName) throws RemoteException {
+        return tutorService.getAcademicLevelBySubjectName(subjectName);
     }
 }

@@ -30,4 +30,8 @@ public class TutorCreateLessonPlanController {
     public String getSubjectIDByName(String subjectName) throws RemoteException {
         return model.getSubjectIDByName(subjectName);
     }
+
+    public String getAcademicLevelBySubjectName(String subjectName) throws RemoteException {
+        return model.getAcademicLevelBySubjectName(subjectName);
+    }
 }
