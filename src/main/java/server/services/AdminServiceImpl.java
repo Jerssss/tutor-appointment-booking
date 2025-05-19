@@ -426,6 +426,7 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
             callStmt.executeUpdate();
             con.commit();
 
+            addSubjToExpertise(subject.getSubjectName());
         } catch (SQLException e1) {
             if (con != null) con.rollback();
             e1.printStackTrace();
@@ -434,6 +435,45 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
         } finally {
             if (con != null) con.setAutoCommit(true);
         }
+    }
+
+    public void addSubjToExpertise(String newSubject) throws SQLException {
+        List<String> currentSetValues = getCurrentExpertiseValues();
+
+        if (!currentSetValues.contains(newSubject)) {
+            currentSetValues.add(newSubject);
+
+            StringBuilder sb = new StringBuilder("ALTER TABLE tutor MODIFY expertise SET(");
+            for (int i = 0; i < currentSetValues.size(); i++) {
+                sb.append("'").append(currentSetValues.get(i)).append("'");
+                if (i < currentSetValues.size() - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append(")");
+
+            stmt = con.createStatement();
+            stmt.executeUpdate(sb.toString());
+        } else {
+            System.out.println("Subject already exists in SET.");
+        }
+    }
+
+    public List<String> getCurrentExpertiseValues() throws SQLException {
+        List<String> currentValues = new ArrayList<>();
+        String query = "SHOW COLUMNS FROM tutor LIKE 'expertise'";
+        stmt = con.createStatement();
+        resultSet = stmt.executeQuery(query);
+
+        if (resultSet.next()) {
+            String type = resultSet.getString("Type");  // Expected format: set('Math','English','Science')
+            String setValues = type.substring(type.indexOf("(") + 1, type.lastIndexOf(")"));
+            String[] values = setValues.split("','");
+            for (String val : values) {
+                currentValues.add(val.replace("'", ""));
+            }
+        }
+        return currentValues;
     }
 
     @Override
@@ -464,12 +504,13 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
     }
 
     @Override
-    public int deleteSubject(String subjectID) throws RemoteException{
+    public int deleteSubject(Subject subject) throws RemoteException{
         query = "{CALL deleteSubject(?)}";
         try {
             callStmt = con.prepareCall(query);
-            callStmt.setString(1, subjectID);
+            callStmt.setString(1, subject.getSubjectID());
             callStmt.executeUpdate();
+            removeSubjToExpertise(subject.getSubjectName());
         } catch (SQLIntegrityConstraintViolationException e){
             return -1;
         }catch (SQLException e) {
@@ -479,6 +520,29 @@ public class AdminServiceImpl extends UnicastRemoteObject implements AdminServic
         return 0;
 
     }
+
+    public void removeSubjToExpertise(String subjectToRemove) throws SQLException {
+        List<String> currentSetValues = getCurrentExpertiseValues();
+
+        if (currentSetValues.contains(subjectToRemove)) {
+            currentSetValues.remove(subjectToRemove);
+
+            StringBuilder sb = new StringBuilder("ALTER TABLE Tutor MODIFY Expertise SET(");
+            for (int i = 0; i < currentSetValues.size(); i++) {
+                sb.append("'").append(currentSetValues.get(i)).append("'");
+                if (i < currentSetValues.size() - 1) {
+                    sb.append(",");
+                }
+            }
+            sb.append(")");
+
+            stmt = con.createStatement();
+            stmt.executeUpdate(sb.toString());
+        } else {
+            System.out.println("Subject not found in current SET definition.");
+        }
+    }
+
 
     @Override
     public List<LessonPlan> viewLessonPlan() throws RemoteException {

@@ -23,6 +23,7 @@ public class AdminViewSubjectController {
     private final AdminViewSubjectModel model;
     private AdminViewSubjectView view;
     private static String clickedSubject;
+    private static Subject clieckedSubjectToDelete;
     @FXML
     private TableView<Subject> viewResTableView;
     @FXML
@@ -267,8 +268,8 @@ public class AdminViewSubjectController {
                 );
 
                 deleteColumnButton.setOnAction(event -> {
-                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
-                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
+                    clieckedSubjectToDelete = (Subject) getTableRow().getItem();
+                    //clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
 
                     AdminDeleteSubjectPopUpController deleteSubjectPopUpController = null;
                     try {
@@ -276,7 +277,7 @@ public class AdminViewSubjectController {
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    deleteSubjectPopUpController.showWindow(clickedSubject);
+                    deleteSubjectPopUpController.showWindow(clieckedSubjectToDelete);
                 });
             }
 
@@ -309,8 +310,8 @@ public class AdminViewSubjectController {
                 );
 
                 deleteColumnButton.setOnAction(event -> {
-                    clickedSubject = String.valueOf(getTableView().getItems().get(getIndex()));
-                    clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
+                    clieckedSubjectToDelete = (Subject) getTableView().getItems();
+                    //clickedSubject = clickedSubject.replaceAll(".*subjectID=([^,]+),.*", "$1");
 
                     AdminDeleteSubjectPopUpController deleteSubjectPopUpController = null;
                     try {
@@ -318,7 +319,7 @@ public class AdminViewSubjectController {
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    deleteSubjectPopUpController.showWindow(clickedSubject);
+                    deleteSubjectPopUpController.showWindow(clieckedSubjectToDelete);
                 });
             }
 

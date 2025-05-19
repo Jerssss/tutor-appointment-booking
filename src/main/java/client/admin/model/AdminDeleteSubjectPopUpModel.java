@@ -1,6 +1,7 @@
 package client.admin.model;
 
 import client.AdminClient;
+import shared.classes.Subject;
 import shared.interfaces.AdminService;
 import java.rmi.RemoteException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -12,7 +13,7 @@ public class AdminDeleteSubjectPopUpModel {
         this.adminService = AdminClient.getAdminService();
     }
 
-    public int deleteSubject(String subjectID) throws RemoteException, SQLIntegrityConstraintViolationException {
-        return adminService.deleteSubject(subjectID);
+    public int deleteSubject(Subject subject) throws RemoteException, SQLIntegrityConstraintViolationException {
+        return adminService.deleteSubject(subject);
     }
 }

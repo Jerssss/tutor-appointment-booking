@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import server.services.AdminServiceImpl;
+import shared.classes.Subject;
 import shared.interfaces.AdminService;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class AdminDeleteSubjectPopUpController implements Initializable {
     private final AdminDeleteSubjectPopUpModel model;
     private AdminDeleteSubjectPopUpView view;
     private final AdminService service = new AdminServiceImpl();
-    private static String subject;
+    private static Subject subject;
 
     //    @FXML
 //    private ComboBox<String> sessionIdComboBox;
@@ -94,12 +95,12 @@ public class AdminDeleteSubjectPopUpController implements Initializable {
     }
 
 
-    public void showWindow(String subjectID) {
+    public void showWindow(Subject subjectToDelete) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin/delete_subject.fxml"));
             Parent root = loader.load();
 
-            subject = subjectID;
+            subject = subjectToDelete;
             Stage stage = new Stage();
             stage.setTitle("Delete Subject");
             stage.setScene(new Scene(root));
