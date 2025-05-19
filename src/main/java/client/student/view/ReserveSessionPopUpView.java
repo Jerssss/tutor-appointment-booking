@@ -2,6 +2,7 @@ package client.student.view;
 
 import client.student.controller.ReserveSessionPopUpController;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -50,47 +51,63 @@ public class ReserveSessionPopUpView {
 
     @FXML
     private void handleConfirmBooking() {
-        try {
-            String studentId = SessionManager.getCurrentUserId();
-            if (studentId == null) {
-                throw new Exception("Please login to make reservations");
-            }
+        Platform.runLater(() -> {
+            try {
+                String studentId = SessionManager.getCurrentUserId();
+                if (studentId == null) {
+                    showAlert(Alert.AlertType.ERROR, "Session Error", "Please log in to make reservations.");
+                    return;
+                }
 
-            boolean payNow = payNowRadio.isSelected();
-            String paymentMethod = payNow ? getSelectedBank() : null;
-            double amountPaid = 0;
+                boolean payNow = payNowRadio.isSelected();
+                String paymentMethod = payNow ? getSelectedBank() : null;
+                double amountPaid = 0;
 
-            if (payNow) {
-                try {
-                    amountPaid = Double.parseDouble(amountToPayTextField.getText());
-                    if (amountPaid <= 0 || amountPaid > selectedSession.getSessionPrice()) {
-                        throw new Exception("Amount must be between 0 and " + selectedSession.getSessionPrice());
+                if (payNow) {
+                    try {
+                        amountPaid = Double.parseDouble(amountToPayTextField.getText());
+                        if (amountPaid <= 0 || amountPaid > selectedSession.getSessionPrice()) {
+                            showAlert(Alert.AlertType.ERROR, "Payment Error", String.format("Amount must be between 0 and ₱%,.2f.", (double) selectedSession.getSessionPrice()));
+                            return;
+                        }
+                    } catch (NumberFormatException e) {
+                        showAlert(Alert.AlertType.ERROR, "Payment Error", "Please enter a valid payment amount.");
+                        return;
                     }
-                } catch (NumberFormatException e) {
-                    throw new Exception("Please enter a valid payment amount");
+                }
+
+                controller.processBooking(
+                        studentId,
+                        selectedSession,
+                        payNow,
+                        paymentMethod,
+                        amountPaid
+                );
+
+                showAlert(Alert.AlertType.INFORMATION, "Success", payNow ?
+                        String.format("Payment successful! ₱%,.2f via %s. Remaining balance: ₱%,.2f",
+                                amountPaid,
+                                paymentMethod,
+                                (double) selectedSession.getSessionPrice() - amountPaid) :
+                        "Booking reserved successfully. Pay later in your Balance view."
+                );
+
+                closeWindow();
+            } catch (Exception e) {
+                String message = e.getMessage().toLowerCase();
+                if (message.contains("you have an active session that overlaps")) {
+                    showAlert(Alert.AlertType.ERROR, "Booking Conflict", "Cannot reserve session: You have an active session that overlaps with this time slot.");
+                } else if (message.contains("session may be full")) {
+                    showAlert(Alert.AlertType.ERROR, "Booking Error", "Cannot reserve session: The session is full or unavailable.");
+                } else if (message.contains("database error")) {
+                    showAlert(Alert.AlertType.ERROR, "Server Error", "Unable to reserve session due to a server error.");
+                } else if (message.contains("payment amount cannot exceed session price")) {
+                    showAlert(Alert.AlertType.ERROR, "Payment Error", "Payment amount cannot exceed the session price.");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Booking Error", "Unable to process booking: " + e.getMessage());
                 }
             }
-
-            controller.processBooking(
-                    studentId,
-                    selectedSession,
-                    payNow,
-                    paymentMethod,
-                    amountPaid
-            );
-
-            showAlert("Success", payNow ?
-                    String.format("Payment successful! %.2f via %s. Remaining balance: %.2f",
-                            amountPaid,
-                            paymentMethod,
-                            selectedSession.getSessionPrice() - amountPaid) :
-                    "Booking reserved. Pay later in your Balance view."
-            );
-
-            closeWindow();
-        } catch (Exception e) {
-            showAlert("Error", e.getMessage());
-        }
+        });
     }
 
     private String getSelectedBank() {
@@ -105,36 +122,39 @@ public class ReserveSessionPopUpView {
     }
 
     private void populateSessionDetails() {
-        try {
+        Platform.runLater(() -> {
+            // Set session details
             sessionIDLabel.setText(selectedSession.getSessionID());
             dateLabel.setText(String.valueOf(selectedSession.getSessionDate()));
             timeLabel.setText(String.valueOf(selectedSession.getSessionTime()));
             durationLabel.setText(selectedSession.getSessionDuration() + " mins");
-
-            Tutor tutor = controller.getTutorDetails(selectedSession.getTutorID());
-            if (tutor != null) {
-                tutorNameLabel.setText(tutor.getFirstName() + " " + tutor.getLastName());
-            } else {
-                tutorNameLabel.setText("Unknown Tutor");
-            }
-
             tutorIDLabel.setText(selectedSession.getTutorID());
             acadLevelLabel.setText(selectedSession.getAcademicLevel());
             subjectLabel.setText(selectedSession.getSubjectName());
             modeLabel.setText(selectedSession.getSessionMode());
-            priceLabel.setText(String.format("₱%,d", selectedSession.getSessionPrice()));
+            priceLabel.setText(String.format("₱%,.2f", (double) selectedSession.getSessionPrice()));
             typeLabel.setText(selectedSession.getMaximumStudents() == 1 ? "Solo" : "Group");
-        } catch (Exception e) {
-            showAlert("Error", "Failed to load session details: " + e.getMessage());
-        }
+
+            // Handle tutor details separately
+            try {
+                Tutor tutor = controller.getTutorDetails(selectedSession.getTutorID());
+                tutorNameLabel.setText(tutor != null ? tutor.getFirstName() + " " + tutor.getLastName() : "Unknown Tutor");
+            } catch (Exception e) {
+                tutorNameLabel.setText("Unknown Tutor");
+                // Log the error without showing a popup
+                System.out.println("[CLIENT | " + new java.util.Date() + "] Failed to load tutor details: " + e.getMessage());
+            }
+        });
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(alertType);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 
     @FXML

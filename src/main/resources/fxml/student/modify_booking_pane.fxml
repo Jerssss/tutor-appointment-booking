@@ -19,7 +19,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="514.0">
                      <children>
-                        <Label fx:id="modBookingLabel" text="Modify Booking" textFill="#6f2e2e">
+                        <Label fx:id="modBookingLabel" text="Update Booking(s)" textFill="#6f2e2e">
                            <font>
                               <Font name="System Bold" size="29.0" />
                            </font>

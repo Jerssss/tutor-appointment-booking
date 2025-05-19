@@ -27,6 +27,11 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
     @Override
     public Booking createBooking(String studentID, String sessionID, String sessionMode, String bookingStatus,
                                  double sessionPrice) throws RemoteException {
+        // Check for overlapping bookings before creating a new booking
+        if (hasOverlappingBooking(studentID, sessionID)) {
+            throw new RemoteException("Cannot reserve session: You have an active session that overlaps with this time slot.");
+        }
+
         try (Connection conn = DatabaseConnection.setCon();
              CallableStatement cstmt = conn.prepareCall("{CALL createBooking(?, ?, ?, ?, ?)}")) {
 
@@ -53,6 +58,87 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
         } catch (SQLException e) {
             throw new RemoteException("Database error: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean cancelBooking(String sessionID) throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon()) {
+            conn.setAutoCommit(false);
+            try {
+                // Update booking status to Cancelled
+                try (PreparedStatement stmt = conn.prepareStatement(
+                        "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?")) {
+                    stmt.setString(1, sessionID);
+                    stmt.executeUpdate();
+                }
+
+                // Decrement numberOfStudents in tutorsession
+                try (PreparedStatement stmt = conn.prepareStatement(
+                        "UPDATE tutorsession SET numberOfStudents = numberOfStudents - 1 WHERE sessionID = ? AND numberOfStudents > 0")) {
+                    stmt.setString(1, sessionID);
+                    int rowsAffected = stmt.executeUpdate();
+                    conn.commit();
+                    return rowsAffected > 0;
+                }
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new RemoteException("Database error while cancelling booking: " + e.getMessage());
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database connection error: " + e.getMessage());
+        }
+    }
+
+    // Method to check for overlapping bookings
+    private boolean hasOverlappingBooking(String studentID, String sessionID) throws RemoteException {
+        try (Connection conn = DatabaseConnection.setCon()) {
+            // Get the session details for the session to be booked
+            String sessionQuery = "SELECT sessionDate, sessionTime, sessionDuration FROM tutorsession WHERE sessionID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sessionQuery)) {
+                stmt.setString(1, sessionID);
+                ResultSet rs = stmt.executeQuery();
+                if (!rs.next()) {
+                    throw new RemoteException("Session not found");
+                }
+
+                LocalDate sessionDate = rs.getDate("sessionDate").toLocalDate();
+                LocalTime sessionTime = rs.getTime("sessionTime").toLocalTime();
+                int duration = rs.getInt("sessionDuration");
+                LocalDateTime sessionStart = LocalDateTime.of(sessionDate, sessionTime);
+                LocalDateTime sessionEnd = sessionStart.plusMinutes(duration);
+
+                // Check for overlapping Approved bookings on the same day
+                String overlapQuery = "SELECT ts.sessionDate, ts.sessionTime, ts.sessionDuration " +
+                        "FROM booking b " +
+                        "JOIN tutorsession ts ON b.sessionID = ts.sessionID " +
+                        "WHERE b.studentID = ? AND b.bookingStatus = 'Approved' " +
+                        "AND ts.sessionDate = ? AND ts.sessionID != ?";
+                try (PreparedStatement overlapStmt = conn.prepareStatement(overlapQuery)) {
+                    overlapStmt.setString(1, studentID);
+                    overlapStmt.setDate(2, java.sql.Date.valueOf(sessionDate));
+                    overlapStmt.setString(3, sessionID);
+                    ResultSet overlapRs = overlapStmt.executeQuery();
+
+                    while (overlapRs.next()) {
+                        LocalDate existingDate = overlapRs.getDate("sessionDate").toLocalDate();
+                        LocalTime existingTime = overlapRs.getTime("sessionTime").toLocalTime();
+                        int existingDuration = overlapRs.getInt("sessionDuration");
+                        LocalDateTime existingStart = LocalDateTime.of(existingDate, existingTime);
+                        LocalDateTime existingEnd = existingStart.plusMinutes(existingDuration);
+
+                        // Check if the sessions overlap
+                        if (!(sessionEnd.isBefore(existingStart) || sessionStart.isAfter(existingEnd))) {
+                            return true; // Overlap found
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RemoteException("Database error while checking for overlapping bookings: " + e.getMessage());
+        }
+        return false; // No overlap found
     }
 
     @Override
@@ -154,20 +240,6 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throw new RemoteException("Database error while modifying booking: " + e.getMessage());
         }
         return null;
-    }
-
-    @Override
-    public boolean cancelBooking(String sessionID) throws RemoteException {
-        try (Connection conn = DatabaseConnection.setCon();
-             PreparedStatement stmt = conn.prepareStatement(
-                     "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?")) {
-
-            stmt.setString(1, sessionID);
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            throw new RemoteException("Database error while cancelling booking: " + e.getMessage());
-        }
     }
 
     @Override
@@ -451,6 +523,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throw new RemoteException("Database error while fetching balance: " + e.getMessage());
         }
     }
+
     @Override
     public Tutor getTutorDetails(String tutorId) throws RemoteException {
         String query = "SELECT u.userID, u.firstName, u.lastName, u.phoneNumber, " +
@@ -481,5 +554,4 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
             throw new RemoteException("Database error: " + e.getMessage());
         }
     }
-
 }

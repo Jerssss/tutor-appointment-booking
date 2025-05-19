@@ -21,12 +21,12 @@
                      <children>
                         <VBox prefHeight="43.0" prefWidth="255.0">
                            <children>
-                              <Label text="Academic Level">
+                              <Label text="Academic Level :">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="academicLevelComboBox" prefHeight="26.0" prefWidth="250.0" promptText="Choose a level " />
+                              <Label fx:id="academicLevelLabel" text="Select a subject" prefHeight="26.0" prefWidth="250.0" style="-fx-font-weight: bold;" />
                            </children>
                         </VBox>
                      </children>
@@ -94,7 +94,7 @@
    <top>
       <HBox alignment="CENTER" prefHeight="47.0" prefWidth="310.0" style="-fx-background-color: #6f2e2e;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="41.0" prefWidth="255.0" style="-fx-font-family: &quot;Trebuchet MS&quot;, Helvetica, sans-serif;" text="Add New Lesson Plan" textFill="WHITE">
+            <Label alignment="CENTER" prefHeight="41.0" prefWidth="255.0" style="-fx-font-family: 'Trebuchet MS', Helvetica, sans-serif;" text="Add New Lesson Plan" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
