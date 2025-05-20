@@ -12,7 +12,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -575,6 +574,36 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                 );
             }
             throw new RemoteException("Tutor not found");
+        } catch (SQLException e) {
+            throw new RemoteException("Database error: " + e.getMessage());
+        }
+    }
+    @Override
+    public Student getStudent(String studentId) throws RemoteException {
+        String query = "SELECT u.userID, u.firstName, u.lastName, u.phoneNumber, "
+                + "u.email, u.role, s.balance, s.academicLevel "
+                + "FROM user u JOIN student s ON u.userID = s.studentID "
+                + "WHERE u.userID = ?";
+
+        try (Connection conn = DatabaseConnection.setCon();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, studentId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Student(
+                        rs.getString("userID"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getLong("phoneNumber"),
+                        rs.getString("email"),
+                        rs.getString("role"),
+                        rs.getDouble("balance"),
+                        rs.getString("academicLevel")
+                );
+            }
+            throw new RemoteException("Student not found");
         } catch (SQLException e) {
             throw new RemoteException("Database error: " + e.getMessage());
         }

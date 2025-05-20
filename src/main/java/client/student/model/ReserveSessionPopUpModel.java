@@ -1,7 +1,7 @@
 package client.student.model;
 
-import client.StudentTutorClient;
 import shared.classes.Booking;
+import shared.classes.Student;
 import shared.classes.Tutor;
 import shared.classes.TutorSession;
 import shared.interfaces.StudentService;
@@ -10,53 +10,37 @@ public class ReserveSessionPopUpModel {
     private final StudentService studentService;
 
     public ReserveSessionPopUpModel(StudentService studentService) {
-        this.studentService = StudentTutorClient.getStudentService();
+        this.studentService = studentService;
+    }
+
+    public Student getStudentDetails(String studentId) throws Exception {
+        try {
+            return studentService.getStudent(studentId);
+        } catch (Exception e) {
+            throw new Exception("Could not retrieve student details: " + e.getMessage());
+        }
     }
 
     public Tutor getTutorDetails(String tutorId) throws Exception {
         try {
             return studentService.getTutorDetails(tutorId);
         } catch (Exception e) {
-            throw new Exception("Failed to get tutor details: " + e.getMessage());
+            throw new Exception("Could not retrieve tutor details: " + e.getMessage());
         }
     }
 
-    public Booking createBooking(String studentId, TutorSession session) throws Exception {
+    public void processBooking(String studentId, TutorSession session,
+                               boolean payNow, String paymentMethod,
+                               double amountPaid) throws Exception {
         try {
-            return studentService.createBooking(
-                    studentId,
-                    session.getSessionID(),
-                    session.getSessionMode(),
-                    "Approved",
-                    session.getSessionPrice()
-            );
-        } catch (Exception e) {
-            throw new Exception("Failed to create booking: " + e.getMessage());
-        }
-    }
+            Booking booking = studentService.createBooking(studentId, session.getSessionID(),
+                    session.getSessionMode(), "Pending", session.getSessionPrice());
 
-    public void processPartialPayment(String studentId, double amountPaid,
-                                      double sessionPrice, String paymentMethod) throws Exception {
-        try {
-            studentService.createPayment(studentId, amountPaid, paymentMethod);
-
-            double remainingBalance = sessionPrice - amountPaid;
-            if (remainingBalance > 0) {
-                studentService.updateStudentBalance(studentId, remainingBalance);
-            } else if (remainingBalance < 0) {
-                throw new Exception("Payment amount cannot exceed session price");
+            if (payNow) {
+                studentService.createPayment(studentId, amountPaid, paymentMethod);
             }
-
         } catch (Exception e) {
-            throw new Exception("Payment processing failed: " + e.getMessage());
-        }
-    }
-
-    public void updateStudentBalance(String studentId, double amount) throws Exception {
-        try {
-            studentService.updateStudentBalance(studentId, amount);
-        } catch (Exception e) {
-            throw new Exception("Balance update failed: " + e.getMessage());
+            throw new Exception("Booking processing failed: " + e.getMessage());
         }
     }
 }

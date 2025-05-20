@@ -1,11 +1,10 @@
 package client.student.controller;
 
-import client.student.model.ReserveSessionPopUpModel;
 import shared.classes.Booking;
+import shared.classes.Student;
 import shared.classes.Tutor;
 import shared.classes.TutorSession;
-
-import java.util.Date;
+import client.student.model.ReserveSessionPopUpModel;
 
 public class ReserveSessionPopUpController {
     private final ReserveSessionPopUpModel model;
@@ -14,43 +13,17 @@ public class ReserveSessionPopUpController {
         this.model = model;
     }
 
-    public Tutor getTutorDetails(String tutorId) throws Exception {
-        try {
-            return model.getTutorDetails(tutorId);
-        } catch (Exception e) {
-            throw new Exception("Failed to fetch tutor details: " + e.getMessage());
-        }
+    public Student getStudentDetails(String studentId) throws Exception {
+        return model.getStudentDetails(studentId);
     }
+
+    public Tutor getTutorDetails(String tutorId) throws Exception {
+        return model.getTutorDetails(tutorId);
+    }
+
     public void processBooking(String studentId, TutorSession session,
                                boolean payNow, String paymentMethod,
                                double amountPaid) throws Exception {
-        // Always create the booking first
-        Booking booking = model.createBooking(studentId, session);
-
-        if (payNow) {
-            System.out.println("Processing payment of " + amountPaid);
-            try {
-                // Use the partial payment method instead of separate calls
-                model.processPartialPayment(
-                        studentId,
-                        amountPaid,
-                        session.getSessionPrice(),
-                        paymentMethod
-                );
-                System.out.println("[CLIENT | "+ new Date()+ "] Payment succeeded");
-            } catch (Exception e) {
-                System.out.println("[CLIENT | "+ new Date()+ "] Payment failed: " + e.getMessage());
-                throw e;
-            }
-        } else {
-            System.out.println("[CLIENT | "+ new Date()+ "] Updating balance for later payment");
-            try {
-                model.updateStudentBalance(studentId, session.getSessionPrice());
-                System.out.println("[CLIENT | "+ new Date()+ "] Balance updated for later payment");
-            } catch (Exception e) {
-                System.out.println("[CLIENT | "+ new Date()+ "] Balance update failed: " + e.getMessage());
-                throw e;
-            }
-        }
+        model.processBooking(studentId, session, payNow, paymentMethod, amountPaid);
     }
 }

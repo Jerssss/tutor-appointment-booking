@@ -21,4 +21,6 @@ public interface StudentService extends Remote {
     boolean updateStudentBalance(String studentId, double amount) throws RemoteException;
     double getStudentBalance(String studentID) throws RemoteException;
     Tutor getTutorDetails(String tutorId) throws RemoteException;
+
+    Student getStudent(String studentId) throws RemoteException;
 }
