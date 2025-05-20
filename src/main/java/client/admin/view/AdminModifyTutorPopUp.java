@@ -59,19 +59,6 @@ public class AdminModifyTutorPopUp {
             newPass = passwordTextField.getText();
         }
 
-
-        if (tutor == null) {
-            JOptionPane.showMessageDialog(null,
-                    "Invalid input. Please check the form.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-
-
-
-        System.out.println("newPass: " + newPass);
         String id = tutor.getUserID();
         String visibility = getSelectedAvailability();
         boolean success = controller.modifyTutor(id, newPass, visibility);

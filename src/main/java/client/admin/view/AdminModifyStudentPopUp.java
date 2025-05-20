@@ -50,17 +50,14 @@ public class AdminModifyStudentPopUp {
     }
 
     private void handleSave() {
-        String newPass = passwordTextField.getText();
-
-        if (student == null || newPass == null || newPass.isEmpty()) {
-            JOptionPane.showMessageDialog(null,
-                    "Invalid input. Please check the form.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
+        String newPass = "";
+        if (passwordTextField.getText() == null || passwordTextField.getText().isEmpty()) {
+            newPass = oldPassLabel.getText();
+        } else {
+            newPass = passwordTextField.getText();
         }
-        String id = student.getUserID();
 
+        String id = student.getUserID();
         String visibility = getSelectedAvailability();
         boolean success = controller.modifyStudent(id, newPass, visibility);
 
