@@ -73,7 +73,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
                     if (rs.next()) {
                         String studentID = rs.getString("studentID");
                         double sessionPrice = rs.getDouble("sessionPrice");
-                        double refundAmount = sessionPrice * 0.8; // 80% refund
+                        double refundAmount = sessionPrice * 0.2; // 80% refund
 
                         // Step 2: Update booking status to Cancelled
                         try (PreparedStatement updateStmt = conn.prepareStatement(
