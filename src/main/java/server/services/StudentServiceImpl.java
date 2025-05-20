@@ -65,20 +65,45 @@ public class StudentServiceImpl extends UnicastRemoteObject implements Remote, S
         try (Connection conn = DatabaseConnection.setCon()) {
             conn.setAutoCommit(false);
             try {
-                // Update booking status to Cancelled
-                try (PreparedStatement stmt = conn.prepareStatement(
-                        "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ?")) {
+                // Step 1: Get booking details for refund calculation
+                String bookingQuery = "SELECT studentID, sessionPrice FROM booking WHERE sessionID = ? AND bookingStatus = 'Approved'";
+                try (PreparedStatement stmt = conn.prepareStatement(bookingQuery)) {
                     stmt.setString(1, sessionID);
-                    stmt.executeUpdate();
-                }
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        String studentID = rs.getString("studentID");
+                        double sessionPrice = rs.getDouble("sessionPrice");
+                        double refundAmount = sessionPrice * 0.8; // 80% refund
 
-                // Decrement numberOfStudents in tutorsession
-                try (PreparedStatement stmt = conn.prepareStatement(
-                        "UPDATE tutorsession SET numberOfStudents = numberOfStudents - 1 WHERE sessionID = ? AND numberOfStudents > 0")) {
-                    stmt.setString(1, sessionID);
-                    int rowsAffected = stmt.executeUpdate();
-                    conn.commit();
-                    return rowsAffected > 0;
+                        // Step 2: Update booking status to Cancelled
+                        try (PreparedStatement updateStmt = conn.prepareStatement(
+                                "UPDATE booking SET bookingStatus = 'Cancelled' WHERE sessionID = ? AND studentID = ?")) {
+                            updateStmt.setString(1, sessionID);
+                            updateStmt.setString(2, studentID);
+                            updateStmt.executeUpdate();
+                        }
+
+                        // Step 3: Decrement numberOfStudents in tutorsession
+                        try (PreparedStatement updateSessionStmt = conn.prepareStatement(
+                                "UPDATE tutorsession SET numberOfStudents = numberOfStudents - 1 WHERE sessionID = ? AND numberOfStudents > 0")) {
+                            updateSessionStmt.setString(1, sessionID);
+                            updateSessionStmt.executeUpdate();
+                        }
+
+                        // Step 4: Update student's balance with refund
+                        try (PreparedStatement updateBalanceStmt = conn.prepareStatement(
+                                "UPDATE student SET balance = balance + ? WHERE studentID = ?")) {
+                            updateBalanceStmt.setDouble(1, refundAmount);
+                            updateBalanceStmt.setString(2, studentID);
+                            updateBalanceStmt.executeUpdate();
+                        }
+
+                        conn.commit();
+                        return true;
+                    } else {
+                        conn.rollback();
+                        return false; // No approved booking found to cancel
+                    }
                 }
             } catch (SQLException e) {
                 conn.rollback();
