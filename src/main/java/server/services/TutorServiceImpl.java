@@ -122,7 +122,7 @@ public class TutorServiceImpl extends UnicastRemoteObject implements TutorServic
                 "FROM booking b " +
                 "JOIN student s ON b.studentID = s.studentID " +
                 "JOIN user u ON s.studentID = u.userID " +
-                "WHERE b.sessionID = ?";
+                "WHERE b.bookingStatus = 'Approved' AND b.sessionID = ? ";
 
         try (Connection conn = DatabaseConnection.setCon();
              PreparedStatement stmt = conn.prepareStatement(query)) {
